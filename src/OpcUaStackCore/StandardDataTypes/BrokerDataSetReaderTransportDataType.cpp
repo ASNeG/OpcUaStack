@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -154,26 +154,32 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)16526, 0);
     }
     
-    void
+    bool
     BrokerDataSetReaderTransportDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        DataSetReaderTransportDataType::opcUaBinaryEncode(os);
-        queueName_.opcUaBinaryEncode(os);
-        resourceUri_.opcUaBinaryEncode(os);
-        authenticationProfileUri_.opcUaBinaryEncode(os);
-        requestedDeliveryGuarantee_.opcUaBinaryEncode(os);
-        metaDataQueueName_.opcUaBinaryEncode(os);
+        bool rc = true;
+    
+        rc &= DataSetReaderTransportDataType::opcUaBinaryEncode(os);
+        rc &= queueName_.opcUaBinaryEncode(os);
+        rc &= resourceUri_.opcUaBinaryEncode(os);
+        rc &= authenticationProfileUri_.opcUaBinaryEncode(os);
+        rc &= requestedDeliveryGuarantee_.opcUaBinaryEncode(os);
+        rc &= metaDataQueueName_.opcUaBinaryEncode(os);
+        return rc;
     }
     
-    void
+    bool
     BrokerDataSetReaderTransportDataType::opcUaBinaryDecode(std::istream& is)
     {
-        DataSetReaderTransportDataType::opcUaBinaryDecode(is);
-        queueName_.opcUaBinaryDecode(is);
-        resourceUri_.opcUaBinaryDecode(is);
-        authenticationProfileUri_.opcUaBinaryDecode(is);
-        requestedDeliveryGuarantee_.opcUaBinaryDecode(is);
-        metaDataQueueName_.opcUaBinaryDecode(is);
+        bool rc = true;
+    
+        rc &= DataSetReaderTransportDataType::opcUaBinaryDecode(is);
+        rc &= queueName_.opcUaBinaryDecode(is);
+        rc &= resourceUri_.opcUaBinaryDecode(is);
+        rc &= authenticationProfileUri_.opcUaBinaryDecode(is);
+        rc &= requestedDeliveryGuarantee_.opcUaBinaryDecode(is);
+        rc &= metaDataQueueName_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

@@ -40,8 +40,8 @@ namespace OpcUaStackCore
 		void continuationPoints(const OpcUaByteStringArray::SPtr continuationPoints);
 		OpcUaByteStringArray::SPtr continuationPoints(void) const;
 
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
+		bool opcUaBinaryEncode(std::ostream& os) const;
+		bool opcUaBinaryDecode(std::istream& is);
 
 	protected:
 		bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;

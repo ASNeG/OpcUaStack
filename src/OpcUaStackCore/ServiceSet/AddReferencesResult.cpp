@@ -50,11 +50,11 @@ namespace OpcUaStackCore
 	}
 
 
-	void 
+	bool
 	AddReferencesResult::opcUaBinaryEncode(
 		std::ostream& os) const
 	{
-		OpcUaNumber::opcUaBinaryEncode(os, (OpcUaUInt32)statusCode_);
+		return OpcUaNumber::opcUaBinaryEncode(os, (OpcUaUInt32)statusCode_);
 	}
 	
 	void 
@@ -69,13 +69,17 @@ namespace OpcUaStackCore
 		os << "StatusCode=" << statusCode_;
 	}
 
-	void
+	bool
 	AddReferencesResult::opcUaBinaryDecode(
 		std::istream& is)
 	{
+		bool rc = true;
+
 		OpcUaUInt32 tmp;
-		OpcUaNumber::opcUaBinaryDecode(is, tmp);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, tmp);
 		statusCode_ = (OpcUaStatusCode)tmp;
+
+		return rc;
 	}
 
 }

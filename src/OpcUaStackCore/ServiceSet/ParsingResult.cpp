@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -76,22 +76,30 @@ namespace OpcUaStackCore
 		return dataDiagnosticInfoArraySPtr_;
 	}
 
-	void 
+	bool
 	ParsingResult::opcUaBinaryEncode(std::ostream& os) const
 	{
-		OpcUaNumber::opcUaBinaryEncode(os, (OpcUaUInt32)statusCode_);
-		dataStatusCodeArraySPtr_->opcUaBinaryEncode(os);
-		dataDiagnosticInfoArraySPtr_->opcUaBinaryEncode(os);
+		bool rc = true;
+
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, (OpcUaUInt32)statusCode_);
+		rc &= dataStatusCodeArraySPtr_->opcUaBinaryEncode(os);
+		rc &= dataDiagnosticInfoArraySPtr_->opcUaBinaryEncode(os);
+
+		return rc;
 	}
 	
-	void 
+	bool
 	ParsingResult::opcUaBinaryDecode(std::istream& is)
 	{
+		bool rc = true;
+
 		OpcUaUInt32 tmp;
-		OpcUaNumber::opcUaBinaryDecode(is, tmp);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, tmp);
 		statusCode_ = (OpcUaStatusCode)tmp;
-		dataStatusCodeArraySPtr_->opcUaBinaryDecode(is);
-		dataDiagnosticInfoArraySPtr_->opcUaBinaryDecode(is);
+		rc &= dataStatusCodeArraySPtr_->opcUaBinaryDecode(is);
+		rc &= dataDiagnosticInfoArraySPtr_->opcUaBinaryDecode(is);
+
+		return rc;
 	}
 
 }

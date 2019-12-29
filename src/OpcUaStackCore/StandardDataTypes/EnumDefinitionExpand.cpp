@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -98,16 +98,16 @@ namespace OpcUaStackCore
 		return OpcUaNodeId((OpcUaUInt32)OpcUaId_EnumDefinition_Encoding_DefaultXml);
 	}
 
-	void
+	bool
 	EnumDefinitionExpand::opcUaBinaryEncode(std::ostream& os) const
 	{
-		enumFields_->opcUaBinaryEncode(os);
+		return enumFields_->opcUaBinaryEncode(os);
 	}
 
-	void
+	bool
 	EnumDefinitionExpand::opcUaBinaryDecode(std::istream& is)
 	{
-		enumFields_->opcUaBinaryDecode(is);
+		return enumFields_->opcUaBinaryDecode(is);
 	}
 
 	bool

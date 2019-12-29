@@ -3338,7 +3338,7 @@ namespace OpcUaStackCore
 		return true;
 	}
 
-	void 
+	bool
 	OpcUaDataValue::opcUaBinaryEncode(std::ostream& os) const
 	{
 		OpcUaByte encodingMask = 0x00;
@@ -3362,54 +3362,56 @@ namespace OpcUaStackCore
 			encodingMask += 0x20;
 		}
 
-		OpcUaNumber::opcUaBinaryEncode(os,encodingMask);
+		auto rc = OpcUaNumber::opcUaBinaryEncode(os,encodingMask);
 		if (opcUaVariantSPtr_.get() != NULL) {
-			opcUaVariantSPtr_->opcUaBinaryEncode(os);
+			rc &= opcUaVariantSPtr_->opcUaBinaryEncode(os);
 		}
 		if (opcUaStatusCode_ != 0) {
-			OpcUaNumber::opcUaBinaryEncode(os,opcUaStatusCode_);
+			rc &= OpcUaNumber::opcUaBinaryEncode(os,opcUaStatusCode_);
 		}
 		if (sourceTimestamp_.exist()) {
-			sourceTimestamp_.opcUaBinaryEncode(os);
+			rc &= sourceTimestamp_.opcUaBinaryEncode(os);
 		}
 		if (sourcePicoseconds_ != 0) {
-			OpcUaNumber::opcUaBinaryEncode(os,sourcePicoseconds_);
+			rc &= OpcUaNumber::opcUaBinaryEncode(os,sourcePicoseconds_);
 		}
 		if (serverTimestamp_.exist()) {
-			serverTimestamp_.opcUaBinaryEncode(os);
+			rc &= serverTimestamp_.opcUaBinaryEncode(os);
 		}
 		if (serverPicoseconds_ != 0) {
-			OpcUaNumber::opcUaBinaryEncode(os,serverPicoseconds_);
+			rc &= OpcUaNumber::opcUaBinaryEncode(os,serverPicoseconds_);
 		}
+		return rc;
 	}
 		
 
-	void 
+	bool
 	OpcUaDataValue::opcUaBinaryDecode(std::istream& is)
 	{
 		OpcUaByte encodingMask;
-		OpcUaNumber::opcUaBinaryDecode(is,encodingMask);
+		auto rc = OpcUaNumber::opcUaBinaryDecode(is,encodingMask);
 
 		if ((encodingMask & 0x01) == 0x01) {
 			opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
-			opcUaVariantSPtr_->opcUaBinaryDecode(is);
+			rc &= opcUaVariantSPtr_->opcUaBinaryDecode(is);
 		}
 		if ((encodingMask & 0x02) == 0x02) {
 			OpcUaInt32 tmp;
-			OpcUaNumber::opcUaBinaryDecode(is,tmp); opcUaStatusCode_ = (OpcUaStatusCode)tmp;
+			rc &= OpcUaNumber::opcUaBinaryDecode(is,tmp); opcUaStatusCode_ = (OpcUaStatusCode)tmp;
 		}
 		if ((encodingMask & 0x04) == 0x04) {
-			sourceTimestamp_.opcUaBinaryDecode(is);
+			rc &= sourceTimestamp_.opcUaBinaryDecode(is);
 		}
 		if ((encodingMask & 0x08) == 0x08) {
-			serverTimestamp_.opcUaBinaryDecode(is);
+			rc &= serverTimestamp_.opcUaBinaryDecode(is);
 		}
 		if ((encodingMask & 0x10) == 0x10) {
-			OpcUaNumber::opcUaBinaryDecode(is,sourcePicoseconds_);
+			rc &= OpcUaNumber::opcUaBinaryDecode(is,sourcePicoseconds_);
 		}	
 		if ((encodingMask & 0x20) == 0x20) {
-			OpcUaNumber::opcUaBinaryDecode(is,serverPicoseconds_);
+			rc &= OpcUaNumber::opcUaBinaryDecode(is,serverPicoseconds_);
 		}
+		return rc;
 	}
 
 	bool

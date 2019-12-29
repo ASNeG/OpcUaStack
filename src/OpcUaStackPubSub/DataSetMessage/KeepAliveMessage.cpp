@@ -36,14 +36,16 @@ namespace OpcUaStackPubSub
 	{
 	}
 
-	void
+	bool
 	KeepAliveMessage::opcUaBinaryEncode(std::ostream& os) const
 	{
+		return true;
 	}
 
-	void
+	bool
 	KeepAliveMessage::opcUaBinaryDecode(std::istream& is)
 	{
+		return true;
 	}
 
 }

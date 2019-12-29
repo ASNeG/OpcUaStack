@@ -63,18 +63,26 @@ namespace OpcUaStackCore
 		return continuationPointArraySPtr_;
 	}
 
-	void 
+	bool
 	BrowseNextRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		OpcUaNumber::opcUaBinaryEncode(os, releaseContinuationPoints_);
-		continuationPointArraySPtr_->opcUaBinaryEncode(os);
+		bool rc = true;
+
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, releaseContinuationPoints_);
+		rc &= continuationPointArraySPtr_->opcUaBinaryEncode(os);
+
+		return rc;
 	}
 	
-	void 
+	bool
 	BrowseNextRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		OpcUaNumber::opcUaBinaryDecode(is, releaseContinuationPoints_);
-		continuationPointArraySPtr_->opcUaBinaryDecode(is);
+		bool rc = true;
+
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, releaseContinuationPoints_);
+		rc &= continuationPointArraySPtr_->opcUaBinaryDecode(is);
+
+		return rc;
 	}
 
 	bool

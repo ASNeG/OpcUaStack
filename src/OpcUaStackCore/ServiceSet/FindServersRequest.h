@@ -45,8 +45,8 @@ namespace OpcUaStackCore
 		void serverUris(const OpcUaStringArray::SPtr serverUris);
 		OpcUaStringArray::SPtr serverUris(void) const;
 
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
+		bool opcUaBinaryEncode(std::ostream& os) const;
+		bool opcUaBinaryDecode(std::istream& is);
 
 	  protected:
 		bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;

@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -536,100 +536,106 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)15368, 0);
     }
     
-    void
+    bool
     SessionDiagnosticsDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        sessionId_.opcUaBinaryEncode(os);
-        sessionName_.opcUaBinaryEncode(os);
-        clientDescription_.opcUaBinaryEncode(os);
-        serverUri_.opcUaBinaryEncode(os);
-        endpointUrl_.opcUaBinaryEncode(os);
-        localeIds_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,actualSessionTimeout_);
-        OpcUaNumber::opcUaBinaryEncode(os,maxResponseMessageSize_);
-        clientConnectionTime_.opcUaBinaryEncode(os);
-        clientLastContactTime_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,currentSubscriptionsCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,currentMonitoredItemsCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,currentPublishRequestsInQueue_);
-        totalRequestCount_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,unauthorizedRequestCount_);
-        readCount_.opcUaBinaryEncode(os);
-        historyReadCount_.opcUaBinaryEncode(os);
-        writeCount_.opcUaBinaryEncode(os);
-        historyUpdateCount_.opcUaBinaryEncode(os);
-        callCount_.opcUaBinaryEncode(os);
-        createMonitoredItemsCount_.opcUaBinaryEncode(os);
-        modifyMonitoredItemsCount_.opcUaBinaryEncode(os);
-        setMonitoringModeCount_.opcUaBinaryEncode(os);
-        setTriggeringCount_.opcUaBinaryEncode(os);
-        deleteMonitoredItemsCount_.opcUaBinaryEncode(os);
-        createSubscriptionCount_.opcUaBinaryEncode(os);
-        modifySubscriptionCount_.opcUaBinaryEncode(os);
-        setPublishingModeCount_.opcUaBinaryEncode(os);
-        publishCount_.opcUaBinaryEncode(os);
-        republishCount_.opcUaBinaryEncode(os);
-        transferSubscriptionsCount_.opcUaBinaryEncode(os);
-        deleteSubscriptionsCount_.opcUaBinaryEncode(os);
-        addNodesCount_.opcUaBinaryEncode(os);
-        addReferencesCount_.opcUaBinaryEncode(os);
-        deleteNodesCount_.opcUaBinaryEncode(os);
-        deleteReferencesCount_.opcUaBinaryEncode(os);
-        browseCount_.opcUaBinaryEncode(os);
-        browseNextCount_.opcUaBinaryEncode(os);
-        translateBrowsePathsToNodeIdsCount_.opcUaBinaryEncode(os);
-        queryFirstCount_.opcUaBinaryEncode(os);
-        queryNextCount_.opcUaBinaryEncode(os);
-        registerNodesCount_.opcUaBinaryEncode(os);
-        unregisterNodesCount_.opcUaBinaryEncode(os);
+        bool rc = true;
+    
+        rc &= sessionId_.opcUaBinaryEncode(os);
+        rc &= sessionName_.opcUaBinaryEncode(os);
+        rc &= clientDescription_.opcUaBinaryEncode(os);
+        rc &= serverUri_.opcUaBinaryEncode(os);
+        rc &= endpointUrl_.opcUaBinaryEncode(os);
+        rc &= localeIds_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,actualSessionTimeout_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,maxResponseMessageSize_);
+        rc &= clientConnectionTime_.opcUaBinaryEncode(os);
+        rc &= clientLastContactTime_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,currentSubscriptionsCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,currentMonitoredItemsCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,currentPublishRequestsInQueue_);
+        rc &= totalRequestCount_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,unauthorizedRequestCount_);
+        rc &= readCount_.opcUaBinaryEncode(os);
+        rc &= historyReadCount_.opcUaBinaryEncode(os);
+        rc &= writeCount_.opcUaBinaryEncode(os);
+        rc &= historyUpdateCount_.opcUaBinaryEncode(os);
+        rc &= callCount_.opcUaBinaryEncode(os);
+        rc &= createMonitoredItemsCount_.opcUaBinaryEncode(os);
+        rc &= modifyMonitoredItemsCount_.opcUaBinaryEncode(os);
+        rc &= setMonitoringModeCount_.opcUaBinaryEncode(os);
+        rc &= setTriggeringCount_.opcUaBinaryEncode(os);
+        rc &= deleteMonitoredItemsCount_.opcUaBinaryEncode(os);
+        rc &= createSubscriptionCount_.opcUaBinaryEncode(os);
+        rc &= modifySubscriptionCount_.opcUaBinaryEncode(os);
+        rc &= setPublishingModeCount_.opcUaBinaryEncode(os);
+        rc &= publishCount_.opcUaBinaryEncode(os);
+        rc &= republishCount_.opcUaBinaryEncode(os);
+        rc &= transferSubscriptionsCount_.opcUaBinaryEncode(os);
+        rc &= deleteSubscriptionsCount_.opcUaBinaryEncode(os);
+        rc &= addNodesCount_.opcUaBinaryEncode(os);
+        rc &= addReferencesCount_.opcUaBinaryEncode(os);
+        rc &= deleteNodesCount_.opcUaBinaryEncode(os);
+        rc &= deleteReferencesCount_.opcUaBinaryEncode(os);
+        rc &= browseCount_.opcUaBinaryEncode(os);
+        rc &= browseNextCount_.opcUaBinaryEncode(os);
+        rc &= translateBrowsePathsToNodeIdsCount_.opcUaBinaryEncode(os);
+        rc &= queryFirstCount_.opcUaBinaryEncode(os);
+        rc &= queryNextCount_.opcUaBinaryEncode(os);
+        rc &= registerNodesCount_.opcUaBinaryEncode(os);
+        rc &= unregisterNodesCount_.opcUaBinaryEncode(os);
+        return rc;
     }
     
-    void
+    bool
     SessionDiagnosticsDataType::opcUaBinaryDecode(std::istream& is)
     {
-        sessionId_.opcUaBinaryDecode(is);
-        sessionName_.opcUaBinaryDecode(is);
-        clientDescription_.opcUaBinaryDecode(is);
-        serverUri_.opcUaBinaryDecode(is);
-        endpointUrl_.opcUaBinaryDecode(is);
-        localeIds_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,actualSessionTimeout_);
-        OpcUaNumber::opcUaBinaryDecode(is,maxResponseMessageSize_);
-        clientConnectionTime_.opcUaBinaryDecode(is);
-        clientLastContactTime_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,currentSubscriptionsCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,currentMonitoredItemsCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,currentPublishRequestsInQueue_);
-        totalRequestCount_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,unauthorizedRequestCount_);
-        readCount_.opcUaBinaryDecode(is);
-        historyReadCount_.opcUaBinaryDecode(is);
-        writeCount_.opcUaBinaryDecode(is);
-        historyUpdateCount_.opcUaBinaryDecode(is);
-        callCount_.opcUaBinaryDecode(is);
-        createMonitoredItemsCount_.opcUaBinaryDecode(is);
-        modifyMonitoredItemsCount_.opcUaBinaryDecode(is);
-        setMonitoringModeCount_.opcUaBinaryDecode(is);
-        setTriggeringCount_.opcUaBinaryDecode(is);
-        deleteMonitoredItemsCount_.opcUaBinaryDecode(is);
-        createSubscriptionCount_.opcUaBinaryDecode(is);
-        modifySubscriptionCount_.opcUaBinaryDecode(is);
-        setPublishingModeCount_.opcUaBinaryDecode(is);
-        publishCount_.opcUaBinaryDecode(is);
-        republishCount_.opcUaBinaryDecode(is);
-        transferSubscriptionsCount_.opcUaBinaryDecode(is);
-        deleteSubscriptionsCount_.opcUaBinaryDecode(is);
-        addNodesCount_.opcUaBinaryDecode(is);
-        addReferencesCount_.opcUaBinaryDecode(is);
-        deleteNodesCount_.opcUaBinaryDecode(is);
-        deleteReferencesCount_.opcUaBinaryDecode(is);
-        browseCount_.opcUaBinaryDecode(is);
-        browseNextCount_.opcUaBinaryDecode(is);
-        translateBrowsePathsToNodeIdsCount_.opcUaBinaryDecode(is);
-        queryFirstCount_.opcUaBinaryDecode(is);
-        queryNextCount_.opcUaBinaryDecode(is);
-        registerNodesCount_.opcUaBinaryDecode(is);
-        unregisterNodesCount_.opcUaBinaryDecode(is);
+        bool rc = true;
+    
+        rc &= sessionId_.opcUaBinaryDecode(is);
+        rc &= sessionName_.opcUaBinaryDecode(is);
+        rc &= clientDescription_.opcUaBinaryDecode(is);
+        rc &= serverUri_.opcUaBinaryDecode(is);
+        rc &= endpointUrl_.opcUaBinaryDecode(is);
+        rc &= localeIds_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,actualSessionTimeout_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,maxResponseMessageSize_);
+        rc &= clientConnectionTime_.opcUaBinaryDecode(is);
+        rc &= clientLastContactTime_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,currentSubscriptionsCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,currentMonitoredItemsCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,currentPublishRequestsInQueue_);
+        rc &= totalRequestCount_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,unauthorizedRequestCount_);
+        rc &= readCount_.opcUaBinaryDecode(is);
+        rc &= historyReadCount_.opcUaBinaryDecode(is);
+        rc &= writeCount_.opcUaBinaryDecode(is);
+        rc &= historyUpdateCount_.opcUaBinaryDecode(is);
+        rc &= callCount_.opcUaBinaryDecode(is);
+        rc &= createMonitoredItemsCount_.opcUaBinaryDecode(is);
+        rc &= modifyMonitoredItemsCount_.opcUaBinaryDecode(is);
+        rc &= setMonitoringModeCount_.opcUaBinaryDecode(is);
+        rc &= setTriggeringCount_.opcUaBinaryDecode(is);
+        rc &= deleteMonitoredItemsCount_.opcUaBinaryDecode(is);
+        rc &= createSubscriptionCount_.opcUaBinaryDecode(is);
+        rc &= modifySubscriptionCount_.opcUaBinaryDecode(is);
+        rc &= setPublishingModeCount_.opcUaBinaryDecode(is);
+        rc &= publishCount_.opcUaBinaryDecode(is);
+        rc &= republishCount_.opcUaBinaryDecode(is);
+        rc &= transferSubscriptionsCount_.opcUaBinaryDecode(is);
+        rc &= deleteSubscriptionsCount_.opcUaBinaryDecode(is);
+        rc &= addNodesCount_.opcUaBinaryDecode(is);
+        rc &= addReferencesCount_.opcUaBinaryDecode(is);
+        rc &= deleteNodesCount_.opcUaBinaryDecode(is);
+        rc &= deleteReferencesCount_.opcUaBinaryDecode(is);
+        rc &= browseCount_.opcUaBinaryDecode(is);
+        rc &= browseNextCount_.opcUaBinaryDecode(is);
+        rc &= translateBrowsePathsToNodeIdsCount_.opcUaBinaryDecode(is);
+        rc &= queryFirstCount_.opcUaBinaryDecode(is);
+        rc &= queryNextCount_.opcUaBinaryDecode(is);
+        rc &= registerNodesCount_.opcUaBinaryDecode(is);
+        rc &= unregisterNodesCount_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

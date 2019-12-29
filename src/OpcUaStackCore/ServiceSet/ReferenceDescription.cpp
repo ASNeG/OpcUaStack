@@ -141,30 +141,38 @@ namespace OpcUaStackCore
 		typeDefinitionSPtr_->copyTo(*referenceDescription.typeDefinition().get());
 	}
 
-	void 
+	bool
 	ReferenceDescription::opcUaBinaryEncode(std::ostream& os) const
 	{
-		referenceTypeIdSPtr_->opcUaBinaryEncode(os);
-		OpcUaNumber::opcUaBinaryEncode(os, isForward_);
-		nodeIdSPtr_->opcUaBinaryEncode(os);
-		browseName_.opcUaBinaryEncode(os);
-		displayName_.opcUaBinaryEncode(os);
-		OpcUaNumber::opcUaBinaryEncode(os, (OpcUaUInt32)nodeClass_);
-		typeDefinitionSPtr_->opcUaBinaryEncode(os);
+		bool rc = true;
+
+		rc &= referenceTypeIdSPtr_->opcUaBinaryEncode(os);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, isForward_);
+		rc &= nodeIdSPtr_->opcUaBinaryEncode(os);
+		rc &= browseName_.opcUaBinaryEncode(os);
+		rc &= displayName_.opcUaBinaryEncode(os);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, (OpcUaUInt32)nodeClass_);
+		rc &= typeDefinitionSPtr_->opcUaBinaryEncode(os);
+
+		return rc;
 	}
 	
-	void 
+	bool
 	ReferenceDescription::opcUaBinaryDecode(std::istream& is)
 	{
+		bool rc = true;
+
 		OpcUaUInt32 tmp;
-		referenceTypeIdSPtr_->opcUaBinaryDecode(is);
-		OpcUaNumber::opcUaBinaryDecode(is, isForward_);
-		nodeIdSPtr_->opcUaBinaryDecode(is);
-		browseName_.opcUaBinaryDecode(is);
-		displayName_.opcUaBinaryDecode(is);
-		OpcUaNumber::opcUaBinaryDecode(is, tmp);
+		rc &= referenceTypeIdSPtr_->opcUaBinaryDecode(is);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, isForward_);
+		rc &= nodeIdSPtr_->opcUaBinaryDecode(is);
+		rc &= browseName_.opcUaBinaryDecode(is);
+		rc &= displayName_.opcUaBinaryDecode(is);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, tmp);
 		nodeClass_ = (NodeClass::Enum)tmp;
-		typeDefinitionSPtr_->opcUaBinaryDecode(is);
+		rc &= typeDefinitionSPtr_->opcUaBinaryDecode(is);
+
+		return rc;
 	}
 
 	bool

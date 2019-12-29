@@ -69,10 +69,10 @@ namespace OpcUaStackCore
 		void userContext(UserContext::SPtr& userContext);
 		UserContext::SPtr& userContext(void);
 
-		virtual void opcUaBinaryEncodeRequest(std::ostream& os) const = 0;
-		virtual void opcUaBinaryEncodeResponse(std::ostream& os) const = 0;
-		virtual void opcUaBinaryDecodeRequest(std::istream& is) = 0;
-		virtual void opcUaBinaryDecodeResponse(std::istream& is) = 0;
+		virtual bool opcUaBinaryEncodeRequest(std::ostream& os) const = 0;
+		virtual bool opcUaBinaryEncodeResponse(std::ostream& os) const = 0;
+		virtual bool opcUaBinaryDecodeRequest(std::istream& is) = 0;
+		virtual bool opcUaBinaryDecodeResponse(std::istream& is) = 0;
 
 		void statusCode(OpcUaStatusCode statusCode);
 		OpcUaStatusCode statusCode(void);

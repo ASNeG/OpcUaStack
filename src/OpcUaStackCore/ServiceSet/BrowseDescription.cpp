@@ -126,28 +126,36 @@ namespace OpcUaStackCore
 		browseDescription.resultMask(resultMask_);
 	}
 
-	void 
+	bool
 	BrowseDescription::opcUaBinaryEncode(std::ostream& os) const
 	{
-		nodeIdSPtr_->opcUaBinaryEncode(os);
-		OpcUaNumber::opcUaBinaryEncode(os, (OpcUaUInt32)browseDirection_);
-		referenceTypeIdSPtr_->opcUaBinaryEncode(os);
-		OpcUaNumber::opcUaBinaryEncode(os, includeSubtypes_);
-		OpcUaNumber::opcUaBinaryEncode(os, nodeClassMask_);
-		OpcUaNumber::opcUaBinaryEncode(os, resultMask_);
+		bool rc = true;
+
+		rc &= nodeIdSPtr_->opcUaBinaryEncode(os);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, (OpcUaUInt32)browseDirection_);
+		rc &= referenceTypeIdSPtr_->opcUaBinaryEncode(os);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, includeSubtypes_);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, nodeClassMask_);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, resultMask_);
+
+		return rc;
 	}
 	
-	void 
+	bool
 	BrowseDescription::opcUaBinaryDecode(std::istream& is)
 	{
+		bool rc = true;
+
 		OpcUaUInt32 tmp;
-		nodeIdSPtr_->opcUaBinaryDecode(is);
-		OpcUaNumber::opcUaBinaryDecode(is, tmp);
+		rc &= nodeIdSPtr_->opcUaBinaryDecode(is);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, tmp);
 		browseDirection_ = (BrowseDirectionEnum)tmp;
-		referenceTypeIdSPtr_->opcUaBinaryDecode(is);
-		OpcUaNumber::opcUaBinaryDecode(is, includeSubtypes_);
-		OpcUaNumber::opcUaBinaryDecode(is, nodeClassMask_);
-		OpcUaNumber::opcUaBinaryDecode(is, resultMask_);
+		rc &= referenceTypeIdSPtr_->opcUaBinaryDecode(is);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, includeSubtypes_);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, nodeClassMask_);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, resultMask_);
+
+		return rc;
 	}
 
 	bool

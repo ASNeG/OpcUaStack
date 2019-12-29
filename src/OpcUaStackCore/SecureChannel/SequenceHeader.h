@@ -39,8 +39,8 @@ namespace OpcUaStackCore
 		OpcUaUInt32 requestId(void) const;
 		void incRequestId(void);
 
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
+		bool opcUaBinaryEncode(std::ostream& os) const;
+		bool opcUaBinaryDecode(std::istream& is);
 
 	  private:
 		OpcUaUInt32 sequenceNumber_;

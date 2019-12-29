@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -54,18 +54,26 @@ namespace OpcUaStackCore
 		return cancelCount_;
 	}
 
-	void 
+	bool
 	CancelResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
-		responseHeader_->opcUaBinaryEncode(os);
-		OpcUaNumber::opcUaBinaryEncode(os, cancelCount_);
+		bool rc = true;
+
+		rc &= responseHeader_->opcUaBinaryEncode(os);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, cancelCount_);
+
+		return rc;
 	}
 
-	void 
+	bool
 	CancelResponse::opcUaBinaryDecode(std::istream& is)
 	{
-		responseHeader_->opcUaBinaryDecode(is);
-		OpcUaNumber::opcUaBinaryDecode(is, cancelCount_);
+		bool rc = true;
+
+		rc &= responseHeader_->opcUaBinaryDecode(is);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, cancelCount_);
+
+		return rc;
 	}
 
 }

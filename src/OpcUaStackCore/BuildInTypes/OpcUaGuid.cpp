@@ -200,22 +200,36 @@ namespace OpcUaStackCore
 		return (strncmp((char*)data4_, (char*)opcUaGuid.data4(), 8) == 0);
 	}
 
-	void 
+	bool
 	OpcUaGuid::opcUaBinaryEncode(std::ostream& os) const
 	{
-		OpcUaNumber::opcUaBinaryEncode(os, data1_);
-		OpcUaNumber::opcUaBinaryEncode(os, data2_);
-		OpcUaNumber::opcUaBinaryEncode(os, data3_);
-		os.write((char*)data4_, sizeof(data4_));
+		bool rc = true;
+
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, data1_);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, data2_);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, data3_);
+		if (rc) {
+			os.write((char*)data4_, sizeof(data4_));
+			rc = os.good();
+		}
+
+		return rc;
 	}
 		
-	void 
+	bool
 	OpcUaGuid::opcUaBinaryDecode(std::istream& is)
 	{
-		OpcUaNumber::opcUaBinaryDecode(is, data1_);
-		OpcUaNumber::opcUaBinaryDecode(is, data2_);
-		OpcUaNumber::opcUaBinaryDecode(is, data3_);
-		is.read((char*)data4_, sizeof(data4_));
+		bool rc = true;
+
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, data1_);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, data2_);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, data3_);
+		if (rc) {
+			is.read((char*)data4_, sizeof(data4_));
+			rc = is.good();
+		}
+
+		return rc;
 	}
 
 	bool

@@ -76,22 +76,30 @@ namespace OpcUaStackCore
 		return itemsToCreateArraySPtr_;
 	}
 	
-	void 
+	bool
 	CreateMonitoredItemsRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		OpcUaNumber::opcUaBinaryEncode(os, subscriptionId_);
-		OpcUaNumber::opcUaBinaryEncode(os, (OpcUaUInt32)timestampsToReturn_);
-		itemsToCreateArraySPtr_->opcUaBinaryEncode(os);
+		bool rc = true;
+
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, subscriptionId_);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, (OpcUaUInt32)timestampsToReturn_);
+		rc &= itemsToCreateArraySPtr_->opcUaBinaryEncode(os);
+
+		return rc;
 	}
 	
-	void 
+	bool
 	CreateMonitoredItemsRequest::opcUaBinaryDecode(std::istream& is)
 	{
+		bool rc = true;
+
 		OpcUaUInt32 tmp;
-		OpcUaNumber::opcUaBinaryDecode(is, subscriptionId_);
-		OpcUaNumber::opcUaBinaryDecode(is, tmp);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, subscriptionId_);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, tmp);
 		timestampsToReturn_ = (TimestampsToReturn)tmp;
-		itemsToCreateArraySPtr_->opcUaBinaryDecode(is);
+		rc &= itemsToCreateArraySPtr_->opcUaBinaryDecode(is);
+
+		return rc;
 	}
 
 	bool

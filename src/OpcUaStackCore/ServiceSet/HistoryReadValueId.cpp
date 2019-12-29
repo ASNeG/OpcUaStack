@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -115,22 +115,30 @@ namespace OpcUaStackCore
 		dataEncoding_ = name;
 	}
 
-	void 
+	bool
 	HistoryReadValueId::opcUaBinaryEncode(std::ostream& os) const
 	{
-		nodeIdSPtr_->opcUaBinaryEncode(os);
-		indexRange_.opcUaBinaryEncode(os);
-		dataEncoding_.opcUaBinaryEncode(os);
-		continuationPoint_.opcUaBinaryEncode(os);
+		bool rc = true;
+
+		rc &= nodeIdSPtr_->opcUaBinaryEncode(os);
+		rc &= indexRange_.opcUaBinaryEncode(os);
+		rc &= dataEncoding_.opcUaBinaryEncode(os);
+		rc &= continuationPoint_.opcUaBinaryEncode(os);
+
+		return rc;
 	}
 	
-	void 
+	bool
 	HistoryReadValueId::opcUaBinaryDecode(std::istream& is)
 	{
-		nodeIdSPtr_->opcUaBinaryDecode(is);
-		indexRange_.opcUaBinaryDecode(is);
-		dataEncoding_.opcUaBinaryDecode(is);
-		continuationPoint_.opcUaBinaryDecode(is);
+		bool rc = true;
+
+		rc &= nodeIdSPtr_->opcUaBinaryDecode(is);
+		rc &= indexRange_.opcUaBinaryDecode(is);
+		rc &= dataEncoding_.opcUaBinaryDecode(is);
+		rc &= continuationPoint_.opcUaBinaryDecode(is);
+
+		return rc;
 	}
 
 	bool

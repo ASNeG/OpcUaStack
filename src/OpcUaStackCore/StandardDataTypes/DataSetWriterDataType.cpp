@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -196,32 +196,38 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)16156, 0);
     }
     
-    void
+    bool
     DataSetWriterDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        name_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,enabled_);
-        OpcUaNumber::opcUaBinaryEncode(os,dataSetWriterId_);
-        OpcUaNumber::opcUaBinaryEncode(os,dataSetFieldContentMask_);
-        OpcUaNumber::opcUaBinaryEncode(os,keyFrameCount_);
-        dataSetName_.opcUaBinaryEncode(os);
-        dataSetWriterProperties_.opcUaBinaryEncode(os);
-        transportSettings_.opcUaBinaryEncode(os);
-        messageSettings_.opcUaBinaryEncode(os);
+        bool rc = true;
+    
+        rc &= name_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,enabled_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,dataSetWriterId_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,dataSetFieldContentMask_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,keyFrameCount_);
+        rc &= dataSetName_.opcUaBinaryEncode(os);
+        rc &= dataSetWriterProperties_.opcUaBinaryEncode(os);
+        rc &= transportSettings_.opcUaBinaryEncode(os);
+        rc &= messageSettings_.opcUaBinaryEncode(os);
+        return rc;
     }
     
-    void
+    bool
     DataSetWriterDataType::opcUaBinaryDecode(std::istream& is)
     {
-        name_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,enabled_);
-        OpcUaNumber::opcUaBinaryDecode(is,dataSetWriterId_);
-        OpcUaNumber::opcUaBinaryDecode(is,dataSetFieldContentMask_);
-        OpcUaNumber::opcUaBinaryDecode(is,keyFrameCount_);
-        dataSetName_.opcUaBinaryDecode(is);
-        dataSetWriterProperties_.opcUaBinaryDecode(is);
-        transportSettings_.opcUaBinaryDecode(is);
-        messageSettings_.opcUaBinaryDecode(is);
+        bool rc = true;
+    
+        rc &= name_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,enabled_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,dataSetWriterId_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,dataSetFieldContentMask_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,keyFrameCount_);
+        rc &= dataSetName_.opcUaBinaryDecode(is);
+        rc &= dataSetWriterProperties_.opcUaBinaryDecode(is);
+        rc &= transportSettings_.opcUaBinaryDecode(is);
+        rc &= messageSettings_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

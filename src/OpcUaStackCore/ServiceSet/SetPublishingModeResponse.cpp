@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -65,17 +65,25 @@ namespace OpcUaStackCore
 		return diagnosticInfoArraySPtr_;
 	}
 
-	void 
+	bool
 	SetPublishingModeResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
-		statusCodeArraySPtr_->opcUaBinaryEncode(os);
-		diagnosticInfoArraySPtr_->opcUaBinaryEncode(os);
+		bool rc = true;
+
+		rc &= statusCodeArraySPtr_->opcUaBinaryEncode(os);
+		rc &= diagnosticInfoArraySPtr_->opcUaBinaryEncode(os);
+
+		return rc;
 	}
 	
-	void 
+	bool
 	SetPublishingModeResponse::opcUaBinaryDecode(std::istream& is)
 	{
-		statusCodeArraySPtr_->opcUaBinaryDecode(is);
-		diagnosticInfoArraySPtr_->opcUaBinaryDecode(is);
+		bool rc = true;
+
+		rc &= statusCodeArraySPtr_->opcUaBinaryDecode(is);
+		rc &= diagnosticInfoArraySPtr_->opcUaBinaryDecode(is);
+
+		return rc;
 	}
 }

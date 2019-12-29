@@ -50,15 +50,15 @@ namespace OpcUaStackCore
 		return notificationMessageSPtr_;
 	}
 
-	void 
+	bool
 	RepublishResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
-		notificationMessageSPtr_->opcUaBinaryEncode(os);
+		return notificationMessageSPtr_->opcUaBinaryEncode(os);
 	}
 	
-	void 
+	bool
 	RepublishResponse::opcUaBinaryDecode(std::istream& is)
 	{
-		notificationMessageSPtr_->opcUaBinaryDecode(is);
+		return notificationMessageSPtr_->opcUaBinaryDecode(is);
 	}
 }

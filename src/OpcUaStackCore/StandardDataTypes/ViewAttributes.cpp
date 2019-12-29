@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -130,20 +130,26 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)15162, 0);
     }
     
-    void
+    bool
     ViewAttributes::opcUaBinaryEncode(std::ostream& os) const
     {
-        NodeAttributes::opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,containsNoLoops_);
-        OpcUaNumber::opcUaBinaryEncode(os,eventNotifier_);
+        bool rc = true;
+    
+        rc &= NodeAttributes::opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,containsNoLoops_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,eventNotifier_);
+        return rc;
     }
     
-    void
+    bool
     ViewAttributes::opcUaBinaryDecode(std::istream& is)
     {
-        NodeAttributes::opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,containsNoLoops_);
-        OpcUaNumber::opcUaBinaryDecode(is,eventNotifier_);
+        bool rc = true;
+    
+        rc &= NodeAttributes::opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,containsNoLoops_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,eventNotifier_);
+        return rc;
     }
     
     bool

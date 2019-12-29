@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -196,32 +196,38 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)16281, 0);
     }
     
-    void
+    bool
     PubSubConnectionDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        name_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,enabled_);
-        publisherId_.opcUaBinaryEncode(os);
-        transportProfileUri_.opcUaBinaryEncode(os);
-        address_.opcUaBinaryEncode(os);
-        connectionProperties_.opcUaBinaryEncode(os);
-        transportSettings_.opcUaBinaryEncode(os);
-        writerGroups_.opcUaBinaryEncode(os);
-        readerGroups_.opcUaBinaryEncode(os);
+        bool rc = true;
+    
+        rc &= name_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,enabled_);
+        rc &= publisherId_.opcUaBinaryEncode(os);
+        rc &= transportProfileUri_.opcUaBinaryEncode(os);
+        rc &= address_.opcUaBinaryEncode(os);
+        rc &= connectionProperties_.opcUaBinaryEncode(os);
+        rc &= transportSettings_.opcUaBinaryEncode(os);
+        rc &= writerGroups_.opcUaBinaryEncode(os);
+        rc &= readerGroups_.opcUaBinaryEncode(os);
+        return rc;
     }
     
-    void
+    bool
     PubSubConnectionDataType::opcUaBinaryDecode(std::istream& is)
     {
-        name_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,enabled_);
-        publisherId_.opcUaBinaryDecode(is);
-        transportProfileUri_.opcUaBinaryDecode(is);
-        address_.opcUaBinaryDecode(is);
-        connectionProperties_.opcUaBinaryDecode(is);
-        transportSettings_.opcUaBinaryDecode(is);
-        writerGroups_.opcUaBinaryDecode(is);
-        readerGroups_.opcUaBinaryDecode(is);
+        bool rc = true;
+    
+        rc &= name_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,enabled_);
+        rc &= publisherId_.opcUaBinaryDecode(is);
+        rc &= transportProfileUri_.opcUaBinaryDecode(is);
+        rc &= address_.opcUaBinaryDecode(is);
+        rc &= connectionProperties_.opcUaBinaryDecode(is);
+        rc &= transportSettings_.opcUaBinaryDecode(is);
+        rc &= writerGroups_.opcUaBinaryDecode(is);
+        rc &= readerGroups_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

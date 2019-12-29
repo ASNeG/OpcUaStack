@@ -111,8 +111,8 @@ namespace OpcUaStackPubSub
 		void promotedFields(OpcUaStackCore::OpcUaVariantArray::SPtr promotedFields);
 		OpcUaStackCore::OpcUaVariantArray::SPtr promotedFields() const;
 
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
+		bool opcUaBinaryEncode(std::ostream& os) const;
+		bool opcUaBinaryDecode(std::istream& is);
 
 		bool operator==(const NetworkMessageHeader& other) const;
 

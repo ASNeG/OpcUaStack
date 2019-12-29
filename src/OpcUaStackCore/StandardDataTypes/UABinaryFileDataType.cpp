@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -134,22 +134,28 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)15714, 0);
     }
     
-    void
+    bool
     UABinaryFileDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        DataTypeSchemaHeader::opcUaBinaryEncode(os);
-        schemaLocation_.opcUaBinaryEncode(os);
-        fileHeader_.opcUaBinaryEncode(os);
-        body_.opcUaBinaryEncode(os);
+        bool rc = true;
+    
+        rc &= DataTypeSchemaHeader::opcUaBinaryEncode(os);
+        rc &= schemaLocation_.opcUaBinaryEncode(os);
+        rc &= fileHeader_.opcUaBinaryEncode(os);
+        rc &= body_.opcUaBinaryEncode(os);
+        return rc;
     }
     
-    void
+    bool
     UABinaryFileDataType::opcUaBinaryDecode(std::istream& is)
     {
-        DataTypeSchemaHeader::opcUaBinaryDecode(is);
-        schemaLocation_.opcUaBinaryDecode(is);
-        fileHeader_.opcUaBinaryDecode(is);
-        body_.opcUaBinaryDecode(is);
+        bool rc = true;
+    
+        rc &= DataTypeSchemaHeader::opcUaBinaryDecode(is);
+        rc &= schemaLocation_.opcUaBinaryDecode(is);
+        rc &= fileHeader_.opcUaBinaryDecode(is);
+        rc &= body_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

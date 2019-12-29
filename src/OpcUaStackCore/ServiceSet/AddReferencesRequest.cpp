@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -50,16 +50,16 @@ namespace OpcUaStackCore
 	}
 
 
-	void 
+	bool
 	AddReferencesRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		addReferencesItemArray_->opcUaBinaryEncode(os);
+		return addReferencesItemArray_->opcUaBinaryEncode(os);
 	}
 	
-	void 
+	bool
 	AddReferencesRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		addReferencesItemArray_->opcUaBinaryDecode(is);
+		return addReferencesItemArray_->opcUaBinaryDecode(is);
 	}
 
 }

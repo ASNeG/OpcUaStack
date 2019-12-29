@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -124,20 +124,26 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)16404, 0);
     }
     
-    void
+    bool
     JsonDataSetReaderMessageDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        DataSetReaderMessageDataType::opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,networkMessageContentMask_);
-        OpcUaNumber::opcUaBinaryEncode(os,dataSetMessageContentMask_);
+        bool rc = true;
+    
+        rc &= DataSetReaderMessageDataType::opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,networkMessageContentMask_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,dataSetMessageContentMask_);
+        return rc;
     }
     
-    void
+    bool
     JsonDataSetReaderMessageDataType::opcUaBinaryDecode(std::istream& is)
     {
-        DataSetReaderMessageDataType::opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,networkMessageContentMask_);
-        OpcUaNumber::opcUaBinaryDecode(is,dataSetMessageContentMask_);
+        bool rc = true;
+    
+        rc &= DataSetReaderMessageDataType::opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,networkMessageContentMask_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,dataSetMessageContentMask_);
+        return rc;
     }
     
     bool

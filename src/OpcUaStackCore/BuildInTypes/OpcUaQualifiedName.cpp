@@ -208,18 +208,26 @@ namespace OpcUaStackCore
 		return namespaceIndex_ == 0 && name_.isNull();
 	}
 
-	void 
+	bool
 	OpcUaQualifiedName::opcUaBinaryEncode(std::ostream& os) const
 	{
-		OpcUaNumber::opcUaBinaryEncode(os, namespaceIndex_);
-		name_.opcUaBinaryEncode(os);
+		bool rc = true;
+
+		rc &= rc & OpcUaNumber::opcUaBinaryEncode(os, namespaceIndex_);
+		rc &= name_.opcUaBinaryEncode(os);
+
+		return rc;
 	}
 		
-	void 
+	bool
 	OpcUaQualifiedName::opcUaBinaryDecode(std::istream& is)
 	{
-		OpcUaNumber::opcUaBinaryDecode(is, namespaceIndex_);
-		name_.opcUaBinaryDecode(is);
+		bool rc = true;
+
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, namespaceIndex_);
+		rc &= name_.opcUaBinaryDecode(is);
+
+		return rc;
 	}
 
 	bool

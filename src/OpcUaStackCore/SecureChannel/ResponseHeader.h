@@ -45,8 +45,8 @@ namespace OpcUaStackCore
 		void stringTable(const OpcUaStringArray::SPtr stringTableSPtr);
 		OpcUaStringArray::SPtr stringTable(void) const;
 
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
+		bool opcUaBinaryEncode(std::ostream& os) const;
+		bool opcUaBinaryDecode(std::istream& is);
 
 	  private:
 		OpcUaUtcTime time_;

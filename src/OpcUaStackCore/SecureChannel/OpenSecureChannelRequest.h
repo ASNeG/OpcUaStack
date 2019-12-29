@@ -50,8 +50,8 @@ namespace OpcUaStackCore
 		void requestedLifetime(const OpcUaInt32& requestedLifetime);
 		OpcUaInt32 requestedLifetime(void) const;
 
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
+		bool opcUaBinaryEncode(std::ostream& os) const;
+		bool opcUaBinaryDecode(std::istream& is);
 
 	  private:
 		RequestHeader::SPtr requestHeaderSPtr_;

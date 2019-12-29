@@ -170,16 +170,16 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)29,0);
     }
     
-    void
+    bool
     Enumeration::opcUaBinaryEncode(std::ostream& os) const
     {
-        OpcUaNumber::opcUaBinaryEncode(os, value_);
+        return OpcUaNumber::opcUaBinaryEncode(os, value_);
     }
     
-    void
+    bool
     Enumeration::opcUaBinaryDecode(std::istream& is)
     {
-        OpcUaNumber::opcUaBinaryDecode(is, value_);
+        return OpcUaNumber::opcUaBinaryDecode(is, value_);
     }
 
     bool

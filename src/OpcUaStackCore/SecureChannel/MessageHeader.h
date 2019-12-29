@@ -53,10 +53,10 @@ namespace OpcUaStackCore
 		void channelId(uint32_t channelId);
 		uint32_t channelId(void);
 
-		void opcUaBinaryEncode(std::ostream& os, bool full = false) const;
-		void opcUaBinaryEncodeChannelId(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is, bool full = false);
-		void opcUaBinaryDecodeChannelId(std::istream& is);
+		bool opcUaBinaryEncode(std::ostream& os, bool full = false) const;
+		bool opcUaBinaryEncodeChannelId(std::ostream& os) const;
+		bool opcUaBinaryDecode(std::istream& is, bool full = false);
+		bool opcUaBinaryDecodeChannelId(std::istream& is);
 
 	  private:
 		char messageTypeString_[3];

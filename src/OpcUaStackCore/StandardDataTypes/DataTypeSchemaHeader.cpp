@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -146,22 +146,28 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)16151, 0);
     }
     
-    void
+    bool
     DataTypeSchemaHeader::opcUaBinaryEncode(std::ostream& os) const
     {
-        namespaces_.opcUaBinaryEncode(os);
-        structureDataTypes_.opcUaBinaryEncode(os);
-        enumDataTypes_.opcUaBinaryEncode(os);
-        simpleDataTypes_.opcUaBinaryEncode(os);
+        bool rc = true;
+    
+        rc &= namespaces_.opcUaBinaryEncode(os);
+        rc &= structureDataTypes_.opcUaBinaryEncode(os);
+        rc &= enumDataTypes_.opcUaBinaryEncode(os);
+        rc &= simpleDataTypes_.opcUaBinaryEncode(os);
+        return rc;
     }
     
-    void
+    bool
     DataTypeSchemaHeader::opcUaBinaryDecode(std::istream& is)
     {
-        namespaces_.opcUaBinaryDecode(is);
-        structureDataTypes_.opcUaBinaryDecode(is);
-        enumDataTypes_.opcUaBinaryDecode(is);
-        simpleDataTypes_.opcUaBinaryDecode(is);
+        bool rc = true;
+    
+        rc &= namespaces_.opcUaBinaryDecode(is);
+        rc &= structureDataTypes_.opcUaBinaryDecode(is);
+        rc &= enumDataTypes_.opcUaBinaryDecode(is);
+        rc &= simpleDataTypes_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

@@ -39,8 +39,8 @@ namespace OpcUaStackCore
 		void cancelCount(const OpcUaInt32& cancelCount);
 		OpcUaInt32 cancelCount(void) const;
 
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
+		bool opcUaBinaryEncode(std::ostream& os) const;
+		bool opcUaBinaryDecode(std::istream& is);
 
 	  private:
 		ResponseHeader::SPtr responseHeader_;

@@ -50,16 +50,16 @@ namespace OpcUaStackCore
 		return subscriptionIdArraySPtr_;
 	}
 
-	void 
+	bool
 	DeleteSubscriptionsRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		subscriptionIdArraySPtr_->opcUaBinaryEncode(os);
+		return subscriptionIdArraySPtr_->opcUaBinaryEncode(os);
 	}
 	
-	void 
+	bool
 	DeleteSubscriptionsRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		subscriptionIdArraySPtr_->opcUaBinaryDecode(is);
+		return subscriptionIdArraySPtr_->opcUaBinaryDecode(is);
 	}
 
 	bool

@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -144,24 +144,30 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)15312, 0);
     }
     
-    void
+    bool
     AggregateFilter::opcUaBinaryEncode(std::ostream& os) const
     {
-        MonitoringFilter::opcUaBinaryEncode(os);
-        startTime_.opcUaBinaryEncode(os);
-        aggregateType_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,processingInterval_);
-        aggregateConfiguration_.opcUaBinaryEncode(os);
+        bool rc = true;
+    
+        rc &= MonitoringFilter::opcUaBinaryEncode(os);
+        rc &= startTime_.opcUaBinaryEncode(os);
+        rc &= aggregateType_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,processingInterval_);
+        rc &= aggregateConfiguration_.opcUaBinaryEncode(os);
+        return rc;
     }
     
-    void
+    bool
     AggregateFilter::opcUaBinaryDecode(std::istream& is)
     {
-        MonitoringFilter::opcUaBinaryDecode(is);
-        startTime_.opcUaBinaryDecode(is);
-        aggregateType_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,processingInterval_);
-        aggregateConfiguration_.opcUaBinaryDecode(is);
+        bool rc = true;
+    
+        rc &= MonitoringFilter::opcUaBinaryDecode(is);
+        rc &= startTime_.opcUaBinaryDecode(is);
+        rc &= aggregateType_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,processingInterval_);
+        rc &= aggregateConfiguration_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

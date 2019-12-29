@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -130,20 +130,26 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)15157, 0);
     }
     
-    void
+    bool
     MethodAttributes::opcUaBinaryEncode(std::ostream& os) const
     {
-        NodeAttributes::opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,executable_);
-        OpcUaNumber::opcUaBinaryEncode(os,userExecutable_);
+        bool rc = true;
+    
+        rc &= NodeAttributes::opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,executable_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,userExecutable_);
+        return rc;
     }
     
-    void
+    bool
     MethodAttributes::opcUaBinaryDecode(std::istream& is)
     {
-        NodeAttributes::opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,executable_);
-        OpcUaNumber::opcUaBinaryDecode(is,userExecutable_);
+        bool rc = true;
+    
+        rc &= NodeAttributes::opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,executable_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,userExecutable_);
+        return rc;
     }
     
     bool

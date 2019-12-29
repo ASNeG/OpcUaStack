@@ -40,8 +40,8 @@ namespace OpcUaStackCore
 		void diagnosticInfos(const OpcUaDiagnosticInfoArray::SPtr diagnosticInfosSPtr);
 		OpcUaDiagnosticInfoArray::SPtr diagnosticInfos(void) const;
 	
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
+		bool opcUaBinaryEncode(std::ostream& os) const;
+		bool opcUaBinaryDecode(std::istream& is);
 
 	  private:
 		  AddReferencesResultArray::SPtr addReferencesResultArraySPtr_;

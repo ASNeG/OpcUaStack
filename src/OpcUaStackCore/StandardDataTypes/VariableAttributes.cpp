@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -190,32 +190,38 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)15153, 0);
     }
     
-    void
+    bool
     VariableAttributes::opcUaBinaryEncode(std::ostream& os) const
     {
-        NodeAttributes::opcUaBinaryEncode(os);
-        value_.opcUaBinaryEncode(os);
-        dataType_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,valueRank_);
-        arrayDimensions_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,accessLevel_);
-        OpcUaNumber::opcUaBinaryEncode(os,userAccessLevel_);
-        OpcUaNumber::opcUaBinaryEncode(os,minimumSamplingInterval_);
-        OpcUaNumber::opcUaBinaryEncode(os,historizing_);
+        bool rc = true;
+    
+        rc &= NodeAttributes::opcUaBinaryEncode(os);
+        rc &= value_.opcUaBinaryEncode(os);
+        rc &= dataType_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,valueRank_);
+        rc &= arrayDimensions_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,accessLevel_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,userAccessLevel_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,minimumSamplingInterval_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,historizing_);
+        return rc;
     }
     
-    void
+    bool
     VariableAttributes::opcUaBinaryDecode(std::istream& is)
     {
-        NodeAttributes::opcUaBinaryDecode(is);
-        value_.opcUaBinaryDecode(is);
-        dataType_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,valueRank_);
-        arrayDimensions_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,accessLevel_);
-        OpcUaNumber::opcUaBinaryDecode(is,userAccessLevel_);
-        OpcUaNumber::opcUaBinaryDecode(is,minimumSamplingInterval_);
-        OpcUaNumber::opcUaBinaryDecode(is,historizing_);
+        bool rc = true;
+    
+        rc &= NodeAttributes::opcUaBinaryDecode(is);
+        rc &= value_.opcUaBinaryDecode(is);
+        rc &= dataType_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,valueRank_);
+        rc &= arrayDimensions_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,accessLevel_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,userAccessLevel_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,minimumSamplingInterval_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,historizing_);
+        return rc;
     }
     
     bool

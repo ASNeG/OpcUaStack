@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -154,26 +154,32 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)15209, 0);
     }
     
-    void
+    bool
     AttributeOperand::opcUaBinaryEncode(std::ostream& os) const
     {
-        FilterOperand::opcUaBinaryEncode(os);
-        nodeId_.opcUaBinaryEncode(os);
-        alias_.opcUaBinaryEncode(os);
-        browsePath_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,attributeId_);
-        indexRange_.opcUaBinaryEncode(os);
+        bool rc = true;
+    
+        rc &= FilterOperand::opcUaBinaryEncode(os);
+        rc &= nodeId_.opcUaBinaryEncode(os);
+        rc &= alias_.opcUaBinaryEncode(os);
+        rc &= browsePath_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,attributeId_);
+        rc &= indexRange_.opcUaBinaryEncode(os);
+        return rc;
     }
     
-    void
+    bool
     AttributeOperand::opcUaBinaryDecode(std::istream& is)
     {
-        FilterOperand::opcUaBinaryDecode(is);
-        nodeId_.opcUaBinaryDecode(is);
-        alias_.opcUaBinaryDecode(is);
-        browsePath_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,attributeId_);
-        indexRange_.opcUaBinaryDecode(is);
+        bool rc = true;
+    
+        rc &= FilterOperand::opcUaBinaryDecode(is);
+        rc &= nodeId_.opcUaBinaryDecode(is);
+        rc &= alias_.opcUaBinaryDecode(is);
+        rc &= browsePath_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,attributeId_);
+        rc &= indexRange_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

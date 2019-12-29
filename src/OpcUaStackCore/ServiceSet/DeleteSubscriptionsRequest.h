@@ -38,8 +38,8 @@ namespace OpcUaStackCore
 		void subscriptionIds(const OpcUaUInt32Array::SPtr subscriptionIds);
 		OpcUaUInt32Array::SPtr subscriptionIds(void) const;
 
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
+		bool opcUaBinaryEncode(std::ostream& os) const;
+		bool opcUaBinaryDecode(std::istream& is);
 
 	  protected:
 		bool jsonEncodeImpl(boost::property_tree::ptree &pt) const;

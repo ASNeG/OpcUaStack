@@ -247,23 +247,38 @@ namespace OpcUaStackCore
 		}
 	}
 
-	void 
+	bool
 	OpcUaByteString::opcUaBinaryEncode(std::ostream& os) const
 	{
-		OpcUaNumber::opcUaBinaryEncode(os, length_);
-		if (length_ < 1) return;
-		os.write((char*)value_, length_);
+		bool rc = true;
+
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, length_);
+		if (length_ < 1) return rc;
+		if (rc) {
+		    os.write((char*)value_, length_);
+		    rc = os.good();
+		}
+		return rc;
 	}
 		
-	void 
+	bool
 	OpcUaByteString::opcUaBinaryDecode(std::istream& is)
 	{
+		bool rc = true;
+
 		reset();
-		OpcUaNumber::opcUaBinaryDecode(is, length_);
-		if (length_ < 1) return;
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, length_);
+		if (length_ < 1) return rc;
 		
-		value_ = (OpcUaByte*)malloc(length_);
-		is.read((char*)value_, length_);
+		if (rc) {
+			value_ = (OpcUaByte*)malloc(length_);
+			is.read((char*)value_, length_);
+			rc = is.good();
+			if (!rc) {
+				reset();
+			}
+		}
+		return rc;
 	}
 
 	bool

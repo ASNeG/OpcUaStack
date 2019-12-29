@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -28,16 +28,16 @@ namespace OpcUaStackPubSub
 	{
 	}
 
-	void
+	bool
 	SecurityHeader::opcUaBinaryEncode(std::ostream& os) const
 	{
-		// FIXME: todo
+		return false;
 	}
 
-	void
+	bool
 	SecurityHeader::opcUaBinaryDecode(std::istream& is)
 	{
-		// FIXME: todo
+		return false;
 	}
 
 }

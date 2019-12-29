@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -176,28 +176,34 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)15061, 0);
     }
     
-    void
+    bool
     FieldTargetDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        dataSetFieldId_.opcUaBinaryEncode(os);
-        receiverIndexRange_.opcUaBinaryEncode(os);
-        targetNodeId_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,attributeId_);
-        writeIndexRange_.opcUaBinaryEncode(os);
-        overrideValueHandling_.opcUaBinaryEncode(os);
-        overrideValue_.opcUaBinaryEncode(os);
+        bool rc = true;
+    
+        rc &= dataSetFieldId_.opcUaBinaryEncode(os);
+        rc &= receiverIndexRange_.opcUaBinaryEncode(os);
+        rc &= targetNodeId_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,attributeId_);
+        rc &= writeIndexRange_.opcUaBinaryEncode(os);
+        rc &= overrideValueHandling_.opcUaBinaryEncode(os);
+        rc &= overrideValue_.opcUaBinaryEncode(os);
+        return rc;
     }
     
-    void
+    bool
     FieldTargetDataType::opcUaBinaryDecode(std::istream& is)
     {
-        dataSetFieldId_.opcUaBinaryDecode(is);
-        receiverIndexRange_.opcUaBinaryDecode(is);
-        targetNodeId_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,attributeId_);
-        writeIndexRange_.opcUaBinaryDecode(is);
-        overrideValueHandling_.opcUaBinaryDecode(is);
-        overrideValue_.opcUaBinaryDecode(is);
+        bool rc = true;
+    
+        rc &= dataSetFieldId_.opcUaBinaryDecode(is);
+        rc &= receiverIndexRange_.opcUaBinaryDecode(is);
+        rc &= targetNodeId_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,attributeId_);
+        rc &= writeIndexRange_.opcUaBinaryDecode(is);
+        rc &= overrideValueHandling_.opcUaBinaryDecode(is);
+        rc &= overrideValue_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

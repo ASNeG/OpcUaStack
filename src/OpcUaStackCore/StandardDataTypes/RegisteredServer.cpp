@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -192,30 +192,36 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)15102, 0);
     }
     
-    void
+    bool
     RegisteredServer::opcUaBinaryEncode(std::ostream& os) const
     {
-        serverUri_.opcUaBinaryEncode(os);
-        productUri_.opcUaBinaryEncode(os);
-        serverNames_.opcUaBinaryEncode(os);
-        serverType_.opcUaBinaryEncode(os);
-        gatewayServerUri_.opcUaBinaryEncode(os);
-        discoveryUrls_.opcUaBinaryEncode(os);
-        semaphoreFilePath_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,isOnline_);
+        bool rc = true;
+    
+        rc &= serverUri_.opcUaBinaryEncode(os);
+        rc &= productUri_.opcUaBinaryEncode(os);
+        rc &= serverNames_.opcUaBinaryEncode(os);
+        rc &= serverType_.opcUaBinaryEncode(os);
+        rc &= gatewayServerUri_.opcUaBinaryEncode(os);
+        rc &= discoveryUrls_.opcUaBinaryEncode(os);
+        rc &= semaphoreFilePath_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,isOnline_);
+        return rc;
     }
     
-    void
+    bool
     RegisteredServer::opcUaBinaryDecode(std::istream& is)
     {
-        serverUri_.opcUaBinaryDecode(is);
-        productUri_.opcUaBinaryDecode(is);
-        serverNames_.opcUaBinaryDecode(is);
-        serverType_.opcUaBinaryDecode(is);
-        gatewayServerUri_.opcUaBinaryDecode(is);
-        discoveryUrls_.opcUaBinaryDecode(is);
-        semaphoreFilePath_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,isOnline_);
+        bool rc = true;
+    
+        rc &= serverUri_.opcUaBinaryDecode(is);
+        rc &= productUri_.opcUaBinaryDecode(is);
+        rc &= serverNames_.opcUaBinaryDecode(is);
+        rc &= serverType_.opcUaBinaryDecode(is);
+        rc &= gatewayServerUri_.opcUaBinaryDecode(is);
+        rc &= discoveryUrls_.opcUaBinaryDecode(is);
+        rc &= semaphoreFilePath_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,isOnline_);
+        return rc;
     }
     
     bool

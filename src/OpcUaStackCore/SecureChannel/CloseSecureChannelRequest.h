@@ -37,8 +37,8 @@ namespace OpcUaStackCore
 		void secureChannelId(const OpcUaByte *buf, OpcUaInt32 bufLen);
 		void secureChannelId(OpcUaByte **buf, OpcUaInt32* bufLen) const;
 
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
+		bool opcUaBinaryEncode(std::ostream& os) const;
+		bool opcUaBinaryDecode(std::istream& is);
 
 	  private:
 		RequestHeader::SPtr requestHeaderSPtr_;

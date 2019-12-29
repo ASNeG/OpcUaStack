@@ -70,18 +70,26 @@ namespace OpcUaStackCore
 		browsePathTarget.remainingPathIndex(remainingPathIndex_);
 	}
 
-	void 
+	bool
 	BrowsePathTarget::opcUaBinaryEncode(std::ostream& os) const
 	{
-		targetIdSPtr_->opcUaBinaryEncode(os);
-		OpcUaNumber::opcUaBinaryEncode(os, remainingPathIndex_);
+		bool rc = true;
+
+		rc &= targetIdSPtr_->opcUaBinaryEncode(os);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, remainingPathIndex_);
+
+		return rc;
 	}
 	
-	void 
+	bool
 	BrowsePathTarget::opcUaBinaryDecode(std::istream& is)
 	{
-		targetIdSPtr_->opcUaBinaryDecode(is);
-		OpcUaNumber::opcUaBinaryDecode(is, remainingPathIndex_);
+		bool rc = true;
+
+		rc &= targetIdSPtr_->opcUaBinaryDecode(is);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, remainingPathIndex_);
+
+		return rc;
 	}
 
 }

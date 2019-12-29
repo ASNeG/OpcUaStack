@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -162,24 +162,30 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)15151, 0);
     }
     
-    void
+    bool
     NodeAttributes::opcUaBinaryEncode(std::ostream& os) const
     {
-        OpcUaNumber::opcUaBinaryEncode(os,specifiedAttributes_);
-        displayName_.opcUaBinaryEncode(os);
-        description_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,writeMask_);
-        OpcUaNumber::opcUaBinaryEncode(os,userWriteMask_);
+        bool rc = true;
+    
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,specifiedAttributes_);
+        rc &= displayName_.opcUaBinaryEncode(os);
+        rc &= description_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,writeMask_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,userWriteMask_);
+        return rc;
     }
     
-    void
+    bool
     NodeAttributes::opcUaBinaryDecode(std::istream& is)
     {
-        OpcUaNumber::opcUaBinaryDecode(is,specifiedAttributes_);
-        displayName_.opcUaBinaryDecode(is);
-        description_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,writeMask_);
-        OpcUaNumber::opcUaBinaryDecode(is,userWriteMask_);
+        bool rc = true;
+    
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,specifiedAttributes_);
+        rc &= displayName_.opcUaBinaryDecode(is);
+        rc &= description_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,writeMask_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,userWriteMask_);
+        return rc;
     }
     
     bool

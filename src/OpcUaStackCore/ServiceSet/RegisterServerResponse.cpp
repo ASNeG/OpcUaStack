@@ -50,16 +50,16 @@ namespace OpcUaStackCore
 		return responseHeaderSPtr_;
 	}
 
-	void 
+	bool
 	RegisterServerResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
-		responseHeaderSPtr_->opcUaBinaryEncode(os);
+		return responseHeaderSPtr_->opcUaBinaryEncode(os);
 	}
 	
-	void 
+	bool
 	RegisterServerResponse::opcUaBinaryDecode(std::istream& is)
 	{
-		responseHeaderSPtr_->opcUaBinaryDecode(is);
+		return responseHeaderSPtr_->opcUaBinaryDecode(is);
 	}
 
 	bool

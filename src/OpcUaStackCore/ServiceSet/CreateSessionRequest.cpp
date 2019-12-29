@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -156,32 +156,38 @@ namespace OpcUaStackCore
 		return maxResponseMessageSize_;
 	}
 
-	void 
+	bool
 	CreateSessionRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		//requestHeaderSPtr_->opcUaBinaryEncode(os);
-		clientDescriptionSPtr_->opcUaBinaryEncode(os);
-		serverUri_.opcUaBinaryEncode(os);
-		endpointUrl_.opcUaBinaryEncode(os);
-		sessionName_.opcUaBinaryEncode(os);
-		clientNonce_.opcUaBinaryEncode(os);
-		clientCertificate_.opcUaBinaryEncode(os);
-		OpcUaNumber::opcUaBinaryEncode(os, requestSessionTimeout_);
-		OpcUaNumber::opcUaBinaryEncode(os, maxResponseMessageSize_);
+		bool rc = true;
+
+		rc &= clientDescriptionSPtr_->opcUaBinaryEncode(os);
+		rc &= serverUri_.opcUaBinaryEncode(os);
+		rc &= endpointUrl_.opcUaBinaryEncode(os);
+		rc &= sessionName_.opcUaBinaryEncode(os);
+		rc &= clientNonce_.opcUaBinaryEncode(os);
+		rc &= clientCertificate_.opcUaBinaryEncode(os);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, requestSessionTimeout_);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, maxResponseMessageSize_);
+
+		return rc;
 	}
 
-	void 
+	bool
 	CreateSessionRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		//requestHeaderSPtr_->opcUaBinaryDecode(is);
-		clientDescriptionSPtr_->opcUaBinaryDecode(is);
-		serverUri_.opcUaBinaryDecode(is);
-		endpointUrl_.opcUaBinaryDecode(is);
-		sessionName_.opcUaBinaryDecode(is);
-		clientNonce_.opcUaBinaryDecode(is);
-		clientCertificate_.opcUaBinaryDecode(is);
-		OpcUaNumber::opcUaBinaryDecode(is, requestSessionTimeout_);
-		OpcUaNumber::opcUaBinaryDecode(is, maxResponseMessageSize_);
+		bool rc = true;
+
+		rc &= clientDescriptionSPtr_->opcUaBinaryDecode(is);
+		rc &= serverUri_.opcUaBinaryDecode(is);
+		rc &= endpointUrl_.opcUaBinaryDecode(is);
+		rc &= sessionName_.opcUaBinaryDecode(is);
+		rc &= clientNonce_.opcUaBinaryDecode(is);
+		rc &= clientCertificate_.opcUaBinaryDecode(is);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, requestSessionTimeout_);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, maxResponseMessageSize_);
+
+		return rc;
 	}
 
 }

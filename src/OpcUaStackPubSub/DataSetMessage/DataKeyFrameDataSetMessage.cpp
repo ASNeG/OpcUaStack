@@ -56,35 +56,41 @@ namespace OpcUaStackPubSub
 		dataSetMessageHeader().fieldEncoding(dataSetField->dataType());
 	}
 
-	void
+	bool
 	DataKeyFrameDataSetMessage::opcUaBinaryEncode(std::ostream& os) const
 	{
-		uint16_t fieldCount = dataSetFields_->size();
-		if (fieldCount == 0) return;
+		bool rc = true;
 
-		OpcUaNumber::opcUaBinaryEncode(os, fieldCount);
+		uint16_t fieldCount = dataSetFields_->size();
+		if (fieldCount == 0) return rc;
+
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, fieldCount);
 		for (uint32_t idx=0; idx<fieldCount; idx++) {
 			DataSetField::SPtr dataSetField;
 			dataSetFields_->get(idx, dataSetField);
 
-			dataSetField->opcUaBinaryEncode(os);
+			rc &= dataSetField->opcUaBinaryEncode(os);
 		}
+
+		return rc;
 	}
 
-	void
+	bool
 	DataKeyFrameDataSetMessage::opcUaBinaryDecode(std::istream& is)
 	{
+		bool rc = true;
+
 		uint16_t fieldCount;
-		OpcUaNumber::opcUaBinaryDecode(is, fieldCount);
-		if (fieldCount == 0) return;
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, fieldCount);
+		if (fieldCount == 0) return rc;
 
 		dataSetFields_->resize(fieldCount);
 		for (uint32_t idx=0; idx<fieldCount; idx++) {
 			DataSetField::SPtr dataSetField = boost::make_shared<DataSetField>();
 
 			dataSetField->createObject(dataSetMessageHeader().fieldEncoding());
-			dataSetField->opcUaBinaryDecode(is);
-			dataSetFields_->push_back(dataSetField);
+			rc &= dataSetField->opcUaBinaryDecode(is);
+			if (rc) dataSetFields_->push_back(dataSetField);
 		}
 	}
 

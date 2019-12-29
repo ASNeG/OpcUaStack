@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -192,30 +192,36 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)15099, 0);
     }
     
-    void
+    bool
     EndpointDescription::opcUaBinaryEncode(std::ostream& os) const
     {
-        endpointUrl_.opcUaBinaryEncode(os);
-        server_.opcUaBinaryEncode(os);
-        serverCertificate_.opcUaBinaryEncode(os);
-        securityMode_.opcUaBinaryEncode(os);
-        securityPolicyUri_.opcUaBinaryEncode(os);
-        userIdentityTokens_.opcUaBinaryEncode(os);
-        transportProfileUri_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,securityLevel_);
+        bool rc = true;
+    
+        rc &= endpointUrl_.opcUaBinaryEncode(os);
+        rc &= server_.opcUaBinaryEncode(os);
+        rc &= serverCertificate_.opcUaBinaryEncode(os);
+        rc &= securityMode_.opcUaBinaryEncode(os);
+        rc &= securityPolicyUri_.opcUaBinaryEncode(os);
+        rc &= userIdentityTokens_.opcUaBinaryEncode(os);
+        rc &= transportProfileUri_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,securityLevel_);
+        return rc;
     }
     
-    void
+    bool
     EndpointDescription::opcUaBinaryDecode(std::istream& is)
     {
-        endpointUrl_.opcUaBinaryDecode(is);
-        server_.opcUaBinaryDecode(is);
-        serverCertificate_.opcUaBinaryDecode(is);
-        securityMode_.opcUaBinaryDecode(is);
-        securityPolicyUri_.opcUaBinaryDecode(is);
-        userIdentityTokens_.opcUaBinaryDecode(is);
-        transportProfileUri_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,securityLevel_);
+        bool rc = true;
+    
+        rc &= endpointUrl_.opcUaBinaryDecode(is);
+        rc &= server_.opcUaBinaryDecode(is);
+        rc &= serverCertificate_.opcUaBinaryDecode(is);
+        rc &= securityMode_.opcUaBinaryDecode(is);
+        rc &= securityPolicyUri_.opcUaBinaryDecode(is);
+        rc &= userIdentityTokens_.opcUaBinaryDecode(is);
+        rc &= transportProfileUri_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,securityLevel_);
+        return rc;
     }
     
     bool

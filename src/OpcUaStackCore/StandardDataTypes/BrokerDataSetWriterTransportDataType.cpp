@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -164,28 +164,34 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)16525, 0);
     }
     
-    void
+    bool
     BrokerDataSetWriterTransportDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        DataSetWriterTransportDataType::opcUaBinaryEncode(os);
-        queueName_.opcUaBinaryEncode(os);
-        resourceUri_.opcUaBinaryEncode(os);
-        authenticationProfileUri_.opcUaBinaryEncode(os);
-        requestedDeliveryGuarantee_.opcUaBinaryEncode(os);
-        metaDataQueueName_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,metaDataUpdateTime_);
+        bool rc = true;
+    
+        rc &= DataSetWriterTransportDataType::opcUaBinaryEncode(os);
+        rc &= queueName_.opcUaBinaryEncode(os);
+        rc &= resourceUri_.opcUaBinaryEncode(os);
+        rc &= authenticationProfileUri_.opcUaBinaryEncode(os);
+        rc &= requestedDeliveryGuarantee_.opcUaBinaryEncode(os);
+        rc &= metaDataQueueName_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,metaDataUpdateTime_);
+        return rc;
     }
     
-    void
+    bool
     BrokerDataSetWriterTransportDataType::opcUaBinaryDecode(std::istream& is)
     {
-        DataSetWriterTransportDataType::opcUaBinaryDecode(is);
-        queueName_.opcUaBinaryDecode(is);
-        resourceUri_.opcUaBinaryDecode(is);
-        authenticationProfileUri_.opcUaBinaryDecode(is);
-        requestedDeliveryGuarantee_.opcUaBinaryDecode(is);
-        metaDataQueueName_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,metaDataUpdateTime_);
+        bool rc = true;
+    
+        rc &= DataSetWriterTransportDataType::opcUaBinaryDecode(is);
+        rc &= queueName_.opcUaBinaryDecode(is);
+        rc &= resourceUri_.opcUaBinaryDecode(is);
+        rc &= authenticationProfileUri_.opcUaBinaryDecode(is);
+        rc &= requestedDeliveryGuarantee_.opcUaBinaryDecode(is);
+        rc &= metaDataQueueName_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,metaDataUpdateTime_);
+        return rc;
     }
     
     bool

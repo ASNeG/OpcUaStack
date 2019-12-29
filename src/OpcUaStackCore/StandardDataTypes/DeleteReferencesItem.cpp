@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -162,24 +162,30 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)15175, 0);
     }
     
-    void
+    bool
     DeleteReferencesItem::opcUaBinaryEncode(std::ostream& os) const
     {
-        sourceNodeId_.opcUaBinaryEncode(os);
-        referenceTypeId_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,isForward_);
-        targetNodeId_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,deleteBidirectional_);
+        bool rc = true;
+    
+        rc &= sourceNodeId_.opcUaBinaryEncode(os);
+        rc &= referenceTypeId_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,isForward_);
+        rc &= targetNodeId_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,deleteBidirectional_);
+        return rc;
     }
     
-    void
+    bool
     DeleteReferencesItem::opcUaBinaryDecode(std::istream& is)
     {
-        sourceNodeId_.opcUaBinaryDecode(is);
-        referenceTypeId_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,isForward_);
-        targetNodeId_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,deleteBidirectional_);
+        bool rc = true;
+    
+        rc &= sourceNodeId_.opcUaBinaryDecode(is);
+        rc &= referenceTypeId_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,isForward_);
+        rc &= targetNodeId_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,deleteBidirectional_);
+        return rc;
     }
     
     bool

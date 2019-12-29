@@ -63,9 +63,11 @@ namespace OpcUaStackPubSub
 		return dataSetMessages_;
 	}
 
-	void
+	bool
 	DataSetPayload::opcUaBinaryEncode(std::ostream& os)
 	{
+		bool rc = true;
+
 		uint32_t actSize = 0;
 		std::vector<uint16_t> sizeVec;
 		boost::asio::streambuf sb;
@@ -77,39 +79,43 @@ namespace OpcUaStackPubSub
 			dataSetMessage->setFieldEncoding();
 
 			DataSetMessageHeader& hdr = dataSetMessage->dataSetMessageHeader();
-			hdr.opcUaBinaryEncode(ios);
-			dataSetMessage->opcUaBinaryEncode(ios);
+			rc &= hdr.opcUaBinaryEncode(ios);
+			rc &= dataSetMessage->opcUaBinaryEncode(ios);
 
 			uint16_t size = sb.size() - actSize;
 			actSize = sb.size();
-			sizeVec.push_back(size);
+			if (rc) sizeVec.push_back(size);
 		}
 
 		std::vector<uint16_t>::iterator it;
 		for (it = sizeVec.begin(); it != sizeVec.end(); it++)
 		{
-			OpcUaNumber::opcUaBinaryEncode(os, (OpcUaUInt16)*it);
+			rc &= OpcUaNumber::opcUaBinaryEncode(os, (OpcUaUInt16)*it);
 		}
 
 		char c; while (ios.get(c)) os << c;
+
+		return rc;
 	}
 
-	void
+	bool
 	DataSetPayload::opcUaBinaryDecode(std::istream& is)
 	{
-		if (count_ == 0) return;
+		bool rc = true;
+
+		if (count_ == 0) return rc;
 		std::vector<uint16_t> sizeVec;
 		dataSetMessages_->resize(count_);
 
 		for (uint32_t idx=0; idx<count_; idx++) {
 			OpcUaUInt16 size;
-			OpcUaNumber::opcUaBinaryDecode(is, size);
-			sizeVec.push_back(size);
+			rc &= OpcUaNumber::opcUaBinaryDecode(is, size);
+			if (rc) sizeVec.push_back(size);
 		}
 
 		for (uint32_t idx=0; idx<count_; idx++) {
 			DataSetMessageHeader::SPtr dataSetMessageHeader = boost::make_shared<DataSetMessageHeader>();
-			dataSetMessageHeader->opcUaBinaryDecode(is);
+			rc &= dataSetMessageHeader->opcUaBinaryDecode(is);
 
 			DataSetMessage::SPtr dataSetMessage;
 			switch (dataSetMessageHeader->messageType())
@@ -136,14 +142,16 @@ namespace OpcUaStackPubSub
 				}
 				default:
 				{
-					return;
+					return rc;
 				}
 			}
 
 			dataSetMessage->dataSetMessageHeader(dataSetMessageHeader);
-			dataSetMessage->opcUaBinaryDecode(is);
-			dataSetMessages_->push_back(dataSetMessage);
+			rc &= dataSetMessage->opcUaBinaryDecode(is);
+			if (rc) dataSetMessages_->push_back(dataSetMessage);
 		}
+
+		return rc;
 	}
 
 	bool

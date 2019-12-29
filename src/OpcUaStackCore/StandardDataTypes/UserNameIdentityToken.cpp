@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -140,22 +140,28 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)15142, 0);
     }
     
-    void
+    bool
     UserNameIdentityToken::opcUaBinaryEncode(std::ostream& os) const
     {
-        UserIdentityToken::opcUaBinaryEncode(os);
-        userName_.opcUaBinaryEncode(os);
-        password_.opcUaBinaryEncode(os);
-        encryptionAlgorithm_.opcUaBinaryEncode(os);
+        bool rc = true;
+    
+        rc &= UserIdentityToken::opcUaBinaryEncode(os);
+        rc &= userName_.opcUaBinaryEncode(os);
+        rc &= password_.opcUaBinaryEncode(os);
+        rc &= encryptionAlgorithm_.opcUaBinaryEncode(os);
+        return rc;
     }
     
-    void
+    bool
     UserNameIdentityToken::opcUaBinaryDecode(std::istream& is)
     {
-        UserIdentityToken::opcUaBinaryDecode(is);
-        userName_.opcUaBinaryDecode(is);
-        password_.opcUaBinaryDecode(is);
-        encryptionAlgorithm_.opcUaBinaryDecode(is);
+        bool rc = true;
+    
+        rc &= UserIdentityToken::opcUaBinaryDecode(is);
+        rc &= userName_.opcUaBinaryDecode(is);
+        rc &= password_.opcUaBinaryDecode(is);
+        rc &= encryptionAlgorithm_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

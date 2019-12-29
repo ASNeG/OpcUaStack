@@ -63,16 +63,16 @@ namespace OpcUaStackCore
 		return endpointArraySPtr_;
 	}
 
-	void 
+	bool
 	GetEndpointsResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
-		endpointArraySPtr_->opcUaBinaryEncode(os);
+		return endpointArraySPtr_->opcUaBinaryEncode(os);
 	}
 	
-	void 
+	bool
 	GetEndpointsResponse::opcUaBinaryDecode(std::istream& is)
 	{
-		endpointArraySPtr_->opcUaBinaryDecode(is);
+		return endpointArraySPtr_->opcUaBinaryDecode(is);
 	}
 
 	bool

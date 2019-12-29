@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -166,26 +166,32 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)15367, 0);
     }
     
-    void
+    bool
     ServerStatusDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        startTime_.opcUaBinaryEncode(os);
-        currentTime_.opcUaBinaryEncode(os);
-        state_.opcUaBinaryEncode(os);
-        buildInfo_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,secondsTillShutdown_);
-        shutdownReason_.opcUaBinaryEncode(os);
+        bool rc = true;
+    
+        rc &= startTime_.opcUaBinaryEncode(os);
+        rc &= currentTime_.opcUaBinaryEncode(os);
+        rc &= state_.opcUaBinaryEncode(os);
+        rc &= buildInfo_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,secondsTillShutdown_);
+        rc &= shutdownReason_.opcUaBinaryEncode(os);
+        return rc;
     }
     
-    void
+    bool
     ServerStatusDataType::opcUaBinaryDecode(std::istream& is)
     {
-        startTime_.opcUaBinaryDecode(is);
-        currentTime_.opcUaBinaryDecode(is);
-        state_.opcUaBinaryDecode(is);
-        buildInfo_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,secondsTillShutdown_);
-        shutdownReason_.opcUaBinaryDecode(is);
+        bool rc = true;
+    
+        rc &= startTime_.opcUaBinaryDecode(is);
+        rc &= currentTime_.opcUaBinaryDecode(is);
+        rc &= state_.opcUaBinaryDecode(is);
+        rc &= buildInfo_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,secondsTillShutdown_);
+        rc &= shutdownReason_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

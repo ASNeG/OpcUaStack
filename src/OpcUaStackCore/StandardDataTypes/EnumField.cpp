@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -114,18 +114,24 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)15083, 0);
     }
     
-    void
+    bool
     EnumField::opcUaBinaryEncode(std::ostream& os) const
     {
-        EnumValueType::opcUaBinaryEncode(os);
-        name_.opcUaBinaryEncode(os);
+        bool rc = true;
+    
+        rc &= EnumValueType::opcUaBinaryEncode(os);
+        rc &= name_.opcUaBinaryEncode(os);
+        return rc;
     }
     
-    void
+    bool
     EnumField::opcUaBinaryDecode(std::istream& is)
     {
-        EnumValueType::opcUaBinaryDecode(is);
-        name_.opcUaBinaryDecode(is);
+        bool rc = true;
+    
+        rc &= EnumValueType::opcUaBinaryDecode(is);
+        rc &= name_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

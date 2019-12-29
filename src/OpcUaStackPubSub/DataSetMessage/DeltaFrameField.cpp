@@ -56,18 +56,26 @@ namespace OpcUaStackPubSub
 		deltaFrameField.fieldIndex(fieldIndex_);
 	}
 
-	void
+	bool
 	DeltaFrameField::opcUaBinaryEncode(std::ostream& os) const
 	{
-		OpcUaNumber::opcUaBinaryEncode(os, fieldIndex_);
-		DataSetField::opcUaBinaryEncode(os);
+		bool rc = true;
+
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, fieldIndex_);
+		rc &= DataSetField::opcUaBinaryEncode(os);
+
+		return rc;
 	}
 
-	void
+	bool
 	DeltaFrameField::opcUaBinaryDecode(std::istream& is)
 	{
-		OpcUaNumber::opcUaBinaryDecode(is, fieldIndex_);
-		DataSetField::opcUaBinaryDecode(is);
+		bool rc = true;
+
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, fieldIndex_);
+		rc &= DataSetField::opcUaBinaryDecode(is);
+
+		return rc;
 	}
 
 }

@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -146,22 +146,28 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)15326, 0);
     }
     
-    void
+    bool
     MonitoredItemModifyResult::opcUaBinaryEncode(std::ostream& os) const
     {
-        statusCode_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,revisedSamplingInterval_);
-        OpcUaNumber::opcUaBinaryEncode(os,revisedQueueSize_);
-        filterResult_.opcUaBinaryEncode(os);
+        bool rc = true;
+    
+        rc &= statusCode_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,revisedSamplingInterval_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,revisedQueueSize_);
+        rc &= filterResult_.opcUaBinaryEncode(os);
+        return rc;
     }
     
-    void
+    bool
     MonitoredItemModifyResult::opcUaBinaryDecode(std::istream& is)
     {
-        statusCode_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,revisedSamplingInterval_);
-        OpcUaNumber::opcUaBinaryDecode(is,revisedQueueSize_);
-        filterResult_.opcUaBinaryDecode(is);
+        bool rc = true;
+    
+        rc &= statusCode_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,revisedSamplingInterval_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,revisedQueueSize_);
+        rc &= filterResult_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

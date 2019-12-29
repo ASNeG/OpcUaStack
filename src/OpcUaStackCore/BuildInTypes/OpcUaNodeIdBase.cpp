@@ -393,9 +393,11 @@ namespace OpcUaStackCore
 		os << *this;
 	}
 
-	void 
+	bool
 	OpcUaNodeIdBase::opcUaBinaryEncode(std::ostream& os) const
 	{
+		bool rc = true;
+
 		OpcUaBuildInType type =  nodeIdType();
 		OpcUaByte ef = encodingFlag();
 
@@ -421,9 +423,9 @@ namespace OpcUaStackCore
 				//
 
 				OpcUaByte encodingMask = 0x00+ef;
-				OpcUaNumber::opcUaBinaryEncode(os, encodingMask);
-				OpcUaNumber::opcUaBinaryEncode(os, (OpcUaStackCore::OpcUaByte)identifier);
-				return;
+				rc &= OpcUaNumber::opcUaBinaryEncode(os, encodingMask);
+				rc &= OpcUaNumber::opcUaBinaryEncode(os, (OpcUaStackCore::OpcUaByte)identifier);
+				return rc;
 			}
 		}
 
@@ -436,10 +438,10 @@ namespace OpcUaStackCore
 				//
 
 				OpcUaByte encodingMask = 0x01+ef;
-				OpcUaNumber::opcUaBinaryEncode(os, encodingMask);
-				OpcUaNumber::opcUaBinaryEncode(os, (OpcUaStackCore::OpcUaByte)namespaceIndex_);
-				OpcUaNumber::opcUaBinaryEncode(os, (OpcUaStackCore::OpcUaUInt16)identifier);
-				return;
+				rc &= OpcUaNumber::opcUaBinaryEncode(os, encodingMask);
+				rc &= OpcUaNumber::opcUaBinaryEncode(os, (OpcUaStackCore::OpcUaByte)namespaceIndex_);
+				rc &= OpcUaNumber::opcUaBinaryEncode(os, (OpcUaStackCore::OpcUaUInt16)identifier);
+				return rc;
 			}
 		}
 
@@ -448,44 +450,51 @@ namespace OpcUaStackCore
 			case OpcUaBuildInType_OpcUaUInt32:
 			{
 				OpcUaByte encodingMask = 0x02+ef;
-				OpcUaNumber::opcUaBinaryEncode(os, encodingMask);
-				OpcUaNumber::opcUaBinaryEncode(os, namespaceIndex_);
-				OpcUaNumber::opcUaBinaryEncode(os, boost::get<OpcUaUInt32>(nodeIdValue_));
+				rc &= OpcUaNumber::opcUaBinaryEncode(os, encodingMask);
+				rc &= OpcUaNumber::opcUaBinaryEncode(os, namespaceIndex_);
+				rc &= OpcUaNumber::opcUaBinaryEncode(os, boost::get<OpcUaUInt32>(nodeIdValue_));
 				break;
 			}
 			case OpcUaBuildInType_OpcUaString:
 			{
 				OpcUaByte encodingMask = 0x03+ef;
-				OpcUaNumber::opcUaBinaryEncode(os, encodingMask);
-				OpcUaNumber::opcUaBinaryEncode(os, namespaceIndex_);
-				boost::get<OpcUaString::SPtr>(nodeIdValue_)->opcUaBinaryEncode(os);
+				rc &= OpcUaNumber::opcUaBinaryEncode(os, encodingMask);
+				rc &=  OpcUaNumber::opcUaBinaryEncode(os, namespaceIndex_);
+				rc &= boost::get<OpcUaString::SPtr>(nodeIdValue_)->opcUaBinaryEncode(os);
 				break;
 			}
 			case OpcUaBuildInType_OpcUaGuid:
 			{
 				OpcUaByte encodingMask = 0x04+ef;
-				OpcUaNumber::opcUaBinaryEncode(os, encodingMask);
-				OpcUaNumber::opcUaBinaryEncode(os, namespaceIndex_);
-				boost::get<OpcUaGuid::SPtr>(nodeIdValue_)->opcUaBinaryEncode(os);
+				rc &= OpcUaNumber::opcUaBinaryEncode(os, encodingMask);
+				rc &= OpcUaNumber::opcUaBinaryEncode(os, namespaceIndex_);
+				rc &= boost::get<OpcUaGuid::SPtr>(nodeIdValue_)->opcUaBinaryEncode(os);
 				break;
 			}
 			case OpcUaBuildInType_OpcUaByteString:
 			{
 				OpcUaByte encodingMask = 0x05+ef;
-				OpcUaNumber::opcUaBinaryEncode(os, encodingMask);
-				OpcUaNumber::opcUaBinaryEncode(os, namespaceIndex_);
-				boost::get<OpcUaByteString::SPtr>(nodeIdValue_)->opcUaBinaryEncode(os);
+				rc &= OpcUaNumber::opcUaBinaryEncode(os, encodingMask);
+				rc &= OpcUaNumber::opcUaBinaryEncode(os, namespaceIndex_);
+				rc &= boost::get<OpcUaByteString::SPtr>(nodeIdValue_)->opcUaBinaryEncode(os);
 				break;
 			}
-			default: Log(Error, "Unknown type").parameter("TypeId", nodeIdType());
+			default:
+			{
+				rc = false;
+				Log(Error, "Unknown type").parameter("TypeId", nodeIdType());
+			}
 		}
+		return rc;
 	}
 
-	void 
+	bool
 	OpcUaNodeIdBase::opcUaBinaryDecode(std::istream& is)
 	{
+		bool rc = true;
+
 		OpcUaByte encodingByte;
-		OpcUaNumber::opcUaBinaryDecode(is, encodingByte);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, encodingByte);
 
 		OpcUaByte ef = encodingByte & 0xF0;
 		encodingFlag(ef);
@@ -497,7 +506,7 @@ namespace OpcUaStackCore
 			{
 				OpcUaByte identifier;
 				namespaceIndex_ = 0;
-				OpcUaNumber::opcUaBinaryDecode(is, identifier);
+				rc &= OpcUaNumber::opcUaBinaryDecode(is, identifier);
 				nodeIdValue_ = (OpcUaInt32)identifier;
 				break;
 			}
@@ -505,8 +514,8 @@ namespace OpcUaStackCore
 			{
 				OpcUaByte namespaceIndex;
 				OpcUaUInt16 identifier;
-				OpcUaNumber::opcUaBinaryDecode(is, namespaceIndex);
-				OpcUaNumber::opcUaBinaryDecode(is, identifier);
+				rc &= OpcUaNumber::opcUaBinaryDecode(is, namespaceIndex);
+				rc &= OpcUaNumber::opcUaBinaryDecode(is, identifier);
 				namespaceIndex_ = namespaceIndex;
 				nodeIdValue_ = (OpcUaInt32)identifier;
 				break;
@@ -514,36 +523,38 @@ namespace OpcUaStackCore
 			case 0x02:
 			{
 				OpcUaInt32 value;
-				OpcUaNumber::opcUaBinaryDecode(is, namespaceIndex_);
-				OpcUaNumber::opcUaBinaryDecode(is, value);
+				rc &= OpcUaNumber::opcUaBinaryDecode(is, namespaceIndex_);
+				rc &= OpcUaNumber::opcUaBinaryDecode(is, value);
 				nodeIdValue_ = value;
 				break;
 			}
 			case 0x03:
 			{
 				OpcUaString::SPtr value = boost::make_shared<OpcUaString>();
-				OpcUaNumber::opcUaBinaryDecode(is, namespaceIndex_);
-				value->opcUaBinaryDecode(is);
+				rc &= OpcUaNumber::opcUaBinaryDecode(is, namespaceIndex_);
+				rc &= value->opcUaBinaryDecode(is);
 				nodeIdValue_ = value;
 				break;
 			}
 			case 0x04:
 			{
 				OpcUaGuid::SPtr value = boost::make_shared<OpcUaGuid>();
-				OpcUaNumber::opcUaBinaryDecode(is, namespaceIndex_);
-				value->opcUaBinaryDecode(is);
+				rc &= OpcUaNumber::opcUaBinaryDecode(is, namespaceIndex_);
+				rc &= value->opcUaBinaryDecode(is);
 				nodeIdValue_ = value;
 				break;
 			}
 			case 0x05:
 			{
 				OpcUaByteString::SPtr value = boost::make_shared<OpcUaByteString>();
-				OpcUaNumber::opcUaBinaryDecode(is, namespaceIndex_);
-				value->opcUaBinaryDecode(is);
+				rc &= OpcUaNumber::opcUaBinaryDecode(is, namespaceIndex_);
+				rc &= value->opcUaBinaryDecode(is);
 				nodeIdValue_ = value;
 				break;
 			}
 		}
+
+		return rc;
 	}
 
 	bool

@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -226,38 +226,44 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)15405, 0);
     }
     
-    void
+    bool
     ProgramDiagnostic2DataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        createSessionId_.opcUaBinaryEncode(os);
-        createClientName_.opcUaBinaryEncode(os);
-        invocationCreationTime_.opcUaBinaryEncode(os);
-        lastTransitionTime_.opcUaBinaryEncode(os);
-        lastMethodCall_.opcUaBinaryEncode(os);
-        lastMethodSessionId_.opcUaBinaryEncode(os);
-        lastMethodInputArguments_.opcUaBinaryEncode(os);
-        lastMethodOutputArguments_.opcUaBinaryEncode(os);
-        lastMethodInputValues_.opcUaBinaryEncode(os);
-        lastMethodOutputValues_.opcUaBinaryEncode(os);
-        lastMethodCallTime_.opcUaBinaryEncode(os);
-        lastMethodReturnStatus_.opcUaBinaryEncode(os);
+        bool rc = true;
+    
+        rc &= createSessionId_.opcUaBinaryEncode(os);
+        rc &= createClientName_.opcUaBinaryEncode(os);
+        rc &= invocationCreationTime_.opcUaBinaryEncode(os);
+        rc &= lastTransitionTime_.opcUaBinaryEncode(os);
+        rc &= lastMethodCall_.opcUaBinaryEncode(os);
+        rc &= lastMethodSessionId_.opcUaBinaryEncode(os);
+        rc &= lastMethodInputArguments_.opcUaBinaryEncode(os);
+        rc &= lastMethodOutputArguments_.opcUaBinaryEncode(os);
+        rc &= lastMethodInputValues_.opcUaBinaryEncode(os);
+        rc &= lastMethodOutputValues_.opcUaBinaryEncode(os);
+        rc &= lastMethodCallTime_.opcUaBinaryEncode(os);
+        rc &= lastMethodReturnStatus_.opcUaBinaryEncode(os);
+        return rc;
     }
     
-    void
+    bool
     ProgramDiagnostic2DataType::opcUaBinaryDecode(std::istream& is)
     {
-        createSessionId_.opcUaBinaryDecode(is);
-        createClientName_.opcUaBinaryDecode(is);
-        invocationCreationTime_.opcUaBinaryDecode(is);
-        lastTransitionTime_.opcUaBinaryDecode(is);
-        lastMethodCall_.opcUaBinaryDecode(is);
-        lastMethodSessionId_.opcUaBinaryDecode(is);
-        lastMethodInputArguments_.opcUaBinaryDecode(is);
-        lastMethodOutputArguments_.opcUaBinaryDecode(is);
-        lastMethodInputValues_.opcUaBinaryDecode(is);
-        lastMethodOutputValues_.opcUaBinaryDecode(is);
-        lastMethodCallTime_.opcUaBinaryDecode(is);
-        lastMethodReturnStatus_.opcUaBinaryDecode(is);
+        bool rc = true;
+    
+        rc &= createSessionId_.opcUaBinaryDecode(is);
+        rc &= createClientName_.opcUaBinaryDecode(is);
+        rc &= invocationCreationTime_.opcUaBinaryDecode(is);
+        rc &= lastTransitionTime_.opcUaBinaryDecode(is);
+        rc &= lastMethodCall_.opcUaBinaryDecode(is);
+        rc &= lastMethodSessionId_.opcUaBinaryDecode(is);
+        rc &= lastMethodInputArguments_.opcUaBinaryDecode(is);
+        rc &= lastMethodOutputArguments_.opcUaBinaryDecode(is);
+        rc &= lastMethodInputValues_.opcUaBinaryDecode(is);
+        rc &= lastMethodOutputValues_.opcUaBinaryDecode(is);
+        rc &= lastMethodCallTime_.opcUaBinaryDecode(is);
+        rc &= lastMethodReturnStatus_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -44,14 +44,16 @@ namespace OpcUaStackCore
 		return nodeId_;
 	}
 
-	void 
+	bool
 	DelNodeInstanceRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
+		return false;
 	}
 	
-	void 
+	bool
 	DelNodeInstanceRequest::opcUaBinaryDecode(std::istream& is)
 	{
+		return false;
 	}
 
 

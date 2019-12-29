@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -124,20 +124,26 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)15345, 0);
     }
     
-    void
+    bool
     DataChangeNotification::opcUaBinaryEncode(std::ostream& os) const
     {
-        NotificationData::opcUaBinaryEncode(os);
-        monitoredItems_.opcUaBinaryEncode(os);
-        diagnosticInfos_.opcUaBinaryEncode(os);
+        bool rc = true;
+    
+        rc &= NotificationData::opcUaBinaryEncode(os);
+        rc &= monitoredItems_.opcUaBinaryEncode(os);
+        rc &= diagnosticInfos_.opcUaBinaryEncode(os);
+        return rc;
     }
     
-    void
+    bool
     DataChangeNotification::opcUaBinaryDecode(std::istream& is)
     {
-        NotificationData::opcUaBinaryDecode(is);
-        monitoredItems_.opcUaBinaryDecode(is);
-        diagnosticInfos_.opcUaBinaryDecode(is);
+        bool rc = true;
+    
+        rc &= NotificationData::opcUaBinaryDecode(is);
+        rc &= monitoredItems_.opcUaBinaryDecode(is);
+        rc &= diagnosticInfos_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

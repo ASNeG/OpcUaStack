@@ -45,8 +45,8 @@ namespace OpcUaStackPubSub
 		uint16_t sequenceNumber(void);
 
 		virtual void setFieldEncoding(void) {};
-		virtual void opcUaBinaryEncode(std::ostream& os) const {}
-		virtual void opcUaBinaryDecode(std::istream& is) {}
+		virtual bool opcUaBinaryEncode(std::ostream& os) const { return false; }
+		virtual bool opcUaBinaryDecode(std::istream& is) { return false; }
 
 		void copyTo(DataSetMessage& dataSetMessage);
 		bool operator==(const DataSetMessage& other) const;

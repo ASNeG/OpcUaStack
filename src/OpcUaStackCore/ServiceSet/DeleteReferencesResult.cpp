@@ -50,20 +50,24 @@ namespace OpcUaStackCore
 	}
 
 
-	void 
+	bool
 	DeleteReferencesResult::opcUaBinaryEncode(
 		std::ostream& os) const
 	{
-		OpcUaNumber::opcUaBinaryEncode(os, (OpcUaUInt32)statusCode_);
+		return OpcUaNumber::opcUaBinaryEncode(os, (OpcUaUInt32)statusCode_);
 	}
 	
-	void 
+	bool
 	DeleteReferencesResult::opcUaBinaryDecode(
 		std::istream& is)
 	{
+		bool rc = true;
+
 		OpcUaUInt32 tmp;
-		OpcUaNumber::opcUaBinaryDecode(is, tmp);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, tmp);
 		statusCode_ = (OpcUaStatusCode)tmp;
+
+		return rc;
 	}
 
 }

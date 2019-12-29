@@ -63,16 +63,16 @@ namespace OpcUaStackCore
 		return server_;
 	}
 
-	void 
+	bool
 	RegisterServerRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		server_.opcUaBinaryEncode(os);
+		return server_.opcUaBinaryEncode(os);
 	}
 	
-	void 
+	bool
 	RegisterServerRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		server_.opcUaBinaryDecode(is);
+		return server_.opcUaBinaryDecode(is);
 	}
 
 	bool

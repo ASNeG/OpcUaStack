@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -71,18 +71,26 @@ namespace OpcUaStackCore
 		relativePath_.copyTo(browsePath.relativePath());
 	}
 
-	void 
+	bool
 	BrowsePath::opcUaBinaryEncode(std::ostream& os) const
 	{
-		startingNodeSPtr_->opcUaBinaryEncode(os);
-		relativePath_.opcUaBinaryEncode(os);
+		bool rc = true;
+
+		rc &= startingNodeSPtr_->opcUaBinaryEncode(os);
+		rc &= relativePath_.opcUaBinaryEncode(os);
+
+		return rc;
 	}
 	
-	void 
+	bool
 	BrowsePath::opcUaBinaryDecode(std::istream& is)
 	{
-		startingNodeSPtr_->opcUaBinaryDecode(is);
-		relativePath_.opcUaBinaryDecode(is);
+		bool rc = true;
+
+		rc &= startingNodeSPtr_->opcUaBinaryDecode(is);
+		rc &= relativePath_.opcUaBinaryDecode(is);
+
+		return rc;
 	}
 
 }

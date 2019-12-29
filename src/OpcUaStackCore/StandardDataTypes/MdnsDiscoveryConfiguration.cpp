@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -130,20 +130,26 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)15106, 0);
     }
     
-    void
+    bool
     MdnsDiscoveryConfiguration::opcUaBinaryEncode(std::ostream& os) const
     {
-        DiscoveryConfiguration::opcUaBinaryEncode(os);
-        mdnsServerName_.opcUaBinaryEncode(os);
-        serverCapabilities_.opcUaBinaryEncode(os);
+        bool rc = true;
+    
+        rc &= DiscoveryConfiguration::opcUaBinaryEncode(os);
+        rc &= mdnsServerName_.opcUaBinaryEncode(os);
+        rc &= serverCapabilities_.opcUaBinaryEncode(os);
+        return rc;
     }
     
-    void
+    bool
     MdnsDiscoveryConfiguration::opcUaBinaryDecode(std::istream& is)
     {
-        DiscoveryConfiguration::opcUaBinaryDecode(is);
-        mdnsServerName_.opcUaBinaryDecode(is);
-        serverCapabilities_.opcUaBinaryDecode(is);
+        bool rc = true;
+    
+        rc &= DiscoveryConfiguration::opcUaBinaryDecode(is);
+        rc &= mdnsServerName_.opcUaBinaryDecode(is);
+        rc &= serverCapabilities_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

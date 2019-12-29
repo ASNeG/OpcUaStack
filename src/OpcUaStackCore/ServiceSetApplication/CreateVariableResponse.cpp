@@ -37,14 +37,16 @@ namespace OpcUaStackCore
 	{
 	}
 
-	void 
+	bool
 	CreateVariableResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
+		return false;
 	}
 	
-	void 
+	bool
 	CreateVariableResponse::opcUaBinaryDecode(std::istream& is)
 	{
+		return false;
 	}
 
 

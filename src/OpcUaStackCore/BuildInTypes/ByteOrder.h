@@ -36,42 +36,43 @@ namespace OpcUaStackCore
       {
 	    public:
 
-		  static void 
+		  static bool
 		  opcUaBinaryEncodeNumber(std::ostream& os, const T& value, bool littleEndian = true)
 		  {
 			  if (littleEndian) {
-				  opcUaBinaryEncodeNumberLE(os, value);
+				  return opcUaBinaryEncodeNumberLE(os, value);
 			  }
-			  else {
-				  opcUaBinaryEncodeNumberBE(os, value);
-			  }
+		      return opcUaBinaryEncodeNumberBE(os, value);
 		  }
 
-		  static void
+		  static bool
 		  opcUaBinaryEncodeNumber(char* os, const T& value, bool littleEndian = true)
 		  {
 			  if (littleEndian) {
-				  opcUaBinaryEncodeNumberLE(os, value);
+				  return opcUaBinaryEncodeNumberLE(os, value);
 			  }
-			  else {
-				  opcUaBinaryEncodeNumberBE(os, value);
-			  }
+			  return opcUaBinaryEncodeNumberBE(os, value);
 		  }
 
-		  static void
+		  static bool
 		  opcUaBinaryEncodeNumberLE(std::ostream& os, const T& value)
 		  {
 			  if (LITTLE_ENDIAN) {
 				  os.write((char*)&value, sizeof(T));
+				  return os.good();
 			  }
 			  else {
 				  for (uint32_t size=sizeof(T); size>0; size--) {
 					  os.write(((char*)&value)+size-1,1);
+					  if (!os.good()) {
+					  	  return false;
+					  }
 				  }
 			  }
+			  return true;
 		  }
 
-		  static void
+		  static bool
 		  opcUaBinaryEncodeNumberLE(char* os, const T& value)
 		  {
 			  if (LITTLE_ENDIAN) {
@@ -84,22 +85,28 @@ namespace OpcUaStackCore
 					  pos++;
 				  }
 			  }
+			  return true;
 		  }
 
-		  static void
+		  static bool
 		  opcUaBinaryEncodeNumberBE(std::ostream& os, const T& value)
 		  {
 			  if (LITTLE_ENDIAN) {
 				  for (uint32_t size=sizeof(T); size>0; size--) {
 					  os.write(((char*)&value)+size-1,1);
+					  if (!os.good()) {
+						  return false;
+					  }
 				  }
 			  }
 			  else {
 				  os.write((char*)&value, sizeof(T));
+				  return os.good();
 			  }
+			  return true;
 		  }
 
-		  static void
+		  static bool
 		  opcUaBinaryEncodeNumberBE(char* os, const T& value)
 		  {
 			  if (LITTLE_ENDIAN) {
@@ -112,44 +119,50 @@ namespace OpcUaStackCore
 			  else {
 				  *(T*)os = value;
 			  }
+			  return true;
 		  }
 
-		  static void
+		  static bool
 		  opcUaBinaryDecodeNumber(std::istream& is, T& value, bool littleEndian = true)
 		  {
 			  if (littleEndian) {
-				  opcUaBinaryDecodeNumberLE(is, value);
+				  return opcUaBinaryDecodeNumberLE(is, value);
 			  }
 			  else {
-				  opcUaBinaryDecodeNumberBE(is, value);
+				  return opcUaBinaryDecodeNumberBE(is, value);
 			  }
 		  }
 
-		  static void
+		  static bool
 		  opcUaBinaryDecodeNumber(char* is, T& value, bool littleEndian = true)
 		  {
 			  if (littleEndian) {
-				  opcUaBinaryDecodeNumberLE(is, value);
+				  return opcUaBinaryDecodeNumberLE(is, value);
 			  }
 			  else {
-				  opcUaBinaryDecodeNumberBE(is, value);
+				  return opcUaBinaryDecodeNumberBE(is, value);
 			  }
 		  }
 
-		  static void 
+		  static bool
 		  opcUaBinaryDecodeNumberLE(std::istream& is, T& value)
 		  {
 			  if (LITTLE_ENDIAN) {
 				  is.read((char*)&value, sizeof(T));
+				  return is.good();
 			  }
 			  else {
 				  for (uint32_t size=sizeof(T); size>0; size--) {
 					  is.read(((char*)&value)+size-1,1);
+					  if (!is.good()) {
+						  return false;
+					  }
 				  }
 			  }
+			  return true;
 		  }
 
-		  static void
+		  static bool
 		  opcUaBinaryDecodeNumberLE(char* is, T& value)
 		  {
 			  if (LITTLE_ENDIAN) {
@@ -162,22 +175,28 @@ namespace OpcUaStackCore
 					  pos++;
 				  }
 			  }
+			  return true;
 		  }
 
-		  static void
+		  static bool
 		  opcUaBinaryDecodeNumberBE(std::istream& is, T& value)
 		  {
 			  if (LITTLE_ENDIAN) {
 				  for (uint32_t size=sizeof(T); size>0; size--) {
 					  is.read(((char*)&value)+size-1,1);
+					  if (!is.good()) {
+						  return false;
+					  }
 				  }
 			  }
 			  else {
 				  is.read((char*)&value, sizeof(T));
+				  return is.good();
 			  }
+			  return true;
 		  }
 
-		  static void
+		  static bool
 		  opcUaBinaryDecodeNumberBE(char* is, T& value)
 		  {
 			  if (LITTLE_ENDIAN) {
@@ -190,6 +209,7 @@ namespace OpcUaStackCore
 			  else {
 				  value = *(T*)is;
 			  }
+			  return true;
 		  }
 
     };

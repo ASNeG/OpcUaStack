@@ -49,10 +49,10 @@ namespace OpcUaStackCore
 		  void resultHandler(const ResultHandler& resultHandler);
 		  ResultHandler& resultHandler(void);
 
-		  void opcUaBinaryEncodeRequest(std::ostream& os) const;
-		  void opcUaBinaryEncodeResponse(std::ostream& os) const;
-		  void opcUaBinaryDecodeRequest(std::istream& is);
-		  void opcUaBinaryDecodeResponse(std::istream& is);
+		  bool opcUaBinaryEncodeRequest(std::ostream& os) const;
+		  bool opcUaBinaryEncodeResponse(std::ostream& os) const;
+		  bool opcUaBinaryDecodeRequest(std::istream& is);
+		  bool opcUaBinaryDecodeResponse(std::istream& is);
 
 	    private:
 		  ResultHandler resultHandler_;

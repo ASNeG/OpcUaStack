@@ -40,8 +40,8 @@ namespace OpcUaStackCore
 		Index2NamespaceMap& index2NamespaceMap(void);
 		Namespace2IndexMap& namespace2IndexMap(void);
 
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
+		bool opcUaBinaryEncode(std::ostream& os) const;
+		bool opcUaBinaryDecode(std::istream& is);
 
 	  private:
 		Index2NamespaceMap index2NamespaceMap_;

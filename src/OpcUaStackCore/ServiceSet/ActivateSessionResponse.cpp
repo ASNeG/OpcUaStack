@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -81,22 +81,28 @@ namespace OpcUaStackCore
 		return diagnosticInfos_;
 	}
 
-	void 
+	bool
 	ActivateSessionResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
-		//responseHeader_->opcUaBinaryEncode(os);
-		serverNonce_.opcUaBinaryEncode(os);
-		results_->opcUaBinaryEncode(os);
-		diagnosticInfos_->opcUaBinaryEncode(os);
+		bool rc = true;
+
+		rc &= serverNonce_.opcUaBinaryEncode(os);
+		rc &= results_->opcUaBinaryEncode(os);
+		rc &= diagnosticInfos_->opcUaBinaryEncode(os);
+
+		return rc;
 	}
 
-	void 
+	bool
 	ActivateSessionResponse::opcUaBinaryDecode(std::istream& is)
 	{
-		//responseHeader_->opcUaBinaryDecode(is);
-		serverNonce_.opcUaBinaryDecode(is);
-		results_->opcUaBinaryDecode(is);
-		diagnosticInfos_->opcUaBinaryDecode(is);
+		bool rc = true;
+
+		rc &= serverNonce_.opcUaBinaryDecode(is);
+		rc &= results_->opcUaBinaryDecode(is);
+		rc &= diagnosticInfos_->opcUaBinaryDecode(is);
+
+		return rc;
 	}
 
 }

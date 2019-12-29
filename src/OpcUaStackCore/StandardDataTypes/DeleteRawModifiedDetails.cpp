@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -134,22 +134,28 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)15283, 0);
     }
     
-    void
+    bool
     DeleteRawModifiedDetails::opcUaBinaryEncode(std::ostream& os) const
     {
-        HistoryUpdateDetails::opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,isDeleteModified_);
-        startTime_.opcUaBinaryEncode(os);
-        endTime_.opcUaBinaryEncode(os);
+        bool rc = true;
+    
+        rc &= HistoryUpdateDetails::opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,isDeleteModified_);
+        rc &= startTime_.opcUaBinaryEncode(os);
+        rc &= endTime_.opcUaBinaryEncode(os);
+        return rc;
     }
     
-    void
+    bool
     DeleteRawModifiedDetails::opcUaBinaryDecode(std::istream& is)
     {
-        HistoryUpdateDetails::opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,isDeleteModified_);
-        startTime_.opcUaBinaryDecode(is);
-        endTime_.opcUaBinaryDecode(is);
+        bool rc = true;
+    
+        rc &= HistoryUpdateDetails::opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,isDeleteModified_);
+        rc &= startTime_.opcUaBinaryDecode(is);
+        rc &= endTime_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

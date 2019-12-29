@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -134,22 +134,28 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)15294, 0);
     }
     
-    void
+    bool
     DataChangeFilter::opcUaBinaryEncode(std::ostream& os) const
     {
-        MonitoringFilter::opcUaBinaryEncode(os);
-        trigger_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,deadbandType_);
-        OpcUaNumber::opcUaBinaryEncode(os,deadbandValue_);
+        bool rc = true;
+    
+        rc &= MonitoringFilter::opcUaBinaryEncode(os);
+        rc &= trigger_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,deadbandType_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,deadbandValue_);
+        return rc;
     }
     
-    void
+    bool
     DataChangeFilter::opcUaBinaryDecode(std::istream& is)
     {
-        MonitoringFilter::opcUaBinaryDecode(is);
-        trigger_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,deadbandType_);
-        OpcUaNumber::opcUaBinaryDecode(is,deadbandValue_);
+        bool rc = true;
+    
+        rc &= MonitoringFilter::opcUaBinaryDecode(is);
+        rc &= trigger_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,deadbandType_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,deadbandValue_);
+        return rc;
     }
     
     bool

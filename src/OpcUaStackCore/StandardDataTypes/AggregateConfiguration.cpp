@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -156,24 +156,30 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)15304, 0);
     }
     
-    void
+    bool
     AggregateConfiguration::opcUaBinaryEncode(std::ostream& os) const
     {
-        OpcUaNumber::opcUaBinaryEncode(os,useServerCapabilitiesDefaults_);
-        OpcUaNumber::opcUaBinaryEncode(os,treatUncertainAsBad_);
-        OpcUaNumber::opcUaBinaryEncode(os,percentDataBad_);
-        OpcUaNumber::opcUaBinaryEncode(os,percentDataGood_);
-        OpcUaNumber::opcUaBinaryEncode(os,useSlopedExtrapolation_);
+        bool rc = true;
+    
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,useServerCapabilitiesDefaults_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,treatUncertainAsBad_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,percentDataBad_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,percentDataGood_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,useSlopedExtrapolation_);
+        return rc;
     }
     
-    void
+    bool
     AggregateConfiguration::opcUaBinaryDecode(std::istream& is)
     {
-        OpcUaNumber::opcUaBinaryDecode(is,useServerCapabilitiesDefaults_);
-        OpcUaNumber::opcUaBinaryDecode(is,treatUncertainAsBad_);
-        OpcUaNumber::opcUaBinaryDecode(is,percentDataBad_);
-        OpcUaNumber::opcUaBinaryDecode(is,percentDataGood_);
-        OpcUaNumber::opcUaBinaryDecode(is,useSlopedExtrapolation_);
+        bool rc = true;
+    
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,useServerCapabilitiesDefaults_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,treatUncertainAsBad_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,percentDataBad_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,percentDataGood_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,useSlopedExtrapolation_);
+        return rc;
     }
     
     bool

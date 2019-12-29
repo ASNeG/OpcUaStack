@@ -246,9 +246,11 @@ namespace OpcUaStackPubSub
 		return configurationVersionMinorVersion_;
 	}
 
-	void
+	bool
 	DataSetMessageHeader::opcUaBinaryEncode(std::ostream& os) const
 	{
+		bool rc = true;
+
 		// DataSetFlag 1
 		OpcUaByte dataSetFlag1 = 0;
 		dataSetFlag1 = (OpcUaByte)fieldEncoding_;
@@ -258,53 +260,57 @@ namespace OpcUaStackPubSub
 		if (configurationVersionMajorVersionEnabled_) dataSetFlag1 += 0x20;
 		if (configurationVersionMinorVersionEnabled_) dataSetFlag1 += 0x40;
 		if (dataSetFlag2Enabled_) dataSetFlag1 += 0x80;
-		OpcUaNumber::opcUaBinaryEncode(os, dataSetFlag1);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, dataSetFlag1);
 
 		// DataSetFlag2
 		if (dataSetFlag2Enabled_) {
 			OpcUaByte dataSetFlag2 = 0;
 			dataSetFlag2 = (OpcUaByte)messageType_;
 			if (picoSecondsEnabled_) dataSetFlag2 += 16;
-			OpcUaNumber::opcUaBinaryEncode(os, dataSetFlag2);
+			rc &= OpcUaNumber::opcUaBinaryEncode(os, dataSetFlag2);
 		}
 
 		// sequence number
 		if (dataSetMessageSequenceNumberEnabled_) {
-			OpcUaNumber::opcUaBinaryEncode(os, dataMessageSequenceNumber_);
+			rc &= OpcUaNumber::opcUaBinaryEncode(os, dataMessageSequenceNumber_);
 		}
 
 		// timestamp
 		if (timestampEnabled_) {
-			timestamp_.opcUaBinaryEncode(os);
+			rc &= timestamp_.opcUaBinaryEncode(os);
 		}
 
 		// picoseconds
 		if (picoSecondsEnabled_) {
-			OpcUaNumber::opcUaBinaryEncode(os, picoSeconds_);
+			rc &= OpcUaNumber::opcUaBinaryEncode(os, picoSeconds_);
 		}
 
 		// status
 		if (statusEnabled_) {
-			OpcUaNumber::opcUaBinaryEncode(os, statusCode_);
+			rc &= OpcUaNumber::opcUaBinaryEncode(os, statusCode_);
 		}
 
 		// major version
 		if (configurationVersionMajorVersionEnabled_) {
-			OpcUaNumber::opcUaBinaryEncode(os, configurationVersionMajorVersion_);
+			rc &= OpcUaNumber::opcUaBinaryEncode(os, configurationVersionMajorVersion_);
 		}
 
 		// minior version
 		if (configurationVersionMinorVersionEnabled_) {
-			OpcUaNumber::opcUaBinaryEncode(os, configurationVersionMinorVersion_);
+			rc &= OpcUaNumber::opcUaBinaryEncode(os, configurationVersionMinorVersion_);
 		}
+
+		return rc;
 	}
 
-	void
+	bool
 	DataSetMessageHeader::opcUaBinaryDecode(std::istream& is)
 	{
+		bool rc = true;
+
 		// DataSetFlag 1
 		OpcUaByte dataSetFlag1 = 0;
-		OpcUaNumber::opcUaBinaryDecode(is, dataSetFlag1);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, dataSetFlag1);
 		fieldEncoding_ = (FieldEncoding)(dataSetFlag1 & 0x03);
 		if ((dataSetFlag1 & 0x04) == 0x04) {
 			dataSetMessageSequenceNumberEnabled_ = true;
@@ -328,7 +334,7 @@ namespace OpcUaStackPubSub
 		// DataSetFlag2
 		if (dataSetFlag2Enabled_) {
 			OpcUaByte dataSetFlag2 = 0;
-			OpcUaNumber::opcUaBinaryDecode(is, dataSetFlag2);
+			rc &= OpcUaNumber::opcUaBinaryDecode(is, dataSetFlag2);
 
 			messageType_ = (DataSetMessageType)(dataSetFlag2 & 0x0F);
 			if ((dataSetFlag2 & 0x10) == 0x10) {
@@ -338,33 +344,35 @@ namespace OpcUaStackPubSub
 
 		// sequence number
 		if (dataSetMessageSequenceNumberEnabled_) {
-			OpcUaNumber::opcUaBinaryDecode(is, dataMessageSequenceNumber_);
+			rc &= OpcUaNumber::opcUaBinaryDecode(is, dataMessageSequenceNumber_);
 		}
 
 		// timestamp
 		if (timestampEnabled_) {
-			timestamp_.opcUaBinaryDecode(is);
+			rc &= timestamp_.opcUaBinaryDecode(is);
 		}
 
 		// picoseconds
 		if (picoSecondsEnabled_) {
-			OpcUaNumber::opcUaBinaryDecode(is, picoSeconds_);
+			rc &= OpcUaNumber::opcUaBinaryDecode(is, picoSeconds_);
 		}
 
 		// status
 		if (statusEnabled_) {
-			OpcUaNumber::opcUaBinaryDecode(is, statusCode_);
+			rc &= OpcUaNumber::opcUaBinaryDecode(is, statusCode_);
 		}
 
 		// major version
 		if (configurationVersionMajorVersionEnabled_) {
-			OpcUaNumber::opcUaBinaryDecode(is, configurationVersionMajorVersion_);
+			rc &= OpcUaNumber::opcUaBinaryDecode(is, configurationVersionMajorVersion_);
 		}
 
 		// minior version
 		if (configurationVersionMinorVersionEnabled_) {
-			OpcUaNumber::opcUaBinaryDecode(is, configurationVersionMinorVersion_);
+			rc &= OpcUaNumber::opcUaBinaryDecode(is, configurationVersionMinorVersion_);
 		}
+
+		return rc;
 	}
 
 	void DataSetMessageHeader::copyTo(DataSetMessageHeader& dataSetMessageHeader)

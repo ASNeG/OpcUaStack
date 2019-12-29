@@ -129,29 +129,31 @@ namespace OpcUaStackCore
 		return OpcUaNodeIdBase::operator ==(opcUaExpandedNodeId);
 	}
 
-	void 
+	bool
 	OpcUaExpandedNodeId::opcUaBinaryEncode(std::ostream& os) const
 	{
-		OpcUaNodeIdBase::opcUaBinaryEncode(os);
+		auto rc = OpcUaNodeIdBase::opcUaBinaryEncode(os);
 		if (namespaceUri_.exist()) {
-			namespaceUri_.opcUaBinaryEncode(os);
+			rc &= namespaceUri_.opcUaBinaryEncode(os);
 		}
 		if (serverIndex_ != 0) {
-			OpcUaNumber::opcUaBinaryEncode(os, serverIndex_);
+			rc &= OpcUaNumber::opcUaBinaryEncode(os, serverIndex_);
 		}
+		return rc;
 	}
 
-	void 
+	bool
 	OpcUaExpandedNodeId::opcUaBinaryDecode(std::istream& is)
 	{
-		OpcUaNodeIdBase::opcUaBinaryDecode(is);
+		auto rc = OpcUaNodeIdBase::opcUaBinaryDecode(is);
 		if ((expandedEncodingFlag_ & 0x80) == 0x80) {
 			namespaceIndex(0);
-			namespaceUri_.opcUaBinaryDecode(is);
+			rc &= namespaceUri_.opcUaBinaryDecode(is);
 		}
 		if ((expandedEncodingFlag_ & 0x40) == 0x40) {
-			OpcUaNumber::opcUaBinaryDecode(is, serverIndex_);
+			rc &= OpcUaNumber::opcUaBinaryDecode(is, serverIndex_);
 		}
+		return rc;
 	}
 
 	bool

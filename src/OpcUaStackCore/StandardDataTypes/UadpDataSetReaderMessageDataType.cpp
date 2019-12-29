@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -194,34 +194,40 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)16392, 0);
     }
     
-    void
+    bool
     UadpDataSetReaderMessageDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        DataSetReaderMessageDataType::opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,groupVersion_);
-        OpcUaNumber::opcUaBinaryEncode(os,networkMessageNumber_);
-        OpcUaNumber::opcUaBinaryEncode(os,dataSetOffset_);
-        dataSetClassId_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,networkMessageContentMask_);
-        OpcUaNumber::opcUaBinaryEncode(os,dataSetMessageContentMask_);
-        OpcUaNumber::opcUaBinaryEncode(os,publishingInterval_);
-        OpcUaNumber::opcUaBinaryEncode(os,receiveOffset_);
-        OpcUaNumber::opcUaBinaryEncode(os,processingOffset_);
+        bool rc = true;
+    
+        rc &= DataSetReaderMessageDataType::opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,groupVersion_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,networkMessageNumber_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,dataSetOffset_);
+        rc &= dataSetClassId_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,networkMessageContentMask_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,dataSetMessageContentMask_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,publishingInterval_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,receiveOffset_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,processingOffset_);
+        return rc;
     }
     
-    void
+    bool
     UadpDataSetReaderMessageDataType::opcUaBinaryDecode(std::istream& is)
     {
-        DataSetReaderMessageDataType::opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,groupVersion_);
-        OpcUaNumber::opcUaBinaryDecode(is,networkMessageNumber_);
-        OpcUaNumber::opcUaBinaryDecode(is,dataSetOffset_);
-        dataSetClassId_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,networkMessageContentMask_);
-        OpcUaNumber::opcUaBinaryDecode(is,dataSetMessageContentMask_);
-        OpcUaNumber::opcUaBinaryDecode(is,publishingInterval_);
-        OpcUaNumber::opcUaBinaryDecode(is,receiveOffset_);
-        OpcUaNumber::opcUaBinaryDecode(is,processingOffset_);
+        bool rc = true;
+    
+        rc &= DataSetReaderMessageDataType::opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,groupVersion_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,networkMessageNumber_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,dataSetOffset_);
+        rc &= dataSetClassId_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,networkMessageContentMask_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,dataSetMessageContentMask_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,publishingInterval_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,receiveOffset_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,processingOffset_);
+        return rc;
     }
     
     bool

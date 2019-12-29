@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -144,24 +144,30 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)15066, 0);
     }
     
-    void
+    bool
     StructureDefinition::opcUaBinaryEncode(std::ostream& os) const
     {
-        DataTypeDefinition::opcUaBinaryEncode(os);
-        defaultEncodingId_.opcUaBinaryEncode(os);
-        baseDataType_.opcUaBinaryEncode(os);
-        structureType_.opcUaBinaryEncode(os);
-        fields_.opcUaBinaryEncode(os);
+        bool rc = true;
+    
+        rc &= DataTypeDefinition::opcUaBinaryEncode(os);
+        rc &= defaultEncodingId_.opcUaBinaryEncode(os);
+        rc &= baseDataType_.opcUaBinaryEncode(os);
+        rc &= structureType_.opcUaBinaryEncode(os);
+        rc &= fields_.opcUaBinaryEncode(os);
+        return rc;
     }
     
-    void
+    bool
     StructureDefinition::opcUaBinaryDecode(std::istream& is)
     {
-        DataTypeDefinition::opcUaBinaryDecode(is);
-        defaultEncodingId_.opcUaBinaryDecode(is);
-        baseDataType_.opcUaBinaryDecode(is);
-        structureType_.opcUaBinaryDecode(is);
-        fields_.opcUaBinaryDecode(is);
+        bool rc = true;
+    
+        rc &= DataTypeDefinition::opcUaBinaryDecode(is);
+        rc &= defaultEncodingId_.opcUaBinaryDecode(is);
+        rc &= baseDataType_.opcUaBinaryDecode(is);
+        rc &= structureType_.opcUaBinaryDecode(is);
+        rc &= fields_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

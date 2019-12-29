@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -144,24 +144,30 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)16391, 0);
     }
     
-    void
+    bool
     UadpDataSetWriterMessageDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        DataSetWriterMessageDataType::opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,dataSetMessageContentMask_);
-        OpcUaNumber::opcUaBinaryEncode(os,configuredSize_);
-        OpcUaNumber::opcUaBinaryEncode(os,networkMessageNumber_);
-        OpcUaNumber::opcUaBinaryEncode(os,dataSetOffset_);
+        bool rc = true;
+    
+        rc &= DataSetWriterMessageDataType::opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,dataSetMessageContentMask_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,configuredSize_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,networkMessageNumber_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,dataSetOffset_);
+        return rc;
     }
     
-    void
+    bool
     UadpDataSetWriterMessageDataType::opcUaBinaryDecode(std::istream& is)
     {
-        DataSetWriterMessageDataType::opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,dataSetMessageContentMask_);
-        OpcUaNumber::opcUaBinaryDecode(is,configuredSize_);
-        OpcUaNumber::opcUaBinaryDecode(is,networkMessageNumber_);
-        OpcUaNumber::opcUaBinaryDecode(is,dataSetOffset_);
+        bool rc = true;
+    
+        rc &= DataSetWriterMessageDataType::opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,dataSetMessageContentMask_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,configuredSize_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,networkMessageNumber_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,dataSetOffset_);
+        return rc;
     }
     
     bool

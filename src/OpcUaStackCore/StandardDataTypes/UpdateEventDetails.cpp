@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -134,22 +134,28 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)15282, 0);
     }
     
-    void
+    bool
     UpdateEventDetails::opcUaBinaryEncode(std::ostream& os) const
     {
-        HistoryUpdateDetails::opcUaBinaryEncode(os);
-        performInsertReplace_.opcUaBinaryEncode(os);
-        filter_.opcUaBinaryEncode(os);
-        eventData_.opcUaBinaryEncode(os);
+        bool rc = true;
+    
+        rc &= HistoryUpdateDetails::opcUaBinaryEncode(os);
+        rc &= performInsertReplace_.opcUaBinaryEncode(os);
+        rc &= filter_.opcUaBinaryEncode(os);
+        rc &= eventData_.opcUaBinaryEncode(os);
+        return rc;
     }
     
-    void
+    bool
     UpdateEventDetails::opcUaBinaryDecode(std::istream& is)
     {
-        HistoryUpdateDetails::opcUaBinaryDecode(is);
-        performInsertReplace_.opcUaBinaryDecode(is);
-        filter_.opcUaBinaryDecode(is);
-        eventData_.opcUaBinaryDecode(is);
+        bool rc = true;
+    
+        rc &= HistoryUpdateDetails::opcUaBinaryDecode(is);
+        rc &= performInsertReplace_.opcUaBinaryDecode(is);
+        rc &= filter_.opcUaBinaryDecode(is);
+        rc &= eventData_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

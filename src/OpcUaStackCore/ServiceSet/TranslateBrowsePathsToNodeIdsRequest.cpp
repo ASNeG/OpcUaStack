@@ -49,16 +49,16 @@ namespace OpcUaStackCore
 		return browsePathArraySPtr_;
 	}
 
-	void 
+	bool
 	TranslateBrowsePathsToNodeIdsRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		browsePathArraySPtr_->opcUaBinaryEncode(os);
+		return browsePathArraySPtr_->opcUaBinaryEncode(os);
 	}
 	
-	void 
+	bool
 	TranslateBrowsePathsToNodeIdsRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		browsePathArraySPtr_->opcUaBinaryDecode(is);
+		return browsePathArraySPtr_->opcUaBinaryDecode(is);
 	}
 
 	bool

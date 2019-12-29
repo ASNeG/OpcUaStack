@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -226,38 +226,44 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)15366, 0);
     }
     
-    void
+    bool
     ServerDiagnosticsSummaryDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        OpcUaNumber::opcUaBinaryEncode(os,serverViewCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,currentSessionCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,cumulatedSessionCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,securityRejectedSessionCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,rejectedSessionCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,sessionTimeoutCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,sessionAbortCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,currentSubscriptionCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,cumulatedSubscriptionCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,publishingIntervalCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,securityRejectedRequestsCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,rejectedRequestsCount_);
+        bool rc = true;
+    
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,serverViewCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,currentSessionCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,cumulatedSessionCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,securityRejectedSessionCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,rejectedSessionCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,sessionTimeoutCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,sessionAbortCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,currentSubscriptionCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,cumulatedSubscriptionCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,publishingIntervalCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,securityRejectedRequestsCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,rejectedRequestsCount_);
+        return rc;
     }
     
-    void
+    bool
     ServerDiagnosticsSummaryDataType::opcUaBinaryDecode(std::istream& is)
     {
-        OpcUaNumber::opcUaBinaryDecode(is,serverViewCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,currentSessionCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,cumulatedSessionCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,securityRejectedSessionCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,rejectedSessionCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,sessionTimeoutCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,sessionAbortCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,currentSubscriptionCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,cumulatedSubscriptionCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,publishingIntervalCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,securityRejectedRequestsCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,rejectedRequestsCount_);
+        bool rc = true;
+    
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,serverViewCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,currentSessionCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,cumulatedSessionCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,securityRejectedSessionCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,rejectedSessionCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,sessionTimeoutCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,sessionAbortCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,currentSubscriptionCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,cumulatedSubscriptionCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,publishingIntervalCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,securityRejectedRequestsCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,rejectedRequestsCount_);
+        return rc;
     }
     
     bool

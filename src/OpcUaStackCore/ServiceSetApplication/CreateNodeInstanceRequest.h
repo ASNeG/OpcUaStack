@@ -43,8 +43,8 @@ namespace OpcUaStackCore
 		OpcUaNodeId& referenceNodeId(void);
 		OpcUaNodeId& typeNodeId(void);
 
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
+		bool opcUaBinaryEncode(std::ostream& os) const;
+		bool opcUaBinaryDecode(std::istream& is);
 
 	  private:
 		std::string name_;

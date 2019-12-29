@@ -45,8 +45,8 @@ namespace OpcUaStackCore
 			return os;
 		}
 
-		void opcUaBinaryEncode(std::ostream& os) const {};
-		void opcUaBinaryDecode(std::istream& is) {};
+		bool opcUaBinaryEncode(std::ostream& os) const { return false; };
+		bool opcUaBinaryDecode(std::istream& is) { return false; };
 
 		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return true; }
 		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return true; }

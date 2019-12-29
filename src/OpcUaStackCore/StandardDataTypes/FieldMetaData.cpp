@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -206,34 +206,40 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)15051, 0);
     }
     
-    void
+    bool
     FieldMetaData::opcUaBinaryEncode(std::ostream& os) const
     {
-        name_.opcUaBinaryEncode(os);
-        description_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,fieldFlags_);
-        OpcUaNumber::opcUaBinaryEncode(os,builtInType_);
-        dataType_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,valueRank_);
-        arrayDimensions_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,maxStringLength_);
-        dataSetFieldId_.opcUaBinaryEncode(os);
-        properties_.opcUaBinaryEncode(os);
+        bool rc = true;
+    
+        rc &= name_.opcUaBinaryEncode(os);
+        rc &= description_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,fieldFlags_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,builtInType_);
+        rc &= dataType_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,valueRank_);
+        rc &= arrayDimensions_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,maxStringLength_);
+        rc &= dataSetFieldId_.opcUaBinaryEncode(os);
+        rc &= properties_.opcUaBinaryEncode(os);
+        return rc;
     }
     
-    void
+    bool
     FieldMetaData::opcUaBinaryDecode(std::istream& is)
     {
-        name_.opcUaBinaryDecode(is);
-        description_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,fieldFlags_);
-        OpcUaNumber::opcUaBinaryDecode(is,builtInType_);
-        dataType_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,valueRank_);
-        arrayDimensions_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,maxStringLength_);
-        dataSetFieldId_.opcUaBinaryDecode(is);
-        properties_.opcUaBinaryDecode(is);
+        bool rc = true;
+    
+        rc &= name_.opcUaBinaryDecode(is);
+        rc &= description_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,fieldFlags_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,builtInType_);
+        rc &= dataType_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,valueRank_);
+        rc &= arrayDimensions_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,maxStringLength_);
+        rc &= dataSetFieldId_.opcUaBinaryDecode(is);
+        rc &= properties_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

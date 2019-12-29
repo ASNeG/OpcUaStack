@@ -134,8 +134,8 @@ namespace OpcUaStackCore
 		bool operator>(OpcUaVariantValue& variantValue);
 		bool operator>=(OpcUaVariantValue& variantValue);
 
-		void opcUaBinaryEncode(std::ostream& os, OpcUaBuildInType variantType) const;
-		void opcUaBinaryDecode(std::istream& is, OpcUaBuildInType variantType);
+		bool opcUaBinaryEncode(std::ostream& os, OpcUaBuildInType variantType) const;
+		bool opcUaBinaryDecode(std::istream& is, OpcUaBuildInType variantType);
 		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
 		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
@@ -326,8 +326,8 @@ namespace OpcUaStackCore
 		bool getValue(OpcUaDataValue& value);
 		bool getValue(OpcUaDiagnosticInfo& value);
 
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
+		bool opcUaBinaryEncode(std::ostream& os) const;
+		bool opcUaBinaryDecode(std::istream& is);
 		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
 		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);

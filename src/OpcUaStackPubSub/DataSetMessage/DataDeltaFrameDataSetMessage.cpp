@@ -56,36 +56,44 @@ namespace OpcUaStackPubSub
 		dataSetMessageHeader().fieldEncoding(deltaframeField->dataType());
 	}
 
-	void
+	bool
 	DataDeltaFrameDataSetMessage::opcUaBinaryEncode(std::ostream& os) const
 	{
-		uint16_t fieldCount = deltaFrameFields_->size();
-		if (fieldCount == 0) return;
+		bool rc = true;
 
-		OpcUaNumber::opcUaBinaryEncode(os, fieldCount);
+		uint16_t fieldCount = deltaFrameFields_->size();
+		if (fieldCount == 0) return rc;
+
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, fieldCount);
 		for (uint32_t idx=0; idx<fieldCount; idx++) {
 			DeltaFrameField::SPtr deltaframeField;
 			deltaFrameFields_->get(idx, deltaframeField);
 
-			deltaframeField->opcUaBinaryEncode(os);
+			rc &= deltaframeField->opcUaBinaryEncode(os);
 		}
+
+		return rc;
 	}
 
-	void
+	bool
 	DataDeltaFrameDataSetMessage::opcUaBinaryDecode(std::istream& is)
 	{
+		bool rc = true;
+
 		uint16_t fieldCount;
-		OpcUaNumber::opcUaBinaryDecode(is, fieldCount);
-		if (fieldCount == 0) return;
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, fieldCount);
+		if (fieldCount == 0) return rc;
 
 		deltaFrameFields_->resize(fieldCount);
 		for (uint32_t idx=0; idx<fieldCount; idx++) {
 			DeltaFrameField::SPtr deltaFrameField = boost::make_shared<DeltaFrameField>();
 
 			deltaFrameField->createObject(dataSetMessageHeader().fieldEncoding());
-			deltaFrameField->opcUaBinaryDecode(is);
-			deltaFrameFields_->push_back(deltaFrameField);
+			rc &= deltaFrameField->opcUaBinaryDecode(is);
+			if (rc) deltaFrameFields_->push_back(deltaFrameField);
 		}
+
+		return rc;
 	}
 
 }

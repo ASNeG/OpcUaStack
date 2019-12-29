@@ -102,24 +102,32 @@ namespace OpcUaStackCore
 		return discardOldest_;
 	}
 		
-	void 
+	bool
 	MonitoringParameters::opcUaBinaryEncode(std::ostream& os) const
 	{
-		OpcUaNumber::opcUaBinaryEncode(os, clientHandle_);
-		OpcUaNumber::opcUaBinaryEncode(os, samplingInterval_);
-		filter_.opcUaBinaryEncode(os);
-		OpcUaNumber::opcUaBinaryEncode(os, queueSize_);
-		OpcUaNumber::opcUaBinaryEncode(os, discardOldest_);
+		bool rc = true;
+
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, clientHandle_);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, samplingInterval_);
+		rc &= filter_.opcUaBinaryEncode(os);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, queueSize_);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, discardOldest_);
+
+		return rc;
 	}
 	
-	void 
+	bool
 	MonitoringParameters::opcUaBinaryDecode(std::istream& is)
 	{
-		OpcUaNumber::opcUaBinaryDecode(is, clientHandle_);
-		OpcUaNumber::opcUaBinaryDecode(is, samplingInterval_);
-		filter_.opcUaBinaryDecode(is);
-		OpcUaNumber::opcUaBinaryDecode(is, queueSize_);
-		OpcUaNumber::opcUaBinaryDecode(is, discardOldest_);
+		bool rc = true;
+
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, clientHandle_);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, samplingInterval_);
+		rc &= filter_.opcUaBinaryDecode(is);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, queueSize_);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, discardOldest_);
+
+		return rc;
 	}
 
 	bool

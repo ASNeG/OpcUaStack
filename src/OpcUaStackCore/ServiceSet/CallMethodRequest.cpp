@@ -84,20 +84,28 @@ namespace OpcUaStackCore
 		inputArgumentArraySPtr_->copyTo(*callMethodRequest.inputArguments().get());
 	}
 
-	void 
+	bool
 	CallMethodRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		objectIdSPtr_->opcUaBinaryEncode(os);
-		methodIdSPtr_->opcUaBinaryEncode(os);
-		inputArgumentArraySPtr_->opcUaBinaryEncode(os);
+		bool rc = true;
+
+		rc &= objectIdSPtr_->opcUaBinaryEncode(os);
+		rc &= methodIdSPtr_->opcUaBinaryEncode(os);
+		rc &= inputArgumentArraySPtr_->opcUaBinaryEncode(os);
+
+		return rc;
 	}
 	
-	void 
+	bool
 	CallMethodRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		objectIdSPtr_->opcUaBinaryDecode(is);
-		methodIdSPtr_->opcUaBinaryDecode(is);
-		inputArgumentArraySPtr_->opcUaBinaryDecode(is);
+		bool rc = true;
+
+		rc &= objectIdSPtr_->opcUaBinaryDecode(is);
+		rc &= methodIdSPtr_->opcUaBinaryDecode(is);
+		rc &= inputArgumentArraySPtr_->opcUaBinaryDecode(is);
+
+		return rc;
 	}
 
 	bool

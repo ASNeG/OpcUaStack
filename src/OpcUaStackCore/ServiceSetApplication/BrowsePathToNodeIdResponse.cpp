@@ -90,14 +90,16 @@ namespace OpcUaStackCore
 		return nodeIdResults_;
 	}
 
-	void
+	bool
 	BrowsePathToNodeIdResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
+		return false;
 	}
 
-	void
+    bool
 	BrowsePathToNodeIdResponse::opcUaBinaryDecode(std::istream& is)
 	{
+    	return false;
 	}
 
 }

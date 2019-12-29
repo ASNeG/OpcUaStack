@@ -87,22 +87,30 @@ namespace OpcUaStackCore
 		serverNonce_ = serverNonce;
 	}
 
-	void 
+	bool
 	OpenSecureChannelResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
-		responseHeaderSPtr_->opcUaBinaryEncode(os);
-		OpcUaNumber::opcUaBinaryEncode(os, serverProtocolVersion_);
-		securityTokenSPtr_->opcUaBinaryEncode(os);
-		serverNonce_.opcUaBinaryEncode(os);
+		bool rc = true;
+
+		rc &= responseHeaderSPtr_->opcUaBinaryEncode(os);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, serverProtocolVersion_);
+		rc &= securityTokenSPtr_->opcUaBinaryEncode(os);
+		rc &= serverNonce_.opcUaBinaryEncode(os);
+
+		return rc;
 	}
 
-	void 
+	bool
 	OpenSecureChannelResponse::opcUaBinaryDecode(std::istream& is)
 	{
-		responseHeaderSPtr_->opcUaBinaryDecode(is);
-		OpcUaNumber::opcUaBinaryDecode(is, serverProtocolVersion_);
-		securityTokenSPtr_->opcUaBinaryDecode(is);
-		serverNonce_.opcUaBinaryDecode(is);
+		bool rc = true;
+
+		rc &= responseHeaderSPtr_->opcUaBinaryDecode(is);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, serverProtocolVersion_);
+		rc &= securityTokenSPtr_->opcUaBinaryDecode(is);
+		rc &= serverNonce_.opcUaBinaryDecode(is);
+
+		return rc;
 	}
 
 }

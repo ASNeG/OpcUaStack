@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -113,30 +113,30 @@ namespace OpcUaStackCore
       }
 	  
 	template<typename REQTYPE, typename RESTYPE, uint32_t REQID, uint32_t RESID>
-	  void 
+	  bool 
 	  ServiceTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID>::opcUaBinaryEncodeRequest(std::ostream& os) const
 	  {
-		  request_->opcUaBinaryEncode(os);
+		  return request_->opcUaBinaryEncode(os);
 	  }
 
 	template<typename REQTYPE, typename RESTYPE, uint32_t REQID, uint32_t RESID>
-	  void 
+	  bool 
 	  ServiceTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID>::opcUaBinaryEncodeResponse(std::ostream& os) const
 	  {
-		  response_->opcUaBinaryEncode(os);
+		  return response_->opcUaBinaryEncode(os);
 	  }
 
 	template<typename REQTYPE, typename RESTYPE, uint32_t REQID, uint32_t RESID>
-	  void 
+	  bool 
 	  ServiceTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID>::opcUaBinaryDecodeRequest(std::istream& is)
 	  {
-		  request_->opcUaBinaryDecode(is);
+		  return request_->opcUaBinaryDecode(is);
 	  }
 
 	template<typename REQTYPE, typename RESTYPE, uint32_t REQID, uint32_t RESID>
-	  void 
+	  bool 
 	  ServiceTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID>::opcUaBinaryDecodeResponse(std::istream& is)
 	  {
-		  response_->opcUaBinaryDecode(is);
+		  return response_->opcUaBinaryDecode(is);
 	  }
 }
