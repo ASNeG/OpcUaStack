@@ -51,11 +51,11 @@ namespace OpcUaStackCore
 		);
 
 		void messageReceive(
-			ReceiveCallback& receiveCallback
+			const ReceiveCallback& receiveCallback
 		);
 		void messageReceive(
 			const boost::shared_ptr<boost::asio::io_service::strand>& strand,
-			ReceiveCallback& receiveCallback
+			const ReceiveCallback& receiveCallback
 		);
 
 		void messageSend(
@@ -65,13 +65,13 @@ namespace OpcUaStackCore
 		void messageSend(
 			WPtr& sender,
 			Message::SPtr& message,
-			SendCompleteCallback& sendCompleteCallback
+			const SendCompleteCallback& sendCompleteCallback
 		);
 		void messageSend(
 			WPtr& sender,
 			Message::SPtr& message,
 			const boost::shared_ptr<boost::asio::io_service::strand>& strand,
-			SendCompleteCallback& sendCompleteCallback
+			const SendCompleteCallback& sendCompleteCallback
 		);
 
 	  private:
@@ -83,8 +83,8 @@ namespace OpcUaStackCore
 		};
 		using MsgList = std::list<Msg>;
 
-		void handleReceiveMessage(
-			ReceiveCallback& receiveCallback,
+		void sendFirstMessageToReceiver(
+			const ReceiveCallback& receiveCallback,
 			const boost::shared_ptr<boost::asio::io_service::strand>& strand
 		);
 

@@ -88,14 +88,14 @@ namespace OpcUaStackCore
 	}
 
 	void
-	MessageBusMember::handleReceiveMessage(
-		ReceiveCallback& receiveCallback,
+	MessageBusMember::sendFirstMessageToReceiver(
+		const ReceiveCallback& receiveCallback,
 		const boost::shared_ptr<boost::asio::io_service::strand>& strand
 	)
 	{
 		// receive message
-		WPtr sender = msgList_.front().sender_;
-		Message::SPtr message = msgList_.front().message_;
+		auto sender = msgList_.front().sender_;
+	    auto message = msgList_.front().message_;
 		msgList_.pop_front();
 
 		if (strand) {
@@ -118,7 +118,7 @@ namespace OpcUaStackCore
 
 	void
 	MessageBusMember::messageReceive(
-		ReceiveCallback& receiveCallback
+		const ReceiveCallback& receiveCallback
 	)
 	{
 		boost::mutex::scoped_lock g(mutex_);
@@ -138,13 +138,13 @@ namespace OpcUaStackCore
 		}
 
 		// handle first message from list
-		handleReceiveMessage(receiveCallback, nullptr);
+		sendFirstMessageToReceiver(receiveCallback, nullptr);
 	}
 
 	void
 	MessageBusMember::messageReceive(
 		const boost::shared_ptr<boost::asio::io_service::strand>& strand,
-		MessageBusMember::ReceiveCallback& receiveCallback
+		const MessageBusMember::ReceiveCallback& receiveCallback
 	)
 	{
 		boost::mutex::scoped_lock g(mutex_);
@@ -164,7 +164,7 @@ namespace OpcUaStackCore
 		}
 
 		// handle first message from list
-		handleReceiveMessage(receiveCallback, strand);
+		sendFirstMessageToReceiver(receiveCallback, strand);
 	}
 
 	void
@@ -175,27 +175,28 @@ namespace OpcUaStackCore
 	{
 		boost::mutex::scoped_lock g(mutex_);
 
-		// check if receiver is waiting for a message
-		if (receiverWait_) {
-			ReceiveCallback receiveCallback = receiveCallback_;
-
-			// handle first message from list
-			handleReceiveMessage(receiveCallback, strand_);
-			return;
-		}
-
 		// save message in list
 		Msg msg;
 		msg.sender_ = sender;
 		msg.message_ = message;
 		msgList_.push_back(msg);
+
+		// check if receiver is waiting for a message
+		if (receiverWait_) {
+			ReceiveCallback receiveCallback = receiveCallback_;
+			boost::shared_ptr<boost::asio::io_service::strand> receiverStrand = strand_;
+
+			// handle first message from list
+			sendFirstMessageToReceiver(receiveCallback, receiverStrand);
+			return;
+		}
 	}
 
 	void
 	MessageBusMember::messageSend(
 		WPtr& sender,
 		Message::SPtr& message,
-		SendCompleteCallback& sendCompleteCallback
+		const SendCompleteCallback& sendCompleteCallback
 	)
 	{
 		boost::mutex::scoped_lock g(mutex_);
@@ -203,9 +204,10 @@ namespace OpcUaStackCore
 		// check if receiver is waiting for a message
 		if (receiverWait_) {
 			ReceiveCallback receiveCallback = receiveCallback_;
+			boost::shared_ptr<boost::asio::io_service::strand> receiverStrand = strand_;
 
 			// handle first message from list
-			handleReceiveMessage(receiveCallback, strand_);
+			sendFirstMessageToReceiver(receiveCallback, receiverStrand);
 
 			// call send complete callback
 			ioThread()->run(
@@ -236,7 +238,7 @@ namespace OpcUaStackCore
 		WPtr& sender,
 		Message::SPtr& message,
 		const boost::shared_ptr<boost::asio::io_service::strand>& strand,
-		SendCompleteCallback& sendCompleteCallback
+		const SendCompleteCallback& sendCompleteCallback
 	)
 	{
 		boost::mutex::scoped_lock g(mutex_);
@@ -244,9 +246,10 @@ namespace OpcUaStackCore
 		// check if receiver is waiting for a message
 		if (receiverWait_) {
 			ReceiveCallback receiveCallback = receiveCallback_;
+			boost::shared_ptr<boost::asio::io_service::strand> receiverStrand = strand_;
 
 			// handle first message from list
-			handleReceiveMessage(receiveCallback, strand_);
+			sendFirstMessageToReceiver(receiveCallback, receiverStrand);
 
 			// call send complete callback
 			strand->post(

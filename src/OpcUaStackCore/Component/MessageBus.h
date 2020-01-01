@@ -47,12 +47,12 @@ namespace OpcUaStackCore
 
 		void messageReceive(
 			MessageBusMember::WPtr& receiver,
-			MessageBusMember::ReceiveCallback& receiveCallback
+			const MessageBusMember::ReceiveCallback& receiveCallback
 		);
 		void messageReceive(
 			MessageBusMember::WPtr& receiver,
 			const boost::shared_ptr<boost::asio::io_service::strand>& strand,
-			MessageBusMember::ReceiveCallback& receiveCallback
+			const MessageBusMember::ReceiveCallback& receiveCallback
 		);
 
 		void messageSend(
@@ -64,14 +64,14 @@ namespace OpcUaStackCore
 			MessageBusMember::WPtr& sender,
 			MessageBusMember::WPtr& receiver,
 			Message::SPtr& message,
-			MessageBusMember::SendCompleteCallback& sendCompleteCallback
+			const MessageBusMember::SendCompleteCallback& sendCompleteCallback
 		);
 		void messageSend(
 			MessageBusMember::WPtr& sender,
 			MessageBusMember::WPtr& receiver,
 			Message::SPtr& message,
 			const boost::shared_ptr<boost::asio::io_service::strand>& strand,
-			MessageBusMember::SendCompleteCallback& sendCompleteCallback
+			const MessageBusMember::SendCompleteCallback& sendCompleteCallback
 		);
 
 	  private:
