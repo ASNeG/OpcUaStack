@@ -92,7 +92,7 @@ BOOST_AUTO_TEST_CASE(MessageBus_receive_send_1)
 
 	messageBus.messageReceive(
 	    receiver,
-		[testReceiver](MessageBusError error, const MessageBusMember::WPtr& handleFrom, Message::SPtr& message) mutable {
+		[&testReceiver](MessageBusError error, const MessageBusMember::WPtr& handleFrom, Message::SPtr& message) mutable {
 			testReceiver.receive(error, handleFrom, message);
 		}
 	);
@@ -176,7 +176,48 @@ BOOST_AUTO_TEST_CASE(MessageBus_send_receive_1)
 
 	messageBus.messageReceive(
 	    receiver,
-		[testReceiver](MessageBusError error, const MessageBusMember::WPtr& handleFrom, Message::SPtr& message) mutable {
+		[&testReceiver](MessageBusError error, const MessageBusMember::WPtr& handleFrom, Message::SPtr& message) mutable {
+			testReceiver.receive(error, handleFrom, message);
+		}
+	);
+
+	// wait for receiver to finish
+	future.wait();
+
+	// stop thread pool
+	BOOST_REQUIRE(ioThread->shutdown() == true);
+}
+
+BOOST_AUTO_TEST_CASE(MessageBus_send_receive_10)
+{
+	// start thread pool
+	auto ioThread = boost::make_shared<IOThread>();
+	ioThread->numberThreads(5);
+	BOOST_REQUIRE(ioThread->startup() == true);
+
+	// start message bus
+	MessageBusConfig messageBusConfig;
+	messageBusConfig.ioThread(ioThread);
+	MessageBus messageBus(messageBusConfig);
+
+	// register sender and receiver
+	auto sender = messageBus.registerMember("sender");
+	auto receiver = messageBus.registerMember("receiver");
+
+	// send
+	for (uint32_t idx = 0; idx < 10; idx++) {
+		Message::SPtr message;
+		messageBus.messageSend(sender, receiver, message);
+	}
+
+	// receive
+	std::promise<void> promise;
+	auto future = promise.get_future();
+	TestReceiver testReceiver(&promise, &messageBus, 10);
+
+	messageBus.messageReceive(
+	    receiver,
+		[&testReceiver](MessageBusError error, const MessageBusMember::WPtr& handleFrom, Message::SPtr& message) mutable {
 			testReceiver.receive(error, handleFrom, message);
 		}
 	);
