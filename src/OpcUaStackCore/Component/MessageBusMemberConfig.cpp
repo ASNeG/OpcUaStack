@@ -16,55 +16,34 @@
  */
 
 #include <boost/make_shared.hpp>
-#include "OpcUaStackCore/Component/MessageBusConfig.h"
+#include "OpcUaStackCore/Component/MessageBusMemberConfig.h"
 
 namespace OpcUaStackCore
 {
 
-	MessageBusConfig::MessageBusConfig(void)
+	MessageBusMemberConfig::MessageBusMemberConfig(void)
 	{
 	}
 
-	MessageBusConfig::MessageBusConfig(MessageBusConfig& messageBusConfig)
+	MessageBusMemberConfig::MessageBusMemberConfig(MessageBusMemberConfig& messageBusConfig)
 	{
-		ioThread_ = messageBusConfig.ioThread();
+		maxReceiveQueueSize_ = messageBusConfig.maxReceiveQueueSize();
 	}
 
-	MessageBusConfig::~MessageBusConfig(void)
+	MessageBusMemberConfig::~MessageBusMemberConfig(void)
 	{
 	}
 
 	void
-	MessageBusConfig::ioThread(IOThread::SPtr& ioThread)
-	{
-		ioThread_ = ioThread;
-	}
-
-	IOThread::SPtr&
-	MessageBusConfig::ioThread(void)
-	{
-		return ioThread_;
-	}
-
-	void
-	MessageBusConfig::maxReceiveQueueSize(uint32_t maxReceiveQueueSize)
+	MessageBusMemberConfig::maxReceiveQueueSize(uint32_t maxReceiveQueueSize)
 	{
 		maxReceiveQueueSize_ = maxReceiveQueueSize;
 	}
 
 	uint32_t
-	MessageBusConfig::maxReceiveQueueSize(void)
+	MessageBusMemberConfig::maxReceiveQueueSize(void)
 	{
 		return maxReceiveQueueSize_;
-	}
-
-	uint32_t
-	MessageBusConfig::calcMaxReceiveQueueSize(uint32_t maxReceiveQueueSize)
-	{
-		if (maxReceiveQueueSize_ == 0) return maxReceiveQueueSize;
-		else if (maxReceiveQueueSize == 0) return maxReceiveQueueSize_;
-		else if (maxReceiveQueueSize_ > maxReceiveQueueSize) return maxReceiveQueueSize;
-		else return maxReceiveQueueSize_;
 	}
 
 }

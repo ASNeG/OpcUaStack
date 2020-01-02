@@ -15,19 +15,28 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_MessageBusError_h__
-#define __OpcUaStackCore_MessageBusError_h__
+#ifndef __OpcUaStackCore_MessageBusMemberConfig_h__
+#define __OpcUaStackCore_MessageBusMemberConfig_h__
+
+#include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Utility/IOThread.h"
 
 namespace OpcUaStackCore
 {
 
-	enum class MessageBusError
+	class DLLEXPORT MessageBusMemberConfig
 	{
-		Ok,
-		ReceiverUnknown,
-		SenderUnknown,
-		Cancel,
-		Overflow
+	  public:
+		MessageBusMemberConfig(void);
+		MessageBusMemberConfig(MessageBusMemberConfig& messageBusConfig);
+		~MessageBusMemberConfig(void);
+
+		void maxReceiveQueueSize(uint32_t maxReceiveQueueSize);
+		uint32_t maxReceiveQueueSize(void);
+
+	  private:
+		uint32_t maxReceiveQueueSize_ = 0;
+
 	};
 
 }

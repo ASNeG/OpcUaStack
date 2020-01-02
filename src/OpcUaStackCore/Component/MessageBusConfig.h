@@ -34,8 +34,15 @@ namespace OpcUaStackCore
 		void ioThread(IOThread::SPtr& ioThread);
 		IOThread::SPtr& ioThread(void);
 
+		void maxReceiveQueueSize(uint32_t maxReceiveQueueSize);
+		uint32_t maxReceiveQueueSize(void);
+		uint32_t calcMaxReceiveQueueSize(uint32_t maxReceiveQueueSize);
+
 	  private:
 		IOThread::SPtr ioThread_ = nullptr;
+
+		// default parameter for message bus member
+		uint32_t maxReceiveQueueSize_ = 0;
 
 	};
 

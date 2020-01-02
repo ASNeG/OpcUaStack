@@ -37,6 +37,7 @@ namespace OpcUaStackCore
 		virtual ~MessageBus(void);
 
 		MessageBusMember::WPtr registerMember(const std::string& name);
+		MessageBusMember::WPtr registerMember(const std::string& name, MessageBusMemberConfig& messageBusMemberConfig);
 		void deregisterMember(MessageBusMember::WPtr& messageBusHandle);
 		MessageBusMember::WPtr getMember(const std::string& name);
 		void getMemberNames(std::vector<std::string>& names);

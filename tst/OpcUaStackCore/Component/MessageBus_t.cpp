@@ -22,6 +22,7 @@ class TestReceiver
 	}
 
 	void receive(MessageBusError error, const MessageBusMember::WPtr& handleFrom, Message::SPtr& message) {
+		boost::mutex::scoped_lock g(mutex_);
 		actCount_++;
 
 		if (actCount_ == endCount_) {
@@ -41,10 +42,47 @@ class TestReceiver
 	}
 
   private:
+	boost::mutex mutex_;
 	uint32_t actCount_ = 0;
 	uint32_t endCount_ = 1;
 	std::promise<void>* promise_ = nullptr;
 	MessageBus* messageBus_ = nullptr;
+};
+
+class TestSender
+{
+  public:
+	TestSender(std::promise<void>* promise, uint32_t endCount)
+    {
+		actCount_ = 0;
+		promise_ = promise;
+		endCount_ = endCount;
+    }
+
+	~TestSender(void)
+	{
+	}
+
+	void sendCompleteCallback(MessageBusError error) {
+		boost::mutex::scoped_lock g(mutex_);
+		actCount_++;
+
+		error_ = error;
+		if (actCount_ == endCount_ || error != MessageBusError::Ok) {
+			if (promise_ != nullptr) {
+				promise_->set_value();
+			}
+			return;
+		}
+	}
+
+	MessageBusError error_;
+
+  private:
+	boost::mutex mutex_;
+	uint32_t actCount_ = 0;
+	uint32_t endCount_ = 1;
+	std::promise<void>* promise_ = nullptr;
 };
 
 BOOST_AUTO_TEST_SUITE(MessageBus_t)
@@ -224,6 +262,48 @@ BOOST_AUTO_TEST_CASE(MessageBus_send_receive_10)
 
 	// wait for receiver to finish
 	future.wait();
+
+	// stop thread pool
+	BOOST_REQUIRE(ioThread->shutdown() == true);
+}
+
+BOOST_AUTO_TEST_CASE(MessageBus_maxRceiveQueueSize)
+{
+	// start thread pool
+	auto ioThread = boost::make_shared<IOThread>();
+	ioThread->numberThreads(5);
+	BOOST_REQUIRE(ioThread->startup() == true);
+
+	// start message bus
+	MessageBusConfig messageBusConfig;
+	messageBusConfig.ioThread(ioThread);
+	MessageBus messageBus(messageBusConfig);
+
+	// register sender and receiver
+	MessageBusMemberConfig messageBusMemberConfig;
+	messageBusMemberConfig.maxReceiveQueueSize(10);
+	auto sender = messageBus.registerMember("sender");
+	auto receiver = messageBus.registerMember("receiver", messageBusMemberConfig);
+
+	// receive
+	std::promise<void> promise;
+	auto future = promise.get_future();
+	TestSender testSender(&promise, 11);
+
+	// send
+	for (uint32_t idx = 0; idx < 11; idx++) {
+		Message::SPtr message;
+		messageBus.messageSend(
+			sender, receiver, message,
+			[&testSender](MessageBusError error) {
+				testSender.sendCompleteCallback(error);
+			}
+		);
+	}
+
+	// wait for receiver to finish
+	future.wait();
+	BOOST_REQUIRE(testSender.error_ == MessageBusError::Overflow);
 
 	// stop thread pool
 	BOOST_REQUIRE(ioThread->shutdown() == true);

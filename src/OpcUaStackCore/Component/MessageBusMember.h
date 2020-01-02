@@ -24,6 +24,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackCore/Component/Message.h"
+#include "OpcUaStackCore/Component/MessageBusMemberConfig.h"
 #include "OpcUaStackCore/Component/MessageBusError.h"
 
 namespace OpcUaStackCore
@@ -38,7 +39,7 @@ namespace OpcUaStackCore
 		using ReceiveCallback = std::function<void (MessageBusError error, const WPtr& handleFrom, Message::SPtr& message)>;
 		using SendCompleteCallback = std::function<void (MessageBusError error)>;
 
-		MessageBusMember(void);
+		MessageBusMember(MessageBusMemberConfig& messageBusMemberConfig);
 		~MessageBusMember(void);
 
 		void name(const std::string& name);
@@ -88,6 +89,7 @@ namespace OpcUaStackCore
 			const boost::shared_ptr<boost::asio::io_service::strand>& strand
 		);
 
+		MessageBusMemberConfig messageBusMemberConfig_;
 		std::string name_ = "";
 		IOThread::SPtr ioThread_ = nullptr;
 

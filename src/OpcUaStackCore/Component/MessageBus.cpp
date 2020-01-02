@@ -42,7 +42,35 @@ namespace OpcUaStackCore
 		}
 
 		// create new member
-		auto messageBusMember = boost::make_shared<MessageBusMember>();
+		MessageBusMemberConfig messageBusMemberConfig;
+		messageBusMemberConfig.maxReceiveQueueSize(messageBusConfig_.maxReceiveQueueSize());
+
+		auto messageBusMember = boost::make_shared<MessageBusMember>(messageBusMemberConfig);
+		messageBusMember->name(name);
+		messageBusMember->ioThread(messageBusConfig_.ioThread());
+
+		// add new member to list
+		messageBusMemberMap_.insert(std::make_pair(name, messageBusMember));
+
+		return messageBusMember;
+	}
+
+	MessageBusMember::WPtr
+	MessageBus::registerMember(const std::string& name, MessageBusMemberConfig& messageBusMemberConfig)
+	{
+		boost::mutex::scoped_lock g(mutex_);
+
+		// check if member name already exist
+		auto it = messageBusMemberMap_.find(name);
+		if (it != messageBusMemberMap_.end()) {
+			return it->second;
+		}
+
+		// create new member
+		auto defaultMaxReceiveQueueSize = messageBusConfig_.calcMaxReceiveQueueSize(messageBusMemberConfig.maxReceiveQueueSize());
+		messageBusMemberConfig.maxReceiveQueueSize(defaultMaxReceiveQueueSize);
+
+		auto messageBusMember = boost::make_shared<MessageBusMember>(messageBusMemberConfig);
 		messageBusMember->name(name);
 		messageBusMember->ioThread(messageBusConfig_.ioThread());
 

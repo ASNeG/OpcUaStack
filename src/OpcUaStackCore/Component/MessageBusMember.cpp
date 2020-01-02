@@ -21,7 +21,8 @@
 namespace OpcUaStackCore
 {
 
-	MessageBusMember::MessageBusMember(void)
+	MessageBusMember::MessageBusMember(MessageBusMemberConfig& messageBusMemberConfig)
+	: messageBusMemberConfig_(messageBusMemberConfig)
 	{
 	}
 
@@ -175,6 +176,12 @@ namespace OpcUaStackCore
 	{
 		boost::mutex::scoped_lock g(mutex_);
 
+		// check number of entries in list
+		auto maxReceiveQueueSize = messageBusMemberConfig_.maxReceiveQueueSize();
+		if (maxReceiveQueueSize != 0 && msgList_.size() >= maxReceiveQueueSize) {
+			return;
+		}
+
 		// save message in list
 		Msg msg;
 		msg.sender_ = sender;
@@ -185,6 +192,12 @@ namespace OpcUaStackCore
 		if (receiverWait_) {
 			ReceiveCallback receiveCallback = receiveCallback_;
 			boost::shared_ptr<boost::asio::io_service::strand> receiverStrand = strand_;
+
+			// check number of entries in list
+			auto maxReceiveQueueSize = messageBusMemberConfig_.maxReceiveQueueSize();
+			if (maxReceiveQueueSize != 0 && msgList_.size() >= maxReceiveQueueSize) {
+				return;
+			}
 
 			// handle first message from list
 			sendFirstMessageToReceiver(receiveCallback, receiverStrand);
@@ -200,6 +213,17 @@ namespace OpcUaStackCore
 	)
 	{
 		boost::mutex::scoped_lock g(mutex_);
+
+		// check number of entries in list
+		auto maxReceiveQueueSize = messageBusMemberConfig_.maxReceiveQueueSize();
+		if (maxReceiveQueueSize != 0 && msgList_.size() >= maxReceiveQueueSize) {
+			ioThread()->run(
+				[this, sendCompleteCallback](void) {
+					sendCompleteCallback(MessageBusError::Overflow);
+				}
+			);
+			return;
+		}
 
 		// check if receiver is waiting for a message
 		if (receiverWait_) {
@@ -242,6 +266,17 @@ namespace OpcUaStackCore
 	)
 	{
 		boost::mutex::scoped_lock g(mutex_);
+
+		// check number of entries in list
+		auto maxReceiveQueueSize = messageBusMemberConfig_.maxReceiveQueueSize();
+		if (maxReceiveQueueSize != 0 && msgList_.size() >= maxReceiveQueueSize) {
+			strand->post(
+				[this, sendCompleteCallback](void) {
+					sendCompleteCallback(MessageBusError::Overflow);
+				}
+			);
+			return;
+		}
 
 		// check if receiver is waiting for a message
 		if (receiverWait_) {
