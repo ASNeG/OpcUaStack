@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -25,6 +25,19 @@ namespace OpcUaStackCore
     {
       public:
 	    typedef boost::shared_ptr<AsyncCallbackContext> SPtr;
+
+	    AsyncCallbackContext(
+	    	boost::shared_ptr<boost::asio::io_service::strand> strand,
+			const IOThread::AsyncCallback asyncCallback
+	    )
+	    : strand_(strand)
+	    , asyncCallback_(asyncCallback)
+	    {
+	    }
+
+	    ~AsyncCallbackContext(void)
+	    {
+	    }
 
 	    boost::shared_ptr<boost::asio::io_service::strand> strand_ = nullptr;
 	    IOThread::AsyncCallback asyncCallback_ = nullptr;
@@ -74,9 +87,7 @@ namespace OpcUaStackCore
 		const AsyncCallback& asyncCallback
 	)
 	{
-		auto asyncCallbackContext = boost::make_shared<AsyncCallbackContext>();
-		asyncCallbackContext->strand_ = strand;
-		asyncCallbackContext->asyncCallback_ = asyncCallback;
+		auto asyncCallbackContext = boost::make_shared<AsyncCallbackContext>(strand, asyncCallback);
 		ioService_->run(
 			[this, asyncCallbackContext]() {
 				asyncCallbackContext->strand_->dispatch(
