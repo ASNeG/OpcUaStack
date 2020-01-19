@@ -1,5 +1,5 @@
 /*
-   Copyright 2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -33,9 +33,13 @@ namespace OpcUaStackCore
 
 		void maxReceiveQueueSize(uint32_t maxReceiveQueueSize);
 		uint32_t maxReceiveQueueSize(void);
+		void ioThread(IOThread::SPtr& ioThread);
+		IOThread::SPtr& ioThread(void);
 
 	  private:
 		uint32_t maxReceiveQueueSize_ = 0;
+		IOThread::SPtr ioThread_ = nullptr;			// IOThread to execute callbacks. This value can be
+		                                            // overwritten by strands in the functions
 
 	};
 

@@ -39,7 +39,8 @@ namespace OpcUaStackCore
 		uint32_t calcMaxReceiveQueueSize(uint32_t maxReceiveQueueSize);
 
 	  private:
-		IOThread::SPtr ioThread_ = nullptr;
+		IOThread::SPtr ioThread_ = nullptr;			// IOThread to execute callbacks. This value can be
+		                                            // overwritten by the member configuration.
 
 		// default parameter for message bus member
 		uint32_t maxReceiveQueueSize_ = 0;

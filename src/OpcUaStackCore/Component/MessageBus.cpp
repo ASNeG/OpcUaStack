@@ -69,10 +69,13 @@ namespace OpcUaStackCore
 		// create new member
 		auto defaultMaxReceiveQueueSize = messageBusConfig_.calcMaxReceiveQueueSize(messageBusMemberConfig.maxReceiveQueueSize());
 		messageBusMemberConfig.maxReceiveQueueSize(defaultMaxReceiveQueueSize);
+		if (messageBusMemberConfig.ioThread().get() == nullptr) {
+			messageBusMemberConfig.ioThread(messageBusConfig_.ioThread());
+		}
 
 		auto messageBusMember = boost::make_shared<MessageBusMember>(messageBusMemberConfig);
 		messageBusMember->name(name);
-		messageBusMember->ioThread(messageBusConfig_.ioThread());
+		messageBusMember->ioThread(messageBusMemberConfig.ioThread());
 
 		// add new member to list
 		messageBusMemberMap_.insert(std::make_pair(name, messageBusMember));
