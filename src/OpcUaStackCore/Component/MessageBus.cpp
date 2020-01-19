@@ -28,6 +28,9 @@ namespace OpcUaStackCore
 
 	MessageBus::~MessageBus(void)
 	{
+		boost::mutex::scoped_lock g(mutex_);
+
+		messageBusMemberMap_.clear();
 	}
 
 	MessageBusMember::WPtr

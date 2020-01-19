@@ -10,8 +10,9 @@ using namespace OpcUaStackCore;
 class TestReceiver
 {
   public:
-	TestReceiver(std::promise<void>* promise, MessageBus* messageBus, uint32_t endCount)
+	TestReceiver(std::promise<void>* promise, MessageBus* messageBus, uint32_t endCount, bool retry = false)
     {
+		retry_ = retry;
 		actCount_ = 0;
 		promise_ = promise;
 		messageBus_ = messageBus;
@@ -34,6 +35,7 @@ class TestReceiver
 			return;
 		}
 
+		if (!retry_) return;
 		auto receiver = messageBus_->getMember("receiver");
 		messageBus_->messageReceive(
 		    receiver,
@@ -46,6 +48,7 @@ class TestReceiver
 	std::string threadId_ = "";
 
   private:
+	bool retry_ = false;
 	boost::mutex mutex_;
 	uint32_t actCount_ = 0;
 	uint32_t endCount_ = 1;
@@ -295,7 +298,7 @@ BOOST_AUTO_TEST_CASE(MessageBus_receive_send_10)
 	// receive
 	std::promise<void> promise;
 	auto future = promise.get_future();
-	TestReceiver testReceiver(&promise, &messageBus, 10);
+	TestReceiver testReceiver(&promise, &messageBus, 10, true);
 
 	messageBus.messageReceive(
 	    receiver,
@@ -381,7 +384,7 @@ BOOST_AUTO_TEST_CASE(MessageBus_send_receive_10)
 	// receive
 	std::promise<void> promise;
 	auto future = promise.get_future();
-	TestReceiver testReceiver(&promise, &messageBus, 10);
+	TestReceiver testReceiver(&promise, &messageBus, 10, true);
 
 	messageBus.messageReceive(
 	    receiver,
@@ -397,16 +400,18 @@ BOOST_AUTO_TEST_CASE(MessageBus_send_receive_10)
 	BOOST_REQUIRE(ioThread->shutdown() == true);
 }
 
-BOOST_AUTO_TEST_CASE(MessageBus_maxRceiveQueueSize)
+BOOST_AUTO_TEST_CASE(MessageBus_maxReceiveQueueSize)
 {
 	// start thread pool
 	auto ioThread = boost::make_shared<IOThread>();
 	ioThread->numberThreads(5);
 	BOOST_REQUIRE(ioThread->startup() == true);
+	auto strand = ioThread->createStrand();
+	BOOST_REQUIRE(strand.get() != nullptr);
 
 	// start message bus
 	MessageBusConfig messageBusConfig;
-	messageBusConfig.ioThread(ioThread);
+	messageBusConfig.strand(strand);
 	MessageBus messageBus(messageBusConfig);
 
 	// register sender and receiver
@@ -415,7 +420,6 @@ BOOST_AUTO_TEST_CASE(MessageBus_maxRceiveQueueSize)
 	auto sender = messageBus.registerMember("sender");
 	auto receiver = messageBus.registerMember("receiver", messageBusMemberConfig);
 
-	// receive
 	std::promise<void> promise;
 	auto future = promise.get_future();
 	TestSender testSender(&promise, 11);

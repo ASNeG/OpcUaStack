@@ -28,6 +28,7 @@ namespace OpcUaStackCore
 
 	MessageBusMember::~MessageBusMember(void)
 	{
+		while (msgList_.size() > 0) msgList_.pop_front();
 	}
 
 	void
