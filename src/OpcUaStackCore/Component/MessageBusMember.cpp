@@ -1,5 +1,5 @@
 /*
-   Copyright 2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -100,7 +100,7 @@ namespace OpcUaStackCore
 		msgList_.pop_front();
 
 		if (strand) {
-			strand_->post(
+			strand->post(
 			    [this, receiveCallback, sender, message](void) mutable {
 					receiveCallback(MessageBusError::Ok, sender, message);
 				}
@@ -159,7 +159,7 @@ namespace OpcUaStackCore
 		// check message list
 		if (msgList_.empty()) {
 			receiveCallback_ = receiveCallback;
-			strand_ = nullptr;
+			strand_ = strand;
 			receiverWait_ = true;
 			return;
 		}

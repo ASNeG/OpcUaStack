@@ -309,6 +309,87 @@ BOOST_AUTO_TEST_CASE(MessageBus_maxRceiveQueueSize)
 	BOOST_REQUIRE(ioThread->shutdown() == true);
 }
 
+BOOST_AUTO_TEST_CASE(MessageBus_iothread_member)
+{
+	// start thread pool
+	auto ioThread = boost::make_shared<IOThread>();
+	ioThread->numberThreads(5);
+	BOOST_REQUIRE(ioThread->startup() == true);
+
+	// start message bus
+	MessageBusConfig messageBusConfig;
+	MessageBus messageBus(messageBusConfig);
+
+	// register sender and receiver
+	MessageBusMemberConfig messageBusMemberConfig;
+	messageBusMemberConfig.ioThread(ioThread);
+
+	auto sender = messageBus.registerMember("sender");
+	auto receiver = messageBus.registerMember("receiver", messageBusMemberConfig);
+
+	// receive
+	std::promise<void> promise;
+	auto future = promise.get_future();
+	TestReceiver testReceiver(&promise, &messageBus, 1);
+
+	messageBus.messageReceive(
+	    receiver,
+		[&testReceiver](MessageBusError error, const MessageBusMember::WPtr& handleFrom, Message::SPtr& message) mutable {
+			testReceiver.receive(error, handleFrom, message);
+		}
+	);
+
+	// send
+	Message::SPtr message;
+	messageBus.messageSend(sender, receiver, message);
+
+	// wait for receiver to finish
+	future.wait();
+
+	// stop thread pool
+	BOOST_REQUIRE(ioThread->shutdown() == true);
+}
+
+BOOST_AUTO_TEST_CASE(MessageBus_strand)
+{
+	// start thread pool
+	auto ioThread = boost::make_shared<IOThread>();
+	ioThread->numberThreads(5);
+	BOOST_REQUIRE(ioThread->startup() == true);
+	auto strand = ioThread->createStrand();
+	BOOST_REQUIRE(strand.get() != nullptr);
+
+	// start message bus
+	MessageBusConfig messageBusConfig;
+	MessageBus messageBus(messageBusConfig);
+
+	// register sender and receiver
+	auto sender = messageBus.registerMember("sender");
+	auto receiver = messageBus.registerMember("receiver");
+
+	// receive
+	std::promise<void> promise;
+	auto future = promise.get_future();
+	TestReceiver testReceiver(&promise, &messageBus, 1);
+
+	messageBus.messageReceive(
+	    receiver,
+		strand,
+		[&testReceiver](MessageBusError error, const MessageBusMember::WPtr& handleFrom, Message::SPtr& message) mutable {
+			testReceiver.receive(error, handleFrom, message);
+		}
+	);
+
+	// send
+	Message::SPtr message;
+	messageBus.messageSend(sender, receiver, message);
+
+	// wait for receiver to finish
+	future.wait();
+
+	// stop thread pool
+	BOOST_REQUIRE(ioThread->shutdown() == true);
+}
 
 BOOST_AUTO_TEST_SUITE_END()
 
