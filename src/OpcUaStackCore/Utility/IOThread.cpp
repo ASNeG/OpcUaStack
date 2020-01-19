@@ -155,6 +155,31 @@ namespace OpcUaStackCore
 		return strand;
 	}
 
+	bool
+	IOThread::isOwnThread(void)
+	{
+		std::vector<std::string> threadIdVec;
+		ioService_->threadIdVec(threadIdVec);
+		auto ownThreadId = boost::lexical_cast<std::string>(boost::this_thread::get_id());
+
+		for (auto threadId : threadIdVec) {
+			if (threadId == ownThreadId) return true;
+		}
+		return false;
+	}
+
+	bool
+	IOThread::isOwnThread(const std::string& threadId)
+	{
+		std::vector<std::string> threadIdVec;
+		ioService_->threadIdVec(threadIdVec);
+
+		for (auto threadIdTmp : threadIdVec) {
+			if (threadIdTmp == threadId) return true;
+		}
+		return false;
+	}
+
 	void
 	IOThread::createIOService(void)
 	{

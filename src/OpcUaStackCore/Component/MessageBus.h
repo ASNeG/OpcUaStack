@@ -1,5 +1,5 @@
 /*
-   Copyright 2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2019-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -52,6 +52,11 @@ namespace OpcUaStackCore
 		);
 		void messageReceive(
 			MessageBusMember::WPtr& receiver,
+			const IOThread::SPtr& ioThread,
+			const MessageBusMember::ReceiveCallback& receiveCallback
+		);
+		void messageReceive(
+			MessageBusMember::WPtr& receiver,
 			const boost::shared_ptr<boost::asio::io_service::strand>& strand,
 			const MessageBusMember::ReceiveCallback& receiveCallback
 		);
@@ -71,7 +76,14 @@ namespace OpcUaStackCore
 			MessageBusMember::WPtr& sender,
 			MessageBusMember::WPtr& receiver,
 			Message::SPtr& message,
-			const boost::shared_ptr<boost::asio::io_service::strand>& strand,
+			const IOThread::SPtr& ioThreadSender,
+			const MessageBusMember::SendCompleteCallback& sendCompleteCallback
+		);
+		void messageSend(
+			MessageBusMember::WPtr& sender,
+			MessageBusMember::WPtr& receiver,
+			Message::SPtr& message,
+			const boost::shared_ptr<boost::asio::io_service::strand>& strandSender,
 			const MessageBusMember::SendCompleteCallback& sendCompleteCallback
 		);
 

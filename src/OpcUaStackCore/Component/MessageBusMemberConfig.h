@@ -35,11 +35,16 @@ namespace OpcUaStackCore
 		uint32_t maxReceiveQueueSize(void);
 		void ioThread(IOThread::SPtr& ioThread);
 		IOThread::SPtr& ioThread(void);
+		void strand(const boost::shared_ptr<boost::asio::io_service::strand>& strand);
+		boost::shared_ptr<boost::asio::io_service::strand>& strand(void);
 
 	  private:
 		uint32_t maxReceiveQueueSize_ = 0;
 		IOThread::SPtr ioThread_ = nullptr;			// IOThread to execute callbacks. This value can be
-		                                            // overwritten by strands in the functions
+		                                            // overwritten by strands in the functions and by the
+		                                            // strand in the message bus configuration.
+		boost::shared_ptr<boost::asio::io_service::strand> strand_ = nullptr; // Strand to execute callbacks.
+		                                            // This value can be overwritten by strands in the functions
 
 	};
 

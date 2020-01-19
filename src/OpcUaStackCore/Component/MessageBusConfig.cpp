@@ -1,5 +1,5 @@
 /*
-   Copyright 2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2019-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -28,6 +28,9 @@ namespace OpcUaStackCore
 	MessageBusConfig::MessageBusConfig(MessageBusConfig& messageBusConfig)
 	{
 		ioThread_ = messageBusConfig.ioThread();
+		strand_ = messageBusConfig.strand();
+		maxReceiveQueueSize_ = messageBusConfig.maxReceiveQueueSize();
+
 	}
 
 	MessageBusConfig::~MessageBusConfig(void)
@@ -44,6 +47,18 @@ namespace OpcUaStackCore
 	MessageBusConfig::ioThread(void)
 	{
 		return ioThread_;
+	}
+
+	void
+	MessageBusConfig::strand(boost::shared_ptr<boost::asio::io_service::strand>& strand)
+	{
+		strand_ = strand;
+	}
+
+	boost::shared_ptr<boost::asio::io_service::strand>&
+	MessageBusConfig::strand(void)
+	{
+		return strand_;
 	}
 
 	void

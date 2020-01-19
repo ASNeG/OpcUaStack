@@ -25,9 +25,12 @@ namespace OpcUaStackCore
 	{
 	}
 
-	MessageBusMemberConfig::MessageBusMemberConfig(MessageBusMemberConfig& messageBusConfig)
+	MessageBusMemberConfig::MessageBusMemberConfig(MessageBusMemberConfig& messageBusMemberConfig)
 	{
-		maxReceiveQueueSize_ = messageBusConfig.maxReceiveQueueSize();
+		maxReceiveQueueSize_ = messageBusMemberConfig.maxReceiveQueueSize();
+		ioThread_ = messageBusMemberConfig.ioThread();
+		strand_ = messageBusMemberConfig.strand();
+
 	}
 
 	MessageBusMemberConfig::~MessageBusMemberConfig(void)
@@ -55,6 +58,18 @@ namespace OpcUaStackCore
 	IOThread::SPtr& MessageBusMemberConfig::ioThread(void)
 	{
 		return ioThread_;
+	}
+
+	void
+	MessageBusMemberConfig::strand(const boost::shared_ptr<boost::asio::io_service::strand>& strand)
+	{
+		strand_ = strand;
+	}
+
+	boost::shared_ptr<boost::asio::io_service::strand>&
+	MessageBusMemberConfig::strand(void)
+	{
+		return strand_;
 	}
 
 }
