@@ -33,6 +33,7 @@ namespace OpcUaStackCore
 	  public:
 		using SPtr = boost::shared_ptr<MessageBus>;
 
+		MessageBus(void);
 		MessageBus(MessageBusConfig& messageBusConfig);
 		virtual ~MessageBus(void);
 

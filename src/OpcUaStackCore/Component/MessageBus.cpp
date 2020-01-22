@@ -21,6 +21,10 @@
 namespace OpcUaStackCore
 {
 
+	MessageBus::MessageBus(void)
+	{
+	}
+
 	MessageBus::MessageBus(MessageBusConfig& messageBusConfig)
 	{
 		messageBusConfig_ = messageBusConfig;

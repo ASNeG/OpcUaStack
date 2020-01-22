@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -34,8 +34,14 @@ namespace OpcUaStackClient
 
 	ServiceSetManager::~ServiceSetManager(void)
 	{
+		// destroy all io threads
 		while (ioThreadMap_.size() != 0) {
 			destroyIOThread(ioThreadMap_.begin()->first);
+		}
+
+		// remove message bus if exist
+		if (messageBus_) {
+			messageBus_.reset();
 		}
 	}
 
@@ -97,6 +103,14 @@ namespace OpcUaStackClient
 		SessionServiceConfig& sessionServiceConfig
 	)
 	{
+		// create new message bus if a message bus not exist in session the
+		// session service configuration.
+		messageBus_ = sessionServiceConfig.messageBus_;
+		if (!messageBus_) {
+			messageBus_ = boost::make_shared<MessageBus>();
+			sessionServiceConfig.messageBus_ = messageBus_;
+		}
+
 		// create new session
 		createIOThread(sessionServiceConfig.ioThreadName());
 		auto ioThread = getIOThread(sessionServiceConfig.ioThreadName());
