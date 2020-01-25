@@ -114,7 +114,7 @@ namespace OpcUaStackClient
 		// create new session
 		createIOThread(sessionServiceConfig.ioThreadName());
 		auto ioThread = getIOThread(sessionServiceConfig.ioThreadName());
-		auto sessionService = boost::make_shared<SessionService>(ioThread.get());
+		auto sessionService = boost::make_shared<SessionService>(ioThread.get(), messageBus_);
 
 		// set session configuration
 		sessionService->setConfiguration(

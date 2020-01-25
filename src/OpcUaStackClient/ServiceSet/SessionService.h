@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,6 +18,7 @@
 #define __OpcUaStackClient_SessionService_h__
 
 #include "OpcUaStackCore/Component/Component.h"
+#include "OpcUaStackCore/Component/MessageBus.h"
 #include "OpcUaStackCore/Utility/SlotTimer.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackCore/Utility/PendingQueue.h"
@@ -44,7 +45,10 @@ namespace OpcUaStackClient
 	  public:
 		typedef boost::shared_ptr<SessionService> SPtr;
 
-		SessionService(OpcUaStackCore::IOThread* ioThread);
+		SessionService(
+			OpcUaStackCore::IOThread* ioThread,
+			OpcUaStackCore::MessageBus::SPtr& messageBus
+		);
 		~SessionService(void);
 
 		void setConfiguration(
@@ -77,6 +81,8 @@ namespace OpcUaStackClient
 		void reconnectTimeout(void);
 
 	  private:
+		SessionService(void);
+
 		void asyncConnectInternal(void);
 		void asyncDisconnectInternal(bool deleteSubscriptions);
 		void asyncCancelInternal(uint32_t requestHandle);

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -29,14 +29,24 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
-	SessionService::SessionService(IOThread* ioThread)
+	SessionService::SessionService(
+		IOThread* ioThread,
+		MessageBus::SPtr& messageBus
+	)
 	: sm_()
-	, ctx_(new SessionServiceContext(ioThread))
+	, ctx_(new SessionServiceContext(ioThread, messageBus))
 	{
+		// init threads and timer
 		Component::ioThread(ioThread);
 		ctx_->slotTimerElement_ = boost::make_shared<SlotTimerElement>();
 		ctx_->ioThread_ = ioThread;
 		ctx_->sessionService_ = this;
+		ctx_->strand_ = ioThread->createStrand();
+
+		// register message bus receiver
+		MessageBusMemberConfig messageBusMemberConfig;
+		messageBusMemberConfig.strand(ctx_->strand_);
+		ctx_->messageBusMember_ = ctx_->messageBus_->registerMember("SessionService", messageBusMemberConfig);
 
 		// init pending queue callback
 		ctx_->pendingQueue_.ioService(*ioThread->ioService().get());
