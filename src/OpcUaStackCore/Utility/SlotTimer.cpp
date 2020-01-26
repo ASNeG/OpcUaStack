@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -37,11 +37,13 @@ namespace OpcUaStackCore
 
 	SlotTimerElement::~SlotTimerElement(void)
 	{
+		sequenceNumber_ = 0;
 	}
 
 	void
 	SlotTimerElement::timeoutCallback(const TimeoutCallback& timeoutCallback)
 	{
+		strand_ = nullptr;
 		timeoutCallback_ = timeoutCallback;
 	}
 
@@ -60,8 +62,15 @@ namespace OpcUaStackCore
 	{
 		if (timeoutCallback_) {
 			if (strand_) {
+				WPtr thisWeakPtr(shared_from_this());
+				uint32_t sequenceNumber = sequenceNumber_;
 				strand_->dispatch(
-					[this](){ timeoutCallback_(); }
+					[this, thisWeakPtr, sequenceNumber](){
+					    auto myPtr = thisWeakPtr.lock();
+					    if (myPtr && sequenceNumber == sequenceNumber_) {
+					        timeoutCallback_();
+					    }
+				    }
 				);
 			}
 			else {
@@ -164,6 +173,12 @@ namespace OpcUaStackCore
 		return handle_;
 	}
 
+	void
+	SlotTimerElement::incSequenceNumber(void)
+	{
+		sequenceNumber_++;
+	}
+
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -197,6 +212,7 @@ namespace OpcUaStackCore
 		}
 
 		delete [] slotList_;
+		slotList_ = nullptr;
 	}
 
 	void 
@@ -422,6 +438,7 @@ namespace OpcUaStackCore
 	SlotTimer::start(SlotTimerElement::SPtr slotTimerElement)
 	{
 		boost::mutex::scoped_lock g(mutex_);
+		slotTimerElement->incSequenceNumber();
 		internalStart(slotTimerElement);
 	}
 
@@ -445,6 +462,7 @@ namespace OpcUaStackCore
 		if (!slotTimerElement->isRunning()) return;
 
 		boost::mutex::scoped_lock g(mutex_);
+		slotTimerElement->incSequenceNumber();
 		slotArray1_.remove(slotTimerElement);
 	}
 

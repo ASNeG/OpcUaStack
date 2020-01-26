@@ -487,4 +487,34 @@ BOOST_AUTO_TEST_CASE(SlotTimer_interval)
 	ioService.stop();
 }
 
+BOOST_AUTO_TEST_CASE(SlotTimer_strand)
+{
+	IOService ioService;
+	SlotTimerTest slotTimerTest;
+	SlotTimerElement::SPtr slotTimerElement;
+	SlotTimer slotTimer;
+
+	auto strand = boost::make_shared<boost::asio::io_service::strand>(boost::asio::io_service::strand(ioService.io_service()));
+
+	ioService.start(1);
+	slotTimer.startSlotTimerLoop(&ioService);
+
+	slotTimerTest.callCondition_.condition(0,1);
+	slotTimerElement = boost::make_shared<SlotTimerElement>();
+	slotTimerElement->expireTime(boost::posix_time::microsec_clock::local_time()+boost::posix_time::millisec(10));
+	slotTimerElement->timeoutCallback(strand, boost::bind(&SlotTimerTest::call, &slotTimerTest, (uint64_t)10));
+	BOOST_REQUIRE(slotTimerElement->isRunning() == false);
+
+	slotTimer.start(slotTimerElement);
+	BOOST_REQUIRE(slotTimerElement->isRunning() == true);
+	BOOST_REQUIRE(slotTimerTest.callCondition_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(slotTimerElement->isRunning() == false);
+	BOOST_REQUIRE(slotTimerTest.count_ == 1);
+	BOOST_REQUIRE(slotTimerTest.tick_ == 10);
+
+	slotTimer.stopSlotTimerLoop();
+	ioService.stop();
+}
+
+
 BOOST_AUTO_TEST_SUITE_END()
