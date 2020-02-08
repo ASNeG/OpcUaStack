@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -20,6 +20,7 @@
 
 #include <set>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Component/MessageBus.h"
 #include "OpcUaStackClient/ServiceSet/SubscriptionServiceBase.h"
 #include "OpcUaStackClient/ServiceSet/SubscriptionServiceHandler.h"
 
@@ -33,7 +34,10 @@ namespace OpcUaStackClient
 	  public:
 		typedef boost::shared_ptr<SubscriptionService> SPtr;
 
-		SubscriptionService(OpcUaStackCore::IOThread* ioThread);
+		SubscriptionService(
+			OpcUaStackCore::IOThread* ioThread,
+			OpcUaStackCore::MessageBus::SPtr& messageBus
+		);
 		virtual ~SubscriptionService(void);
 
 		void setConfiguration(
@@ -86,6 +90,7 @@ namespace OpcUaStackClient
 	    void dataChangeNotification(const OpcUaStackCore::OpcUaExtensibleParameter::SPtr& extensibleParameter);
 	    void eventNotification(const OpcUaStackCore::OpcUaExtensibleParameter::SPtr& extensibleParameter);
 
+	    OpcUaStackCore::MessageBus::SPtr messageBus_;
 	    DataChangeNotificationHandler dataChangeNotificationHandler_;
 		EventNotificationHandler eventNotificationHandler_;
 		SubscriptionStateUpdateHandler subscriptionStateUpdateHandler_;
