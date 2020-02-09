@@ -82,6 +82,7 @@ namespace OpcUaStackCore
 		);
 		void runCallback(void);
 
+		bool cancel_ = false;
 		AsyncPendingQueueConfig asyncPendingQueueConfig_;
 		AsyncPendingQueueElement::Map pendingQueueMap_;
 		AsyncPendingQueueElement::List pendingQueueList_;

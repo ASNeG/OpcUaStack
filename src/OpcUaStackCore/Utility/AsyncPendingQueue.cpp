@@ -88,13 +88,14 @@ namespace OpcUaStackCore
 	AsyncPendingQueue::cancel(void)
 	{
 		// check if callback is exist
-		if (!timeoutCallback_) {
+		// check if callback already running
+		if (!timeoutCallback_ || cancel_) {
 			return;
 		}
+		cancel_ = true;
 
 		// execute callback
-		Object::SPtr object;
-		timeoutCallback_(false, 0, object);
+		runCallback();
 	}
 
 	bool
@@ -103,6 +104,12 @@ namespace OpcUaStackCore
 		// check if element in pending queue already exist
 		auto it = pendingQueueMap_.find(key);
 		if (it != pendingQueueMap_.end()) {
+			return false;
+		}
+
+		// check max pending queue size
+		uint32_t maxPendingQueueSize = asyncPendingQueueConfig_.maxPendingQueueSize();
+		if (maxPendingQueueSize != 0 && pendingQueueMap_.size() >= maxPendingQueueSize) {
 			return false;
 		}
 
@@ -116,11 +123,12 @@ namespace OpcUaStackCore
 		// start timer
 		timerElement->expireFromNow(timeoutMSec);
 		timerElement->timeoutCallback(
+			asyncPendingQueueConfig_.strand(),
 			[this, key](void) {
 				onTimeout(key);
 		    }
 	    );
-		asyncPendingQueueConfig_.slotTimer()->start(timerElement); // FIXME: add strand
+		asyncPendingQueueConfig_.slotTimer()->start(timerElement);
 
 		return true;
 	}
@@ -149,6 +157,7 @@ namespace OpcUaStackCore
 		const TimeoutCallback& timeoutCallback
 	)
 	{
+		cancel_ = false;
 		timeoutCallback_ = timeoutCallback;
 		runCallback();
 	}
@@ -171,19 +180,35 @@ namespace OpcUaStackCore
 		if (it == pendingQueueMap_.end()) {
 			return;
 		}
+		auto pendingQueueElement = it->second;
 
 		// remove element from pending queue
 		pendingQueueMap_.erase(it);
 
 		// add element to pending list and run callback if possible
-		pendingQueueList_.push_back(it->second);
+		pendingQueueList_.push_back(pendingQueueElement);
 		runCallback();
 	}
 
 	void
 	AsyncPendingQueue::runCallback(void)
 	{
-		// check if timeout function exists and pending list not empty
+		// check cancel flag
+		if (timeoutCallback_ && cancel_) {
+			TimeoutCallback timeoutCallback = timeoutCallback_;
+			timeoutCallback_ = nullptr;
+
+			asyncPendingQueueConfig_.strand()->dispatch(
+				[timeoutCallback](void) {
+				    Object::SPtr object;
+			        timeoutCallback(true, 0, object);
+			    }
+			);
+			return;
+		}
+
+		// check if timeout function exists
+		// check if pending list is empty
 		if (!timeoutCallback_ || pendingQueueList_.empty()) {
 			return;
 		}
@@ -193,10 +218,15 @@ namespace OpcUaStackCore
 		pendingQueueList_.pop_front();
 		auto key = pendingQueueElement->key();
 		auto element = pendingQueueElement->element();
-		timeoutCallback_(true, key, element);
 
-		// unset timeout callback
+		TimeoutCallback timeoutCallback = timeoutCallback_;
 		timeoutCallback_ = nullptr;
+
+		asyncPendingQueueConfig_.strand()->dispatch(
+			[timeoutCallback, key, &element](void) {
+		        timeoutCallback(false, key, element);
+		    }
+		);
 	}
 
 }
