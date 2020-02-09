@@ -21,19 +21,46 @@
 #include <boost/thread/mutex.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/asio/strand.hpp>
+#include <map>
+#include <list>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/Object.h"
 #include "OpcUaStackCore/Utility/AsyncPendingQueueConfig.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
+#include "OpcUaStackCore/Utility/SlotTimer.h"
 
 namespace OpcUaStackCore
 {
+
+    class DLLEXPORT AsyncPendingQueueElement
+    {
+      public:
+	    using SPtr = boost::shared_ptr<AsyncPendingQueueElement>;
+	    using Map = std::map<uint32_t, SPtr>;
+	    using List = std::list<SPtr>;
+
+	    AsyncPendingQueueElement(void);
+	    ~AsyncPendingQueueElement(void);
+
+	    void key(uint32_t key);
+	    uint32_t key(void);
+	    void element(const Object::SPtr element);
+	    Object::SPtr element(void);
+
+	    SlotTimerElement::SPtr& slotTimerElement(void);
+
+      private:
+	    uint32_t key_ = 0;
+	    Object::SPtr element_ = nullptr;
+	    SlotTimerElement::SPtr slotTimerElement_ = nullptr;
+    };
+
 
 	class DLLEXPORT AsyncPendingQueue
 	{
 	  public:
 		using SPtr = boost::shared_ptr<AsyncPendingQueue>;
-		using TimeoutCallback = std::function<void (uint32_t key, Object::SPtr& object)>;
+		using TimeoutCallback = std::function<void (bool error, uint32_t key, Object::SPtr& object)>;
 
 		AsyncPendingQueue(AsyncPendingQueueConfig& messageBusConfig);
 		virtual ~AsyncPendingQueue(void);
@@ -46,19 +73,19 @@ namespace OpcUaStackCore
 		void asyncTimeout(
 			const TimeoutCallback& timeoutCallback
 		);
-		void asyncTimeout(
-			const boost::shared_ptr<boost::asio::io_service::strand>& strand,
-			const TimeoutCallback& timeoutCallback
-		);
-		void asyncTimeout(
-			IOThread::SPtr& ioThread,
-			const TimeoutCallback& timeoutCallback
-		);
 
 		void keys(std::vector<uint32_t>& keys);
 
 	  private:
+		void onTimeout(
+			uint32_t key
+		);
+		void runCallback(void);
+
 		AsyncPendingQueueConfig asyncPendingQueueConfig_;
+		AsyncPendingQueueElement::Map pendingQueueMap_;
+		AsyncPendingQueueElement::List pendingQueueList_;
+		TimeoutCallback timeoutCallback_;
 
 	};
 

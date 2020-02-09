@@ -27,7 +27,8 @@ namespace OpcUaStackCore
 
 	AsyncPendingQueueConfig::AsyncPendingQueueConfig(AsyncPendingQueueConfig& asyncPendingQueueConfig)
 	{
-		ioThread_ = asyncPendingQueueConfig.ioThread();
+		slotTimer_ = asyncPendingQueueConfig.slotTimer();
+		strand_ = asyncPendingQueueConfig.strand();
 		maxPendingQueueSize_ = asyncPendingQueueConfig.maxPendingQueueSize();
 	}
 
@@ -36,15 +37,15 @@ namespace OpcUaStackCore
 	}
 
 	void
-	AsyncPendingQueueConfig::ioThread(IOThread::SPtr& ioThread)
+	AsyncPendingQueueConfig::slotTimer(SlotTimer::SPtr& slotTimer)
 	{
-		ioThread_ = ioThread;
+		slotTimer_ = slotTimer;
 	}
 
-	IOThread::SPtr&
-	AsyncPendingQueueConfig::ioThread(void)
+	SlotTimer::SPtr&
+	AsyncPendingQueueConfig::slotTimer(void)
 	{
-		return ioThread_;
+		return slotTimer_;
 	}
 
 	void

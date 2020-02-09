@@ -32,8 +32,8 @@ namespace OpcUaStackCore
 		AsyncPendingQueueConfig(AsyncPendingQueueConfig& asyncPendingQueueConfig);
 		~AsyncPendingQueueConfig(void);
 
-		void ioThread(IOThread::SPtr& ioThread);
-		IOThread::SPtr& ioThread(void);
+		void slotTimer(SlotTimer::SPtr& slotTimer);
+		SlotTimer::SPtr& slotTimer(void);
 		void strand(boost::shared_ptr<boost::asio::io_service::strand> strand);
 		boost::shared_ptr<boost::asio::io_service::strand>& strand(void);
 
@@ -41,7 +41,7 @@ namespace OpcUaStackCore
 		uint32_t maxPendingQueueSize(void);
 
 	  private:
-		IOThread::SPtr ioThread_ = nullptr;
+		SlotTimer::SPtr slotTimer_ = nullptr;
 		boost::shared_ptr<boost::asio::io_service::strand> strand_ = nullptr;
 
 		// default parameter for message bus member

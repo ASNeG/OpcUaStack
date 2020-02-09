@@ -21,6 +21,60 @@
 namespace OpcUaStackCore
 {
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    //
+    // AsyncPendingQueueElement
+    //
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    AsyncPendingQueueElement::AsyncPendingQueueElement(void)
+    {
+    	slotTimerElement_ = boost::make_shared<SlotTimerElement>();
+    }
+
+    AsyncPendingQueueElement::~AsyncPendingQueueElement(void)
+    {
+    	slotTimerElement_.reset();
+    }
+
+    void
+    AsyncPendingQueueElement::element(const Object::SPtr element)
+    {
+	    element_ = element;
+    }
+
+    Object::SPtr
+    AsyncPendingQueueElement::element(void)
+    {
+	    return element_;
+    }
+
+    SlotTimerElement::SPtr&
+    AsyncPendingQueueElement::slotTimerElement(void)
+    {
+	    return slotTimerElement_;
+    }
+
+    void
+    AsyncPendingQueueElement::key(uint32_t key)
+    {
+	    key_ = key;
+    }
+
+    uint32_t
+    AsyncPendingQueueElement::key(void)
+    {
+	    return key_;
+    }
+
+	// ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    //
+    // AsyncPendingQueue
+    //
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 	AsyncPendingQueue::AsyncPendingQueue(AsyncPendingQueueConfig& asyncPendingQueueConfig)
 	{
 		asyncPendingQueueConfig_ = asyncPendingQueueConfig;
@@ -33,21 +87,60 @@ namespace OpcUaStackCore
 	void
 	AsyncPendingQueue::cancel(void)
 	{
-		// FIXME: todo
+		// check if callback is exist
+		if (!timeoutCallback_) {
+			return;
+		}
+
+		// execute callback
+		Object::SPtr object;
+		timeoutCallback_(false, 0, object);
 	}
 
 	bool
 	AsyncPendingQueue::insert(uint32_t key, Object::SPtr object, uint32_t timeoutMSec)
 	{
-		// FIXME: todo
+		// check if element in pending queue already exist
+		auto it = pendingQueueMap_.find(key);
+		if (it != pendingQueueMap_.end()) {
+			return false;
+		}
+
+		// create and add pending queue element
+		auto pendingQueueElement = boost::make_shared<AsyncPendingQueueElement>();
+		auto timerElement = pendingQueueElement->slotTimerElement();
+		pendingQueueElement->key(key);
+		pendingQueueElement->element(object);
+		pendingQueueMap_.insert(std::make_pair(key, pendingQueueElement));
+
+		// start timer
+		timerElement->expireFromNow(timeoutMSec);
+		timerElement->timeoutCallback(
+			[this, key](void) {
+				onTimeout(key);
+		    }
+	    );
+		asyncPendingQueueConfig_.slotTimer()->start(timerElement); // FIXME: add strand
+
 		return true;
 	}
 
 	Object::SPtr
 	AsyncPendingQueue::remove(uint32_t key)
 	{
-		// FIXME: todo
-		return nullptr;
+		// find timer element
+		auto it = pendingQueueMap_.find(key);
+		if (it == pendingQueueMap_.end()) {
+			return nullptr;
+		}
+
+		// stop timer
+		auto pendingQueueElement = it->second;
+		asyncPendingQueueConfig_.slotTimer()->stop(pendingQueueElement->slotTimerElement());
+
+		// erase element
+		pendingQueueMap_.erase(it);
+		return pendingQueueElement->element();
 	}
 
 
@@ -56,31 +149,54 @@ namespace OpcUaStackCore
 		const TimeoutCallback& timeoutCallback
 	)
 	{
-		// FIXME: todo
-	}
-
-	void
-	AsyncPendingQueue::asyncTimeout(
-		const boost::shared_ptr<boost::asio::io_service::strand>& strand,
-		const TimeoutCallback& timeoutCallback
-	)
-	{
-		// FIXME: todo
-	}
-
-	void
-	AsyncPendingQueue::asyncTimeout(
-		IOThread::SPtr& ioThread,
-		const TimeoutCallback& timeoutCallback
-	)
-	{
-		// FIXME: todo
+		timeoutCallback_ = timeoutCallback;
+		runCallback();
 	}
 
 	void
 	AsyncPendingQueue::keys(std::vector<uint32_t>& keys)
 	{
-		// FIXME: todo
+		for (auto it = pendingQueueMap_.begin(); it != pendingQueueMap_.end(); it++) {
+			keys.push_back(it->first);
+		}
+	}
+
+	void
+	AsyncPendingQueue::onTimeout(
+		uint32_t key
+	)
+	{
+		// get element from pending queue
+		auto it = pendingQueueMap_.find(key);
+		if (it == pendingQueueMap_.end()) {
+			return;
+		}
+
+		// remove element from pending queue
+		pendingQueueMap_.erase(it);
+
+		// add element to pending list and run callback if possible
+		pendingQueueList_.push_back(it->second);
+		runCallback();
+	}
+
+	void
+	AsyncPendingQueue::runCallback(void)
+	{
+		// check if timeout function exists and pending list not empty
+		if (!timeoutCallback_ || pendingQueueList_.empty()) {
+			return;
+		}
+
+		// get first element from pending list and execute callback
+		auto pendingQueueElement = pendingQueueList_.front();
+		pendingQueueList_.pop_front();
+		auto key = pendingQueueElement->key();
+		auto element = pendingQueueElement->element();
+		timeoutCallback_(true, key, element);
+
+		// unset timeout callback
+		timeoutCallback_ = nullptr;
 	}
 
 }
