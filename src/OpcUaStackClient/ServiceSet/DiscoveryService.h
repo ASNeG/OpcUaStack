@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -20,6 +20,7 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Component/Component.h"
+#include "OpcUaStackCore/Component/MessageBus.h"
 #include "OpcUaStackCore/ServiceSet/DiscoveryServiceTransaction.h"
 
 namespace OpcUaStackClient 
@@ -31,7 +32,10 @@ namespace OpcUaStackClient
 	  public:
 		typedef boost::shared_ptr<DiscoveryService> SPtr;
 
-		DiscoveryService(OpcUaStackCore::IOThread* ioThread);
+		DiscoveryService(
+			OpcUaStackCore::IOThread* ioThread,
+			OpcUaStackCore::MessageBus::SPtr& messageBus
+		);
 		~DiscoveryService(void);
 
 		void setConfiguration(
@@ -51,6 +55,7 @@ namespace OpcUaStackClient
 		//- Component -----------------------------------------------------------------
 
 	  private:
+		OpcUaStackCore::MessageBus::SPtr messageBus_ = nullptr;
 		OpcUaStackCore::Component* componentSession_;
 	};
 

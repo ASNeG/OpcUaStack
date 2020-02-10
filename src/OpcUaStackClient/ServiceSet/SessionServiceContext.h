@@ -1,5 +1,5 @@
 /*
-   Copyright 2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2019-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,6 +19,7 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Component/MessageBus.h"
 #include "OpcUaStackCore/Utility/PendingQueue.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelClientConfig.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelClient.h"
@@ -45,7 +46,10 @@ namespace OpcUaStackClient
 	  public:
 		typedef boost::shared_ptr<SessionServiceContext> SPtr;
 
-		SessionServiceContext(OpcUaStackCore::IOThread* ioThread);
+		SessionServiceContext(
+			OpcUaStackCore::IOThread* ioThread,
+			OpcUaStackCore::MessageBus::SPtr& messageBus
+		);
 		~SessionServiceContext(void);
 
 		bool startReconnectTimer(void);
@@ -131,10 +135,13 @@ namespace OpcUaStackClient
 		SessionServiceChangeHandler sessionServiceChangeHandler_;
 
 		//
-		// thread and timer
+		// message bus, thread and timer
 		//
-		OpcUaStackCore::IOThread* ioThread_;
-		OpcUaStackCore::SlotTimerElement::SPtr slotTimerElement_;
+		boost::shared_ptr<boost::asio::io_service::strand> strand_ = nullptr;
+		OpcUaStackCore::MessageBus::SPtr messageBus_ = nullptr;
+		OpcUaStackCore::IOThread* ioThread_ = nullptr;
+		OpcUaStackCore::SlotTimerElement::SPtr slotTimerElement_ = nullptr;
+		OpcUaStackCore::MessageBusMember::WPtr messageBusMember_;
 
 		//
 		// session lifetime data
@@ -153,6 +160,9 @@ namespace OpcUaStackClient
 		SessionServiceMode sessionServiceMode_;
 		EndpointDescriptionCache& endpointDescriptionCache_;
 		OpcUaStackCore::SecureChannelClientConfig::SPtr secureChannelClientConfigBackup_;
+
+	  private:
+		SessionServiceContext(void);
 	};
 
 }

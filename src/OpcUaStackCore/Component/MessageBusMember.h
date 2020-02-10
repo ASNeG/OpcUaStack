@@ -1,5 +1,5 @@
 /*
-   Copyright 2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2019-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -44,14 +44,17 @@ namespace OpcUaStackCore
 
 		void name(const std::string& name);
 		std::string& name(void);
-		void ioThread(IOThread::SPtr& ioThread);
-		IOThread::SPtr& ioThread(void);
+		MessageBusMemberConfig& messageBusMemberConfig(void);
 
 		void cancelReceiver(
 			void
 		);
 
 		void messageReceive(
+			const ReceiveCallback& receiveCallback
+		);
+		void messageReceive(
+			const IOThread::SPtr& ioThread,
 			const ReceiveCallback& receiveCallback
 		);
 		void messageReceive(
@@ -66,6 +69,7 @@ namespace OpcUaStackCore
 		void messageSend(
 			WPtr& sender,
 			Message::SPtr& message,
+			const IOThread::SPtr& sendIoThread,
 			const SendCompleteCallback& sendCompleteCallback
 		);
 		void messageSend(
@@ -84,21 +88,18 @@ namespace OpcUaStackCore
 		};
 		using MsgList = std::list<Msg>;
 
-		void sendFirstMessageToReceiver(
-			const ReceiveCallback& receiveCallback,
-			const boost::shared_ptr<boost::asio::io_service::strand>& strand
-		);
+		void sendFirstMessageToReceiver(void);
 
+		std::string name_;
 		MessageBusMemberConfig messageBusMemberConfig_;
-		std::string name_ = "";
-		IOThread::SPtr ioThread_ = nullptr;
-
 		boost::mutex mutex_;
 		MsgList msgList_;
 
 		bool receiverWait_ = false;
+		IOThread::SPtr ioThread_ = nullptr;
 		boost::shared_ptr<boost::asio::io_service::strand> strand_ = nullptr;
 		ReceiveCallback receiveCallback_;
+		SendCompleteCallback sendCompleteCallback_;
 	};
 
 }

@@ -1,5 +1,5 @@
 /*
-   Copyright 2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2019-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -21,6 +21,10 @@
 namespace OpcUaStackCore
 {
 
+	MessageBus::MessageBus(void)
+	{
+	}
+
 	MessageBus::MessageBus(MessageBusConfig& messageBusConfig)
 	{
 		messageBusConfig_ = messageBusConfig;
@@ -28,6 +32,9 @@ namespace OpcUaStackCore
 
 	MessageBus::~MessageBus(void)
 	{
+		boost::mutex::scoped_lock g(mutex_);
+
+		messageBusMemberMap_.clear();
 	}
 
 	MessageBusMember::WPtr
@@ -44,10 +51,11 @@ namespace OpcUaStackCore
 		// create new member
 		MessageBusMemberConfig messageBusMemberConfig;
 		messageBusMemberConfig.maxReceiveQueueSize(messageBusConfig_.maxReceiveQueueSize());
+		messageBusMemberConfig.ioThread(messageBusConfig_.ioThread());
+		messageBusMemberConfig.strand(messageBusConfig_.strand());
 
 		auto messageBusMember = boost::make_shared<MessageBusMember>(messageBusMemberConfig);
 		messageBusMember->name(name);
-		messageBusMember->ioThread(messageBusConfig_.ioThread());
 
 		// add new member to list
 		messageBusMemberMap_.insert(std::make_pair(name, messageBusMember));
@@ -69,10 +77,13 @@ namespace OpcUaStackCore
 		// create new member
 		auto defaultMaxReceiveQueueSize = messageBusConfig_.calcMaxReceiveQueueSize(messageBusMemberConfig.maxReceiveQueueSize());
 		messageBusMemberConfig.maxReceiveQueueSize(defaultMaxReceiveQueueSize);
+		if (!messageBusMemberConfig.ioThread() && !messageBusMemberConfig.strand()) {
+			messageBusMemberConfig.ioThread(messageBusConfig_.ioThread());
+			messageBusMemberConfig.strand(messageBusConfig_.strand());
+		}
 
 		auto messageBusMember = boost::make_shared<MessageBusMember>(messageBusMemberConfig);
 		messageBusMember->name(name);
-		messageBusMember->ioThread(messageBusConfig_.ioThread());
 
 		// add new member to list
 		messageBusMemberMap_.insert(std::make_pair(name, messageBusMember));
@@ -148,6 +159,10 @@ namespace OpcUaStackCore
 		// check receiver
 		auto messageBusReceiver = receiver.lock();
 		if (!messageBusReceiver) {
+			if (!messageBusConfig_.ioThread()) {
+				return;
+			}
+
 			messageBusConfig_.ioThread()->run(
 				[this, receiveCallback](void) {
 					Message::SPtr message;
@@ -159,6 +174,29 @@ namespace OpcUaStackCore
 
 		// receive message
 		messageBusReceiver->messageReceive(receiveCallback);
+	}
+
+	void
+	MessageBus::messageReceive(
+		MessageBusMember::WPtr& receiver,
+		const IOThread::SPtr& ioThread,
+		const MessageBusMember::ReceiveCallback& receiveCallback
+	)
+	{
+		// check receiver
+		auto messageBusReceiver = receiver.lock();
+		if (!messageBusReceiver) {
+			ioThread->run(
+				[this, receiveCallback](void) {
+					Message::SPtr message;
+					receiveCallback(MessageBusError::ReceiverUnknown, MessageBusMember::WPtr(), message);
+				}
+			);
+			return;
+		}
+
+		// receive message
+		messageBusReceiver->messageReceive(ioThread, receiveCallback);
 	}
 
 	void
@@ -215,32 +253,69 @@ namespace OpcUaStackCore
 		const MessageBusMember::SendCompleteCallback& sendCompleteCallback
 	)
 	{
-		// check sender
 		auto messageBusSender = sender.lock();
+		auto messageBusReceiver = receiver.lock();
+
+		// get sender strand and ioThread
+		auto strandSender = messageBusConfig_.strand();
+		auto ioThreadSender = messageBusConfig_.ioThread();
+		if (messageBusSender) {
+			strandSender = messageBusSender->messageBusMemberConfig().strand();
+			ioThreadSender = messageBusSender->messageBusMemberConfig().ioThread();
+		}
+
+		// check sender
 		if (!messageBusSender) {
-			messageBusConfig_.ioThread()->run(
-				[this, sendCompleteCallback](void) {
-					Message::SPtr message;
-					sendCompleteCallback(MessageBusError::SenderUnknown);
-				}
-			);
+			if (strandSender) {
+				strandSender->post(
+				    [this, sendCompleteCallback](void) {
+					    Message::SPtr message;
+					    sendCompleteCallback(MessageBusError::SenderUnknown);
+				    }
+			    );
+			}
+			else if (ioThreadSender) {
+				ioThreadSender->run(
+				    [this, sendCompleteCallback](void) {
+					    Message::SPtr message;
+					    sendCompleteCallback(MessageBusError::SenderUnknown);
+				    }
+			    );
+			}
 			return;
 		}
 
 		// check receiver
-		auto messageBusReceiver = receiver.lock();
 		if (!messageBusReceiver) {
-			messageBusConfig_.ioThread()->run(
-				[this, sendCompleteCallback](void) {
-					Message::SPtr message;
-					sendCompleteCallback(MessageBusError::ReceiverUnknown);
-				}
-			);
+			if (strandSender) {
+			    strandSender->post(
+				    [this, sendCompleteCallback](void) {
+					    Message::SPtr message;
+					    sendCompleteCallback(MessageBusError::ReceiverUnknown);
+				    }
+			    );
+			}
+			else if (ioThreadSender) {
+				ioThreadSender->run(
+				    [this, sendCompleteCallback](void) {
+					    Message::SPtr message;
+					    sendCompleteCallback(MessageBusError::ReceiverUnknown);
+				    }
+			    );
+			}
 			return;
 		}
 
 		// send message
-		messageBusReceiver->messageSend(sender, message, sendCompleteCallback);
+		if (strandSender) {
+			messageBusReceiver->messageSend(sender, message, strandSender, sendCompleteCallback);
+		}
+		else if (ioThreadSender) {
+			messageBusReceiver->messageSend(sender, message, ioThreadSender, sendCompleteCallback);
+		}
+		else {
+		    messageBusReceiver->messageSend(sender, message);
+		}
 	}
 
 	void
@@ -248,14 +323,54 @@ namespace OpcUaStackCore
 		MessageBusMember::WPtr& sender,
 		MessageBusMember::WPtr& receiver,
 		Message::SPtr& message,
-		const boost::shared_ptr<boost::asio::io_service::strand>& strand,
+		const IOThread::SPtr& ioThreadSender,
 		const MessageBusMember::SendCompleteCallback& sendCompleteCallback
 	)
 	{
-		// check sender
 		auto messageBusSender = sender.lock();
+		auto messageBusReceiver = receiver.lock();
+
+		// check sender
 		if (!messageBusSender) {
-			strand->post(
+			ioThreadSender->run(
+				[this, sendCompleteCallback](void) {
+					Message::SPtr message;
+					sendCompleteCallback(MessageBusError::SenderUnknown);
+				}
+			);
+			return;
+		}
+
+		// check receiver
+		if (!messageBusReceiver) {
+			ioThreadSender->run(
+				[this, sendCompleteCallback](void) {
+					Message::SPtr message;
+					sendCompleteCallback(MessageBusError::ReceiverUnknown);
+				}
+			);
+			return;
+		}
+
+		// send message
+		messageBusReceiver->messageSend(sender, message, ioThreadSender, sendCompleteCallback);
+	}
+
+	void
+	MessageBus::messageSend(
+		MessageBusMember::WPtr& sender,
+		MessageBusMember::WPtr& receiver,
+		Message::SPtr& message,
+		const boost::shared_ptr<boost::asio::io_service::strand>& strandSender,
+		const MessageBusMember::SendCompleteCallback& sendCompleteCallback
+	)
+	{
+		auto messageBusSender = sender.lock();
+		auto messageBusReceiver = receiver.lock();
+
+		// check sende
+		if (!messageBusSender) {
+			strandSender->post(
 				[this, sendCompleteCallback](void) {
 					sendCompleteCallback(MessageBusError::SenderUnknown);
 				}
@@ -264,9 +379,8 @@ namespace OpcUaStackCore
 		}
 
 		// check receiver
-		auto messageBusReceiver = receiver.lock();
 		if (!messageBusReceiver) {
-			strand->post(
+			strandSender->post(
 				[this, sendCompleteCallback](void) {
 					sendCompleteCallback(MessageBusError::ReceiverUnknown);
 				}
@@ -275,7 +389,7 @@ namespace OpcUaStackCore
 		}
 
 		// send message
-		messageBusReceiver->messageSend(sender, message, strand, sendCompleteCallback);
+		messageBusReceiver->messageSend(sender, message, strandSender, sendCompleteCallback);
 	}
 
 }

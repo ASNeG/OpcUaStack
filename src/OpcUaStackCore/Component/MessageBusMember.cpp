@@ -1,5 +1,5 @@
 /*
-   Copyright 2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -28,6 +28,7 @@ namespace OpcUaStackCore
 
 	MessageBusMember::~MessageBusMember(void)
 	{
+		while (msgList_.size() > 0) msgList_.pop_front();
 	}
 
 	void
@@ -42,16 +43,10 @@ namespace OpcUaStackCore
 		return name_;
 	}
 
-	void
-	MessageBusMember::ioThread(IOThread::SPtr& ioThread)
+	MessageBusMemberConfig&
+	MessageBusMember::messageBusMemberConfig(void)
 	{
-		ioThread_ = ioThread;
-	}
-
-	IOThread::SPtr&
-	MessageBusMember::ioThread(void)
-	{
-		return ioThread_;
+		return messageBusMemberConfig_;
 	}
 
 	void
@@ -61,13 +56,14 @@ namespace OpcUaStackCore
 	{
 		boost::mutex::scoped_lock g(mutex_);
 
-		// check if receiver is active
+		// check if receiver is not active. In this case, calling the function
+		// has no effect.
 		if (!receiverWait_) {
 			return;
 		}
 
+		// call receiver callback with error code cancel
 		ReceiveCallback receiveCallback = receiveCallback_;
-
 		if (strand_) {
 			strand_->post(
 				[this, receiveCallback](void) {
@@ -76,44 +72,82 @@ namespace OpcUaStackCore
 				}
 			);
 		}
-		else {
-			ioThread()->run(
+		else if (ioThread_) {
+			ioThread_->run(
 				[this, receiveCallback](void) {
 					Message::SPtr message;
 					receiveCallback(MessageBusError::Cancel, MessageBusMember::WPtr(), message);
 				}
 			);
 		}
-
-		receiverWait_ = false;
-	}
-
-	void
-	MessageBusMember::sendFirstMessageToReceiver(
-		const ReceiveCallback& receiveCallback,
-		const boost::shared_ptr<boost::asio::io_service::strand>& strand
-	)
-	{
-		// receive message
-		auto sender = msgList_.front().sender_;
-	    auto message = msgList_.front().message_;
-		msgList_.pop_front();
-
-		if (strand) {
-			strand_->post(
-			    [this, receiveCallback, sender, message](void) mutable {
-					receiveCallback(MessageBusError::Ok, sender, message);
+		else if (messageBusMemberConfig_.strand()) {
+			messageBusMemberConfig_.strand()->post(
+				[this, receiveCallback](void) {
+					Message::SPtr message;
+					receiveCallback(MessageBusError::Cancel, MessageBusMember::WPtr(), message);
+				}
+			);
+		}
+		else if (messageBusMemberConfig_.ioThread()) {
+			messageBusMemberConfig_.ioThread()->run(
+				[this, receiveCallback](void) {
+					Message::SPtr message;
+					receiveCallback(MessageBusError::Cancel, MessageBusMember::WPtr(), message);
 				}
 			);
 		}
 		else {
-			ioThread()->run(
-			    [this, receiveCallback, sender, message](void) mutable {
-					receiveCallback(MessageBusError::Ok, sender, message);
+			return;
+		}
+
+		strand_ = nullptr;
+		ioThread_ = nullptr;
+		receiverWait_ = false;
+	}
+
+	void
+	MessageBusMember::sendFirstMessageToReceiver(void)
+	{
+		// get message from message list
+		auto sender = msgList_.front().sender_;
+	    auto message = msgList_.front().message_;
+		msgList_.pop_front();
+
+		// call receiver callback with message
+		if (strand_) {
+			strand_->post(
+			    [this, sender, message](void) mutable {
+					receiveCallback_(MessageBusError::Ok, sender, message);
 				}
 			);
 		}
+		else if (ioThread_) {
+			ioThread_->run(
+			    [this, sender, message](void) mutable {
+					receiveCallback_(MessageBusError::Ok, sender, message);
+				}
+			);
+		}
+		else if (messageBusMemberConfig_.strand()) {
+			messageBusMemberConfig_.strand()->post(
+			    [this, sender, message](void) mutable {
+					receiveCallback_(MessageBusError::Ok, sender, message);
+				}
+			);
+		}
+		else if (messageBusMemberConfig_.ioThread()) {
+			messageBusMemberConfig_.ioThread()->run(
+			    [this, sender, message](void) mutable {
+					receiveCallback_(MessageBusError::Ok, sender, message);
+				}
+			);
+		}
+		else {
+			return;
+		}
 
+		strand_ = nullptr;
+		ioThread_ = nullptr;
 		receiverWait_ = false;
 	}
 
@@ -130,16 +164,46 @@ namespace OpcUaStackCore
 			return;
 		}
 
+		strand_ = nullptr;
+		ioThread_ = nullptr;
+		receiveCallback_ = receiveCallback;
+
 		// check message list
 		if (msgList_.empty()) {
-			receiveCallback_ = receiveCallback;
-			strand_ = nullptr;
 			receiverWait_ = true;
 			return;
 		}
 
 		// handle first message from list
-		sendFirstMessageToReceiver(receiveCallback, nullptr);
+		sendFirstMessageToReceiver();
+	}
+
+	void
+	MessageBusMember::messageReceive(
+		const IOThread::SPtr& ioThread,
+		const ReceiveCallback& receiveCallback
+	)
+	{
+		boost::mutex::scoped_lock g(mutex_);
+
+		// check parameter
+		if (receiverWait_) {
+			// ignore receiver
+			return;
+		}
+
+		strand_ = nullptr;
+		ioThread_ = ioThread;
+		receiveCallback_ = receiveCallback;
+
+		// check message list
+		if (msgList_.empty()) {
+			receiverWait_ = true;
+			return;
+		}
+
+		// handle first message from list
+		sendFirstMessageToReceiver();
 	}
 
 	void
@@ -156,16 +220,18 @@ namespace OpcUaStackCore
 			return;
 		}
 
+		strand_ = strand;
+		ioThread_ = nullptr;
+		receiveCallback_ = receiveCallback;
+
 		// check message list
 		if (msgList_.empty()) {
-			receiveCallback_ = receiveCallback;
-			strand_ = nullptr;
 			receiverWait_ = true;
 			return;
 		}
 
 		// handle first message from list
-		sendFirstMessageToReceiver(receiveCallback, strand);
+		sendFirstMessageToReceiver();
 	}
 
 	void
@@ -190,18 +256,7 @@ namespace OpcUaStackCore
 
 		// check if receiver is waiting for a message
 		if (receiverWait_) {
-			ReceiveCallback receiveCallback = receiveCallback_;
-			boost::shared_ptr<boost::asio::io_service::strand> receiverStrand = strand_;
-
-			// check number of entries in list
-			auto maxReceiveQueueSize = messageBusMemberConfig_.maxReceiveQueueSize();
-			if (maxReceiveQueueSize != 0 && msgList_.size() >= maxReceiveQueueSize) {
-				return;
-			}
-
-			// handle first message from list
-			sendFirstMessageToReceiver(receiveCallback, receiverStrand);
-			return;
+			sendFirstMessageToReceiver();
 		}
 	}
 
@@ -209,37 +264,21 @@ namespace OpcUaStackCore
 	MessageBusMember::messageSend(
 		WPtr& sender,
 		Message::SPtr& message,
+		const IOThread::SPtr& ioThreadSender,
 		const SendCompleteCallback& sendCompleteCallback
 	)
 	{
 		boost::mutex::scoped_lock g(mutex_);
+		sendCompleteCallback_ = sendCompleteCallback;
 
 		// check number of entries in list
 		auto maxReceiveQueueSize = messageBusMemberConfig_.maxReceiveQueueSize();
 		if (maxReceiveQueueSize != 0 && msgList_.size() >= maxReceiveQueueSize) {
-			ioThread()->run(
-				[this, sendCompleteCallback](void) {
-					sendCompleteCallback(MessageBusError::Overflow);
+			ioThreadSender->run(
+				[this](void) {
+					sendCompleteCallback_(MessageBusError::Overflow);
 				}
 			);
-			return;
-		}
-
-		// check if receiver is waiting for a message
-		if (receiverWait_) {
-			ReceiveCallback receiveCallback = receiveCallback_;
-			boost::shared_ptr<boost::asio::io_service::strand> receiverStrand = strand_;
-
-			// handle first message from list
-			sendFirstMessageToReceiver(receiveCallback, receiverStrand);
-
-			// call send complete callback
-			ioThread()->run(
-				[this, sendCompleteCallback](void) {
-					sendCompleteCallback(MessageBusError::Ok);
-				}
-			);
-
 			return;
 		}
 
@@ -249,10 +288,15 @@ namespace OpcUaStackCore
 		msg.message_ = message;
 		msgList_.push_back(msg);
 
+		// check if receiver is waiting for a message
+		if (receiverWait_) {
+			sendFirstMessageToReceiver();
+		}
+
 		// call send complete callback
-		ioThread()->run(
-			[this, sendCompleteCallback](void) {
-				sendCompleteCallback(MessageBusError::Ok);
+		ioThreadSender->run(
+			[this](void) {
+				sendCompleteCallback_(MessageBusError::Ok);
 			}
 		);
 	}
@@ -261,38 +305,21 @@ namespace OpcUaStackCore
 	MessageBusMember::messageSend(
 		WPtr& sender,
 		Message::SPtr& message,
-		const boost::shared_ptr<boost::asio::io_service::strand>& strand,
+		const boost::shared_ptr<boost::asio::io_service::strand>& strandSender,
 		const SendCompleteCallback& sendCompleteCallback
 	)
 	{
 		boost::mutex::scoped_lock g(mutex_);
+		sendCompleteCallback_ = sendCompleteCallback;
 
 		// check number of entries in list
 		auto maxReceiveQueueSize = messageBusMemberConfig_.maxReceiveQueueSize();
 		if (maxReceiveQueueSize != 0 && msgList_.size() >= maxReceiveQueueSize) {
-			strand->post(
-				[this, sendCompleteCallback](void) {
-					sendCompleteCallback(MessageBusError::Overflow);
+			strandSender->post(
+				[this](void) {
+					sendCompleteCallback_(MessageBusError::Overflow);
 				}
 			);
-			return;
-		}
-
-		// check if receiver is waiting for a message
-		if (receiverWait_) {
-			ReceiveCallback receiveCallback = receiveCallback_;
-			boost::shared_ptr<boost::asio::io_service::strand> receiverStrand = strand_;
-
-			// handle first message from list
-			sendFirstMessageToReceiver(receiveCallback, receiverStrand);
-
-			// call send complete callback
-			strand->post(
-				[this, sendCompleteCallback](void) {
-					sendCompleteCallback(MessageBusError::Ok);
-				}
-			);
-
 			return;
 		}
 
@@ -302,10 +329,15 @@ namespace OpcUaStackCore
 		msg.message_ = message;
 		msgList_.push_back(msg);
 
+		// check if receiver is waiting for a message
+		if (receiverWait_) {
+			sendFirstMessageToReceiver();
+		}
+
 		// call send complete callback
-		strand->post(
-			[this, sendCompleteCallback](void) {
-				sendCompleteCallback(MessageBusError::Ok);
+		strandSender->post(
+			[this](void) {
+				sendCompleteCallback_(MessageBusError::Ok);
 			}
 		);
 	}

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -146,8 +146,38 @@ namespace OpcUaStackCore
 	boost::shared_ptr<boost::asio::io_service::strand>
 	IOThread::createStrand(void)
 	{
+		if (ioService_.get() == nullptr) {
+			boost::shared_ptr<boost::asio::io_service::strand> strand;
+			return strand;
+		}
+
 		boost::shared_ptr<boost::asio::io_service::strand> strand(new boost::asio::io_service::strand(ioService_->io_service()));
 		return strand;
+	}
+
+	bool
+	IOThread::isOwnThread(void)
+	{
+		std::vector<std::string> threadIdVec;
+		ioService_->threadIdVec(threadIdVec);
+		auto ownThreadId = boost::lexical_cast<std::string>(boost::this_thread::get_id());
+
+		for (auto threadId : threadIdVec) {
+			if (threadId == ownThreadId) return true;
+		}
+		return false;
+	}
+
+	bool
+	IOThread::isOwnThread(const std::string& threadId)
+	{
+		std::vector<std::string> threadIdVec;
+		ioService_->threadIdVec(threadIdVec);
+
+		for (auto threadIdTmp : threadIdVec) {
+			if (threadIdTmp == threadId) return true;
+		}
+		return false;
 	}
 
 	void

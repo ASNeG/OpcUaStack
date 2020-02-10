@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,6 +18,7 @@
 #define __OpcUaStackClient_SessionServiceConfig_h__
 
 #include "OpcUaStackCore/Utility/IOThread.h"
+#include "OpcUaStackCore/Component/MessageBus.h"
 #include "OpcUaStackClient/ServiceSet/SessionMode.h"
 #include "OpcUaStackClient/ServiceSet/SessionService.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceHandler.h"
@@ -39,6 +40,8 @@ namespace OpcUaStackClient
 		SessionServiceChangeHandler sessionServiceChangeHandler_;
 		OpcUaStackCore::SecureChannelClientConfig::SPtr secureChannelClient_;
 		SessionConfig::SPtr session_;
+
+		OpcUaStackCore::MessageBus::SPtr messageBus_ = nullptr;
 	};
 
 }

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -34,8 +34,14 @@ namespace OpcUaStackClient
 
 	ServiceSetManager::~ServiceSetManager(void)
 	{
+		// destroy all io threads
 		while (ioThreadMap_.size() != 0) {
 			destroyIOThread(ioThreadMap_.begin()->first);
+		}
+
+		// remove message bus if exist
+		if (messageBus_) {
+			messageBus_.reset();
 		}
 	}
 
@@ -97,10 +103,18 @@ namespace OpcUaStackClient
 		SessionServiceConfig& sessionServiceConfig
 	)
 	{
+		// create new message bus if a message bus not exist in session the
+		// session service configuration.
+		messageBus_ = sessionServiceConfig.messageBus_;
+		if (!messageBus_) {
+			messageBus_ = boost::make_shared<MessageBus>();
+			sessionServiceConfig.messageBus_ = messageBus_;
+		}
+
 		// create new session
 		createIOThread(sessionServiceConfig.ioThreadName());
 		auto ioThread = getIOThread(sessionServiceConfig.ioThreadName());
-		auto sessionService = boost::make_shared<SessionService>(ioThread.get());
+		auto sessionService = boost::make_shared<SessionService>(ioThread.get(), messageBus_);
 
 		// set session configuration
 		sessionService->setConfiguration(
@@ -137,7 +151,7 @@ namespace OpcUaStackClient
 		// create discovery service
 		createIOThread(discoveryServiceConfig.ioThreadName());
 		IOThread::SPtr ioThread = getIOThread(discoveryServiceConfig.ioThreadName());
-		DiscoveryService::SPtr discoveryService = boost::make_shared<DiscoveryService>(ioThread.get());
+		DiscoveryService::SPtr discoveryService = boost::make_shared<DiscoveryService>(ioThread.get(), messageBus_);
 
 		// set discovery configuration
 		discoveryService->setConfiguration(
@@ -162,7 +176,7 @@ namespace OpcUaStackClient
 		// create attribute service
 		createIOThread(attributeServiceConfig.ioThreadName());
 		auto ioThread = getIOThread(attributeServiceConfig.ioThreadName());
-		auto attributeService = boost::make_shared<AttributeService>(ioThread.get());
+		auto attributeService = boost::make_shared<AttributeService>(ioThread.get(), messageBus_);
 
 		// set attribute configuration
 		attributeService->setConfiguration(
@@ -187,7 +201,7 @@ namespace OpcUaStackClient
 		// create subscription service
 		createIOThread(subscriptionServiceConfig.ioThreadName());
 		auto ioThread = getIOThread(subscriptionServiceConfig.ioThreadName());
-		auto subscriptionService = boost::make_shared<SubscriptionService>(ioThread.get());
+		auto subscriptionService = boost::make_shared<SubscriptionService>(ioThread.get(), messageBus_);
 
 		// set subscription configuration
 		subscriptionService->setConfiguration(
@@ -217,7 +231,7 @@ namespace OpcUaStackClient
 		// create monitored item service
 		createIOThread(monitoredItemServiceConfig.ioThreadName());
 		IOThread::SPtr ioThread = getIOThread(monitoredItemServiceConfig.ioThreadName());
-		MonitoredItemService::SPtr monitoredItemService = boost::make_shared<MonitoredItemService>(ioThread.get());
+		MonitoredItemService::SPtr monitoredItemService = boost::make_shared<MonitoredItemService>(ioThread.get(), messageBus_);
 
 		// set monitored item configuration
 		monitoredItemService->setConfiguration(
@@ -242,7 +256,7 @@ namespace OpcUaStackClient
 		// create monitored item service
 		createIOThread(methodServiceConfig.ioThreadName());
 		auto ioThread = getIOThread(methodServiceConfig.ioThreadName());
-		auto methodService = boost::make_shared<MethodService>(ioThread.get());
+		auto methodService = boost::make_shared<MethodService>(ioThread.get(), messageBus_);
 
 		// set method configuration
 		methodService->setConfiguration(
@@ -267,7 +281,7 @@ namespace OpcUaStackClient
 		// create view service
 		createIOThread(viewServiceConfig.ioThreadName());
 		IOThread::SPtr ioThread = getIOThread(viewServiceConfig.ioThreadName());
-		ViewService::SPtr viewService = boost::make_shared<ViewService>(ioThread.get());
+		ViewService::SPtr viewService = boost::make_shared<ViewService>(ioThread.get(), messageBus_);
 
 		// set view configuration
 		viewService->setConfiguration(
@@ -292,7 +306,7 @@ namespace OpcUaStackClient
 		// create query service
 		createIOThread(queryServiceConfig.ioThreadName());
 		IOThread::SPtr ioThread = getIOThread(queryServiceConfig.ioThreadName());
-		QueryService::SPtr queryService = boost::make_shared<QueryService>(ioThread.get());
+		QueryService::SPtr queryService = boost::make_shared<QueryService>(ioThread.get(), messageBus_);
 
 		// set query configuration
 		queryService->setConfiguration(
@@ -317,7 +331,7 @@ namespace OpcUaStackClient
 		// create node mangement service
 		createIOThread(nodeManagementServiceConfig.ioThreadName());
 		auto ioThread = getIOThread(nodeManagementServiceConfig.ioThreadName());
-		auto nodeManagementService = boost::make_shared<NodeManagementService>(ioThread.get());
+		auto nodeManagementService = boost::make_shared<NodeManagementService>(ioThread.get(), messageBus_);
 
 		// set node management configuration
 		nodeManagementService->setConfiguration(
