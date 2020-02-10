@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -21,6 +21,7 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/asio/strand.hpp>
 #include <boost/shared_ptr.hpp>
+#include <boost/weak_ptr.hpp>
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/Base/Condition.h"
 
@@ -28,10 +29,12 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT SlotTimerElement
+	: public boost::enable_shared_from_this<SlotTimerElement>
 	{
 	  public:
-		typedef boost::shared_ptr<SlotTimerElement> SPtr;
-		typedef std::function<void (void)> TimeoutCallback;
+		using SPtr = boost::shared_ptr<SlotTimerElement>;
+		using WPtr = boost::weak_ptr<SlotTimerElement>;
+		using TimeoutCallback = std::function<void (void)>;
 
 		SlotTimerElement(void);
 		~SlotTimerElement(void);
@@ -62,7 +65,10 @@ namespace OpcUaStackCore
 		void last(SlotTimerElement::SPtr last);
 		SlotTimerElement::SPtr& last(void);
 
+		void incSequenceNumber(void);
+
 	  private:
+		uint32_t sequenceNumber_ = 0;
 		boost::shared_ptr<boost::asio::io_service::strand> strand_ = nullptr;
 		TimeoutCallback timeoutCallback_ = nullptr;
 
