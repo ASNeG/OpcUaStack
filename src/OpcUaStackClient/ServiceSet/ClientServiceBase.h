@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -14,26 +14,32 @@
 
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
-#ifndef __OpcUaStackClient_QueryServiceConfig_h__
-#define __OpcUaStackClient_QueryServiceConfig_h__
 
+#ifndef __OpcUaStackClient_ClientServiceBase_h__
+#define __OpcUaStackClient_ClientServiceBase_h__
+
+#include "OpcUaStackCore/Component/MessageBus.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
-#include "OpcUaStackClient/ServiceSet/QueryService.h"
-#include "OpcUaStackClient/ServiceSet/ServiceConfigBase.h"
 
-namespace OpcUaStackClient
+namespace OpcUaStackClient 
 {
 
-	class DLLEXPORT QueryServiceConfig
-	: public ServiceConfigBase
+	class DLLEXPORT ClientServiceBase
 	{
 	  public:
-		typedef boost::shared_ptr<QueryServiceConfig> SPtr;
+		typedef boost::shared_ptr<ClientServiceBase> SPtr;
 
-		QueryServiceConfig(void);
-		~QueryServiceConfig(void);
+		ClientServiceBase(void);
+		virtual ~ClientServiceBase(void);
 
-		std::string queryServiceName_ = "QueryService";
+		OpcUaStackCore::MessageBusMember::WPtr& messageBusMember(void);
+
+	  protected:
+		std::string serviceName_ = "";
+		OpcUaStackCore::IOThread* ioThread_ = nullptr;
+		boost::shared_ptr<boost::asio::io_service::strand> strand_ = nullptr;
+		OpcUaStackCore::MessageBus::SPtr messageBus_ = nullptr;
+		OpcUaStackCore::MessageBusMember::WPtr messageBusMember_;
 	};
 
 }

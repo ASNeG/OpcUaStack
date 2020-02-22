@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -14,28 +14,27 @@
 
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
-#ifndef __OpcUaStackClient_QueryServiceConfig_h__
-#define __OpcUaStackClient_QueryServiceConfig_h__
 
-#include "OpcUaStackCore/Utility/IOThread.h"
-#include "OpcUaStackClient/ServiceSet/QueryService.h"
-#include "OpcUaStackClient/ServiceSet/ServiceConfigBase.h"
+#include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackClient/ServiceSet/ClientServiceBase.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient
 {
 
-	class DLLEXPORT QueryServiceConfig
-	: public ServiceConfigBase
+	ClientServiceBase::ClientServiceBase(void)
 	{
-	  public:
-		typedef boost::shared_ptr<QueryServiceConfig> SPtr;
+	}
 
-		QueryServiceConfig(void);
-		~QueryServiceConfig(void);
+	ClientServiceBase::~ClientServiceBase(void)
+	{
+	}
 
-		std::string queryServiceName_ = "QueryService";
-	};
+	MessageBusMember::WPtr&
+	ClientServiceBase::messageBusMember(void)
+	{
+		return messageBusMember_;
+	}
 
 }
-
-#endif

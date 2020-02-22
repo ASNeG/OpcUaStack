@@ -103,7 +103,13 @@ namespace OpcUaStackClient
 		SessionServiceConfig& sessionServiceConfig
 	)
 	{
-		// create new message bus if a message bus not exist in session the
+		// check parameter
+		if (!sessionServiceConfig.session_) {
+			Log(Error, "session create error, because session configuration empty");
+			return nullptr;
+		}
+
+		// create new message bus if a message bus not exist in the
 		// session service configuration.
 		messageBus_ = sessionServiceConfig.messageBus_;
 		if (!messageBus_) {
@@ -111,10 +117,22 @@ namespace OpcUaStackClient
 			sessionServiceConfig.messageBus_ = messageBus_;
 		}
 
+		// check if session service name already exist. Each session service must have
+		// a unique name.
+		if (messageBus_->existMember(sessionServiceConfig.sessionServiceName_)) {
+			Log(Debug, "session create error, because session service name already exist")
+			    .parameter("SessionServiceName", sessionServiceConfig.sessionServiceName_);
+			return nullptr;
+		}
+
 		// create new session
 		createIOThread(sessionServiceConfig.ioThreadName());
 		auto ioThread = getIOThread(sessionServiceConfig.ioThreadName());
-		auto sessionService = boost::make_shared<SessionService>(ioThread.get(), messageBus_);
+		auto sessionService = boost::make_shared<SessionService>(
+			sessionServiceConfig.sessionServiceName_,
+			ioThread.get(),
+			messageBus_
+		);
 
 		// set session configuration
 		sessionService->setConfiguration(
@@ -148,13 +166,26 @@ namespace OpcUaStackClient
 		SessionService::SPtr& sessionService,
 		DiscoveryServiceConfig& discoveryServiceConfig)
 	{
+		// check if discovery service name already exist. Each discovery service must have
+		// a unique name.
+		if (messageBus_->existMember(discoveryServiceConfig.discoveryServiceName_)) {
+			Log(Debug, "discovery service create error, because discovery service name already exist")
+			    .parameter("DiscoveryServiceName", discoveryServiceConfig.discoveryServiceName_);
+			return nullptr;
+		}
+
 		// create discovery service
 		createIOThread(discoveryServiceConfig.ioThreadName());
-		IOThread::SPtr ioThread = getIOThread(discoveryServiceConfig.ioThreadName());
-		DiscoveryService::SPtr discoveryService = boost::make_shared<DiscoveryService>(ioThread.get(), messageBus_);
+		auto ioThread = getIOThread(discoveryServiceConfig.ioThreadName());
+		auto discoveryService = boost::make_shared<DiscoveryService>(
+			discoveryServiceConfig.discoveryServiceName_,
+			ioThread.get(),
+			messageBus_
+		);
 
 		// set discovery configuration
 		discoveryService->setConfiguration(
+			sessionService->messageBusMember(),
 			sessionService->component()
 		);
 
@@ -173,13 +204,26 @@ namespace OpcUaStackClient
 		SessionService::SPtr& sessionService,
 		AttributeServiceConfig& attributeServiceConfig)
 	{
+		// check if attribute service name already exist. Each attribute service must have
+		// a unique name.
+		if (messageBus_->existMember(attributeServiceConfig.attributeServiceName_)) {
+			Log(Debug, "attribute service create error, because attribute service name already exist")
+			    .parameter("AttributeServiceName", attributeServiceConfig.attributeServiceName_);
+			return nullptr;
+		}
+
 		// create attribute service
 		createIOThread(attributeServiceConfig.ioThreadName());
 		auto ioThread = getIOThread(attributeServiceConfig.ioThreadName());
-		auto attributeService = boost::make_shared<AttributeService>(ioThread.get(), messageBus_);
+		auto attributeService = boost::make_shared<AttributeService>(
+			attributeServiceConfig.attributeServiceName_,
+			ioThread.get(),
+			messageBus_
+		);
 
 		// set attribute configuration
 		attributeService->setConfiguration(
+			sessionService->messageBusMember(),
 			sessionService->component()
 		);
 
@@ -198,13 +242,26 @@ namespace OpcUaStackClient
 		SessionService::SPtr& sessionService,
 		SubscriptionServiceConfig& subscriptionServiceConfig)
 	{
+		// check if subscription service name already exist. Each subscription service must have
+		// a unique name.
+		if (messageBus_->existMember(subscriptionServiceConfig.subscriptionServiceName_)) {
+			Log(Debug, "subscription service create error, because subscription service name already exist")
+			    .parameter("SubscriptionServiceName", subscriptionServiceConfig.subscriptionServiceName_);
+			return nullptr;
+		}
+
 		// create subscription service
 		createIOThread(subscriptionServiceConfig.ioThreadName());
 		auto ioThread = getIOThread(subscriptionServiceConfig.ioThreadName());
-		auto subscriptionService = boost::make_shared<SubscriptionService>(ioThread.get(), messageBus_);
+		auto subscriptionService = boost::make_shared<SubscriptionService>(
+			subscriptionServiceConfig.subscriptionServiceName_,
+			ioThread.get(),
+			messageBus_
+		);
 
 		// set subscription configuration
 		subscriptionService->setConfiguration(
+			sessionService->messageBusMember(),
 			sessionService->component(),
 			subscriptionServiceConfig.dataChangeNotificationHandler_,
 			subscriptionServiceConfig.eventNotificationHandler_,
@@ -228,13 +285,26 @@ namespace OpcUaStackClient
 		SessionService::SPtr& sessionService,
 		MonitoredItemServiceConfig& monitoredItemServiceConfig)
 	{
+		// check if monitored item service name already exist. Each monitored item service must have
+		// a unique name.
+		if (messageBus_->existMember(monitoredItemServiceConfig.monitoredItemServiceName_)) {
+			Log(Debug, "monitored item service create error, because monitored item service name already exist")
+			    .parameter("MonitoredItemServiceName", monitoredItemServiceConfig.monitoredItemServiceName_);
+			return nullptr;
+		}
+
 		// create monitored item service
 		createIOThread(monitoredItemServiceConfig.ioThreadName());
-		IOThread::SPtr ioThread = getIOThread(monitoredItemServiceConfig.ioThreadName());
-		MonitoredItemService::SPtr monitoredItemService = boost::make_shared<MonitoredItemService>(ioThread.get(), messageBus_);
+		auto ioThread = getIOThread(monitoredItemServiceConfig.ioThreadName());
+		auto monitoredItemService = boost::make_shared<MonitoredItemService>(
+			monitoredItemServiceConfig.monitoredItemServiceName_,
+			ioThread.get(),
+			messageBus_
+		);
 
 		// set monitored item configuration
 		monitoredItemService->setConfiguration(
+			sessionService->messageBusMember(),
 			sessionService->component()
 		);
 
@@ -253,13 +323,26 @@ namespace OpcUaStackClient
 		SessionService::SPtr& sessionService,
 		MethodServiceConfig& methodServiceConfig)
 	{
+		// check if method service name already exist. Each method service must have
+		// a unique name.
+		if (messageBus_->existMember(methodServiceConfig.methodServiceName_)) {
+			Log(Debug, "method service create error, because method service name already exist")
+			    .parameter("MethodServiceName", methodServiceConfig.methodServiceName_);
+			return nullptr;
+		}
+
 		// create monitored item service
 		createIOThread(methodServiceConfig.ioThreadName());
 		auto ioThread = getIOThread(methodServiceConfig.ioThreadName());
-		auto methodService = boost::make_shared<MethodService>(ioThread.get(), messageBus_);
+		auto methodService = boost::make_shared<MethodService>(
+			methodServiceConfig.methodServiceName_,
+			ioThread.get(),
+			messageBus_
+		);
 
 		// set method configuration
 		methodService->setConfiguration(
+			sessionService->messageBusMember(),
 			sessionService->component()
 		);
 
@@ -278,13 +361,26 @@ namespace OpcUaStackClient
 		SessionService::SPtr& sessionService,
 		ViewServiceConfig& viewServiceConfig)
 	{
+		// check if view service name already exist. Each view service must have
+		// a unique name.
+		if (messageBus_->existMember(viewServiceConfig.viewServiceName_)) {
+			Log(Debug, "view service create error, because view service name already exist")
+			    .parameter("ViewServiceName", viewServiceConfig.viewServiceName_);
+			return nullptr;
+		}
+
 		// create view service
 		createIOThread(viewServiceConfig.ioThreadName());
-		IOThread::SPtr ioThread = getIOThread(viewServiceConfig.ioThreadName());
-		ViewService::SPtr viewService = boost::make_shared<ViewService>(ioThread.get(), messageBus_);
+		auto ioThread = getIOThread(viewServiceConfig.ioThreadName());
+		auto viewService = boost::make_shared<ViewService>(
+			viewServiceConfig.viewServiceName_,
+			ioThread.get(),
+			messageBus_
+		);
 
 		// set view configuration
 		viewService->setConfiguration(
+			sessionService->messageBusMember(),
 			sessionService->component()
 		);
 
@@ -303,13 +399,26 @@ namespace OpcUaStackClient
 		SessionService::SPtr& sessionService,
 		QueryServiceConfig& queryServiceConfig)
 	{
+		// check if query service name already exist. Each query service must have
+		// a unique name.
+		if (messageBus_->existMember(queryServiceConfig.queryServiceName_)) {
+			Log(Debug, "query service create error, because query service name already exist")
+			    .parameter("QueryServiceName", queryServiceConfig.queryServiceName_);
+			return nullptr;
+		}
+
 		// create query service
 		createIOThread(queryServiceConfig.ioThreadName());
-		IOThread::SPtr ioThread = getIOThread(queryServiceConfig.ioThreadName());
-		QueryService::SPtr queryService = boost::make_shared<QueryService>(ioThread.get(), messageBus_);
+		auto ioThread = getIOThread(queryServiceConfig.ioThreadName());
+		auto queryService = boost::make_shared<QueryService>(
+			queryServiceConfig.queryServiceName_,
+			ioThread.get(),
+			messageBus_
+		);
 
 		// set query configuration
 		queryService->setConfiguration(
+			sessionService->messageBusMember(),
 			sessionService->component()
 		);
 
@@ -326,15 +435,29 @@ namespace OpcUaStackClient
 	NodeManagementService::SPtr
 	ServiceSetManager::nodeManagementService(
 		SessionService::SPtr& sessionService,
-		NodeManagementServiceConfig& nodeManagementServiceConfig)
+		NodeManagementServiceConfig& nodeManagementServiceConfig
+	)
 	{
+		// check if node manafement service name already exist. Each node management service must have
+		// a unique name.
+		if (messageBus_->existMember(nodeManagementServiceConfig.nodeManagementServiceName_)) {
+			Log(Debug, "node management service create error, because node management service name already exist")
+			    .parameter("NodeManagementServiceName", nodeManagementServiceConfig.nodeManagementServiceName_);
+			return nullptr;
+		}
+
 		// create node mangement service
 		createIOThread(nodeManagementServiceConfig.ioThreadName());
 		auto ioThread = getIOThread(nodeManagementServiceConfig.ioThreadName());
-		auto nodeManagementService = boost::make_shared<NodeManagementService>(ioThread.get(), messageBus_);
+		auto nodeManagementService = boost::make_shared<NodeManagementService>(
+			nodeManagementServiceConfig.nodeManagementServiceName_,
+			ioThread.get(),
+		    messageBus_
+		);
 
 		// set node management configuration
 		nodeManagementService->setConfiguration(
+			sessionService->messageBusMember(),
 			sessionService->component()
 		);
 

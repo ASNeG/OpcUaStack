@@ -21,6 +21,7 @@
 #include <set>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Component/MessageBus.h"
+#include "OpcUaStackClient/ServiceSet/ClientServiceBase.h"
 #include "OpcUaStackClient/ServiceSet/SubscriptionServiceBase.h"
 #include "OpcUaStackClient/ServiceSet/SubscriptionServiceHandler.h"
 
@@ -28,19 +29,22 @@ namespace OpcUaStackClient
 {
 
 	class DLLEXPORT SubscriptionService
-	: public SubscriptionServiceBase
+	: public ClientServiceBase
+	, public SubscriptionServiceBase
 	, public SubscriptionServicePublishIf
 	{
 	  public:
 		typedef boost::shared_ptr<SubscriptionService> SPtr;
 
 		SubscriptionService(
+			const std::string& serviceName,
 			OpcUaStackCore::IOThread* ioThread,
 			OpcUaStackCore::MessageBus::SPtr& messageBus
 		);
 		virtual ~SubscriptionService(void);
 
 		void setConfiguration(
+			OpcUaStackCore::MessageBusMember::WPtr& sessionMember,
 			OpcUaStackCore::Component* componentSession,
 			const DataChangeNotificationHandler& dataChangeNotificationHandler,
 			const EventNotificationHandler& eventNotificationHandler,
@@ -90,7 +94,7 @@ namespace OpcUaStackClient
 	    void dataChangeNotification(const OpcUaStackCore::OpcUaExtensibleParameter::SPtr& extensibleParameter);
 	    void eventNotification(const OpcUaStackCore::OpcUaExtensibleParameter::SPtr& extensibleParameter);
 
-	    OpcUaStackCore::MessageBus::SPtr messageBus_;
+	    OpcUaStackCore::MessageBusMember::WPtr sessionMember_;
 	    DataChangeNotificationHandler dataChangeNotificationHandler_;
 		EventNotificationHandler eventNotificationHandler_;
 		SubscriptionStateUpdateHandler subscriptionStateUpdateHandler_;

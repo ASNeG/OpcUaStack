@@ -24,13 +24,20 @@ namespace OpcUaStackClient
 {
 
 	AttributeService::AttributeService(
+		const std::string& serviceName,
 		IOThread* ioThread,
 		MessageBus::SPtr& messageBus
 	)
-	: Component()
+	: ClientServiceBase()
+	, Component()
 	, componentSession_(nullptr)
-	, messageBus_(messageBus)
 	{
+		// set parameter in client service base
+		serviceName_ = serviceName;
+		ClientServiceBase::ioThread_ = ioThread;
+		strand_ = ioThread->createStrand();
+		messageBus_ = messageBus;
+
 		Component::ioThread(ioThread);
 	}
 
@@ -40,9 +47,11 @@ namespace OpcUaStackClient
 
 	void
 	AttributeService::setConfiguration(
+		MessageBusMember::WPtr& sessionMember,
 		Component* componentSession
 	)
 	{
+		sessionMember_ = sessionMember;
 		this->componentSession(componentSession);
 	}
 

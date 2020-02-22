@@ -26,10 +26,12 @@ namespace OpcUaStackClient
 {
 
 	SubscriptionService::SubscriptionService(
+		const std::string& serviceName,
 		IOThread* ioThread,
 		MessageBus::SPtr& messageBus
 	)
-	: SubscriptionServiceBase()
+	: ClientServiceBase()
+	, SubscriptionServiceBase()
 	, subscriptionSet_()
 	, subscriptionSetPendingDelete_()
 	, publishCount_(5)
@@ -37,8 +39,13 @@ namespace OpcUaStackClient
 	, dataChangeNotificationHandler_()
 	, eventNotificationHandler_()
 	, subscriptionStateUpdateHandler_()
-	, messageBus_(messageBus)
 	{
+		// set parameter in client service base
+		serviceName_ = serviceName;
+		ClientServiceBase::ioThread_ = ioThread;
+		strand_ = ioThread->createStrand();
+		messageBus_ = messageBus;
+
 		Component::ioThread(ioThread);
 		subscriptionServicePublishIf(this);
 	}
@@ -49,6 +56,7 @@ namespace OpcUaStackClient
 
 	void
 	SubscriptionService::setConfiguration(
+		MessageBusMember::WPtr& sessionMember,
 		Component* componentSession,
 		const DataChangeNotificationHandler& dataChangeNotificationHandler,
 		const EventNotificationHandler& eventNotificationHandler,
@@ -57,6 +65,8 @@ namespace OpcUaStackClient
 		uint32_t requestTimeout
 	)
 	{
+		sessionMember_ = sessionMember;
+
 		this->componentSession(componentSession);
 		dataChangeNotificationHandler_ = dataChangeNotificationHandler;
 		eventNotificationHandler_ = eventNotificationHandler;

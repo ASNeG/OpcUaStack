@@ -20,23 +20,27 @@
 
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/Component/MessageBus.h"
+#include "OpcUaStackClient/ServiceSet/ClientServiceBase.h"
 #include "OpcUaStackCore/ServiceSet/MonitoredItemServiceTransaction.h"
 
 namespace OpcUaStackClient
 {
 	class DLLEXPORT MonitoredItemService
-	: public OpcUaStackCore::Component
+	: public ClientServiceBase
+	, public OpcUaStackCore::Component
 	{
 	  public:
 		typedef boost::shared_ptr<MonitoredItemService> SPtr;
 
 		MonitoredItemService(
+			const std::string& serviceName,
 			OpcUaStackCore::IOThread* ioThread,
 			OpcUaStackCore::MessageBus::SPtr& messageBus
 		);
 		~MonitoredItemService(void);
 
 		void setConfiguration(
+			OpcUaStackCore::MessageBusMember::WPtr& sessionMember,
 			OpcUaStackCore::Component* componentSession
 		);
 		void componentSession(OpcUaStackCore::Component* componentSession);
@@ -57,7 +61,7 @@ namespace OpcUaStackClient
 		//- Component -----------------------------------------------------------------
 
 	  private:
-		OpcUaStackCore::MessageBus::SPtr messageBus_;
+		OpcUaStackCore::MessageBusMember::WPtr sessionMember_;
 		OpcUaStackCore::Component* componentSession_;
 	};
 

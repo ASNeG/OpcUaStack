@@ -22,23 +22,27 @@
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/Component/MessageBus.h"
 #include "OpcUaStackCore/ServiceSet/NodeManagementServiceTransaction.h"
+#include "OpcUaStackClient/ServiceSet/ClientServiceBase.h"
 
 namespace OpcUaStackClient 
 {
 
 	class DLLEXPORT NodeManagementService
-	: public OpcUaStackCore::Component
+	: public ClientServiceBase
+	, public OpcUaStackCore::Component
 	{
 	  public:
 		typedef boost::shared_ptr<NodeManagementService> SPtr;
 
 		NodeManagementService(
+			const std::string& serviceName,
 			OpcUaStackCore::IOThread* ioThread,
 			OpcUaStackCore::MessageBus::SPtr& messageBus
 		);
 		~NodeManagementService(void);
 
 		void setConfiguration(
+			OpcUaStackCore::MessageBusMember::WPtr& sessionMember,
 			OpcUaStackCore::Component* componentSession
 		);
 		void componentSession(OpcUaStackCore::Component* componentSession);
@@ -57,7 +61,7 @@ namespace OpcUaStackClient
 		//- Component -----------------------------------------------------------------
 
 	  private:
-		OpcUaStackCore::MessageBus::SPtr messageBus_;
+		OpcUaStackCore::MessageBusMember::WPtr sessionMember_;
 		OpcUaStackCore::Component* componentSession_;
 	};
 

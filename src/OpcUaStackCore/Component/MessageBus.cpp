@@ -37,6 +37,20 @@ namespace OpcUaStackCore
 		messageBusMemberMap_.clear();
 	}
 
+	bool
+	MessageBus::existMember(const std::string& name)
+	{
+		boost::mutex::scoped_lock g(mutex_);
+
+		// check if member name already exist
+		auto it = messageBusMemberMap_.find(name);
+		if (it != messageBusMemberMap_.end()) {
+			return true;
+		}
+
+		return false;
+	}
+
 	MessageBusMember::WPtr
 	MessageBus::registerMember(const std::string& name)
 	{

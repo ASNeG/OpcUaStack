@@ -23,6 +23,7 @@
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackCore/Utility/PendingQueue.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelClientIf.h"
+#include "OpcUaStackClient/ServiceSet/ClientServiceBase.h"
 #include "OpcUaStackClient/ServiceSet/SessionMode.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceStateMachine.h"
 #include "OpcUaStackClient/ServiceSet/SessionBase.h"
@@ -38,7 +39,8 @@ namespace OpcUaStackClient
 	class SessionServiceContext;
 
 	class DLLEXPORT SessionService
-	: public SessionBase
+	: public ClientServiceBase
+	, public SessionBase
 	, public OpcUaStackCore::Component
 	, public OpcUaStackCore::SecureChannelClientIf
 	{
@@ -46,6 +48,7 @@ namespace OpcUaStackClient
 		typedef boost::shared_ptr<SessionService> SPtr;
 
 		SessionService(
+			const std::string& serviceName,
 			OpcUaStackCore::IOThread* ioThread,
 			OpcUaStackCore::MessageBus::SPtr& messageBus
 		);
