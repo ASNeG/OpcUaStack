@@ -84,7 +84,7 @@ BOOST_AUTO_TEST_CASE(SharedPtr_construct_destruct)
 	BOOST_REQUIRE(derivedClassDestruct == 1);
 }
 
-BOOST_AUTO_TEST_CASE(SharedPtr_own_ptr)
+BOOST_AUTO_TEST_CASE(SharedPtr_own_ptr1)
 {
 	baseClassConstruct = 0;
 	baseClassDestruct = 0;
@@ -106,6 +106,39 @@ BOOST_AUTO_TEST_CASE(SharedPtr_own_ptr)
 	BOOST_REQUIRE(derivedClassDestruct == 0);
 
 	ptr->deactivate();
+	BOOST_REQUIRE(baseClassConstruct == 1);
+	BOOST_REQUIRE(baseClassDestruct == 1);
+	BOOST_REQUIRE(derivedClassContruct == 1);
+	BOOST_REQUIRE(derivedClassDestruct == 1);
+}
+
+BOOST_AUTO_TEST_CASE(SharedPtr_own_ptr2)
+{
+	baseClassConstruct = 0;
+	baseClassDestruct = 0;
+	derivedClassContruct = 0;
+	derivedClassDestruct = 0;
+
+	DerivedClass::SPtr sptr = boost::make_shared<DerivedClass>();
+	DerivedClass* ptr = sptr.get();
+	BOOST_REQUIRE(baseClassConstruct == 1);
+	BOOST_REQUIRE(baseClassDestruct == 0);
+	BOOST_REQUIRE(derivedClassContruct == 1);
+	BOOST_REQUIRE(derivedClassDestruct == 0);
+
+	sptr->activate();
+	BOOST_REQUIRE(baseClassConstruct == 1);
+	BOOST_REQUIRE(baseClassDestruct == 0);
+	BOOST_REQUIRE(derivedClassContruct == 1);
+	BOOST_REQUIRE(derivedClassDestruct == 0);
+
+	ptr->deactivate();
+	BOOST_REQUIRE(baseClassConstruct == 1);
+	BOOST_REQUIRE(baseClassDestruct == 0);
+	BOOST_REQUIRE(derivedClassContruct == 1);
+	BOOST_REQUIRE(derivedClassDestruct == 0);
+
+	sptr.reset();
 	BOOST_REQUIRE(baseClassConstruct == 1);
 	BOOST_REQUIRE(baseClassDestruct == 1);
 	BOOST_REQUIRE(derivedClassContruct == 1);
