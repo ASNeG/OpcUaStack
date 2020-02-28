@@ -57,6 +57,11 @@ namespace OpcUaStackClient
 		sessionMember_ = sessionMember;
 		this->componentSession(componentSession);
 
+		// register message bus receiver
+		MessageBusMemberConfig messageBusMemberConfig;
+		messageBusMemberConfig.strand(strand_);
+		messageBusMember_ = messageBus_->registerMember(serviceName_, messageBusMemberConfig);
+
 		// activate receiver
 		activateReceiver(
 			[this](Message::SPtr& message){
@@ -83,8 +88,12 @@ namespace OpcUaStackClient
 	void 
 	NodeManagementService::asyncSend(ServiceTransactionAddNodes::SPtr serviceTransactionAddNodes)
 	{
-		serviceTransactionAddNodes->componentService(this);
-		componentSession_->sendAsync(serviceTransactionAddNodes);
+		serviceTransactionAddNodes->memberService(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			sessionMember_,
+			serviceTransactionAddNodes
+		);
 	}
 
 	void 
@@ -99,8 +108,12 @@ namespace OpcUaStackClient
 	void 
 	NodeManagementService::asyncSend(ServiceTransactionAddReferences::SPtr serviceTransactionAddReferences)
 	{
-		serviceTransactionAddReferences->componentService(this);
-		componentSession_->sendAsync(serviceTransactionAddReferences);
+		serviceTransactionAddReferences->memberService(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			sessionMember_,
+			serviceTransactionAddReferences
+		);
 	}
 
 	void 
@@ -115,8 +128,12 @@ namespace OpcUaStackClient
 	void 
 	NodeManagementService::asyncSend(ServiceTransactionDeleteNodes::SPtr serviceTransactionDeleteNodes)
 	{
-		serviceTransactionDeleteNodes->componentService(this);
-		componentSession_->sendAsync(serviceTransactionDeleteNodes);
+		serviceTransactionDeleteNodes->memberService(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			sessionMember_,
+			serviceTransactionDeleteNodes
+		);
 	}
 
 	void 
@@ -131,8 +148,12 @@ namespace OpcUaStackClient
 	void 
 	NodeManagementService::asyncSend(ServiceTransactionDeleteReferences::SPtr serviceTransactionDeleteReferences)
 	{
-		serviceTransactionDeleteReferences->componentService(this);
-		componentSession_->sendAsync(serviceTransactionDeleteReferences);
+		serviceTransactionDeleteReferences->memberService(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			sessionMember_,
+			serviceTransactionDeleteReferences
+		);
 	}
 
 	void 

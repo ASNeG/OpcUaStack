@@ -116,6 +116,11 @@ namespace OpcUaStackClient
 			const std::string& encryptionAlgorithm
 		);
 
+		void sendResponseToService(
+			OpcUaStackCore::MessageBusMember::WPtr& target,
+			const OpcUaStackCore::Message::SPtr& message
+		);
+
 		static uint32_t gId_;
 		uint32_t id_;
 

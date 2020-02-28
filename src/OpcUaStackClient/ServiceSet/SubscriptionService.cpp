@@ -30,8 +30,7 @@ namespace OpcUaStackClient
 		IOThread* ioThread,
 		MessageBus::SPtr& messageBus
 	)
-	: ClientServiceBase()
-	, SubscriptionServiceBase()
+	: SubscriptionServiceBase()
 	, subscriptionSet_()
 	, subscriptionSetPendingDelete_()
 	, publishCount_(5)
@@ -75,6 +74,11 @@ namespace OpcUaStackClient
 		subscriptionStateUpdateHandler_ = subscriptionStateUpdateHandler;
 		publishCount_ = publishCount;
 		requestTimeout_ = requestTimeout;
+
+		// register message bus receiver
+		MessageBusMemberConfig messageBusMemberConfig;
+		messageBusMemberConfig.strand(strand_);
+		messageBusMember_ = messageBus_->registerMember(serviceName_, messageBusMemberConfig);
 
 		// activate receiver
 		activateReceiver(

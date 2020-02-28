@@ -21,7 +21,6 @@
 #include <set>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Component/MessageBus.h"
-#include "OpcUaStackClient/ServiceSet/ClientServiceBase.h"
 #include "OpcUaStackClient/ServiceSet/SubscriptionServiceBase.h"
 #include "OpcUaStackClient/ServiceSet/SubscriptionServiceHandler.h"
 
@@ -29,8 +28,7 @@ namespace OpcUaStackClient
 {
 
 	class DLLEXPORT SubscriptionService
-	: public ClientServiceBase
-	, public SubscriptionServiceBase
+	: public SubscriptionServiceBase
 	, public SubscriptionServicePublishIf
 	{
 	  public:
@@ -94,7 +92,6 @@ namespace OpcUaStackClient
 	    void dataChangeNotification(const OpcUaStackCore::OpcUaExtensibleParameter::SPtr& extensibleParameter);
 	    void eventNotification(const OpcUaStackCore::OpcUaExtensibleParameter::SPtr& extensibleParameter);
 
-	    OpcUaStackCore::MessageBusMember::WPtr sessionMember_;
 	    DataChangeNotificationHandler dataChangeNotificationHandler_;
 		EventNotificationHandler eventNotificationHandler_;
 		SubscriptionStateUpdateHandler subscriptionStateUpdateHandler_;

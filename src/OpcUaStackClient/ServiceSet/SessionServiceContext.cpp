@@ -840,4 +840,13 @@ namespace OpcUaStackClient
 		return Success;
 	}
 
+	void
+	SessionServiceContext::sendResponseToService(
+		MessageBusMember::WPtr& target,
+		const Message::SPtr& message
+	)
+	{
+		messageBus_->messageSend(messageBusMember_, target, message);
+	}
+
 }

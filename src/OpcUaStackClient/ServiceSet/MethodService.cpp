@@ -55,6 +55,11 @@ namespace OpcUaStackClient
 		sessionMember_ = sessionMember;
 		this->componentSession(componentSession);
 
+		// register message bus receiver
+		MessageBusMemberConfig messageBusMemberConfig;
+		messageBusMemberConfig.strand(strand_);
+		messageBusMember_ = messageBus_->registerMember(serviceName_, messageBusMemberConfig);
+
 		// activate receiver
 		activateReceiver(
 			[this](Message::SPtr& message){
@@ -81,9 +86,12 @@ namespace OpcUaStackClient
 	void 
 	MethodService::asyncSend(ServiceTransactionCall::SPtr serviceTransactionCall)
 	{
-		serviceTransactionCall->componentService(this);
-		OpcUaNodeId nodeId;
-		componentSession_->sendAsync(serviceTransactionCall);
+		serviceTransactionCall->memberService(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			sessionMember_,
+			serviceTransactionCall
+		);
 	}
 
 

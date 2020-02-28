@@ -55,6 +55,11 @@ namespace OpcUaStackClient
 		sessionMember_ = sessionMember;
 		this->componentSession(componentSession);
 
+		// register message bus receiver
+		MessageBusMemberConfig messageBusMemberConfig;
+		messageBusMemberConfig.strand(strand_);
+		messageBusMember_ = messageBus_->registerMember(serviceName_, messageBusMemberConfig);
+
 		// activate receiver
 		activateReceiver(
 			[this](Message::SPtr& message){
@@ -81,9 +86,12 @@ namespace OpcUaStackClient
 	void 
 	ViewService::asyncSend(ServiceTransactionBrowse::SPtr serviceTransactionBrowse)
 	{
-		serviceTransactionBrowse->componentService(this); 
-		OpcUaNodeId nodeId;
-		componentSession_->send(serviceTransactionBrowse);
+		serviceTransactionBrowse->memberService(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			sessionMember_,
+			serviceTransactionBrowse
+		);
 	}
 
 	void
@@ -98,8 +106,12 @@ namespace OpcUaStackClient
 	void
 	ViewService::asyncSend(ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext)
 	{
-		serviceTransactionBrowseNext->componentService(this);
-		componentSession_->send(serviceTransactionBrowseNext);
+		serviceTransactionBrowseNext->memberService(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			sessionMember_,
+			serviceTransactionBrowseNext
+		);
 	}
 
 	void
@@ -114,8 +126,12 @@ namespace OpcUaStackClient
 	void
 	ViewService::asyncSend(ServiceTransactionTranslateBrowsePathsToNodeIds::SPtr serviceTransactionTranslateBrowsePathsToNodeIds)
 	{
-		serviceTransactionTranslateBrowsePathsToNodeIds->componentService(this);
-		componentSession_->send(serviceTransactionTranslateBrowsePathsToNodeIds);
+		serviceTransactionTranslateBrowsePathsToNodeIds->memberService(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			sessionMember_,
+			serviceTransactionTranslateBrowsePathsToNodeIds
+		);
 	}
 
 	void 

@@ -1,5 +1,5 @@
   	  /*
-   Copyright 2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2019-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -235,8 +235,7 @@ namespace OpcUaStackClient
 			.parameter("ResponseType",  OpcUaIdMap::shortString(responseType))
 			.parameter("ServiceResult", OpcUaStatusCodeMap::shortString(responseHeader->serviceResult()));
 
-		Component* componentService = trx->componentService();
-		componentService->sendAsync(trx);
+		ctx_->sendResponseToService(trx->memberService(), trx);
 
 		return SessionServiceStateId::Established;
 	}
@@ -331,8 +330,7 @@ namespace OpcUaStackClient
 			.parameter("ResponseType", OpcUaIdMap::longString(responseType));
 
 		trx->statusCode(BadTimeout);
-		Component* componentService = trx->componentService();
-		componentService->sendAsync(trx);
+		ctx_->sendResponseToService(trx->memberService(), trx);
 
 		return SessionServiceStateId::Established;
 	}
@@ -354,8 +352,7 @@ namespace OpcUaStackClient
 				.parameter("ResponseType", OpcUaIdMap::longString(responseType));
 
 			trx->statusCode(BadSessionClosed);
-			Component* componentService = trx->componentService();
-			componentService->sendAsync(trx);
+			ctx_->sendResponseToService(trx->memberService(), trx);
 		}
 	}
 

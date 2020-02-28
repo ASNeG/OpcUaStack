@@ -66,25 +66,25 @@ namespace OpcUaStackCore
 		void messageSend(
 			MessageBusMember::WPtr& sender,
 			MessageBusMember::WPtr& receiver,
-			Message::SPtr& message
+			const Message::SPtr& message
 		);
 		void messageSend(
 			MessageBusMember::WPtr& sender,
 			MessageBusMember::WPtr& receiver,
-			Message::SPtr& message,
+			const Message::SPtr& message,
 			const MessageBusMember::SendCompleteCallback& sendCompleteCallback
 		);
 		void messageSend(
 			MessageBusMember::WPtr& sender,
 			MessageBusMember::WPtr& receiver,
-			Message::SPtr& message,
+			const Message::SPtr& message,
 			const IOThread::SPtr& ioThreadSender,
 			const MessageBusMember::SendCompleteCallback& sendCompleteCallback
 		);
 		void messageSend(
 			MessageBusMember::WPtr& sender,
 			MessageBusMember::WPtr& receiver,
-			Message::SPtr& message,
+			const Message::SPtr& message,
 			const boost::shared_ptr<boost::asio::io_service::strand>& strandSender,
 			const MessageBusMember::SendCompleteCallback& sendCompleteCallback
 		);

@@ -64,17 +64,17 @@ namespace OpcUaStackCore
 
 		void messageSend(
 			WPtr& sender,
-			Message::SPtr& message
+			const Message::SPtr& message
 		);
 		void messageSend(
 			WPtr& sender,
-			Message::SPtr& message,
+			const Message::SPtr& message,
 			const IOThread::SPtr& sendIoThread,
 			const SendCompleteCallback& sendCompleteCallback
 		);
 		void messageSend(
 			WPtr& sender,
-			Message::SPtr& message,
+			const Message::SPtr& message,
 			const boost::shared_ptr<boost::asio::io_service::strand>& strand,
 			const SendCompleteCallback& sendCompleteCallback
 		);

@@ -54,6 +54,11 @@ namespace OpcUaStackClient
 		sessionMember_ = sessionMember;
 		this->componentSession(componentSession);
 
+		// register message bus receiver
+		MessageBusMemberConfig messageBusMemberConfig;
+		messageBusMemberConfig.strand(strand_);
+		messageBusMember_ = messageBus_->registerMember(serviceName_, messageBusMemberConfig);
+
 		// activate receiver
 		activateReceiver(
 			[this](Message::SPtr& message){
@@ -80,8 +85,12 @@ namespace OpcUaStackClient
 	void
 	MonitoredItemService::asyncSend(ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems)
 	{
-		serviceTransactionCreateMonitoredItems->componentService(this);
-		componentSession_->sendAsync(serviceTransactionCreateMonitoredItems);
+		serviceTransactionCreateMonitoredItems->memberService(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			sessionMember_,
+			serviceTransactionCreateMonitoredItems
+		);
 	}
 
 	void
@@ -96,8 +105,12 @@ namespace OpcUaStackClient
 	void
 	MonitoredItemService::asyncSend(ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems)
 	{
-		serviceTransactionDeleteMonitoredItems->componentService(this);
-		componentSession_->sendAsync(serviceTransactionDeleteMonitoredItems);
+		serviceTransactionDeleteMonitoredItems->memberService(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			sessionMember_,
+			serviceTransactionDeleteMonitoredItems
+		);
 	}
 
 	void
@@ -112,8 +125,12 @@ namespace OpcUaStackClient
 	void
 	MonitoredItemService::asyncSend(ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems)
 	{
-		serviceTransactionModifyMonitoredItems->componentService(this);
-		componentSession_->sendAsync(serviceTransactionModifyMonitoredItems);
+		serviceTransactionModifyMonitoredItems->memberService(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			sessionMember_,
+			serviceTransactionModifyMonitoredItems
+		);
 	}
 
 	void
@@ -128,8 +145,12 @@ namespace OpcUaStackClient
 	void
 	MonitoredItemService::asyncSend(ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode)
 	{
-		serviceTransactionSetMonitoringMode->componentService(this);
-		componentSession_->sendAsync(serviceTransactionSetMonitoringMode);
+		serviceTransactionSetMonitoringMode->memberService(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			sessionMember_,
+			serviceTransactionSetMonitoringMode
+		);
 	}
 
 	void
@@ -144,8 +165,12 @@ namespace OpcUaStackClient
 	void
 	MonitoredItemService::asyncSend(ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering)
 	{
-		serviceTransactionSetTriggering->componentService(this);
-		componentSession_->sendAsync(serviceTransactionSetTriggering);
+		serviceTransactionSetTriggering->memberService(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			sessionMember_,
+			serviceTransactionSetTriggering
+		);
 	}
 
 	void

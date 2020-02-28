@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -22,6 +22,7 @@
 #include <boost/thread/mutex.hpp>
 #include "OpcUaStackCore/Base/UserContext.h"
 #include "OpcUaStackCore/Component/Component.h"
+#include "OpcUaStackCore/Component/MessageBus.h"
 #include "OpcUaStackCore/SecureChannel/RequestHeader.h"
 #include "OpcUaStackCore/SecureChannel/ResponseHeader.h"
 
@@ -66,6 +67,9 @@ namespace OpcUaStackCore
 		Component* componentSession(void);
 		void componentSession(Component* componentSession);
 
+		void memberService(MessageBusMember::WPtr& memberService);
+		MessageBusMember::WPtr& memberService(void);
+
 		void userContext(UserContext::SPtr& userContext);
 		UserContext::SPtr& userContext(void);
 
@@ -107,6 +111,8 @@ namespace OpcUaStackCore
 
 		Component* componentService_;
 		Component* componentSession_;
+
+		MessageBusMember::WPtr memberService_;
 
 		UserContext::SPtr userContext_;
 		OpcUaStatusCode statusCode_;

@@ -56,6 +56,11 @@ namespace OpcUaStackClient
 		sessionMember_ = sessionMember;
 		this->componentSession(componentSession);
 
+		// register message bus receiver
+		MessageBusMemberConfig messageBusMemberConfig;
+		messageBusMemberConfig.strand(strand_);
+		messageBusMember_ = messageBus_->registerMember(serviceName_, messageBusMemberConfig);
+
 		// activate receiver
 		activateReceiver(
 			[this](Message::SPtr& message){
@@ -82,8 +87,12 @@ namespace OpcUaStackClient
 	void 
 	AttributeService::asyncSend(ServiceTransactionRead::SPtr serviceTransactionRead)
 	{
-		serviceTransactionRead->componentService(this); 
-		componentSession_->sendAsync(serviceTransactionRead);
+		serviceTransactionRead->memberService(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			sessionMember_,
+			serviceTransactionRead
+		);
 	}
 
 	void 
@@ -98,8 +107,12 @@ namespace OpcUaStackClient
 	void 
 	AttributeService::asyncSend(ServiceTransactionWrite::SPtr serviceTransactionWrite)
 	{
-		serviceTransactionWrite->componentService(this); 
-		componentSession_->sendAsync(serviceTransactionWrite);
+		serviceTransactionWrite->memberService(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			sessionMember_,
+			serviceTransactionWrite
+		);
 	}
 
 	void 
@@ -114,8 +127,12 @@ namespace OpcUaStackClient
 	void 
 	AttributeService::asyncSend(ServiceTransactionHistoryRead::SPtr serviceTransactionHistoryRead)
 	{
-		serviceTransactionHistoryRead->componentService(this); 
-		componentSession_->sendAsync(serviceTransactionHistoryRead);
+		serviceTransactionHistoryRead->memberService(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			sessionMember_,
+			serviceTransactionHistoryRead
+		);
 	}
 
 	void 
@@ -130,8 +147,12 @@ namespace OpcUaStackClient
 	void 
 	AttributeService::asyncSend(ServiceTransactionHistoryUpdate::SPtr serviceTransactionHistoryUpdate)
 	{
-		serviceTransactionHistoryUpdate->componentService(this); 
-		componentSession_->sendAsync(serviceTransactionHistoryUpdate);
+		serviceTransactionHistoryUpdate->memberService(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			sessionMember_,
+			serviceTransactionHistoryUpdate
+		);
 	}
 
 	void 
