@@ -24,6 +24,7 @@ namespace OpcUaStackClient
 {
 
 	ClientServiceBase::ClientServiceBase(void)
+	: boost::enable_shared_from_this<ClientServiceBase>()
 	{
 	}
 
@@ -37,4 +38,60 @@ namespace OpcUaStackClient
 		return messageBusMember_;
 	}
 
+	void
+	ClientServiceBase::activateReceiver(const ReceiverCallback& receiverCallback)
+	{
+		Log(Info, "activate receiver")
+			.parameter("ServiceName", serviceName_);
+
+		receiverCallback_ = receiverCallback;
+		ownPtr_ = shared_from_this();
+
+		// call the receiver for the first time
+		receiveCallback();
+	}
+
+	void
+	ClientServiceBase::deactivateReceiver(void)
+	{
+		Log(Info, "deactivate receiver")
+			.parameter("ServiceName", serviceName_);
+
+		if (!receiverCallback_) {
+			return;
+		}
+
+		receiverCallback_ = nullptr;
+
+		messageBus_->cancelReceiver(messageBusMember_);
+	}
+
+	void
+	ClientServiceBase::receiveCallback(void)
+	{
+		messageBus_->messageReceive(
+			messageBusMember_,
+			strand_,
+			[this](MessageBusError error, const MessageBusMember::WPtr& handleFrom, Message::SPtr& message) {
+
+				// check error
+				if (error != MessageBusError::Ok) {
+					if (error != MessageBusError::Cancel) {
+						Log(Error, "message receiver error")
+							.parameter("ServiceName", serviceName_)
+							.parameter("Error", int(error));
+					}
+					ownPtr_.reset();
+					return;
+				}
+
+				// execute callback
+				if (receiverCallback_) {
+					receiverCallback_(message);
+				}
+
+				receiveCallback();
+		    }
+		);
+	}
 }

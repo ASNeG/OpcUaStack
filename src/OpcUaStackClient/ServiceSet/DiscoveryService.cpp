@@ -43,6 +43,8 @@ namespace OpcUaStackClient
 
 	DiscoveryService::~DiscoveryService(void)
 	{
+		// deactivate receiver
+		deactivateReceiver();
 	}
 
 	void
@@ -53,6 +55,13 @@ namespace OpcUaStackClient
 	{
 		sessionMember_ = sessionMember;
 		this->componentSession(componentSession);
+
+		// activate receiver
+		activateReceiver(
+			[this](Message::SPtr& message){
+				receive(message);
+			}
+		);
 	}
 
 	void 

@@ -60,7 +60,6 @@ namespace OpcUaStackClient
 
 	  private:
 		OpcUaStackCore::MessageBusMember::WPtr sessionMember_;
-		OpcUaStackCore::MessageBus::SPtr messageBus_ = nullptr;
 		OpcUaStackCore::Component* componentSession_;
 	};
 

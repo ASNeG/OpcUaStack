@@ -52,6 +52,8 @@ namespace OpcUaStackClient
 
 	SubscriptionService::~SubscriptionService(void)
 	{
+		// deactivate receiver
+		deactivateReceiver();
 	}
 
 	void
@@ -73,6 +75,13 @@ namespace OpcUaStackClient
 		subscriptionStateUpdateHandler_ = subscriptionStateUpdateHandler;
 		publishCount_ = publishCount;
 		requestTimeout_ = requestTimeout;
+
+		// activate receiver
+		activateReceiver(
+			[this](Message::SPtr& message){
+				receive(message);
+			}
+		);
 	}
 
 	void

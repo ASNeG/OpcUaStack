@@ -93,6 +93,7 @@ namespace OpcUaStackClient
 		sessionServiceConfig.secureChannelClient_->endpointUrl(discoveryUri_);
 		sessionServiceConfig.sessionMode_ = SessionMode::SecureChannel;
 		sessionServiceConfig.sessionServiceChangeHandler_ = sessionStateUpdate;
+		sessionServiceConfig.sessionServiceName_ = "FindServersSession";
 
 		serviceSetManager_.registerIOThread("DiscoveryIOThread", ioThread_);
 		serviceSetManager_.sessionService(sessionServiceConfig);

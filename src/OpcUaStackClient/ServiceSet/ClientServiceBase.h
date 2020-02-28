@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackClient_ClientServiceBase_h__
 #define __OpcUaStackClient_ClientServiceBase_h__
 
+#include <functional>
 #include "OpcUaStackCore/Component/MessageBus.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
 
@@ -25,21 +26,33 @@ namespace OpcUaStackClient
 {
 
 	class DLLEXPORT ClientServiceBase
+	: public boost::enable_shared_from_this<ClientServiceBase>
 	{
 	  public:
-		typedef boost::shared_ptr<ClientServiceBase> SPtr;
+		using SPtr = boost::shared_ptr<ClientServiceBase>;
+		using ReceiverCallback = std::function<void (OpcUaStackCore::Message::SPtr&)>;
 
 		ClientServiceBase(void);
 		virtual ~ClientServiceBase(void);
 
 		OpcUaStackCore::MessageBusMember::WPtr& messageBusMember(void);
 
+		void activateReceiver(const ReceiverCallback& receiverCallback);
+		void deactivateReceiver(void);
+
 	  protected:
+		void receiveCallback(void);
+
+		// configuration data
 		std::string serviceName_ = "";
 		OpcUaStackCore::IOThread* ioThread_ = nullptr;
 		boost::shared_ptr<boost::asio::io_service::strand> strand_ = nullptr;
 		OpcUaStackCore::MessageBus::SPtr messageBus_ = nullptr;
 		OpcUaStackCore::MessageBusMember::WPtr messageBusMember_;
+
+		// runtime data
+		ReceiverCallback receiverCallback_ = nullptr;
+		SPtr ownPtr_ = nullptr;
 	};
 
 }

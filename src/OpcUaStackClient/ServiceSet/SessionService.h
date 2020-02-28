@@ -45,7 +45,7 @@ namespace OpcUaStackClient
 	, public OpcUaStackCore::SecureChannelClientIf
 	{
 	  public:
-		typedef boost::shared_ptr<SessionService> SPtr;
+		using SPtr = boost::shared_ptr<SessionService>;
 
 		SessionService(
 			const std::string& serviceName,

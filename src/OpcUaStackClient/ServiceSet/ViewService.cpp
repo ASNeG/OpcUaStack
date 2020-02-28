@@ -30,7 +30,6 @@ namespace OpcUaStackClient
 	)
 	: ClientServiceBase()
     , componentSession_(nullptr)
-	, messageBus_(messageBus)
 	{
 		// set parameter in client service base
 		serviceName_ = serviceName;
@@ -43,6 +42,8 @@ namespace OpcUaStackClient
 
 	ViewService::~ViewService(void)
 	{
+		// deactivate receiver
+		deactivateReceiver();
 	}
 
 	void
@@ -52,8 +53,14 @@ namespace OpcUaStackClient
 	)
 	{
 		sessionMember_ = sessionMember;
-
 		this->componentSession(componentSession);
+
+		// activate receiver
+		activateReceiver(
+			[this](Message::SPtr& message){
+				receive(message);
+			}
+		);
 	}
 
 	void 

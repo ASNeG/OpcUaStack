@@ -78,6 +78,9 @@ namespace OpcUaStackClient
 
 		delete ctx_;
 		ctx_ = nullptr;
+
+		// deactivate receiver
+		deactivateReceiver();
 	}
 
 	void
@@ -107,6 +110,13 @@ namespace OpcUaStackClient
 				if (ctx_->sessionServiceChangeHandler_) {
 					ctx_->sessionServiceChangeHandler_(*ctx_->sessionService_, state);
 				}
+			}
+		);
+
+		// activate receiver
+		activateReceiver(
+			[this](Message::SPtr& message){
+				receive(message);
 			}
 		);
 	}
