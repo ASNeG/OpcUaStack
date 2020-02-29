@@ -185,8 +185,7 @@ namespace OpcUaStackClient
 
 		// set discovery configuration
 		discoveryService->setConfiguration(
-			sessionService->messageBusMember(),
-			sessionService->component()
+			sessionService->messageBusMember()
 		);
 
 		return discoveryService;
@@ -223,8 +222,7 @@ namespace OpcUaStackClient
 
 		// set attribute configuration
 		attributeService->setConfiguration(
-			sessionService->messageBusMember(),
-			sessionService->component()
+			sessionService->messageBusMember()
 		);
 
 		return attributeService;
@@ -262,7 +260,6 @@ namespace OpcUaStackClient
 		// set subscription configuration
 		subscriptionService->setConfiguration(
 			sessionService->messageBusMember(),
-			sessionService->component(),
 			subscriptionServiceConfig.dataChangeNotificationHandler_,
 			subscriptionServiceConfig.eventNotificationHandler_,
 			subscriptionServiceConfig.subscriptionStateUpdateHandler_,
@@ -304,8 +301,7 @@ namespace OpcUaStackClient
 
 		// set monitored item configuration
 		monitoredItemService->setConfiguration(
-			sessionService->messageBusMember(),
-			sessionService->component()
+			sessionService->messageBusMember()
 		);
 
 		return monitoredItemService;
@@ -342,8 +338,7 @@ namespace OpcUaStackClient
 
 		// set method configuration
 		methodService->setConfiguration(
-			sessionService->messageBusMember(),
-			sessionService->component()
+			sessionService->messageBusMember()
 		);
 
 		return methodService;
@@ -380,8 +375,7 @@ namespace OpcUaStackClient
 
 		// set view configuration
 		viewService->setConfiguration(
-			sessionService->messageBusMember(),
-			sessionService->component()
+			sessionService->messageBusMember()
 		);
 
 		return viewService;
@@ -418,8 +412,7 @@ namespace OpcUaStackClient
 
 		// set query configuration
 		queryService->setConfiguration(
-			sessionService->messageBusMember(),
-			sessionService->component()
+			sessionService->messageBusMember()
 		);
 
 		return queryService;
@@ -457,8 +450,7 @@ namespace OpcUaStackClient
 
 		// set node management configuration
 		nodeManagementService->setConfiguration(
-			sessionService->messageBusMember(),
-			sessionService->component()
+			sessionService->messageBusMember()
 		);
 
 		return nodeManagementService;

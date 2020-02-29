@@ -43,7 +43,6 @@ namespace OpcUaStackClient
 
 		void setConfiguration(
 			OpcUaStackCore::MessageBusMember::WPtr& sessionMember,
-			OpcUaStackCore::Component* componentSession,
 			const DataChangeNotificationHandler& dataChangeNotificationHandler,
 			const EventNotificationHandler& eventNotificationHandler,
 			const SubscriptionStateUpdateHandler& subscriptionStateUpdateHandler,

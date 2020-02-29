@@ -29,15 +29,12 @@ namespace OpcUaStackClient
 		MessageBus::SPtr& messageBus
 	)
 	: ClientServiceBase()
-	, componentSession_(nullptr)
 	{
 		// set parameter in client service base
 		serviceName_ = serviceName;
 		ClientServiceBase::ioThread_ = ioThread;
 		strand_ = ioThread->createStrand();
 		messageBus_ = messageBus;
-
-		Component::ioThread(ioThread);
 	}
 
 	MethodService::~MethodService(void)
@@ -48,12 +45,10 @@ namespace OpcUaStackClient
 
 	void
 	MethodService::setConfiguration(
-		MessageBusMember::WPtr& sessionMember,
-		Component* componentSession
+		MessageBusMember::WPtr& sessionMember
 	)
 	{
 		sessionMember_ = sessionMember;
-		this->componentSession(componentSession);
 
 		// register message bus receiver
 		MessageBusMemberConfig messageBusMemberConfig;
@@ -66,12 +61,6 @@ namespace OpcUaStackClient
 				receive(message);
 			}
 		);
-	}
-
-	void 
-	MethodService::componentSession(Component* componentSession)
-	{
-		componentSession_ = componentSession;
 	}
 
 	void 

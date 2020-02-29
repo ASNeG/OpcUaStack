@@ -25,7 +25,6 @@ namespace OpcUaStackClient
 
 	SubscriptionServiceBase::SubscriptionServiceBase(void)
 	: ClientServiceBase()
-	, componentSession_(nullptr)
 	, subscriptionServicePublishIf_(nullptr)
 	{
 	}
@@ -34,11 +33,6 @@ namespace OpcUaStackClient
 	{
 	}
 
-	void
-	SubscriptionServiceBase::componentSession(Component* componentSession)
-	{
-		componentSession_ = componentSession;
-	}
 	void
 	SubscriptionServiceBase::subscriptionServicePublishIf(SubscriptionServicePublishIf* subscriptionServicePublishIf)
 	{

@@ -18,7 +18,6 @@
 #ifndef __OpcUaStackClient_QueryService_h__
 #define __OpcUaStackClient_QueryService_h__
 
-#include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/Component/MessageBus.h"
 #include "OpcUaStackCore/ServiceSet/QueryServiceTransaction.h"
 #include "OpcUaStackClient/ServiceSet/ClientServiceBase.h"
@@ -28,7 +27,6 @@ namespace OpcUaStackClient
 
 	class DLLEXPORT QueryService
 	: public ClientServiceBase
-	, public OpcUaStackCore::Component
 	{
 	  public:
 		typedef boost::shared_ptr<QueryService> SPtr;
@@ -41,10 +39,8 @@ namespace OpcUaStackClient
 		~QueryService(void);
 
 		void setConfiguration(
-			OpcUaStackCore::MessageBusMember::WPtr& sessionMember,
-			OpcUaStackCore::Component* componentSession
+			OpcUaStackCore::MessageBusMember::WPtr& sessionMember
 		);
-		void componentSession(OpcUaStackCore::Component* componentSession);
 
 		void syncSend(OpcUaStackCore::ServiceTransactionQueryFirst::SPtr serviceTransactionQueryFirst);
 		void asyncSend(OpcUaStackCore::ServiceTransactionQueryFirst::SPtr serviceTransactionQueryFirst);
@@ -57,7 +53,6 @@ namespace OpcUaStackClient
 
 	  private:
 		OpcUaStackCore::MessageBusMember::WPtr sessionMember_;
-		OpcUaStackCore::Component* componentSession_;
 	};
 
 }

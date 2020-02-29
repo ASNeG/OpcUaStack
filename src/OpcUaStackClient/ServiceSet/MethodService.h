@@ -18,7 +18,6 @@
 #ifndef __OpcUaStackClient_MethodService_h__
 #define __OpcUaStackClient_MethodService_h__
 
-#include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/Component/MessageBus.h"
 #include "OpcUaStackCore/ServiceSet/MethodServiceTransaction.h"
 #include "OpcUaStackClient/ServiceSet/ClientServiceBase.h"
@@ -28,7 +27,6 @@ namespace OpcUaStackClient
 
 	class DLLEXPORT MethodService
 	: public ClientServiceBase
-	, public OpcUaStackCore::Component
 	{
 	  public:
 		typedef boost::shared_ptr<MethodService> SPtr;
@@ -41,10 +39,8 @@ namespace OpcUaStackClient
 		~MethodService(void);
 
 		void setConfiguration(
-			OpcUaStackCore::MessageBusMember::WPtr& sessionMember,
-			OpcUaStackCore::Component* componentSession
+			OpcUaStackCore::MessageBusMember::WPtr& sessionMember
 		);
-		void componentSession(OpcUaStackCore::Component* componentSession);
 
 		void syncSend(OpcUaStackCore::ServiceTransactionCall::SPtr serviceTransactionRead);
 		void asyncSend(OpcUaStackCore::ServiceTransactionCall::SPtr serviceTransactionRead);
@@ -55,7 +51,6 @@ namespace OpcUaStackClient
 
 	  private:
 		OpcUaStackCore::MessageBusMember::WPtr sessionMember_;
-		OpcUaStackCore::Component* componentSession_;
 	};
 
 }

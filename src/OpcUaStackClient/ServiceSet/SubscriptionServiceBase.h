@@ -18,7 +18,6 @@
 #ifndef __OpcUaStackClient_SubscriptionService_h__
 #define __OpcUaStackClient_SubscriptionService_h__
 
-#include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/ServiceSet/SubscriptionServiceTransaction.h"
 #include "OpcUaStackClient/ServiceSet/ClientServiceBase.h"
 
@@ -36,7 +35,6 @@ namespace OpcUaStackClient
 
 	class DLLEXPORT SubscriptionServiceBase
 	: public ClientServiceBase
-    , public OpcUaStackCore::Component
 	{
 	  public:
 		boost::shared_ptr<SubscriptionServiceBase> SPtr;
@@ -44,7 +42,6 @@ namespace OpcUaStackClient
 		SubscriptionServiceBase(void);
 		~SubscriptionServiceBase(void);
 
-		virtual void componentSession(OpcUaStackCore::Component* componentSession);
 		void subscriptionServicePublishIf(SubscriptionServicePublishIf* subscriptionServicePublishIf);
 
 		void syncSend(OpcUaStackCore::ServiceTransactionCreateSubscription::SPtr& serviceTransactionCreateSubscription);
@@ -70,7 +67,6 @@ namespace OpcUaStackClient
 		OpcUaStackCore::MessageBusMember::WPtr sessionMember_;
 
 	  private:
-		OpcUaStackCore::Component* componentSession_;
 		SubscriptionServicePublishIf* subscriptionServicePublishIf_;
 	};
 

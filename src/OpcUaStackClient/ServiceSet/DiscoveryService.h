@@ -19,7 +19,6 @@
 #define __OpcUaStackClient_DiscoveryService_h__
 
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/Component/MessageBus.h"
 #include "OpcUaStackClient/ServiceSet/ClientServiceBase.h"
 #include "OpcUaStackCore/ServiceSet/DiscoveryServiceTransaction.h"
@@ -29,7 +28,6 @@ namespace OpcUaStackClient
 
 	class DLLEXPORT DiscoveryService
 	: public ClientServiceBase
-	, public OpcUaStackCore::Component
 	{
 	  public:
 		typedef boost::shared_ptr<DiscoveryService> SPtr;
@@ -42,10 +40,8 @@ namespace OpcUaStackClient
 		~DiscoveryService(void);
 
 		void setConfiguration(
-			OpcUaStackCore::MessageBusMember::WPtr& sessionMember,
-			OpcUaStackCore::Component* componentSession
+			OpcUaStackCore::MessageBusMember::WPtr& sessionMember
 		);
-		void componentSession(OpcUaStackCore::Component* componentSession);
 
 		void syncSend(OpcUaStackCore::ServiceTransactionFindServers::SPtr serviceTransactionFindServers);
 		void asyncSend(OpcUaStackCore::ServiceTransactionFindServers::SPtr serviceTransactionFindServers);
@@ -60,7 +56,6 @@ namespace OpcUaStackClient
 
 	  private:
 		OpcUaStackCore::MessageBusMember::WPtr sessionMember_;
-		OpcUaStackCore::Component* componentSession_;
 	};
 
 }

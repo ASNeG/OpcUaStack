@@ -45,7 +45,6 @@ namespace OpcUaStackClient
 		messageBus_ = messageBus;
 
 		// init threads and timer
-		Component::ioThread(ioThread);
 		ctx_->slotTimerElement_ = boost::make_shared<SlotTimerElement>();
 		ctx_->ioThread_ = ioThread;
 		ctx_->sessionService_ = this;

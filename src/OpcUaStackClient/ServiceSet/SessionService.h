@@ -17,7 +17,6 @@
 #ifndef __OpcUaStackClient_SessionService_h__
 #define __OpcUaStackClient_SessionService_h__
 
-#include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/Component/MessageBus.h"
 #include "OpcUaStackCore/Utility/SlotTimer.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
@@ -41,7 +40,6 @@ namespace OpcUaStackClient
 	class DLLEXPORT SessionService
 	: public ClientServiceBase
 	, public SessionBase
-	, public OpcUaStackCore::Component
 	, public OpcUaStackCore::SecureChannelClientIf
 	{
 	  public:

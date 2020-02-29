@@ -18,7 +18,6 @@
 #ifndef __OpcUaStackClient_ViewService_h__
 #define __OpcUaStackClient_ViewService_h__
 
-#include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/Component/MessageBus.h"
 #include "OpcUaStackClient/ServiceSet/ClientServiceBase.h"
 #include "OpcUaStackCore/ServiceSet/ViewServiceTransaction.h"
@@ -28,7 +27,6 @@ namespace OpcUaStackClient
 
 	class DLLEXPORT ViewService
 	: public ClientServiceBase
-	, public OpcUaStackCore::Component
 	{
 	  public:
 		typedef boost::shared_ptr<ViewService> SPtr;
@@ -41,10 +39,8 @@ namespace OpcUaStackClient
 		~ViewService(void);
 
 		void setConfiguration(
-			OpcUaStackCore::MessageBusMember::WPtr& sessionMember,
-			OpcUaStackCore::Component* componentSession
+			OpcUaStackCore::MessageBusMember::WPtr& sessionMember
 		);
-		void componentSession(OpcUaStackCore::Component* componentSession);
 
 		void syncSend(OpcUaStackCore::ServiceTransactionBrowse::SPtr serviceTransactionBrowse);
 		void asyncSend(OpcUaStackCore::ServiceTransactionBrowse::SPtr serviceTransactionBrowse);
@@ -60,7 +56,6 @@ namespace OpcUaStackClient
 
 	  private:
 		OpcUaStackCore::MessageBusMember::WPtr sessionMember_;
-		OpcUaStackCore::Component* componentSession_;
 	};
 
 }

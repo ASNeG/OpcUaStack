@@ -45,7 +45,6 @@ namespace OpcUaStackClient
 		strand_ = ioThread->createStrand();
 		messageBus_ = messageBus;
 
-		Component::ioThread(ioThread);
 		subscriptionServicePublishIf(this);
 	}
 
@@ -58,7 +57,6 @@ namespace OpcUaStackClient
 	void
 	SubscriptionService::setConfiguration(
 		MessageBusMember::WPtr& sessionMember,
-		Component* componentSession,
 		const DataChangeNotificationHandler& dataChangeNotificationHandler,
 		const EventNotificationHandler& eventNotificationHandler,
 		const SubscriptionStateUpdateHandler& subscriptionStateUpdateHandler,
@@ -68,7 +66,6 @@ namespace OpcUaStackClient
 	{
 		sessionMember_ = sessionMember;
 
-		this->componentSession(componentSession);
 		dataChangeNotificationHandler_ = dataChangeNotificationHandler;
 		eventNotificationHandler_ = eventNotificationHandler;
 		subscriptionStateUpdateHandler_ = subscriptionStateUpdateHandler;
