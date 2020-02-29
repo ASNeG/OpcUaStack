@@ -99,10 +99,14 @@ BOOST_FIXTURE_TEST_CASE(RefernceItemMap_add_item,ReferenceItemMapFixture)
 BOOST_FIXTURE_TEST_CASE(RefernceItemMap_remove_item, ReferenceItemMapFixture)
 {
 	auto it = map.begin();
+
+	BOOST_REQUIRE(map.size() == 4);
 	BOOST_REQUIRE(map.erase(it));
-	++it;
+
+	BOOST_REQUIRE(map.size() == 3);
 	BOOST_REQUIRE(map.erase(it));
-	++it;
+
+	BOOST_REQUIRE(map.size() == 2);
 	BOOST_REQUIRE(map.erase(it));
 
 	BOOST_REQUIRE_EQUAL(1, map.size());

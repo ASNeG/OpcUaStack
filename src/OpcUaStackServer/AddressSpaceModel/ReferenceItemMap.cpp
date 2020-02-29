@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -68,7 +68,9 @@ namespace OpcUaStackServer
 	bool 
 	ReferenceItemMap::add(const OpcUaNodeId& referenceTypeNodeId, ReferenceItem::SPtr& referenceItem)
 	{
-		if (referenceItem.get() == nullptr) return false;
+		if (!referenceItem) {
+			return false;
+		}
 
 		referenceItem->typeId_ = referenceTypeNodeId;
 		auto result = referenceItemMultiMap_[referenceTypeNodeId].insert(std::make_pair(referenceItem->nodeId_, referenceItem));
@@ -79,10 +81,9 @@ namespace OpcUaStackServer
 	bool
 	ReferenceItemMap::add(const OpcUaNodeId& referenceTypeNodeId, bool isForward, const OpcUaNodeId& nodeId)
 	{
-		ReferenceItem::SPtr referenceItem;
-		referenceItem = boost::make_shared<ReferenceItem>();
-		referenceItem->isForward_ = isForward;
-		referenceItem->nodeId_ = nodeId;
+		auto referenceItem = boost::make_shared<ReferenceItem>(
+			referenceTypeNodeId, isForward, nodeId
+		);
 		return add(referenceTypeNodeId, referenceItem);
 	}
 
@@ -103,7 +104,9 @@ namespace OpcUaStackServer
 		auto it1 = equal_range(referenceTypeNodeId);
 		for (auto it2 = it1.first; it2 != it1.second; it2++) {
 			auto referenceItem = it2->second;
-			if (referenceItem->isForward_ == isForward && referenceItem->nodeId_ == nodeId) return true;
+			if (referenceItem->isForward_ == isForward && referenceItem->nodeId_ == nodeId) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -111,7 +114,7 @@ namespace OpcUaStackServer
 	void
 	ReferenceItemMap::get(ReferenceType referenceType, std::vector<bool>& isForwards, std::vector<OpcUaNodeId>& nodes)
 	{
-		OpcUaNodeId::SPtr referenceTypeNodeId = ReferenceTypeMap::typeNodeId(referenceType);
+		auto referenceTypeNodeId = ReferenceTypeMap::typeNodeId(referenceType);
 		auto it1 = equal_range(*referenceTypeNodeId);
 		for (auto it2 = it1.first; it2 != it1.second; it2++) {
 			auto referenceItem = it2->second;
@@ -145,7 +148,7 @@ namespace OpcUaStackServer
 	bool
 	ReferenceItemMap::remove(const OpcUaNodeId& referenceTypeNodeId, ReferenceItem::SPtr& referenceItem)
 	{
-		if (referenceItem.get() == nullptr) return false;
+		if (!referenceItem) return false;
 		return remove(referenceTypeNodeId, referenceItem->nodeId_);
 	}
 
@@ -170,7 +173,7 @@ namespace OpcUaStackServer
 	ReferenceItemMap::copyTo(ReferenceItemMap& referenceItemMap) const
 	{
 		for (const auto& referenceItem : *this) {
-			ReferenceItem::SPtr newReferenceItem = boost::make_shared<ReferenceItem>();
+			auto newReferenceItem = boost::make_shared<ReferenceItem>();
 			referenceItem->copyTo(newReferenceItem);
 
 			referenceItemMap.referenceItemMultiMap_[referenceItem->typeId_].insert(
@@ -206,10 +209,11 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	ReferenceItemMap::erase(const_iterator it)
+	ReferenceItemMap::erase(const_iterator& it)
 	{
 		auto referenceTypeNode = it.refTypeIt_->first;
 		auto referenceItem = it.refItemIt_->second;
+		++it;
 		return remove(referenceTypeNode, referenceItem);
 	}
 
