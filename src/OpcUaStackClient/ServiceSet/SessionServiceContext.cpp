@@ -84,7 +84,12 @@ namespace OpcUaStackClient
 			.parameter("Timeout", sessionConfig_->reconnectTimeout());
 
 		slotTimerElement_->expireFromNow(sessionConfig_->reconnectTimeout());
-		slotTimerElement_->timeoutCallback(boost::bind(&SessionService::reconnectTimeout, sessionService_));
+		slotTimerElement_->timeoutCallback(
+			strand_,
+			[this](void) {
+				sessionService_->reconnectTimeout();
+		    }
+	    );
 		ioThread_->slotTimer()->start(slotTimerElement_);
 
 		return true;

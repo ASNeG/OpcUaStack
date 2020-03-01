@@ -389,7 +389,12 @@ namespace OpcUaStackCore
 
 		// start timer to renew security token
 		slotTimerElementRenew_->expireFromNow(securityToken->revisedLifetime() * 0.75);
-		slotTimerElementRenew_->timeoutCallback(boost::bind(&SecureChannelClient::renewSecurityToken, this, secureChannel));
+		slotTimerElementRenew_->timeoutCallback(
+			strand_,
+			[this, secureChannel](void) {
+				renewSecurityToken(secureChannel);
+		    }
+		);
 		ioThread_->slotTimer()->start(slotTimerElementRenew_);
 
 		// handle new secure channel
@@ -444,7 +449,12 @@ namespace OpcUaStackCore
 			return;
 		}
 		slotTimerElementReconnect_->expireFromNow(reconnectTimeout_);
-		slotTimerElementReconnect_->timeoutCallback(boost::bind(&SecureChannelClient::handleReconnect, this, secureChannel));
+		slotTimerElementReconnect_->timeoutCallback(
+			strand_,
+			[this, secureChannel](void) {
+			    handleReconnect(secureChannel);
+		    }
+		);
 		ioThread_->slotTimer()->start(slotTimerElementReconnect_);
 	}
 
