@@ -67,7 +67,6 @@ namespace OpcUaStackCore
 		void handleReconnect(SecureChannel* secureChannel);
 
 		IOThread* ioThread_;
-		boost::shared_ptr<boost::asio::io_service::strand> strand_;
 
 		SecureChannelClientIf* secureChannelClientIf_;
 		SlotTimerElement::SPtr slotTimerElementRenew_;

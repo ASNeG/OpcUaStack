@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -33,8 +33,9 @@ namespace OpcUaStackCore
 	  public:
 	    typedef boost::shared_ptr<TCPConnection> SPtr;
 
-	    typedef std::function<void (const boost::system::error_code& error, std::size_t bytes_transfered)> ReadCompleteCallback;
-	    typedef std::function<void (const boost::system::error_code& error, std::size_t bytes_transfered)> WriteCompleteCallback;
+	    using ReadCompleteCallback = std::function<void (const boost::system::error_code& error, std::size_t bytes_transfered)>;
+	    using WriteCompleteCallback = std::function<void (const boost::system::error_code& error, std::size_t bytes_transfered)>;
+	    using ConnectCompleteCallback = std::function<void (const boost::system::error_code& error)>;
 
 		TCPConnection(boost::asio::io_service& io_service);
 		~TCPConnection(void);
@@ -42,6 +43,17 @@ namespace OpcUaStackCore
 		boost::asio::ip::tcp::socket& socket(void);
 		void cancel(void);
 		void close(void);
+
+        void async_connect(
+        	boost::asio::ip::tcp::endpoint& partner,
+			const ConnectCompleteCallback& connectCompleteCallback
+        );
+
+        void async_connect(
+        	const boost::shared_ptr<boost::asio::io_service::strand>& strand,
+        	boost::asio::ip::tcp::endpoint& partner,
+			const ConnectCompleteCallback& connectCompleteCallback
+        );
 
 		template<typename BUFFER>
 		  void async_read_until(
@@ -369,6 +381,7 @@ namespace OpcUaStackCore
 		boost::shared_ptr<boost::asio::io_service::strand> strand_ = nullptr;
 		ReadCompleteCallback readCompleteCallback_ = nullptr;
 		WriteCompleteCallback writeCompleteCallback_ = nullptr;
+		ConnectCompleteCallback connectCompleteCallback_ = nullptr;
 		boost::asio::ip::tcp::socket socket_;
 		boost::asio::io_service& io_service_;
 	};

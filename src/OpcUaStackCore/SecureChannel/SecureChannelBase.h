@@ -118,6 +118,9 @@ namespace OpcUaStackCore
 
 		void asyncRead(SecureChannel* secureChannel);
 
+	  protected:
+		boost::shared_ptr<boost::asio::io_service::strand> strand_;
+
 	  private:
 
 		void asyncReadHello(SecureChannel* secureChannel);

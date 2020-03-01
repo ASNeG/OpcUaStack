@@ -40,12 +40,12 @@ namespace OpcUaStackCore
 	: SecureChannelBase(SecureChannelBase::SCT_Client)
 	, secureChannelClientIf_(nullptr)
 	, ioThread_(ioThread)
-	, strand_(strand)
 	, slotTimerElementRenew_(boost::make_shared<SlotTimerElement>())
 	, slotTimerElementReconnect_(boost::make_shared<SlotTimerElement>())
 	, renewTimeout_(300000)
 	, reconnectTimeout_(0)
 	{
+		strand_ = strand;
 	}
 
 	SecureChannelClient::~SecureChannelClient(void)
@@ -247,14 +247,12 @@ namespace OpcUaStackCore
 			.parameter("Address", secureChannel->partner_.address().to_string())
 			.parameter("Port", secureChannel->partner_.port());
 		secureChannel->state_ = SecureChannel::S_Connecting;
-		secureChannel->socket().async_connect(
+		secureChannel->async_connect(
+			strand_,
 			secureChannel->partner_,
-			boost::bind(
-				&SecureChannelClient::connectComplete,
-				this,
-				boost::asio::placeholders::error,
-				secureChannel
-			)
+			[this, secureChannel](const boost::system::error_code& error) {
+				connectComplete(error, secureChannel);
+			}
 		);
 	}
 
