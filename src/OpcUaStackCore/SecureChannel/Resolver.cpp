@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -22,9 +22,13 @@
 namespace OpcUaStackCore
 {
 
-	Resolver::Resolver(boost::asio::io_service& io_service)
+	Resolver::Resolver(
+		boost::asio::io_service& io_service,
+		const boost::shared_ptr<boost::asio::io_service::strand>& strand
+	)
 	: std::enable_shared_from_this<Resolver>()
 	, resolver_(io_service)
+	, strand_(strand)
 	{
 	}
 
@@ -56,7 +60,7 @@ namespace OpcUaStackCore
 			Log(Error, "url invalid in address resolver")
 			    .parameter("Url", urlString);
 			boost::asio::ip::address addr;
-			responseCallback(true, addr);
+			callResponseCallback(responseCallback, true, addr);
 			return;
 		}
 
@@ -79,7 +83,7 @@ namespace OpcUaStackCore
 					Log(Error, "address resolver error")
 						.parameter("Url", urlString)
 						.parameter("Message", error.message());
-					responseCallback(true, addr);
+					callResponseCallback(responseCallback, true, addr);
 					return;
 				}
 
@@ -91,12 +95,12 @@ namespace OpcUaStackCore
 					    .parameter("Address", address.to_string());
 
 					if (address.is_v4() && ipv4On_) {
-						responseCallback(false, address);
+						callResponseCallback(responseCallback, false, address);
 						return;
 					}
 
 					if (address.is_v6() && ipv6On_) {
-						responseCallback(false, address);
+						callResponseCallback(responseCallback, false, address);
 						return;
 					}
 
@@ -106,9 +110,28 @@ namespace OpcUaStackCore
 				Log(Error, "address resolver error")
 					.parameter("Url", urlString)
 					.parameter("Message", "no address found");
-				responseCallback(true, addr);
+				callResponseCallback(responseCallback, true, addr);
 			}
 		);
+	}
+
+	void
+	Resolver::callResponseCallback(
+		ResponseCallback responseCallback,
+		bool error,
+		const boost::asio::ip::address addr
+	)
+	{
+		if (strand_) {
+			strand_->dispatch(
+				[responseCallback, error, addr](void){
+					responseCallback(error, addr);
+				}
+			);
+		}
+		else {
+			responseCallback(error, addr);
+		}
 	}
 
 }

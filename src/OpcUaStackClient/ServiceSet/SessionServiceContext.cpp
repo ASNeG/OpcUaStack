@@ -39,11 +39,12 @@ namespace OpcUaStackClient
 
 	SessionServiceContext::SessionServiceContext(
 		IOThread* ioThread,
-		MessageBus::SPtr& messageBus
+		MessageBus::SPtr& messageBus,
+		boost::shared_ptr<boost::asio::io_service::strand>& strand
 	)
 	: id_(gId_++)
 	, secureChannelClientConfig_()
-	, secureChannelClient_(ioThread)
+	, secureChannelClient_(ioThread, strand)
 	, secureChannel_(nullptr)
 
 	, sessionService_(nullptr)

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -33,10 +33,14 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	SecureChannelClient::SecureChannelClient(IOThread* ioThread)
+	SecureChannelClient::SecureChannelClient(
+		IOThread* ioThread,
+		boost::shared_ptr<boost::asio::io_service::strand>& strand
+	)
 	: SecureChannelBase(SecureChannelBase::SCT_Client)
 	, secureChannelClientIf_(nullptr)
 	, ioThread_(ioThread)
+	, strand_(strand)
 	, slotTimerElementRenew_(boost::make_shared<SlotTimerElement>())
 	, slotTimerElementReconnect_(boost::make_shared<SlotTimerElement>())
 	, renewTimeout_(300000)
@@ -63,6 +67,7 @@ namespace OpcUaStackCore
 	SecureChannel*
 	SecureChannelClient::connect(SecureChannelClientConfig::SPtr& secureChannelClientConfig)
 	{
+		// create crypto manager
 		cryptoManager(secureChannelClientConfig->cryptoManager());
 
 		if (secureChannelClientIf_ == nullptr) {
@@ -211,7 +216,10 @@ namespace OpcUaStackCore
 		// get ip address from hostname
 		Url url(config->endpointUrl());
 		secureChannel->partner_.port(url.port());
-		auto resolver = std::make_shared<Resolver>(ioThread_->ioService()->io_service());
+		auto resolver = std::make_shared<Resolver>(
+			ioThread_->ioService()->io_service(),
+			strand_
+		);
 		resolver->getAddrFromUrl(
 			config->endpointUrl(),
 			[this, secureChannel](bool error, const boost::asio::ip::address addr) {

@@ -1,5 +1,5 @@
 /*
-   Copyright 2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2019-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -37,7 +37,10 @@ namespace OpcUaStackCore
 			const boost::asio::ip::address addr
 		)> ResponseCallback;
 
-		Resolver(boost::asio::io_service& io_service);
+		Resolver(
+			boost::asio::io_service& io_service,
+			const boost::shared_ptr<boost::asio::io_service::strand>& strand
+		);
 		~Resolver(void);
 
 		void ipv6On(bool ipv6On);
@@ -48,6 +51,14 @@ namespace OpcUaStackCore
 		);
 
 	  private:
+		void callResponseCallback(
+			ResponseCallback responseCallback,
+			bool error,
+			const boost::asio::ip::address addr
+		);
+
+		boost::shared_ptr<boost::asio::io_service::strand> strand_;
+
 		bool ipv4On_ = true;
 		bool ipv6On_ = false;
 		boost::asio::ip::tcp::resolver resolver_;

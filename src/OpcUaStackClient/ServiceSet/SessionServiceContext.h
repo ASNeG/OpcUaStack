@@ -48,7 +48,8 @@ namespace OpcUaStackClient
 
 		SessionServiceContext(
 			OpcUaStackCore::IOThread* ioThread,
-			OpcUaStackCore::MessageBus::SPtr& messageBus
+			OpcUaStackCore::MessageBus::SPtr& messageBus,
+			boost::shared_ptr<boost::asio::io_service::strand>& strand
 		);
 		~SessionServiceContext(void);
 

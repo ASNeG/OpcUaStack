@@ -36,13 +36,16 @@ namespace OpcUaStackClient
 	)
 	: ClientServiceBase()
 	, sm_()
-	, ctx_(new SessionServiceContext(ioThread, messageBus))
+	, ctx_(nullptr)
 	{
 		// set parameter in client service base
 		serviceName_ = serviceName;
 		ClientServiceBase::ioThread_ = ioThread;
 		strand_ = ioThread->createStrand();
 		messageBus_ = messageBus;
+
+		// create session service context
+		ctx_ = new SessionServiceContext(ioThread, messageBus, strand_);
 
 		// init threads and timer
 		ctx_->slotTimerElement_ = boost::make_shared<SlotTimerElement>();
