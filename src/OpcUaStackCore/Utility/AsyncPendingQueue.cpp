@@ -87,7 +87,7 @@ namespace OpcUaStackCore
 	}
 
 	void
-	AsyncPendingQueue::cancel(void)
+	AsyncPendingQueue::asyncCancel(void)
 	{
 		// check if the call is made within the strand
 		auto strand = asyncPendingQueueConfig_.strand();
@@ -96,7 +96,7 @@ namespace OpcUaStackCore
 			std::future<void> future = promise.get_future();
 			strand->dispatch(
 				[this, &promise](void) {
-					cancel();
+				    asyncCancel();
 					promise.set_value();
 			    }
 			);
@@ -113,6 +113,33 @@ namespace OpcUaStackCore
 
 		// execute callback
 		runCallback();
+	}
+
+	void
+	AsyncPendingQueue::syncCancel(void)
+	{
+		// check if the call is made within the strand
+		auto strand = asyncPendingQueueConfig_.strand();
+		if (!strand->running_in_this_thread()) {
+			std::promise<void> promise;
+			std::future<void> future = promise.get_future();
+			strand->dispatch(
+				[this, &promise](void) {
+				    syncCancel();
+					promise.set_value();
+			    }
+			);
+			future.wait();
+			return;
+		}
+
+		// check if callback is exist
+		// check if callback already running
+		if (!timeoutCallback_ || cancel_) {
+			return;
+		}
+		cancel_ = true;
+		timeoutCallback_ = nullptr;
 	}
 
 	bool

@@ -65,7 +65,8 @@ namespace OpcUaStackCore
 		AsyncPendingQueue(AsyncPendingQueueConfig& messageBusConfig);
 		virtual ~AsyncPendingQueue(void);
 
-		void cancel(void);
+		void asyncCancel(void);
+		void syncCancel(void);
 
 		bool insert(uint32_t key, Object::SPtr object, uint32_t timeoutMSec);
 		Object::SPtr remove(uint32_t key);
