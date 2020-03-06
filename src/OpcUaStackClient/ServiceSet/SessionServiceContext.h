@@ -48,7 +48,8 @@ namespace OpcUaStackClient
 
 		SessionServiceContext(
 			OpcUaStackCore::IOThread* ioThread,
-			OpcUaStackCore::MessageBus::SPtr& messageBus
+			OpcUaStackCore::MessageBus::SPtr& messageBus,
+			boost::shared_ptr<boost::asio::io_service::strand>& strand
 		);
 		~SessionServiceContext(void);
 
@@ -114,6 +115,11 @@ namespace OpcUaStackClient
 			const std::string& policyId,
 			const std::string& tokenData,
 			const std::string& encryptionAlgorithm
+		);
+
+		void sendResponseToService(
+			OpcUaStackCore::MessageBusMember::WPtr& target,
+			const OpcUaStackCore::Message::SPtr& message
 		);
 
 		static uint32_t gId_;

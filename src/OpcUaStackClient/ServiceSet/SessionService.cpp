@@ -30,23 +30,34 @@ namespace OpcUaStackClient
 {
 
 	SessionService::SessionService(
+		const std::string& serviceName,
 		IOThread* ioThread,
 		MessageBus::SPtr& messageBus
 	)
-	: sm_()
-	, ctx_(new SessionServiceContext(ioThread, messageBus))
+	: ClientServiceBase()
+	, sm_()
+	, ctx_(nullptr)
 	{
+		// set parameter in client service base
+		serviceName_ = serviceName;
+		ClientServiceBase::ioThread_ = ioThread;
+		strand_ = ioThread->createStrand();
+		messageBus_ = messageBus;
+
+		// create session service context
+		ctx_ = new SessionServiceContext(ioThread, messageBus, strand_);
+
 		// init threads and timer
-		Component::ioThread(ioThread);
 		ctx_->slotTimerElement_ = boost::make_shared<SlotTimerElement>();
 		ctx_->ioThread_ = ioThread;
 		ctx_->sessionService_ = this;
-		ctx_->strand_ = ioThread->createStrand();
+		ctx_->strand_ = strand_;
 
 		// register message bus receiver
 		MessageBusMemberConfig messageBusMemberConfig;
 		messageBusMemberConfig.strand(ctx_->strand_);
-		ctx_->messageBusMember_ = ctx_->messageBus_->registerMember("SessionService", messageBusMemberConfig);
+		messageBusMember_ = messageBus_->registerMember(serviceName_, messageBusMemberConfig);
+		ctx_->messageBusMember_ = messageBusMember_;
 
 		// init pending queue callback
 		ctx_->pendingQueue_.ioService(*ioThread->ioService().get());
@@ -69,6 +80,9 @@ namespace OpcUaStackClient
 
 		delete ctx_;
 		ctx_ = nullptr;
+
+		// deactivate receiver
+		deactivateReceiver();
 	}
 
 	void
@@ -98,6 +112,13 @@ namespace OpcUaStackClient
 				if (ctx_->sessionServiceChangeHandler_) {
 					ctx_->sessionServiceChangeHandler_(*ctx_->sessionService_, state);
 				}
+			}
+		);
+
+		// activate receiver
+		activateReceiver(
+			[this](Message::SPtr& message){
+				receive(message);
 			}
 		);
 	}

@@ -32,6 +32,8 @@ namespace OpcUaStackClient
 
 		DiscoveryServiceConfig(void);
 		virtual ~DiscoveryServiceConfig(void);
+
+		std::string discoveryServiceName_ = "DiscoveryService";
 	};
 
 }

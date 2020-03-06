@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -24,7 +24,7 @@ namespace OpcUaStackClient
 {
 
 	SubscriptionServiceBase::SubscriptionServiceBase(void)
-	: componentSession_(nullptr)
+	: ClientServiceBase()
 	, subscriptionServicePublishIf_(nullptr)
 	{
 	}
@@ -33,11 +33,6 @@ namespace OpcUaStackClient
 	{
 	}
 
-	void
-	SubscriptionServiceBase::componentSession(Component* componentSession)
-	{
-		componentSession_ = componentSession;
-	}
 	void
 	SubscriptionServiceBase::subscriptionServicePublishIf(SubscriptionServicePublishIf* subscriptionServicePublishIf)
 	{
@@ -56,8 +51,12 @@ namespace OpcUaStackClient
 	void
 	SubscriptionServiceBase::asyncSend(ServiceTransactionCreateSubscription::SPtr& serviceTransactionCreateSubscription)
 	{
-		serviceTransactionCreateSubscription->componentService(this);
-		componentSession_->sendAsync(serviceTransactionCreateSubscription);
+		serviceTransactionCreateSubscription->memberService(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			sessionMember_,
+			serviceTransactionCreateSubscription
+		);
 	}
 
 	void
@@ -72,8 +71,12 @@ namespace OpcUaStackClient
 	void
 	SubscriptionServiceBase::asyncSend(ServiceTransactionModifySubscription::SPtr& serviceTransactionModifySubscription)
 	{
-		serviceTransactionModifySubscription->componentService(this);
-		componentSession_->sendAsync(serviceTransactionModifySubscription);
+		serviceTransactionModifySubscription->memberService(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			sessionMember_,
+			serviceTransactionModifySubscription
+		);
 	}
 
 	void
@@ -88,8 +91,12 @@ namespace OpcUaStackClient
 	void
 	SubscriptionServiceBase::asyncSend(ServiceTransactionTransferSubscriptions::SPtr& serviceTransactionTransferSubscriptions)
 	{
-		serviceTransactionTransferSubscriptions->componentService(this);
-		componentSession_->sendAsync(serviceTransactionTransferSubscriptions);
+		serviceTransactionTransferSubscriptions->memberService(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			sessionMember_,
+			serviceTransactionTransferSubscriptions
+		);
 	}
 
 	void
@@ -104,8 +111,12 @@ namespace OpcUaStackClient
 	void
 	SubscriptionServiceBase::asyncSend(ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions)
 	{
-		serviceTransactionDeleteSubscriptions->componentService(this);
-		componentSession_->sendAsync(serviceTransactionDeleteSubscriptions);
+		serviceTransactionDeleteSubscriptions->memberService(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			sessionMember_,
+			serviceTransactionDeleteSubscriptions
+		);
 	}
 
 	void
@@ -120,8 +131,12 @@ namespace OpcUaStackClient
 	void
 	SubscriptionServiceBase::asyncSend(ServiceTransactionSetPublishingMode::SPtr& serviceTransactionSetPublishingMode)
 	{
-		serviceTransactionSetPublishingMode->componentService(this);
-		componentSession_->sendAsync(serviceTransactionSetPublishingMode);
+		serviceTransactionSetPublishingMode->memberService(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			sessionMember_,
+			serviceTransactionSetPublishingMode
+		);
 	}
 
 	void
@@ -136,8 +151,12 @@ namespace OpcUaStackClient
 	void
 	SubscriptionServiceBase::asyncSend(ServiceTransactionPublish::SPtr& serviceTransactionPublish)
 	{
-		serviceTransactionPublish->componentService(this);
-		componentSession_->sendAsync(serviceTransactionPublish);
+		serviceTransactionPublish->memberService(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			sessionMember_,
+			serviceTransactionPublish
+		);
 	}
 
 	void
@@ -152,8 +171,12 @@ namespace OpcUaStackClient
 	void
 	SubscriptionServiceBase::asyncSend(ServiceTransactionRepublish::SPtr& serviceTransactionRepublish)
 	{
-		serviceTransactionRepublish->componentService(this);
-		componentSession_->sendAsync(serviceTransactionRepublish);
+		serviceTransactionRepublish->memberService(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			sessionMember_,
+			serviceTransactionRepublish
+		);
 	}
 
 	void

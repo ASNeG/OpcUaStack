@@ -32,6 +32,8 @@ namespace OpcUaStackCore
 	, tcpAcceptor_(nullptr)
 	, endpointUrl_("")
 	{
+		// FIXME: workaround
+		strand_ = ioThread_->createStrand();
 	}
 
 	SecureChannelServer::~SecureChannelServer(void)

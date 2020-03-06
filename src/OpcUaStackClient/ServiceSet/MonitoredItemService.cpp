@@ -24,31 +24,42 @@ namespace OpcUaStackClient
 {
 
 	MonitoredItemService::MonitoredItemService(
+		const std::string& serviceName,
 		IOThread* ioThread,
 		MessageBus::SPtr& messageBus
 	)
-	: componentSession_(nullptr)
-	, messageBus_(messageBus)
 	{
-		Component::ioThread(ioThread);
+		// set parameter in client service base
+		serviceName_ = serviceName;
+		ClientServiceBase::ioThread_ = ioThread;
+		strand_ = ioThread->createStrand();
+		messageBus_ = messageBus;
 	}
 
 	MonitoredItemService::~MonitoredItemService(void)
 	{
+		// deactivate receiver
+		deactivateReceiver();
 	}
 
 	void
 	MonitoredItemService::setConfiguration(
-		Component* componentSession
+		MessageBusMember::WPtr& sessionMember
 	)
 	{
-		this->componentSession(componentSession);
-	}
+		sessionMember_ = sessionMember;
 
-	void
-	MonitoredItemService::componentSession(Component* componentSession)
-	{
-		componentSession_ = componentSession;
+		// register message bus receiver
+		MessageBusMemberConfig messageBusMemberConfig;
+		messageBusMemberConfig.strand(strand_);
+		messageBusMember_ = messageBus_->registerMember(serviceName_, messageBusMemberConfig);
+
+		// activate receiver
+		activateReceiver(
+			[this](Message::SPtr& message){
+				receive(message);
+			}
+		);
 	}
 
 	void
@@ -63,8 +74,12 @@ namespace OpcUaStackClient
 	void
 	MonitoredItemService::asyncSend(ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems)
 	{
-		serviceTransactionCreateMonitoredItems->componentService(this);
-		componentSession_->sendAsync(serviceTransactionCreateMonitoredItems);
+		serviceTransactionCreateMonitoredItems->memberService(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			sessionMember_,
+			serviceTransactionCreateMonitoredItems
+		);
 	}
 
 	void
@@ -79,8 +94,12 @@ namespace OpcUaStackClient
 	void
 	MonitoredItemService::asyncSend(ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems)
 	{
-		serviceTransactionDeleteMonitoredItems->componentService(this);
-		componentSession_->sendAsync(serviceTransactionDeleteMonitoredItems);
+		serviceTransactionDeleteMonitoredItems->memberService(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			sessionMember_,
+			serviceTransactionDeleteMonitoredItems
+		);
 	}
 
 	void
@@ -95,8 +114,12 @@ namespace OpcUaStackClient
 	void
 	MonitoredItemService::asyncSend(ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems)
 	{
-		serviceTransactionModifyMonitoredItems->componentService(this);
-		componentSession_->sendAsync(serviceTransactionModifyMonitoredItems);
+		serviceTransactionModifyMonitoredItems->memberService(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			sessionMember_,
+			serviceTransactionModifyMonitoredItems
+		);
 	}
 
 	void
@@ -111,8 +134,12 @@ namespace OpcUaStackClient
 	void
 	MonitoredItemService::asyncSend(ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode)
 	{
-		serviceTransactionSetMonitoringMode->componentService(this);
-		componentSession_->sendAsync(serviceTransactionSetMonitoringMode);
+		serviceTransactionSetMonitoringMode->memberService(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			sessionMember_,
+			serviceTransactionSetMonitoringMode
+		);
 	}
 
 	void
@@ -127,8 +154,12 @@ namespace OpcUaStackClient
 	void
 	MonitoredItemService::asyncSend(ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering)
 	{
-		serviceTransactionSetTriggering->componentService(this);
-		componentSession_->sendAsync(serviceTransactionSetTriggering);
+		serviceTransactionSetTriggering->memberService(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			sessionMember_,
+			serviceTransactionSetTriggering
+		);
 	}
 
 	void

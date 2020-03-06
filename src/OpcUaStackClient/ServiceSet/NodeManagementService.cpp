@@ -24,32 +24,43 @@ namespace OpcUaStackClient
 {
 
 	NodeManagementService::NodeManagementService(
+		const std::string& serviceName,
 		IOThread* ioThread,
 		MessageBus::SPtr& messageBus
 	)
-	: Component()
-	, componentSession_(nullptr)
-	, messageBus_(messageBus)
+	: ClientServiceBase()
 	{
-		Component::ioThread(ioThread);
+		// set parameter in client service base
+		serviceName_ = serviceName;
+		ClientServiceBase::ioThread_ = ioThread;
+		strand_ = ioThread->createStrand();
+		messageBus_ = messageBus;
 	}
 
 	NodeManagementService::~NodeManagementService(void)
 	{
+		// deactivate receiver
+		deactivateReceiver();
 	}
 
 	void
 	NodeManagementService::setConfiguration(
-		Component* componentSession
+		MessageBusMember::WPtr& sessionMember
 	)
 	{
-		this->componentSession(componentSession);
-	}
+		sessionMember_ = sessionMember;
 
-	void 
-	NodeManagementService::componentSession(Component* componentSession)
-	{
-		componentSession_ = componentSession;
+		// register message bus receiver
+		MessageBusMemberConfig messageBusMemberConfig;
+		messageBusMemberConfig.strand(strand_);
+		messageBusMember_ = messageBus_->registerMember(serviceName_, messageBusMemberConfig);
+
+		// activate receiver
+		activateReceiver(
+			[this](Message::SPtr& message){
+				receive(message);
+			}
+		);
 	}
 
 	void 
@@ -64,8 +75,12 @@ namespace OpcUaStackClient
 	void 
 	NodeManagementService::asyncSend(ServiceTransactionAddNodes::SPtr serviceTransactionAddNodes)
 	{
-		serviceTransactionAddNodes->componentService(this);
-		componentSession_->sendAsync(serviceTransactionAddNodes);
+		serviceTransactionAddNodes->memberService(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			sessionMember_,
+			serviceTransactionAddNodes
+		);
 	}
 
 	void 
@@ -80,8 +95,12 @@ namespace OpcUaStackClient
 	void 
 	NodeManagementService::asyncSend(ServiceTransactionAddReferences::SPtr serviceTransactionAddReferences)
 	{
-		serviceTransactionAddReferences->componentService(this);
-		componentSession_->sendAsync(serviceTransactionAddReferences);
+		serviceTransactionAddReferences->memberService(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			sessionMember_,
+			serviceTransactionAddReferences
+		);
 	}
 
 	void 
@@ -96,8 +115,12 @@ namespace OpcUaStackClient
 	void 
 	NodeManagementService::asyncSend(ServiceTransactionDeleteNodes::SPtr serviceTransactionDeleteNodes)
 	{
-		serviceTransactionDeleteNodes->componentService(this);
-		componentSession_->sendAsync(serviceTransactionDeleteNodes);
+		serviceTransactionDeleteNodes->memberService(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			sessionMember_,
+			serviceTransactionDeleteNodes
+		);
 	}
 
 	void 
@@ -112,8 +135,12 @@ namespace OpcUaStackClient
 	void 
 	NodeManagementService::asyncSend(ServiceTransactionDeleteReferences::SPtr serviceTransactionDeleteReferences)
 	{
-		serviceTransactionDeleteReferences->componentService(this);
-		componentSession_->sendAsync(serviceTransactionDeleteReferences);
+		serviceTransactionDeleteReferences->memberService(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			sessionMember_,
+			serviceTransactionDeleteReferences
+		);
 	}
 
 	void 

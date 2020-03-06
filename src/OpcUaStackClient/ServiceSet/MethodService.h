@@ -18,29 +18,29 @@
 #ifndef __OpcUaStackClient_MethodService_h__
 #define __OpcUaStackClient_MethodService_h__
 
-#include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/Component/MessageBus.h"
 #include "OpcUaStackCore/ServiceSet/MethodServiceTransaction.h"
+#include "OpcUaStackClient/ServiceSet/ClientServiceBase.h"
 
 namespace OpcUaStackClient 
 {
 
 	class DLLEXPORT MethodService
-	: public OpcUaStackCore::Component
+	: public ClientServiceBase
 	{
 	  public:
 		typedef boost::shared_ptr<MethodService> SPtr;
 
 		MethodService(
+			const std::string& serviceName,
 			OpcUaStackCore::IOThread* ioThread,
 			OpcUaStackCore::MessageBus::SPtr& messageBus
 		);
 		~MethodService(void);
 
 		void setConfiguration(
-			OpcUaStackCore::Component* componentSession
+			OpcUaStackCore::MessageBusMember::WPtr& sessionMember
 		);
-		void componentSession(OpcUaStackCore::Component* componentSession);
 
 		void syncSend(OpcUaStackCore::ServiceTransactionCall::SPtr serviceTransactionRead);
 		void asyncSend(OpcUaStackCore::ServiceTransactionCall::SPtr serviceTransactionRead);
@@ -50,8 +50,7 @@ namespace OpcUaStackClient
 		//- Component -----------------------------------------------------------------
 
 	  private:
-		OpcUaStackCore::MessageBus::SPtr messageBus_ = nullptr;
-		OpcUaStackCore::Component* componentSession_;
+		OpcUaStackCore::MessageBusMember::WPtr sessionMember_;
 	};
 
 }

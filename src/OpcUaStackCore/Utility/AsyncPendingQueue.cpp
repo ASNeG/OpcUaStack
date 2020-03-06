@@ -16,6 +16,8 @@
  */
 
 #include <boost/make_shared.hpp>
+#include <future>
+#include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Utility/AsyncPendingQueue.h"
 
 namespace OpcUaStackCore
@@ -85,8 +87,23 @@ namespace OpcUaStackCore
 	}
 
 	void
-	AsyncPendingQueue::cancel(void)
+	AsyncPendingQueue::asyncCancel(void)
 	{
+		// check if the call is made within the strand
+		auto strand = asyncPendingQueueConfig_.strand();
+		if (!strand->running_in_this_thread()) {
+			std::promise<void> promise;
+			std::future<void> future = promise.get_future();
+			strand->dispatch(
+				[this, &promise](void) {
+				    asyncCancel();
+					promise.set_value();
+			    }
+			);
+			future.wait();
+			return;
+		}
+
 		// check if callback is exist
 		// check if callback already running
 		if (!timeoutCallback_ || cancel_) {
@@ -98,9 +115,51 @@ namespace OpcUaStackCore
 		runCallback();
 	}
 
+	void
+	AsyncPendingQueue::syncCancel(void)
+	{
+		// check if the call is made within the strand
+		auto strand = asyncPendingQueueConfig_.strand();
+		if (!strand->running_in_this_thread()) {
+			std::promise<void> promise;
+			std::future<void> future = promise.get_future();
+			strand->dispatch(
+				[this, &promise](void) {
+				    syncCancel();
+					promise.set_value();
+			    }
+			);
+			future.wait();
+			return;
+		}
+
+		// check if callback is exist
+		// check if callback already running
+		if (!timeoutCallback_ || cancel_) {
+			return;
+		}
+		cancel_ = true;
+		timeoutCallback_ = nullptr;
+	}
+
 	bool
 	AsyncPendingQueue::insert(uint32_t key, Object::SPtr object, uint32_t timeoutMSec)
 	{
+		// check if the call is made within the strand
+		auto strand = asyncPendingQueueConfig_.strand();
+		if (!strand->running_in_this_thread()) {
+			std::promise<bool> promise;
+			std::future<bool> future = promise.get_future();
+			strand->dispatch(
+				[this, &promise, key, object, timeoutMSec](void) {
+					bool rc = insert(key, object, timeoutMSec);
+					promise.set_value(rc);
+			    }
+			);
+			future.wait();
+			return future.get();
+		}
+
 		// check if element in pending queue already exist
 		auto it = pendingQueueMap_.find(key);
 		if (it != pendingQueueMap_.end()) {
@@ -136,6 +195,21 @@ namespace OpcUaStackCore
 	Object::SPtr
 	AsyncPendingQueue::remove(uint32_t key)
 	{
+		// check if the call is made within the strand
+		auto strand = asyncPendingQueueConfig_.strand();
+		if (!strand->running_in_this_thread()) {
+			std::promise<Object::SPtr> promise;
+			std::future<Object::SPtr> future = promise.get_future();
+			strand->dispatch(
+				[this, &promise, key](void) {
+				    Object::SPtr rc = remove(key);
+					promise.set_value(rc);
+			    }
+			);
+			future.wait();
+			return future.get();
+		}
+
 		// find timer element
 		auto it = pendingQueueMap_.find(key);
 		if (it == pendingQueueMap_.end()) {
@@ -157,6 +231,21 @@ namespace OpcUaStackCore
 		const TimeoutCallback& timeoutCallback
 	)
 	{
+		// check if the call is made within the strand
+		auto strand = asyncPendingQueueConfig_.strand();
+		if (!strand->running_in_this_thread()) {
+			std::promise<void> promise;
+			std::future<void> future = promise.get_future();
+			strand->dispatch(
+				[this, &promise, timeoutCallback](void) {
+					asyncTimeout(timeoutCallback);
+					promise.set_value();
+			    }
+			);
+			future.wait();
+			return;
+		}
+
 		cancel_ = false;
 		timeoutCallback_ = timeoutCallback;
 		runCallback();
@@ -165,6 +254,21 @@ namespace OpcUaStackCore
 	void
 	AsyncPendingQueue::keys(std::vector<uint32_t>& keys)
 	{
+		// check if the call is made within the strand
+		auto strand = asyncPendingQueueConfig_.strand();
+		if (!strand->running_in_this_thread()) {
+			std::promise<void> promise;
+			std::future<void> future = promise.get_future();
+			strand->dispatch(
+				[this, &promise, keys](void) mutable {
+					this->keys(keys);
+					promise.set_value();
+			    }
+			);
+			future.wait();
+			return;
+		}
+
 		for (auto it = pendingQueueMap_.begin(); it != pendingQueueMap_.end(); it++) {
 			keys.push_back(it->first);
 		}

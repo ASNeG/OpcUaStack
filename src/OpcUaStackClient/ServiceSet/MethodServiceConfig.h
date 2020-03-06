@@ -32,6 +32,8 @@ namespace OpcUaStackClient
 
 		MethodServiceConfig(void);
 		virtual ~MethodServiceConfig(void);
+
+		std::string methodServiceName_ = "MethodService";
 	};
 
 }

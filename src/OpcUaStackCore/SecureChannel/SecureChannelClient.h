@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -32,7 +32,10 @@ namespace OpcUaStackCore
 	: public SecureChannelBase
 	{
 	  public:
-		SecureChannelClient(IOThread* ioThread);
+		SecureChannelClient(
+			IOThread* ioThread,
+			boost::shared_ptr<boost::asio::io_service::strand>& strand
+		);
 		~SecureChannelClient(void);
 
 		void secureChannelClientIf(SecureChannelClientIf* secureChannelClientIf);
@@ -64,6 +67,7 @@ namespace OpcUaStackCore
 		void handleReconnect(SecureChannel* secureChannel);
 
 		IOThread* ioThread_;
+
 		SecureChannelClientIf* secureChannelClientIf_;
 		SlotTimerElement::SPtr slotTimerElementRenew_;
 		SlotTimerElement::SPtr slotTimerElementReconnect_;

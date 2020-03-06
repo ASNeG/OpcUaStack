@@ -24,31 +24,43 @@ namespace OpcUaStackClient
 {
 
 	QueryService::QueryService(
+		const std::string& serviceName,
 		IOThread* ioThread,
 		MessageBus::SPtr& messageBus
 	)
-	: componentSession_(nullptr)
-	, messageBus_(messageBus)
+	: ClientServiceBase()
 	{
-		Component::ioThread(ioThread);
+		// set parameter in client service base
+		serviceName_ = serviceName;
+		ClientServiceBase::ioThread_ = ioThread;
+		strand_ = ioThread->createStrand();
+		messageBus_ = messageBus;
 	}
 
 	QueryService::~QueryService(void)
 	{
+		// deactivate receiver
+		deactivateReceiver();
 	}
 
 	void
 	QueryService::setConfiguration(
-		Component* componentSession
+		MessageBusMember::WPtr& sessionMember
 	)
 	{
-		this->componentSession(componentSession);
-	}
+		sessionMember_ = sessionMember;
 
-	void 
-	QueryService::componentSession(Component* componentSession)
-	{
-		componentSession_ = componentSession;
+		// register message bus receiver
+		MessageBusMemberConfig messageBusMemberConfig;
+		messageBusMemberConfig.strand(strand_);
+		messageBusMember_ = messageBus_->registerMember(serviceName_, messageBusMemberConfig);
+
+		// activate receiver
+		activateReceiver(
+			[this](Message::SPtr& message){
+				receive(message);
+			}
+		);
 	}
 
 	void 
@@ -63,8 +75,12 @@ namespace OpcUaStackClient
 	void 
 	QueryService::asyncSend(ServiceTransactionQueryFirst::SPtr serviceTransactionQueryFirst)
 	{
-		serviceTransactionQueryFirst->componentService(this);
-		componentSession_->sendAsync(serviceTransactionQueryFirst);
+		serviceTransactionQueryFirst->memberService(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			sessionMember_,
+			serviceTransactionQueryFirst
+		);
 	}
 
 	void
@@ -79,8 +95,12 @@ namespace OpcUaStackClient
 	void
 	QueryService::asyncSend(ServiceTransactionQueryNext::SPtr serviceTransactionQueryNext)
 	{
-		serviceTransactionQueryNext->componentService(this);
-		componentSession_->sendAsync(serviceTransactionQueryNext);
+		serviceTransactionQueryNext->memberService(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			sessionMember_,
+			serviceTransactionQueryNext
+		);
 	}
 
 

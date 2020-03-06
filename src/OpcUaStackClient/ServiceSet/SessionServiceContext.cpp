@@ -39,11 +39,12 @@ namespace OpcUaStackClient
 
 	SessionServiceContext::SessionServiceContext(
 		IOThread* ioThread,
-		MessageBus::SPtr& messageBus
+		MessageBus::SPtr& messageBus,
+		boost::shared_ptr<boost::asio::io_service::strand>& strand
 	)
 	: id_(gId_++)
 	, secureChannelClientConfig_()
-	, secureChannelClient_(ioThread)
+	, secureChannelClient_(ioThread, strand)
 	, secureChannel_(nullptr)
 
 	, sessionService_(nullptr)
@@ -83,7 +84,12 @@ namespace OpcUaStackClient
 			.parameter("Timeout", sessionConfig_->reconnectTimeout());
 
 		slotTimerElement_->expireFromNow(sessionConfig_->reconnectTimeout());
-		slotTimerElement_->timeoutCallback(boost::bind(&SessionService::reconnectTimeout, sessionService_));
+		slotTimerElement_->timeoutCallback(
+			strand_,
+			[this](void) {
+				sessionService_->reconnectTimeout();
+		    }
+	    );
 		ioThread_->slotTimer()->start(slotTimerElement_);
 
 		return true;
@@ -838,6 +844,15 @@ namespace OpcUaStackClient
 		issuedIdentityToken->tokenData().value(encryptedText.memBuf(), encryptedText.memLen());
 
 		return Success;
+	}
+
+	void
+	SessionServiceContext::sendResponseToService(
+		MessageBusMember::WPtr& target,
+		const Message::SPtr& message
+	)
+	{
+		messageBus_->messageSend(messageBusMember_, target, message);
 	}
 
 }

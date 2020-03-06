@@ -18,29 +18,29 @@
 #ifndef __OpcUaStackClient_QueryService_h__
 #define __OpcUaStackClient_QueryService_h__
 
-#include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/Component/MessageBus.h"
 #include "OpcUaStackCore/ServiceSet/QueryServiceTransaction.h"
+#include "OpcUaStackClient/ServiceSet/ClientServiceBase.h"
 
 namespace OpcUaStackClient 
 {
 
 	class DLLEXPORT QueryService
-	: public OpcUaStackCore::Component
+	: public ClientServiceBase
 	{
 	  public:
 		typedef boost::shared_ptr<QueryService> SPtr;
 
 		QueryService(
+			const std::string& serviceName,
 			OpcUaStackCore::IOThread* ioThread,
 			OpcUaStackCore::MessageBus::SPtr& messageBus
 		);
 		~QueryService(void);
 
 		void setConfiguration(
-			OpcUaStackCore::Component* componentSession
+			OpcUaStackCore::MessageBusMember::WPtr& sessionMember
 		);
-		void componentSession(OpcUaStackCore::Component* componentSession);
 
 		void syncSend(OpcUaStackCore::ServiceTransactionQueryFirst::SPtr serviceTransactionQueryFirst);
 		void asyncSend(OpcUaStackCore::ServiceTransactionQueryFirst::SPtr serviceTransactionQueryFirst);
@@ -52,8 +52,7 @@ namespace OpcUaStackClient
 		//- Component -----------------------------------------------------------------
 
 	  private:
-		OpcUaStackCore::MessageBus::SPtr messageBus_;
-		OpcUaStackCore::Component* componentSession_;
+		OpcUaStackCore::MessageBusMember::WPtr sessionMember_;
 	};
 
 }

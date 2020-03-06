@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -33,7 +33,10 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	SecureChannelClient::SecureChannelClient(IOThread* ioThread)
+	SecureChannelClient::SecureChannelClient(
+		IOThread* ioThread,
+		boost::shared_ptr<boost::asio::io_service::strand>& strand
+	)
 	: SecureChannelBase(SecureChannelBase::SCT_Client)
 	, secureChannelClientIf_(nullptr)
 	, ioThread_(ioThread)
@@ -42,6 +45,7 @@ namespace OpcUaStackCore
 	, renewTimeout_(300000)
 	, reconnectTimeout_(0)
 	{
+		strand_ = strand;
 	}
 
 	SecureChannelClient::~SecureChannelClient(void)
@@ -63,6 +67,7 @@ namespace OpcUaStackCore
 	SecureChannel*
 	SecureChannelClient::connect(SecureChannelClientConfig::SPtr& secureChannelClientConfig)
 	{
+		// create crypto manager
 		cryptoManager(secureChannelClientConfig->cryptoManager());
 
 		if (secureChannelClientIf_ == nullptr) {
@@ -211,7 +216,10 @@ namespace OpcUaStackCore
 		// get ip address from hostname
 		Url url(config->endpointUrl());
 		secureChannel->partner_.port(url.port());
-		auto resolver = std::make_shared<Resolver>(ioThread_->ioService()->io_service());
+		auto resolver = std::make_shared<Resolver>(
+			ioThread_->ioService()->io_service(),
+			strand_
+		);
 		resolver->getAddrFromUrl(
 			config->endpointUrl(),
 			[this, secureChannel](bool error, const boost::asio::ip::address addr) {
@@ -239,14 +247,12 @@ namespace OpcUaStackCore
 			.parameter("Address", secureChannel->partner_.address().to_string())
 			.parameter("Port", secureChannel->partner_.port());
 		secureChannel->state_ = SecureChannel::S_Connecting;
-		secureChannel->socket().async_connect(
+		secureChannel->async_connect(
+			strand_,
 			secureChannel->partner_,
-			boost::bind(
-				&SecureChannelClient::connectComplete,
-				this,
-				boost::asio::placeholders::error,
-				secureChannel
-			)
+			[this, secureChannel](const boost::system::error_code& error) {
+				connectComplete(error, secureChannel);
+			}
 		);
 	}
 
@@ -383,7 +389,12 @@ namespace OpcUaStackCore
 
 		// start timer to renew security token
 		slotTimerElementRenew_->expireFromNow(securityToken->revisedLifetime() * 0.75);
-		slotTimerElementRenew_->timeoutCallback(boost::bind(&SecureChannelClient::renewSecurityToken, this, secureChannel));
+		slotTimerElementRenew_->timeoutCallback(
+			strand_,
+			[this, secureChannel](void) {
+				renewSecurityToken(secureChannel);
+		    }
+		);
 		ioThread_->slotTimer()->start(slotTimerElementRenew_);
 
 		// handle new secure channel
@@ -438,7 +449,12 @@ namespace OpcUaStackCore
 			return;
 		}
 		slotTimerElementReconnect_->expireFromNow(reconnectTimeout_);
-		slotTimerElementReconnect_->timeoutCallback(boost::bind(&SecureChannelClient::handleReconnect, this, secureChannel));
+		slotTimerElementReconnect_->timeoutCallback(
+			strand_,
+			[this, secureChannel](void) {
+			    handleReconnect(secureChannel);
+		    }
+		);
 		ioThread_->slotTimer()->start(slotTimerElementReconnect_);
 	}
 

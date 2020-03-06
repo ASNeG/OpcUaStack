@@ -19,29 +19,29 @@
 #define __OpcUaStackClient_NodeManagementService_h__
 
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/Component/MessageBus.h"
 #include "OpcUaStackCore/ServiceSet/NodeManagementServiceTransaction.h"
+#include "OpcUaStackClient/ServiceSet/ClientServiceBase.h"
 
 namespace OpcUaStackClient 
 {
 
 	class DLLEXPORT NodeManagementService
-	: public OpcUaStackCore::Component
+	: public ClientServiceBase
 	{
 	  public:
 		typedef boost::shared_ptr<NodeManagementService> SPtr;
 
 		NodeManagementService(
+			const std::string& serviceName,
 			OpcUaStackCore::IOThread* ioThread,
 			OpcUaStackCore::MessageBus::SPtr& messageBus
 		);
 		~NodeManagementService(void);
 
 		void setConfiguration(
-			OpcUaStackCore::Component* componentSession
+			OpcUaStackCore::MessageBusMember::WPtr& sessionMember
 		);
-		void componentSession(OpcUaStackCore::Component* componentSession);
 
 		void syncSend(OpcUaStackCore::ServiceTransactionAddNodes::SPtr serviceTransactionAddNodes);
 		void asyncSend(OpcUaStackCore::ServiceTransactionAddNodes::SPtr serviceTransactionAddNodes);
@@ -57,8 +57,7 @@ namespace OpcUaStackClient
 		//- Component -----------------------------------------------------------------
 
 	  private:
-		OpcUaStackCore::MessageBus::SPtr messageBus_;
-		OpcUaStackCore::Component* componentSession_;
+		OpcUaStackCore::MessageBusMember::WPtr sessionMember_;
 	};
 
 }

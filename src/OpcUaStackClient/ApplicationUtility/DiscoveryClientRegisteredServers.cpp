@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -97,6 +97,7 @@ namespace OpcUaStackClient
 
 		serviceSetManager_.registerIOThread("DiscoveryIOThread", ioThread_);
 		serviceSetManager_.sessionService(sessionServiceConfig);
+		sessionServiceConfig.sessionServiceName_ = "RegisteredServersSession";
 
 		// create session service
 		sessionService_ = serviceSetManager_.sessionService(sessionServiceConfig);

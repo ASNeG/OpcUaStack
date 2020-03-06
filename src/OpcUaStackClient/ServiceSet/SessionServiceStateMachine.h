@@ -47,7 +47,7 @@ namespace OpcUaStackClient
 
 		SessionServiceContext* ctx_;
 		UpdateCallback updateCallback_;
-		std::string sessionServiceName_;
+		std::string sessionServiceName_ = "";
 		SessionServiceStateIf::UPtr state_;
 	};
 

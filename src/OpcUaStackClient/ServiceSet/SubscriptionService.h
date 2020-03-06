@@ -35,13 +35,14 @@ namespace OpcUaStackClient
 		typedef boost::shared_ptr<SubscriptionService> SPtr;
 
 		SubscriptionService(
+			const std::string& serviceName,
 			OpcUaStackCore::IOThread* ioThread,
 			OpcUaStackCore::MessageBus::SPtr& messageBus
 		);
 		virtual ~SubscriptionService(void);
 
 		void setConfiguration(
-			OpcUaStackCore::Component* componentSession,
+			OpcUaStackCore::MessageBusMember::WPtr& sessionMember,
 			const DataChangeNotificationHandler& dataChangeNotificationHandler,
 			const EventNotificationHandler& eventNotificationHandler,
 			const SubscriptionStateUpdateHandler& subscriptionStateUpdateHandler,
@@ -90,7 +91,6 @@ namespace OpcUaStackClient
 	    void dataChangeNotification(const OpcUaStackCore::OpcUaExtensibleParameter::SPtr& extensibleParameter);
 	    void eventNotification(const OpcUaStackCore::OpcUaExtensibleParameter::SPtr& extensibleParameter);
 
-	    OpcUaStackCore::MessageBus::SPtr messageBus_;
 	    DataChangeNotificationHandler dataChangeNotificationHandler_;
 		EventNotificationHandler eventNotificationHandler_;
 		SubscriptionStateUpdateHandler subscriptionStateUpdateHandler_;

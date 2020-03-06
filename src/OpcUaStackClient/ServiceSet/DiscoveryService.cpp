@@ -24,32 +24,43 @@ namespace OpcUaStackClient
 {
 
 	DiscoveryService::DiscoveryService(
+		const std::string& serviceName,
 		IOThread* ioThread,
 		OpcUaStackCore::MessageBus::SPtr& messageBus
 	)
-	: Component()
-	, componentSession_(nullptr)
-	, messageBus_(messageBus)
+	: ClientServiceBase()
 	{
-		Component::ioThread(ioThread);
+		// set parameter in client service base
+		serviceName_ = serviceName;
+		ClientServiceBase::ioThread_ = ioThread;
+		strand_ = ioThread->createStrand();
+		messageBus_ = messageBus;
 	}
 
 	DiscoveryService::~DiscoveryService(void)
 	{
+		// deactivate receiver
+		deactivateReceiver();
 	}
 
 	void
 	DiscoveryService::setConfiguration(
-		Component* componentSession
+		MessageBusMember::WPtr& sessionMember
 	)
 	{
-		this->componentSession(componentSession);
-	}
+		sessionMember_ = sessionMember;
 
-	void 
-	DiscoveryService::componentSession(Component* componentSession)
-	{
-		componentSession_ = componentSession;
+		// register message bus receiver
+		MessageBusMemberConfig messageBusMemberConfig;
+		messageBusMemberConfig.strand(strand_);
+		messageBusMember_ = messageBus_->registerMember(serviceName_, messageBusMemberConfig);
+
+		// activate receiver
+		activateReceiver(
+			[this](Message::SPtr& message){
+				receive(message);
+			}
+		);
 	}
 
 	void 
@@ -64,8 +75,12 @@ namespace OpcUaStackClient
 	void 
 	DiscoveryService::asyncSend(ServiceTransactionFindServers::SPtr serviceTransactionFindServers)
 	{
-		serviceTransactionFindServers->componentService(this);
-		componentSession_->sendAsync(serviceTransactionFindServers);
+		serviceTransactionFindServers->memberService(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			sessionMember_,
+			serviceTransactionFindServers
+		);
 	}
 
 	void
@@ -80,8 +95,12 @@ namespace OpcUaStackClient
 	void
 	DiscoveryService::asyncSend(ServiceTransactionGetEndpoints::SPtr serviceTransactionGetEndpoints)
 	{
-		serviceTransactionGetEndpoints->componentService(this);
-		componentSession_->sendAsync(serviceTransactionGetEndpoints);
+		serviceTransactionGetEndpoints->memberService(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			sessionMember_,
+			serviceTransactionGetEndpoints
+		);
 	}
 
 	void
@@ -96,8 +115,12 @@ namespace OpcUaStackClient
 	void
 	DiscoveryService::asyncSend(ServiceTransactionRegisterServer::SPtr serviceTransactionRegisterServer)
 	{
-		serviceTransactionRegisterServer->componentService(this);
-		componentSession_->sendAsync(serviceTransactionRegisterServer);
+		serviceTransactionRegisterServer->memberService(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			sessionMember_,
+			serviceTransactionRegisterServer
+		);
 	}
 
 	void 

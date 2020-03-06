@@ -54,14 +54,11 @@ namespace OpcUaStackCore
 		// read message header
 		secureChannel->asyncRecv_ = true;
 		secureChannel->async_read_exactly(
+			strand_,
 			secureChannel->recvBuffer_,
-			boost::bind(
-				&SecureChannelBase::handleReadHeader,
-				this,
-				boost::asio::placeholders::error,
-				boost::asio::placeholders::bytes_transferred,
-				secureChannel
-			),
+			[this, secureChannel](const boost::system::error_code& error, std::size_t bytes_transfered) {
+			    handleReadHeader(error, bytes_transfered, secureChannel);
+		    },
 			8
 		);
 	}
@@ -188,14 +185,11 @@ namespace OpcUaStackCore
 	SecureChannelBase::asyncReadHello(SecureChannel* secureChannel)
 	{
 		secureChannel->async_read_exactly(
+			strand_,
 			secureChannel->recvBuffer_,
-			boost::bind(
-				&SecureChannelBase::handleReadHello,
-				this,
-				boost::asio::placeholders::error,
-				boost::asio::placeholders::bytes_transferred,
-				secureChannel
-			),
+			[this, secureChannel](const boost::system::error_code& error, std::size_t bytes_transfered) {
+				handleReadHello(error, bytes_transfered, secureChannel);
+		    },
 			secureChannel->messageHeader_.messageSize() - 8
 		);
 	}
@@ -270,14 +264,12 @@ namespace OpcUaStackCore
 		secureChannel->debugSendHello(hello);
 
 		secureChannel->async_write(
+			strand_,
 			sb2,
 			sb1,
-			boost::bind(
-				&SecureChannelBase::handleWriteHelloComplete,
-				this,
-				boost::asio::placeholders::error,
-				secureChannel
-			)
+			[this, secureChannel](const boost::system::error_code& error, std::size_t bytes_transfered) {
+				handleWriteHelloComplete(error, secureChannel);
+		    }
 		);
 	}
 
@@ -299,14 +291,11 @@ namespace OpcUaStackCore
 	SecureChannelBase::asyncReadAcknowledge(SecureChannel* secureChannel)
 	{
 		secureChannel->async_read_exactly(
+			strand_,
 			secureChannel->recvBuffer_,
-			boost::bind(
-				&SecureChannelBase::handleReadAcknowledge,
-				this,
-				boost::asio::placeholders::error,
-				boost::asio::placeholders::bytes_transferred,
-				secureChannel
-			),
+			[this, secureChannel](const boost::system::error_code& error, std::size_t bytes_transfered) {
+				handleReadAcknowledge(error, bytes_transfered, secureChannel);
+		    },
 			secureChannel->messageHeader_.messageSize() - 8
 		);
 	}
@@ -380,14 +369,12 @@ namespace OpcUaStackCore
 		secureChannel->debugSendAcknowledge(acknowledge);
 
 		secureChannel->async_write(
+			strand_,
 			sb2,
 			sb1,
-			boost::bind(
-				&SecureChannelBase::handleWriteAcknowledgeComplete,
-				this,
-				boost::asio::placeholders::error,
-				secureChannel
-			)
+			[this, secureChannel](const boost::system::error_code& error, std::size_t bytes_transfered) {
+				handleWriteAcknowledgeComplete(error, secureChannel);
+		    }
 		);
 	}
 
@@ -409,14 +396,11 @@ namespace OpcUaStackCore
 	SecureChannelBase::asyncReadOpenSecureChannelRequest(SecureChannel* secureChannel)
 	{
 		secureChannel->async_read_exactly(
+			strand_,
 			secureChannel->recvBuffer_,
-			boost::bind(
-				&SecureChannelBase::handleReadOpenSecureChannelRequest,
-				this,
-				boost::asio::placeholders::error,
-				boost::asio::placeholders::bytes_transferred,
-				secureChannel
-			),
+			[this, secureChannel](const boost::system::error_code& error, std::size_t bytes_transfered) {
+				handleReadOpenSecureChannelRequest(error, bytes_transfered, secureChannel);
+		    },
 			secureChannel->messageHeader_.messageSize() - 8
 		);
 	}
@@ -654,13 +638,11 @@ namespace OpcUaStackCore
 		encryptedText.get(secureChannel->sendBuffer_);
 
 		secureChannel->async_write(
+			strand_,
 			secureChannel->sendBuffer_,
-			boost::bind(
-				&SecureChannelBase::handleWriteOpenSecureChannelRequestComplete,
-				this,
-				boost::asio::placeholders::error,
-				secureChannel
-			)
+			[this, secureChannel](const boost::system::error_code& error, std::size_t bytes_transfered) {
+			    handleWriteOpenSecureChannelRequestComplete(error, secureChannel);
+		    }
 		);
 	}
 
@@ -682,14 +664,11 @@ namespace OpcUaStackCore
 	SecureChannelBase::asyncReadOpenSecureChannelResponse(SecureChannel* secureChannel)
 	{
 		secureChannel->async_read_exactly(
+			strand_,
 			secureChannel->recvBuffer_,
-			boost::bind(
-				&SecureChannelBase::handleReadOpenSecureChannelResponse,
-				this,
-				boost::asio::placeholders::error,
-				boost::asio::placeholders::bytes_transferred,
-				secureChannel
-			),
+			[this, secureChannel](const boost::system::error_code& error, std::size_t bytes_transfered) {
+				handleReadOpenSecureChannelResponse(error, bytes_transfered, secureChannel);
+		    },
 			secureChannel->messageHeader_.messageSize() - 8
 		);
 	}
@@ -899,13 +878,11 @@ namespace OpcUaStackCore
 		encryptedText.get(secureChannel->sendBuffer_);
 		secureChannel->asyncSend_ = true;
 		secureChannel->async_write(
+			strand_,
 			secureChannel->sendBuffer_,
-			boost::bind(
-				&SecureChannelBase::handleWriteOpenSecureChannelResponseComplete,
-				this,
-				boost::asio::placeholders::error,
-				secureChannel
-			)
+			[this, secureChannel](const boost::system::error_code& error, std::size_t bytes_transfered) {
+				handleWriteOpenSecureChannelResponseComplete(error, secureChannel);
+		    }
 		);
 	}
 
@@ -949,14 +926,11 @@ namespace OpcUaStackCore
 	SecureChannelBase::asyncReadCloseSecureChannelRequest(SecureChannel* secureChannel)
 	{
 		secureChannel->async_read_exactly(
+			strand_,
 			secureChannel->recvBuffer_,
-			boost::bind(
-				&SecureChannelBase::handleReadCloseSecureChannelRequest,
-				this,
-				boost::asio::placeholders::error,
-				boost::asio::placeholders::bytes_transferred,
-				secureChannel
-			),
+			[this, secureChannel](const boost::system::error_code& error, std::size_t bytes_transfered) {
+				handleReadCloseSecureChannelRequest(error, bytes_transfered, secureChannel);
+		    },
 			secureChannel->messageHeader_.messageSize() - 8
 		);
 	}
@@ -1121,13 +1095,11 @@ namespace OpcUaStackCore
 		encryptedText.get(secureChannel->sendBuffer_);
 
 		secureChannel->async_write(
+			strand_,
 			secureChannel->sendBuffer_,
-			boost::bind(
-				&SecureChannelBase::handleWriteCloseSecureChannelRequestComplete,
-				this,
-				boost::asio::placeholders::error,
-				secureChannel
-			)
+			[this, secureChannel](const boost::system::error_code& error, std::size_t bytes_transfered) {
+				handleWriteCloseSecureChannelRequestComplete(error, secureChannel);
+		    }
 		);
 	}
 
@@ -1163,14 +1135,11 @@ namespace OpcUaStackCore
 
 		secureChannel->asyncRecv_ = true;
 		secureChannel->async_read_exactly(
+			strand_,
 			secureChannel->recvBuffer_,
-			boost::bind(
-				&SecureChannelBase::asyncReadMessageRequestComplete,
-				this,
-				boost::asio::placeholders::error,
-				boost::asio::placeholders::bytes_transferred,
-				secureChannel
-			),
+			[this, secureChannel](const boost::system::error_code& error, std::size_t bytes_transfered) {
+			    asyncReadMessageRequestComplete(error, bytes_transfered, secureChannel);
+		    },
 			secureChannel->messageHeader_.messageSize() - 8
 		);
 	}
@@ -1401,13 +1370,11 @@ namespace OpcUaStackCore
 			encryptedText.get(secureChannel->sendBuffer_);
 
 			secureChannel->async_write(
+				strand_,
 				secureChannel->sendBuffer_,
-				boost::bind(
-					&SecureChannelBase::handleWriteMessageRequestComplete,
-					this,
-					boost::asio::placeholders::error,
-					secureChannel
-				)
+				[this, secureChannel](const boost::system::error_code& error, std::size_t bytes_transfered) {
+					handleWriteMessageRequestComplete(error, secureChannel);
+			    }
 			);
 
 			secureChannel->sendFirstSegment_ = false;
@@ -1429,13 +1396,11 @@ namespace OpcUaStackCore
 			encryptedText.get(secureChannel->sendBuffer_);
 
 			secureChannel->async_write(
+				strand_,
 				secureChannel->sendBuffer_,
-				boost::bind(
-					&SecureChannelBase::handleWriteMessageRequestComplete,
-					this,
-					boost::asio::placeholders::error,
-					secureChannel
-				)
+				[this, secureChannel](const boost::system::error_code& error, std::size_t bytes_transfered) {
+					handleWriteMessageRequestComplete(error, secureChannel);
+			    }
 			);
 		}
 	}
@@ -1490,14 +1455,11 @@ namespace OpcUaStackCore
 
 		secureChannel->asyncRecv_ = true;
 		secureChannel->async_read_exactly(
+			strand_,
 			secureChannel->recvBuffer_,
-			boost::bind(
-				&SecureChannelBase::asyncReadMessageResponseComplete,
-				this,
-				boost::asio::placeholders::error,
-				boost::asio::placeholders::bytes_transferred,
-				secureChannel
-			),
+			[this, secureChannel](const boost::system::error_code& error, std::size_t bytes_transfered) {
+				asyncReadMessageResponseComplete(error, bytes_transfered, secureChannel);
+		    },
 			secureChannel->messageHeader_.messageSize() - 8
 		);
 	}
@@ -1732,13 +1694,11 @@ namespace OpcUaStackCore
 
 			// send response
 			secureChannel->async_write(
-					secureChannel->sendBuffer_,
-				boost::bind(
-					&SecureChannelBase::handleWriteMessageResponseComplete,
-					this,
-					boost::asio::placeholders::error,
-					secureChannel
-				)
+				strand_,
+				secureChannel->sendBuffer_,
+				[this, secureChannel](const boost::system::error_code& error, std::size_t bytes_transfered) {
+				    handleWriteMessageResponseComplete(error, secureChannel);
+			    }
 			);
 
 			secureChannel->sendFirstSegment_ = false;
@@ -1761,13 +1721,11 @@ namespace OpcUaStackCore
 
 			// send response
 			secureChannel->async_write(
+				strand_,
 				secureChannel->sendBuffer_,
-				boost::bind(
-					&SecureChannelBase::handleWriteMessageResponseComplete,
-					this,
-					boost::asio::placeholders::error,
-					secureChannel
-				)
+				[this, secureChannel](const boost::system::error_code& error, std::size_t bytes_transfered) {
+					handleWriteMessageResponseComplete(error, secureChannel);
+			    }
 			);
 		}
 	}
@@ -1858,6 +1816,7 @@ namespace OpcUaStackCore
 
 		// send error message
 		secureChannel->async_write(
+			strand_,
 			sb2,
 			sb1,
 			[this, secureChannel] (const boost::system::error_code& error, std::size_t bytes_transfered) {
@@ -1870,14 +1829,11 @@ namespace OpcUaStackCore
 	SecureChannelBase::asyncReadError(SecureChannel* secureChannel)
 	{
 		secureChannel->async_read_exactly(
+			strand_,
 			secureChannel->recvBuffer_,
-			boost::bind(
-				&SecureChannelBase::asyncReadErrorComplete,
-				this,
-				boost::asio::placeholders::error,
-				boost::asio::placeholders::bytes_transferred,
-				secureChannel
-			),
+			[this, secureChannel](const boost::system::error_code& error, std::size_t bytes_transfered) {
+				asyncReadErrorComplete(error, bytes_transfered, secureChannel);
+		    },
 			secureChannel->messageHeader_.messageSize() - 8
 		);
 	}

@@ -19,29 +19,29 @@
 #define __OpcUaStackClient_DiscoveryService_h__
 
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/Component/MessageBus.h"
+#include "OpcUaStackClient/ServiceSet/ClientServiceBase.h"
 #include "OpcUaStackCore/ServiceSet/DiscoveryServiceTransaction.h"
 
 namespace OpcUaStackClient 
 {
 
 	class DLLEXPORT DiscoveryService
-	: public OpcUaStackCore::Component
+	: public ClientServiceBase
 	{
 	  public:
 		typedef boost::shared_ptr<DiscoveryService> SPtr;
 
 		DiscoveryService(
+			const std::string& serviceName,
 			OpcUaStackCore::IOThread* ioThread,
 			OpcUaStackCore::MessageBus::SPtr& messageBus
 		);
 		~DiscoveryService(void);
 
 		void setConfiguration(
-			OpcUaStackCore::Component* componentSession
+			OpcUaStackCore::MessageBusMember::WPtr& sessionMember
 		);
-		void componentSession(OpcUaStackCore::Component* componentSession);
 
 		void syncSend(OpcUaStackCore::ServiceTransactionFindServers::SPtr serviceTransactionFindServers);
 		void asyncSend(OpcUaStackCore::ServiceTransactionFindServers::SPtr serviceTransactionFindServers);
@@ -55,8 +55,7 @@ namespace OpcUaStackClient
 		//- Component -----------------------------------------------------------------
 
 	  private:
-		OpcUaStackCore::MessageBus::SPtr messageBus_ = nullptr;
-		OpcUaStackCore::Component* componentSession_;
+		OpcUaStackCore::MessageBusMember::WPtr sessionMember_;
 	};
 
 }

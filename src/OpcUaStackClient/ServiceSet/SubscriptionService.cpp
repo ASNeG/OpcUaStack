@@ -26,6 +26,7 @@ namespace OpcUaStackClient
 {
 
 	SubscriptionService::SubscriptionService(
+		const std::string& serviceName,
 		IOThread* ioThread,
 		MessageBus::SPtr& messageBus
 	)
@@ -37,19 +38,25 @@ namespace OpcUaStackClient
 	, dataChangeNotificationHandler_()
 	, eventNotificationHandler_()
 	, subscriptionStateUpdateHandler_()
-	, messageBus_(messageBus)
 	{
-		Component::ioThread(ioThread);
+		// set parameter in client service base
+		serviceName_ = serviceName;
+		ClientServiceBase::ioThread_ = ioThread;
+		strand_ = ioThread->createStrand();
+		messageBus_ = messageBus;
+
 		subscriptionServicePublishIf(this);
 	}
 
 	SubscriptionService::~SubscriptionService(void)
 	{
+		// deactivate receiver
+		deactivateReceiver();
 	}
 
 	void
 	SubscriptionService::setConfiguration(
-		Component* componentSession,
+		MessageBusMember::WPtr& sessionMember,
 		const DataChangeNotificationHandler& dataChangeNotificationHandler,
 		const EventNotificationHandler& eventNotificationHandler,
 		const SubscriptionStateUpdateHandler& subscriptionStateUpdateHandler,
@@ -57,12 +64,25 @@ namespace OpcUaStackClient
 		uint32_t requestTimeout
 	)
 	{
-		this->componentSession(componentSession);
+		sessionMember_ = sessionMember;
+
 		dataChangeNotificationHandler_ = dataChangeNotificationHandler;
 		eventNotificationHandler_ = eventNotificationHandler;
 		subscriptionStateUpdateHandler_ = subscriptionStateUpdateHandler;
 		publishCount_ = publishCount;
 		requestTimeout_ = requestTimeout;
+
+		// register message bus receiver
+		MessageBusMemberConfig messageBusMemberConfig;
+		messageBusMemberConfig.strand(strand_);
+		messageBusMember_ = messageBus_->registerMember(serviceName_, messageBusMemberConfig);
+
+		// activate receiver
+		activateReceiver(
+			[this](Message::SPtr& message){
+				receive(message);
+			}
+		);
 	}
 
 	void

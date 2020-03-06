@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -78,7 +78,7 @@ namespace OpcUaStackServer
 
 		const_iterator begin() const;
 		const_iterator end() const;
-		bool erase(const_iterator it);
+		bool erase(const_iterator& it);
 		std::pair<ReferenceItemTable::const_iterator, ReferenceItemTable::const_iterator> equal_range(const OpcUaStackCore::OpcUaNodeId& referenceTypeNodeId) const;
 		size_t size() const;
 

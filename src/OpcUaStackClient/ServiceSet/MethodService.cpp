@@ -24,31 +24,43 @@ namespace OpcUaStackClient
 {
 
 	MethodService::MethodService(
+		const std::string& serviceName,
 		IOThread* ioThread,
 		MessageBus::SPtr& messageBus
 	)
-	: componentSession_(nullptr)
-	, messageBus_(messageBus)
+	: ClientServiceBase()
 	{
-		Component::ioThread(ioThread);
+		// set parameter in client service base
+		serviceName_ = serviceName;
+		ClientServiceBase::ioThread_ = ioThread;
+		strand_ = ioThread->createStrand();
+		messageBus_ = messageBus;
 	}
 
 	MethodService::~MethodService(void)
 	{
+		// deactivate receiver
+		deactivateReceiver();
 	}
 
 	void
 	MethodService::setConfiguration(
-		Component* componentSession
+		MessageBusMember::WPtr& sessionMember
 	)
 	{
-		this->componentSession(componentSession);
-	}
+		sessionMember_ = sessionMember;
 
-	void 
-	MethodService::componentSession(Component* componentSession)
-	{
-		componentSession_ = componentSession;
+		// register message bus receiver
+		MessageBusMemberConfig messageBusMemberConfig;
+		messageBusMemberConfig.strand(strand_);
+		messageBusMember_ = messageBus_->registerMember(serviceName_, messageBusMemberConfig);
+
+		// activate receiver
+		activateReceiver(
+			[this](Message::SPtr& message){
+				receive(message);
+			}
+		);
 	}
 
 	void 
@@ -63,9 +75,12 @@ namespace OpcUaStackClient
 	void 
 	MethodService::asyncSend(ServiceTransactionCall::SPtr serviceTransactionCall)
 	{
-		serviceTransactionCall->componentService(this);
-		OpcUaNodeId nodeId;
-		componentSession_->sendAsync(serviceTransactionCall);
+		serviceTransactionCall->memberService(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			sessionMember_,
+			serviceTransactionCall
+		);
 	}
 
 

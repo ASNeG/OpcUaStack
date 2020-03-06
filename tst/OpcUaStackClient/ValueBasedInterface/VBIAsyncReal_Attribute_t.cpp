@@ -7,20 +7,13 @@ using namespace OpcUaStackClient;
 
 BOOST_AUTO_TEST_SUITE(VBIAsyncReal_Attribute_)
 
-struct GValueFixture {
-	GValueFixture(void)
-    : cond_()
-	, sessionState_(SessionServiceStateId::None)
-	, statusCode_(Success)
-	, dataValue_()
-    {}
-    ~GValueFixture(void)
-    {}
-
+class TestData
+{
+  public:
     Condition cond_;
-    SessionServiceStateId sessionState_;
-    OpcUaStatusCode statusCode_;
-    OpcUaDataValue::Vec dataValue_;
+	SessionServiceStateId sessionState_ = SessionServiceStateId::None;
+	OpcUaStatusCode statusCode_;
+	OpcUaDataValue::Vec dataValue_;
 };
 
 BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_)
@@ -29,8 +22,9 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_)
 }
 
 #ifdef REAL_SERVER
-BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Attribute_read, GValueFixture)
+BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_read)
 {
+	TestData testData;
 	VBIClient client;
 
 	//
@@ -41,11 +35,11 @@ BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Attribute_read, GValueFixture)
 
 	// set session change callback
 	client.setSessionChangeHandler(
-		[this] (SessionBase& session, SessionServiceStateId sessionState) {
+		[this, &testData] (SessionBase& session, SessionServiceStateId sessionState) {
 			if (sessionState == SessionServiceStateId::Established ||
 				sessionState == SessionServiceStateId::Disconnected) {
-				sessionState_ = sessionState;
-				cond_.sendEvent();
+				testData.sessionState_ = sessionState;
+				testData.cond_.sendEvent();
 			}
 		}
 	);
@@ -56,34 +50,35 @@ BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Attribute_read, GValueFixture)
 	connectContext.sessionName_ = REAL_SESSION_NAME;
 	connectContext.cryptoManager_ = cryptoManager;
 	connectContext.secureChannelLog_ = true;
-	cond_.initEvent();
+	testData.cond_.initEvent();
 	client.asyncConnect(connectContext);
-	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
+	BOOST_REQUIRE(testData.cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(testData.sessionState_ == SessionServiceStateId::Established);
 
 	// read
 	OpcUaNodeId nodeId;
 	nodeId.set((OpcUaInt32)2259);
-	cond_.initEvent();
+	testData.cond_.initEvent();
 	client.asyncRead(
 		nodeId,
-		[this](OpcUaStatusCode statusCode, OpcUaNodeId& nodeId, OpcUaDataValue& dataValue) {
-			statusCode_ = statusCode;
-			cond_.sendEvent();
+		[this, &testData](OpcUaStatusCode statusCode, OpcUaNodeId& nodeId, OpcUaDataValue& dataValue) {
+			testData.statusCode_ = statusCode;
+			testData.cond_.sendEvent();
 		}
 	);
-	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(statusCode_ == Success);
+	BOOST_REQUIRE(testData.cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(testData.statusCode_ == Success);
 
 	// disconnect session
-	cond_.initEvent();
+	testData.cond_.initEvent();
 	client.asyncDisconnect();
-	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
+	BOOST_REQUIRE(testData.cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(testData.sessionState_ == SessionServiceStateId::Disconnected);
 }
 
-BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Attribute_write, GValueFixture)
+BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_write)
 {
+	TestData testData;
 	VBIClient client;
 
 
@@ -95,11 +90,11 @@ BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Attribute_write, GValueFixture)
 
 	// set session change callback
 	client.setSessionChangeHandler(
-		[this] (SessionBase& session, SessionServiceStateId sessionState) {
+		[this, &testData] (SessionBase& session, SessionServiceStateId sessionState) {
 			if (sessionState == SessionServiceStateId::Established ||
 				sessionState == SessionServiceStateId::Disconnected) {
-				sessionState_ = sessionState;
-				cond_.sendEvent();
+				testData.sessionState_ = sessionState;
+				testData.cond_.sendEvent();
 			}
 		}
 	);
@@ -110,37 +105,38 @@ BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Attribute_write, GValueFixture)
 	connectContext.sessionName_ = REAL_SESSION_NAME;
 	connectContext.cryptoManager_ = cryptoManager;
 	connectContext.secureChannelLog_ = true;
-	cond_.initEvent();
+	testData.cond_.initEvent();
 	client.asyncConnect(connectContext);
-	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
+	BOOST_REQUIRE(testData.cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(testData.sessionState_ == SessionServiceStateId::Established);
 
 	// write
 	OpcUaNodeId nodeId;
 	OpcUaDataValue dataValue;
 	dataValue.variant()->set((OpcUaBoolean)1);
 	nodeId.set(220, 2);
-	cond_.initEvent();
+	testData.cond_.initEvent();
 	client.asyncWrite(
 		nodeId,
 		dataValue,
-		[this](OpcUaStatusCode statusCode, OpcUaNodeId& nodeId) {
-			statusCode_ = statusCode;
-			cond_.sendEvent();
+		[this, &testData](OpcUaStatusCode statusCode, OpcUaNodeId& nodeId) {
+			testData.statusCode_ = statusCode;
+			testData.cond_.sendEvent();
 		}
 	);
-	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(statusCode_ == Success);
+	BOOST_REQUIRE(testData.cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(testData.statusCode_ == Success);
 
 	// disconnect session
-	cond_.initEvent();
+	testData.cond_.initEvent();
 	client.asyncDisconnect();
-	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
+	BOOST_REQUIRE(testData.cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(testData.sessionState_ == SessionServiceStateId::Disconnected);
 }
 
-BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Attribute_historyRead_10, GValueFixture)
+BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_historyRead_10)
 {
+	TestData testData;
 	VBIClient client;
 
 	//
@@ -151,11 +147,11 @@ BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Attribute_historyRead_10, GValueFixture)
 
 	// set session change callback
 	client.setSessionChangeHandler(
-		[this] (SessionBase& session, SessionServiceStateId sessionState) {
+		[this, &testData] (SessionBase& session, SessionServiceStateId sessionState) {
 			if (sessionState == SessionServiceStateId::Established ||
 				sessionState == SessionServiceStateId::Disconnected) {
-				sessionState_ = sessionState;
-				cond_.sendEvent();
+				testData.sessionState_ = sessionState;
+				testData.cond_.sendEvent();
 			}
 		}
 	);
@@ -166,39 +162,40 @@ BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Attribute_historyRead_10, GValueFixture)
 	connectContext.sessionName_ = REAL_SESSION_NAME;
 	connectContext.cryptoManager_ = cryptoManager;
 	connectContext.secureChannelLog_ = true;
-	cond_.initEvent();
+	testData.cond_.initEvent();
 	client.asyncConnect(connectContext);
-	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
+	BOOST_REQUIRE(testData.cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(testData.sessionState_ == SessionServiceStateId::Established);
 
 	client.defaultHistoryReadContext().maxNumResultValuesPerNode_ = 10;
 	client.defaultHistoryReadContext().maxNumResultValuesPerRequest_ = 5;
 
 	// history read
-	cond_.initEvent();
+	testData.cond_.initEvent();
 	client.asyncHistoryRead(
 		OpcUaNodeId("DoubleValue", 12),
 		boost::posix_time::microsec_clock::local_time(),
 		boost::posix_time::microsec_clock::local_time(),
-		[this](OpcUaStatusCode statusCode, OpcUaDataValue::Vec& dataValue) {
-			statusCode_ = statusCode;
-			dataValue_ = dataValue;
-			cond_.sendEvent();
+		[this, &testData](OpcUaStatusCode statusCode, OpcUaDataValue::Vec& dataValue) {
+			testData.statusCode_ = statusCode;
+			testData.dataValue_ = dataValue;
+			testData.cond_.sendEvent();
 		}
 	);
-	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(statusCode_ == Success);
-	BOOST_REQUIRE(dataValue_.size() == 10);
+	BOOST_REQUIRE(testData.cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(testData.statusCode_ == Success);
+	BOOST_REQUIRE(testData.dataValue_.size() == 10);
 
 	// disconnect session
-	cond_.initEvent();
+	testData.cond_.initEvent();
 	client.asyncDisconnect();
-	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
+	BOOST_REQUIRE(testData.cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(testData.sessionState_ == SessionServiceStateId::Disconnected);
 }
 
-BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Attribute_historyRead_8, GValueFixture)
+BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_historyRead_8)
 {
+	TestData testData;
 	VBIClient client;
 
 	//
@@ -209,11 +206,11 @@ BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Attribute_historyRead_8, GValueFixture)
 
 	// set session change callback
 	client.setSessionChangeHandler(
-		[this] (SessionBase& session, SessionServiceStateId sessionState) {
+		[this, &testData] (SessionBase& session, SessionServiceStateId sessionState) {
 			if (sessionState == SessionServiceStateId::Established ||
 				sessionState == SessionServiceStateId::Disconnected) {
-				sessionState_ = sessionState;
-				cond_.sendEvent();
+				testData.sessionState_ = sessionState;
+				testData.cond_.sendEvent();
 			}
 		}
 	);
@@ -224,35 +221,35 @@ BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Attribute_historyRead_8, GValueFixture)
 	connectContext.sessionName_ = REAL_SESSION_NAME;
 	connectContext.cryptoManager_ = cryptoManager;
 	connectContext.secureChannelLog_ = true;
-	cond_.initEvent();
+	testData.cond_.initEvent();
 	client.asyncConnect(connectContext);
-	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
+	BOOST_REQUIRE(testData.cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(testData.sessionState_ == SessionServiceStateId::Established);
 
 	client.defaultHistoryReadContext().maxNumResultValuesPerNode_ = 8;
 	client.defaultHistoryReadContext().maxNumResultValuesPerRequest_ = 5;
 
 	// history read
-	cond_.initEvent();
+	testData.cond_.initEvent();
 	client.asyncHistoryRead(
 		OpcUaNodeId("DoubleValue", 12),
 		boost::posix_time::microsec_clock::local_time(),
 		boost::posix_time::microsec_clock::local_time(),
-		[this](OpcUaStatusCode statusCode, OpcUaDataValue::Vec& dataValue) {
-			statusCode_ = statusCode;
-			dataValue_ = dataValue;
-			cond_.sendEvent();
+		[this, &testData](OpcUaStatusCode statusCode, OpcUaDataValue::Vec& dataValue) {
+		    testData.statusCode_ = statusCode;
+		    testData.dataValue_ = dataValue;
+		    testData.cond_.sendEvent();
 		}
 	);
-	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(statusCode_ == Success);
-	BOOST_REQUIRE(dataValue_.size() == 8);
+	BOOST_REQUIRE(testData.cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(testData.statusCode_ == Success);
+	BOOST_REQUIRE(testData.dataValue_.size() == 8);
 
 	// disconnect session
-	cond_.initEvent();
+	testData.cond_.initEvent();
 	client.asyncDisconnect();
-	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
+	BOOST_REQUIRE(testData.cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(testData.sessionState_ == SessionServiceStateId::Disconnected);
 }
 
 #endif

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -155,7 +155,7 @@ namespace OpcUaStackCore
 		// <time>±hh
 		std::string dateString = dateTimeString;
 		std::string zoneString = "";
-		uint32_t offset = 0;
+		int32_t offset = 0;
 		bool negOffset = false;
 		std::size_t found = dateTimeString.find_last_of("Z+-");
 		if (found < 10) found = std::string::npos;

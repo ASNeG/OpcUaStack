@@ -37,6 +37,20 @@ namespace OpcUaStackCore
 		messageBusMemberMap_.clear();
 	}
 
+	bool
+	MessageBus::existMember(const std::string& name)
+	{
+		boost::mutex::scoped_lock g(mutex_);
+
+		// check if member name already exist
+		auto it = messageBusMemberMap_.find(name);
+		if (it != messageBusMemberMap_.end()) {
+			return true;
+		}
+
+		return false;
+	}
+
 	MessageBusMember::WPtr
 	MessageBus::registerMember(const std::string& name)
 	{
@@ -226,7 +240,7 @@ namespace OpcUaStackCore
 	MessageBus::messageSend(
 		MessageBusMember::WPtr& sender,
 		MessageBusMember::WPtr& receiver,
-		Message::SPtr& message
+		const Message::SPtr& message
 	)
 	{
 		// check sender
@@ -249,7 +263,7 @@ namespace OpcUaStackCore
 	MessageBus::messageSend(
 		MessageBusMember::WPtr& sender,
 		MessageBusMember::WPtr& receiver,
-		Message::SPtr& message,
+		const Message::SPtr& message,
 		const MessageBusMember::SendCompleteCallback& sendCompleteCallback
 	)
 	{
@@ -322,7 +336,7 @@ namespace OpcUaStackCore
 	MessageBus::messageSend(
 		MessageBusMember::WPtr& sender,
 		MessageBusMember::WPtr& receiver,
-		Message::SPtr& message,
+		const Message::SPtr& message,
 		const IOThread::SPtr& ioThreadSender,
 		const MessageBusMember::SendCompleteCallback& sendCompleteCallback
 	)
@@ -360,7 +374,7 @@ namespace OpcUaStackCore
 	MessageBus::messageSend(
 		MessageBusMember::WPtr& sender,
 		MessageBusMember::WPtr& receiver,
-		Message::SPtr& message,
+		const Message::SPtr& message,
 		const boost::shared_ptr<boost::asio::io_service::strand>& strandSender,
 		const MessageBusMember::SendCompleteCallback& sendCompleteCallback
 	)

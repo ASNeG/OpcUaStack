@@ -18,29 +18,29 @@
 #ifndef __OpcUaStackClient_AttributeService_h__
 #define __OpcUaStackClient_AttributeService_h__
 
-#include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/Component/MessageBus.h"
+#include "OpcUaStackClient/ServiceSet/ClientServiceBase.h"
 #include "OpcUaStackCore/ServiceSet/AttributeServiceTransaction.h"
 
 namespace OpcUaStackClient 
 {
 
 	class DLLEXPORT AttributeService
-	: public OpcUaStackCore::Component
+	: public ClientServiceBase
 	{
 	  public:
 		typedef boost::shared_ptr<AttributeService> SPtr;
 
 		AttributeService(
+			const std::string& serviceName,
 			OpcUaStackCore::IOThread* ioThread,
 			OpcUaStackCore::MessageBus::SPtr& messageBus
 		);
 		~AttributeService(void);
 
 		void setConfiguration(
-			OpcUaStackCore::Component* componentSession
+			OpcUaStackCore::MessageBusMember::WPtr& sessionMember
 		);
-		void componentSession(OpcUaStackCore::Component* componentSession);
 
 		void syncSend(OpcUaStackCore::ServiceTransactionRead::SPtr serviceTransactionRead);
 		void asyncSend(OpcUaStackCore::ServiceTransactionRead::SPtr serviceTransactionRead);
@@ -56,8 +56,7 @@ namespace OpcUaStackClient
 		//- Component -----------------------------------------------------------------
 
 	  private:
-		OpcUaStackCore::MessageBus::SPtr messageBus_ = nullptr;
-		OpcUaStackCore::Component* componentSession_;
+		OpcUaStackCore::MessageBusMember::WPtr sessionMember_;
 	};
 
 }

@@ -157,7 +157,7 @@ BOOST_AUTO_TEST_CASE(AsyncPendingQueue_cancel)
 			promise.set_value();
 	    }
 	);
-	pendingQueue.cancel();
+	pendingQueue.asyncCancel();
 	future.wait();
 
 	// delete element from pending queue
