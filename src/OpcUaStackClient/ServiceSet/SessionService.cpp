@@ -59,11 +59,14 @@ namespace OpcUaStackClient
 		messageBusMember_ = messageBus_->registerMember(serviceName_, messageBusMemberConfig);
 		ctx_->messageBusMember_ = messageBusMember_;
 
-		// init pending queue callback
-		ctx_->pendingQueue_.ioService(*ioThread->ioService().get());
-		ctx_->pendingQueue_.timeoutCallback(
-			boost::bind(&SessionService::pendingQueueTimeout, this, _1)
-		);
+		// create pending queue
+		AsyncPendingQueueConfig pendingQueueConfig;
+		pendingQueueConfig.slotTimer(ioThread->slotTimer());
+		pendingQueueConfig.strand(strand_);
+		ctx_->pendingQueue_ = boost::make_shared<AsyncPendingQueue>(pendingQueueConfig);
+
+		// start pending queue loop
+		pendingQueueTimeoutLoop();
 
 		// init state machine
 		sm_.setCtx(ctx_);
@@ -72,6 +75,12 @@ namespace OpcUaStackClient
 
 	SessionService::~SessionService(void)
 	{
+		// stop pending queue loop
+		ctx_->pendingQueue_->syncCancel();
+
+		// delete pending queue
+		ctx_->pendingQueue_.reset();
+
 		// stop timer element
 		if (ctx_->slotTimerElement_.get() != nullptr) {
 			ctx_->ioThread_->slotTimer()->stop(ctx_->slotTimerElement_);
@@ -127,6 +136,32 @@ namespace OpcUaStackClient
 	SessionService::updateEndpointUrl(const std::string& endpointUrl)
 	{
 		ctx_->secureChannelClientConfig_->endpointUrl(endpointUrl);
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// handle pending queue timeout
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	void
+	SessionService::pendingQueueTimeoutLoop(void)
+	{
+		ctx_->pendingQueue_->asyncTimeout(
+			[this](bool error, uint32_t key, Object::SPtr& object) {
+			    // check error
+			    if (error) {
+			    	Log(Debug, "stop pending queue loop");
+			    }
+
+			    // handle pending queue timeout
+			    pendingQueueTimeout(object);
+
+			    // call pending queue loop
+			    pendingQueueTimeoutLoop();
+		    }
+		);
 	}
 
 	// ------------------------------------------------------------------------

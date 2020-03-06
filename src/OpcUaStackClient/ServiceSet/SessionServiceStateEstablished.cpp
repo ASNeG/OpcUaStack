@@ -211,7 +211,7 @@ namespace OpcUaStackClient
 		std::iostream ios(&secureChannelTransaction->is_);
 
 		// remove associated request from pending queue
-		Object::SPtr objectSPtr = ctx_->pendingQueue_.remove(secureChannelTransaction->requestId_);
+		Object::SPtr objectSPtr = ctx_->pendingQueue_->remove(secureChannelTransaction->requestId_);
 		if (objectSPtr.get() == nullptr) {
 			Log(Error, "receive message response error, because the request has already expired")
 				.parameter("SessId", ctx_->id_)
@@ -287,7 +287,7 @@ namespace OpcUaStackClient
 		serviceTransaction->opcUaBinaryEncodeRequest(ios);
 
 		// insert request into pending queue
-		ctx_->pendingQueue_.insert(
+		ctx_->pendingQueue_->insert(
 			secureChannelTransaction->requestId_,
 			serviceTransaction,
 			requestTimeout
@@ -338,10 +338,12 @@ namespace OpcUaStackClient
 	void
 	SessionServiceStateEstablished::removeAllRequestsFromPendingQueue(void)
 	{
-		std::vector<uint32_t> keys;
-		ctx_->pendingQueue_.keys(keys);
-		for (auto key : keys) {
-			auto object = ctx_->pendingQueue_.remove(key);
+		// remove all elements from pending queue
+		std::vector<Object::SPtr> objects;
+		ctx_->pendingQueue_->removeAll(objects);
+
+		// call response callback with error code BadSessionClosed
+		for (auto object : objects) {
 			auto trx = boost::static_pointer_cast<ServiceTransaction>(object);
 			auto responseType = trx->nodeTypeResponse().nodeId<uint32_t>();
 

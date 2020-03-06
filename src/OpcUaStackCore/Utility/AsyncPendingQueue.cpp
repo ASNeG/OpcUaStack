@@ -225,6 +225,38 @@ namespace OpcUaStackCore
 		return pendingQueueElement->element();
 	}
 
+	void
+	AsyncPendingQueue::removeAll(std::vector<Object::SPtr>& objects)
+	{
+		// check if the call is made within the strand
+		auto strand = asyncPendingQueueConfig_.strand();
+		if (!strand->running_in_this_thread()) {
+			std::promise<void> promise;
+			std::future<void> future = promise.get_future();
+			strand->dispatch(
+				[this, &promise, &objects](void) {
+				    removeAll(objects);
+					promise.set_value();
+			    }
+			);
+			future.wait();
+			return future.get();
+		}
+
+		// remove all objects from pending queue map
+		while (!pendingQueueMap_.empty()) {
+			auto key = pendingQueueMap_.begin()->first;
+			auto object = remove(key);
+			objects.push_back(object);
+		}
+
+		// remove all objects in call list
+		while (!pendingQueueList_.empty()) {
+			auto pendingQueueElement = pendingQueueList_.front();
+			pendingQueueList_.pop_front();
+			objects.push_back(pendingQueueElement->element());
+		}
+	}
 
 	void
 	AsyncPendingQueue::asyncTimeout(

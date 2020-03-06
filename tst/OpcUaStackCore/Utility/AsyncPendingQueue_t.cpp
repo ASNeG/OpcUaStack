@@ -251,4 +251,74 @@ BOOST_AUTO_TEST_CASE(AsyncPendingQueue_asyncTimeout_5)
 	ioThread.shutdown();
 }
 
+BOOST_AUTO_TEST_CASE(AsyncPendingQueue_removeAll)
+{
+	// init ioThread
+	IOThread ioThread;
+	ioThread.numberThreads(4);
+	ioThread.startup();
+	auto strand = ioThread.createStrand();
+
+	// init pending queue
+	AsyncPendingQueueConfig messageBusConfig;
+	messageBusConfig.slotTimer(ioThread.slotTimer());
+	messageBusConfig.strand(strand);
+	AsyncPendingQueue pendingQueue(messageBusConfig);
+
+	// insert element into pending queue
+	for (uint32_t key = 0; key < 100; key++) {
+	    auto object = boost::make_shared<Object>();
+	    BOOST_REQUIRE(pendingQueue.insert(key, object, 10000) == true);
+	}
+
+	// remove all objects from pending queue
+	std::vector<Object::SPtr> objects;
+	pendingQueue.removeAll(objects);
+	BOOST_REQUIRE(objects.size() == 100);
+
+	objects.clear();
+	pendingQueue.removeAll(objects);
+	BOOST_REQUIRE(objects.size() == 0);
+
+	// cleanup ioThread
+	ioThread.shutdown();
+}
+
+BOOST_AUTO_TEST_CASE(AsyncPendingQueue_removeAll_1)
+{
+	// init ioThread
+	IOThread ioThread;
+	ioThread.numberThreads(4);
+	ioThread.startup();
+	auto strand = ioThread.createStrand();
+
+	// init pending queue
+	AsyncPendingQueueConfig messageBusConfig;
+	messageBusConfig.slotTimer(ioThread.slotTimer());
+	messageBusConfig.strand(strand);
+	AsyncPendingQueue pendingQueue(messageBusConfig);
+
+	// insert element into pending queue
+	for (uint32_t key = 0; key < 100; key++) {
+	    auto object = boost::make_shared<Object>();
+	    BOOST_REQUIRE(pendingQueue.insert(key, object, 10) == true);
+	}
+
+	// wait 100 msec
+	boost::this_thread::sleep(boost::posix_time::milliseconds(200));
+
+	// remove all objects from pending queue
+	std::vector<Object::SPtr> objects;
+	pendingQueue.removeAll(objects);
+	BOOST_REQUIRE(objects.size() == 100);
+
+	objects.clear();
+	pendingQueue.removeAll(objects);
+	BOOST_REQUIRE(objects.size() == 0);
+
+	// cleanup ioThread
+	ioThread.shutdown();
+}
+
+
 BOOST_AUTO_TEST_SUITE_END()

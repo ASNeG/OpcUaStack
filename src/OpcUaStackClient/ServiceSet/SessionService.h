@@ -84,6 +84,7 @@ namespace OpcUaStackClient
 	  private:
 		SessionService(void);
 
+		void pendingQueueTimeoutLoop(void);
 		void asyncConnectInternal(void);
 		void asyncDisconnectInternal(bool deleteSubscriptions);
 		void asyncCancelInternal(uint32_t requestHandle);

@@ -20,7 +20,7 @@
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Component/MessageBus.h"
-#include "OpcUaStackCore/Utility/PendingQueue.h"
+#include "OpcUaStackCore/Utility/AsyncPendingQueue.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelClientConfig.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelClient.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannel.h"
@@ -152,7 +152,7 @@ namespace OpcUaStackClient
 		//
 		// session lifetime data
 		//
-		OpcUaStackCore::PendingQueue pendingQueue_;				// request pending queue
+		OpcUaStackCore::AsyncPendingQueue::SPtr pendingQueue_ = nullptr; // request pending queue
 
 		char clientNonce_[32];					// client nonce from create session request
 
