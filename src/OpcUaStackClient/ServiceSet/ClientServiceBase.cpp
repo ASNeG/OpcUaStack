@@ -38,6 +38,12 @@ namespace OpcUaStackClient
 		return messageBusMember_;
 	}
 
+	boost::shared_ptr<boost::asio::io_service::strand>&
+	ClientServiceBase::strand(void)
+	{
+		return strand_;
+	}
+
 	void
 	ClientServiceBase::activateReceiver(const ReceiverCallback& receiverCallback)
 	{

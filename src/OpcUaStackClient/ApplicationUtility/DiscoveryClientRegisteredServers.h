@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -40,6 +40,7 @@ namespace OpcUaStackClient
 
 	    void cryptoManager(OpcUaStackCore::CryptoManager::SPtr& cryptoManager);
 	    void ioThread(OpcUaStackCore::IOThread::SPtr& ioThread);
+	    void messageBus(OpcUaStackCore::MessageBus::SPtr& messageBus);
 	    void discoveryUri(const std::string& discoveryUri);
 	    void registerInterval(uint32_t registerInterval);
 
@@ -67,9 +68,10 @@ namespace OpcUaStackClient
 		bool shutdown_;
 		OpcUaStackCore::Condition shutdownCond_;
 
+		boost::shared_ptr<boost::asio::io_service::strand> strand_;
+		OpcUaStackCore::MessageBus::SPtr messageBus_;
 		OpcUaStackCore::IOThread::SPtr ioThread_;
 		OpcUaStackCore::SlotTimerElement::SPtr slotTimerElement_;
-		boost::mutex mutex_;
 		RegisteredServerMap registeredServerMap_;
 
 		std::string discoveryUri_;

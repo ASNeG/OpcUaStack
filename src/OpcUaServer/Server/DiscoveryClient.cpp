@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -45,6 +45,18 @@ namespace OpcUaServer
 		cryptoManager_ = cryptoManager;
 	}
 
+	void
+	DiscoveryClient::ioThread(OpcUaStackCore::IOThread::SPtr& ioThread)
+	{
+		ioThread_ = ioThread;
+	}
+
+	void
+	DiscoveryClient::messageBus(OpcUaStackCore::MessageBus::SPtr& messageBus)
+	{
+		messageBus_ = messageBus;
+	}
+
 	bool
 	DiscoveryClient::startup(Config& config)
 	{
@@ -58,8 +70,8 @@ namespace OpcUaServer
 		//
 
 		// check if the discovery registered service is enabled
-		boost::optional<Config> dicoveryServerConfig = config.getChild("OpcUaServer.DiscoveryServer");
-		if (!dicoveryServerConfig) {
+		boost::optional<Config> discoveryServerConfig = config.getChild("OpcUaServer.DiscoveryServer");
+		if (!discoveryServerConfig) {
 			Log(Info, "discovery registered service is disabled");
 			return true;
 		}
@@ -67,7 +79,7 @@ namespace OpcUaServer
 		Log(Info, "discovery registered service is enabled");
 
 		// get element discovery url
-		success = dicoveryServerConfig->getConfigParameter("DiscoveryUrl", discoveryServerUrl_);
+		success = discoveryServerConfig->getConfigParameter("DiscoveryUrl", discoveryServerUrl_);
 		if (!success) {
 			Log(Error, "element missing in config file")
 				.parameter("Element", "OpcUaServer.DiscoveryServer.DiscoveryUrl")
@@ -76,7 +88,7 @@ namespace OpcUaServer
 		}
 
 		// get element register interval url
-		dicoveryServerConfig->getConfigParameter("RegisterInterval", registerInterval_, "40000");
+		discoveryServerConfig->getConfigParameter("RegisterInterval", registerInterval_, "40000");
 
 		//
 		// read endpoint configuration
@@ -85,13 +97,24 @@ namespace OpcUaServer
 			return false;
 		}
 
+		// create message bus
+		if (!messageBus_) {
+			messageBusInt_ = true;
+			messageBus_ = boost::make_shared<MessageBus>();
+		}
+
+		// create io thread
+		if (!ioThread_) {
+			ioThreadInt_ = true;
+		    ioThread_ = boost::make_shared<IOThread>();
+		    ioThread_->startup();
+		}
+
 		//
 		// startup discovery client service process
 		//
-		ioThread_ = boost::make_shared<IOThread>();
-		ioThread_->startup();
-
 		discoveryClient_.ioThread(ioThread_);
+		discoveryClient_.messageBus(messageBus_);
 		discoveryClient_.cryptoManager(cryptoManager_);
 		discoveryClient_.discoveryUri(discoveryServerUrl_);
 		discoveryClient_.registerInterval(registerInterval_);
@@ -108,7 +131,16 @@ namespace OpcUaServer
 		if (!enable_) return;
 
 		discoveryClient_.shutdown();
-		ioThread_->shutdown();
+
+		// delete io thread
+		if (ioThreadInt_) {
+		    ioThread_->shutdown();
+		}
+
+		// delete message bus
+		if (messageBusInt_) {
+			messageBus_.reset();
+		}
 	}
 
 	bool

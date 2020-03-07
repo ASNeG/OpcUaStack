@@ -36,6 +36,7 @@ namespace OpcUaStackClient
 		virtual ~ClientServiceBase(void);
 
 		OpcUaStackCore::MessageBusMember::WPtr& messageBusMember(void);
+		boost::shared_ptr<boost::asio::io_service::strand>& strand(void);
 
 		void activateReceiver(const ReceiverCallback& receiverCallback);
 		void deactivateReceiver(void);

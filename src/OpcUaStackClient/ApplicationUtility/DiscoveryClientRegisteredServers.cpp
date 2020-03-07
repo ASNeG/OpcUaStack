@@ -25,7 +25,6 @@ namespace OpcUaStackClient
 
 	DiscoveryClientRegisteredServers::DiscoveryClientRegisteredServers(void)
 	: ioThread_()
-	, mutex_()
 	, registeredServerMap_()
 	, slotTimerElement_()
 	, registerInterval_(40000)
@@ -54,6 +53,12 @@ namespace OpcUaStackClient
 	DiscoveryClientRegisteredServers::ioThread(IOThread::SPtr& ioThread)
 	{
 		ioThread_ = ioThread;
+	}
+
+	void
+	DiscoveryClientRegisteredServers::messageBus(OpcUaStackCore::MessageBus::SPtr& messageBus)
+	{
+		messageBus_ = messageBus;
 	}
 
 	void
@@ -86,7 +91,11 @@ namespace OpcUaStackClient
 			}
 		};
 
-		// create service set manager
+		// register thread in service set manager. All services use the
+		// same thread pool
+		serviceSetManager_.registerIOThread("DiscoveryIOThread", ioThread_);
+
+		// create session service
 		SessionServiceConfig sessionServiceConfig;
 		sessionServiceConfig.ioThreadName("DiscoveryClientRegisteredServers");
 		sessionServiceConfig.secureChannelClient_->endpointUrl(discoveryUri_);
@@ -94,22 +103,27 @@ namespace OpcUaStackClient
 		sessionServiceConfig.sessionMode_ = SessionMode::SecureChannel;
 		sessionServiceConfig.sessionServiceChangeHandler_ = sessionStateUpdate;
 		sessionServiceConfig.session_->reconnectTimeout(0);
+		sessionServiceConfig.sessionServiceName_ = "ClientRegisterServers_SessionService";
+		sessionServiceConfig.messageBus_ = messageBus_;
 
-		serviceSetManager_.registerIOThread("DiscoveryIOThread", ioThread_);
-		serviceSetManager_.sessionService(sessionServiceConfig);
-		sessionServiceConfig.sessionServiceName_ = "RegisteredServersSession";
-
-		// create session service
 		sessionService_ = serviceSetManager_.sessionService(sessionServiceConfig);
+		strand_ = sessionService_->strand();
 
 		// create discovery service
 		DiscoveryServiceConfig discoveryServiceConfig;
 		discoveryServiceConfig.ioThreadName("DiscoveryIOThread");
+		discoveryServiceConfig.discoveryServiceName_ = "ClientRegisterServers_DiscoveryService";
+
 		discoveryService_ = serviceSetManager_.discoveryService(sessionService_, discoveryServiceConfig);
 
 	  	// start timer to check server entries
 	  	slotTimerElement_ = boost::make_shared<SlotTimerElement>();
-	  	slotTimerElement_->timeoutCallback(boost::bind(&DiscoveryClientRegisteredServers::loop, this));
+	  	slotTimerElement_->timeoutCallback(
+	  		strand_,
+	  		[this](void) {
+	  		    loop();
+	  	    }
+	  	);
 	  	slotTimerElement_->expireTime(boost::posix_time::microsec_clock::local_time(), registerInterval_);
 	  	ioThread_->slotTimer()->start(slotTimerElement_);
 
@@ -132,8 +146,10 @@ namespace OpcUaStackClient
     	// deregister server entries from discovery server and wait of the
     	// end of the process
     	shutdownCond_.condition(1,0);
-    	ioThread_->run(
-    		boost::bind(&DiscoveryClientRegisteredServers::shutdownLoop, this)
+    	strand_->dispatch(
+    		[this](void) {
+    		    shutdownLoop();
+    	    }
     	);
     	if (!shutdownCond_.waitForCondition(3000)) {
     		Log(Error, "discovery client registered server shutdown timeout");
@@ -146,7 +162,18 @@ namespace OpcUaStackClient
     void
 	DiscoveryClientRegisteredServers::addRegisteredServer(const std::string& name, RegisteredServer::SPtr& registeredServer)
 	{
-		boost::mutex::scoped_lock g(mutex_);
+    	// if the strand exist we must synchronize the call with a strand
+		if (strand_ && !strand_->running_in_this_thread()) {
+			std::promise<void> promise;
+			std::future<void> future = promise.get_future();
+			strand_->dispatch(
+				[this, &promise, &name, &registeredServer](void) {
+				    addRegisteredServer(name, registeredServer);
+					promise.set_value();
+			    }
+			);
+			future.wait();
+		}
 
 		// check existing registered server entry
 		auto it = registeredServerMap_.find(name);
@@ -162,7 +189,18 @@ namespace OpcUaStackClient
 	void
 	DiscoveryClientRegisteredServers::removeRegisteredServer(const std::string& name)
 	{
-		boost::mutex::scoped_lock g(mutex_);
+    	// if the strand exist we must synchronize the call with a strand
+		if (strand_ && !strand_->running_in_this_thread()) {
+			std::promise<void> promise;
+			std::future<void> future = promise.get_future();
+			strand_->dispatch(
+				[this, &promise, &name](void) {
+				removeRegisteredServer(name);
+					promise.set_value();
+			    }
+			);
+			future.wait();
+		}
 
 		// check existing registered server entry
 		auto it = registeredServerMap_.find(name);

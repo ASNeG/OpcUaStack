@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,6 +19,7 @@
 #define __OpcUaServer_DiscoveryClient_h__
 
 #include "OpcUaStackCore/Base/Config.h"
+#include "OpcUaStackCore/Component/MessageBus.h"
 #include "OpcUaStackClient/ApplicationUtility/DiscoveryClientRegisteredServers.h"
 
 namespace OpcUaServer
@@ -31,6 +32,8 @@ namespace OpcUaServer
 		~DiscoveryClient(void);
 
 		void cryptoManager(OpcUaStackCore::CryptoManager::SPtr& cryptoManager);
+		void ioThread(OpcUaStackCore::IOThread::SPtr& ioThread);
+		void messageBus(OpcUaStackCore::MessageBus::SPtr& messageBus);
 
 		bool startup(OpcUaStackCore::Config& config);
 		void shutdown(void);
@@ -49,8 +52,12 @@ namespace OpcUaServer
 		std::string discoveryServerUrl_;
 		uint32_t registerInterval_;
 
+		bool ioThreadInt_ = false;
+		bool messageBusInt_ = false;
+
 		OpcUaStackCore::Config* config_;
 		OpcUaStackCore::IOThread::SPtr ioThread_;
+		OpcUaStackCore::MessageBus::SPtr messageBus_;
 		OpcUaStackClient::DiscoveryClientRegisteredServers discoveryClient_;
 		OpcUaStackCore::RegisteredServer::Vec registeredServerVec_;
 		OpcUaStackCore::CryptoManager::SPtr cryptoManager_;
