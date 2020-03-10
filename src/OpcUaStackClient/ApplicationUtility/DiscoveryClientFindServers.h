@@ -35,7 +35,15 @@ namespace OpcUaStackClient
 	class DLLEXPORT DiscoveryClientFindServers
 	{
 	  public:
-		typedef boost::shared_ptr<DiscoveryClientFindServers> SPtr;
+		using SPtr = boost::shared_ptr<DiscoveryClientFindServers>;
+		using ShutdownCompleteCallback = std::function<void (void)>;
+
+		class ShutdownContext
+		{
+		  public:
+			using SPtr = boost::shared_ptr<ShutdownContext>;
+			ShutdownCompleteCallback shutdownCompleteCallback_;
+		};
 
 		DiscoveryClientFindServers(void);
 	    ~DiscoveryClientFindServers(void);
@@ -45,7 +53,8 @@ namespace OpcUaStackClient
 	    void discoveryUri(const std::string& discoveryUri);
 
 		bool startup(void);
-		void shutdown(void);
+		void asyncShutdown(const ShutdownCompleteCallback& shutdownCompleteCallback);
+		void syncShutdown(void);
 
 		void asyncFind(
 			const std::string& serverUri,
@@ -53,11 +62,15 @@ namespace OpcUaStackClient
 		);
 
 	  public:
+		void shutdownComplete(void);
 		void discoveryServiceFindServersResponse(
 			OpcUaStackCore::ServiceTransactionFindServers::SPtr& serviceTransactionFindServers
 		);
-
         void sendFindServersRequest(void);
+        void disconnectSession(void);
+
+		ShutdownContext::SPtr shutdownContext_ = nullptr;
+		SessionServiceStateId sessionState_ = SessionServiceStateId::Disconnected;
 
         std::string threadPoolName_ = "";
         OpcUaStackCore::IOThread::SPtr ioThread_ = nullptr;

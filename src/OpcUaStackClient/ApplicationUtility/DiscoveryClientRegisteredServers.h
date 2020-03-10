@@ -36,7 +36,6 @@ namespace OpcUaStackClient
 	{
 	  public:
 		using SPtr = boost::shared_ptr<DiscoveryClientRegisteredServers>;
-		using StartupCompleteCallback = std::function<void (void)>;
 		using ShutdownCompleteCallback = std::function<void (void)>;
 
 		class ShutdownContext
