@@ -266,8 +266,11 @@ namespace OpcUaStackClient
 		subscriptionService->setConfiguration(
 			sessionService->messageBusMember(),
 			subscriptionServiceConfig.dataChangeNotificationHandler_,
+			subscriptionServiceConfig.dataChangeNotificationHandlerStrand_,
 			subscriptionServiceConfig.eventNotificationHandler_,
+			subscriptionServiceConfig.eventNotificationHandlerStrand_,
 			subscriptionServiceConfig.subscriptionStateUpdateHandler_,
+			subscriptionServiceConfig.subscriptionStateUpdateHandlerStrand_,
 			subscriptionServiceConfig.publishCount_,
 			subscriptionServiceConfig.requestTimeout_
 		);

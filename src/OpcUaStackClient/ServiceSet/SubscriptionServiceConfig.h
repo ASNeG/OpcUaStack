@@ -34,9 +34,12 @@ namespace OpcUaStackClient
 		virtual ~SubscriptionServiceConfig(void);
 
 		std::string subscriptionServiceName_ = "SubscriptionService";
-		DataChangeNotificationHandler dataChangeNotificationHandler_;
-		EventNotificationHandler eventNotificationHandler_;
-		SubscriptionStateUpdateHandler subscriptionStateUpdateHandler_;
+		DataChangeNotificationHandler dataChangeNotificationHandler_ = nullptr;
+		boost::shared_ptr<boost::asio::io_service::strand> dataChangeNotificationHandlerStrand_ = nullptr;
+		EventNotificationHandler eventNotificationHandler_ = nullptr;
+		boost::shared_ptr<boost::asio::io_service::strand> eventNotificationHandlerStrand_ = nullptr;
+		SubscriptionStateUpdateHandler subscriptionStateUpdateHandler_ = nullptr;
+		boost::shared_ptr<boost::asio::io_service::strand> subscriptionStateUpdateHandlerStrand_ = nullptr;
 		uint32_t publishCount_;
 		uint32_t requestTimeout_;
 	};

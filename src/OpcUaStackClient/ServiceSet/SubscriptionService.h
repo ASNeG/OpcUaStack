@@ -44,8 +44,11 @@ namespace OpcUaStackClient
 		void setConfiguration(
 			OpcUaStackCore::MessageBusMember::WPtr& sessionMember,
 			const DataChangeNotificationHandler& dataChangeNotificationHandler,
+			boost::shared_ptr<boost::asio::io_service::strand>& dataChangeNotificationHandlerStrand,
 			const EventNotificationHandler& eventNotificationHandler,
+			boost::shared_ptr<boost::asio::io_service::strand>& eventNotificationHandlerStrand,
 			const SubscriptionStateUpdateHandler& subscriptionStateUpdateHandler,
+			boost::shared_ptr<boost::asio::io_service::strand>& subscriptionStateUpdateHandlerStrand,
 			uint32_t publishCount,
 			uint32_t requestTimeout
 		);
@@ -91,9 +94,12 @@ namespace OpcUaStackClient
 	    void dataChangeNotification(const OpcUaStackCore::OpcUaExtensibleParameter::SPtr& extensibleParameter);
 	    void eventNotification(const OpcUaStackCore::OpcUaExtensibleParameter::SPtr& extensibleParameter);
 
-	    DataChangeNotificationHandler dataChangeNotificationHandler_;
-		EventNotificationHandler eventNotificationHandler_;
-		SubscriptionStateUpdateHandler subscriptionStateUpdateHandler_;
+	    DataChangeNotificationHandler dataChangeNotificationHandler_ = nullptr;
+	    boost::shared_ptr<boost::asio::io_service::strand> dataChangeNotificationHandlerStrand_ = nullptr;
+		EventNotificationHandler eventNotificationHandler_ = nullptr;
+		boost::shared_ptr<boost::asio::io_service::strand> eventNotificationHandlerStrand_ = nullptr;
+		SubscriptionStateUpdateHandler subscriptionStateUpdateHandler_ = nullptr;
+		boost::shared_ptr<boost::asio::io_service::strand> subscriptionStateUpdateHandlerStrand_ = nullptr;
 	    uint32_t publishCount_;
 	    uint32_t actPublishCount_;
 	    uint32_t requestTimeout_;
