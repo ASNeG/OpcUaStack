@@ -179,8 +179,18 @@ namespace OpcUaStackClient
 			{
 				auto trx = boost::static_pointer_cast<ServiceTransactionCreateMonitoredItems>(serviceTransaction);
 				auto handler = trx->resultHandler();
+				auto handlerStrand = trx->resultHandlerStrand();
 				if (handler) {
-					handler(trx);
+					if (handlerStrand) {
+						handlerStrand->dispatch(
+							[this, handler, trx](void) mutable {
+							    handler(trx);
+						    }
+						);
+					}
+					else {
+					    handler(trx);
+					}
 				}
 				break;
 			}
@@ -189,8 +199,18 @@ namespace OpcUaStackClient
 			{
 				auto trx = boost::static_pointer_cast<ServiceTransactionDeleteMonitoredItems>(serviceTransaction);
 				auto handler = trx->resultHandler();
+				auto handlerStrand = trx->resultHandlerStrand();
 				if (handler) {
-					handler(trx);
+					if (handlerStrand) {
+						handlerStrand->dispatch(
+							[this, handler, trx](void) mutable {
+							    handler(trx);
+						    }
+						);
+					}
+					else {
+					    handler(trx);
+					}
 				}
 				break;
 			}
@@ -199,8 +219,18 @@ namespace OpcUaStackClient
 			{
 				auto trx = boost::static_pointer_cast<ServiceTransactionModifyMonitoredItems>(serviceTransaction);
 				auto handler = trx->resultHandler();
+				auto handlerStrand = trx->resultHandlerStrand();
 				if (handler) {
-					handler(trx);
+					if (handlerStrand) {
+						handlerStrand->dispatch(
+							[this, handler, trx](void) mutable {
+							    handler(trx);
+						    }
+						);
+					}
+					else {
+					    handler(trx);
+					}
 				}
 				break;
 			}
@@ -209,8 +239,18 @@ namespace OpcUaStackClient
 			{
 				auto trx = boost::static_pointer_cast<ServiceTransactionSetMonitoringMode>(serviceTransaction);
 				auto handler = trx->resultHandler();
+				auto handlerStrand = trx->resultHandlerStrand();
 				if (handler) {
-					handler(trx);
+					if (handlerStrand) {
+						handlerStrand->dispatch(
+							[this, handler, trx](void) mutable {
+							    handler(trx);
+						    }
+						);
+					}
+					else {
+					    handler(trx);
+					}
 				}
 				break;
 			}
@@ -219,8 +259,18 @@ namespace OpcUaStackClient
 			{
 				auto trx = boost::static_pointer_cast<ServiceTransactionSetTriggering>(serviceTransaction);
 				auto handler = trx->resultHandler();
+				auto handlerStrand = trx->resultHandlerStrand();
 				if (handler) {
-					handler(trx);
+					if (handlerStrand) {
+						handlerStrand->dispatch(
+							[this, handler, trx](void) mutable {
+							    handler(trx);
+						    }
+						);
+					}
+					else {
+					    handler(trx);
+					}
 				}
 				break;
 			}
