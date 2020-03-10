@@ -99,12 +99,14 @@ namespace OpcUaStackClient
 	SessionService::setConfiguration(
 		SessionMode sessionMode,
 		SessionServiceChangeHandler& sessionServiceChangeHandler,
+		boost::shared_ptr<boost::asio::io_service::strand>& sessionServiceChangeHandlerStrand,
 		SecureChannelClientConfig::SPtr& secureChannelClientConfig,
 		SessionConfig::SPtr& sessionConfig
 	)
 	{
 		ctx_->sessionMode_ = sessionMode;
 		ctx_->sessionServiceChangeHandler_ = sessionServiceChangeHandler;
+		ctx_->sessionServiceChangeHandlerStrand_ = sessionServiceChangeHandlerStrand;
 		ctx_->secureChannelClientConfig_ = secureChannelClientConfig;
 		ctx_->secureChannelClientConfigBackup_ = secureChannelClientConfig;
 		ctx_->sessionConfig_ = sessionConfig;
@@ -120,7 +122,16 @@ namespace OpcUaStackClient
 		sm_.setUpdateCallback(
 			[this](SessionServiceStateId state) {
 				if (ctx_->sessionServiceChangeHandler_) {
-					ctx_->sessionServiceChangeHandler_(*ctx_->sessionService_, state);
+					if (ctx_->sessionServiceChangeHandlerStrand_) {
+						ctx_->sessionServiceChangeHandlerStrand_->dispatch(
+							[this, state]() {
+							    ctx_->sessionServiceChangeHandler_(*ctx_->sessionService_, state);
+						    }
+						);
+					}
+					else {
+					    ctx_->sessionServiceChangeHandler_(*ctx_->sessionService_, state);
+				    }
 				}
 			}
 		);

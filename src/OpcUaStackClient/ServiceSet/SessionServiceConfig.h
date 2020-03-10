@@ -36,10 +36,11 @@ namespace OpcUaStackClient
 		SessionServiceConfig(void);
 		~SessionServiceConfig(void);
 
-		SessionMode sessionMode_;
-		SessionServiceChangeHandler sessionServiceChangeHandler_;
-		OpcUaStackCore::SecureChannelClientConfig::SPtr secureChannelClient_;
-		SessionConfig::SPtr session_;
+		SessionMode sessionMode_ = SessionMode::SecureChannelAndSession;
+		SessionServiceChangeHandler sessionServiceChangeHandler_ = nullptr;
+		boost::shared_ptr<boost::asio::io_service::strand> sessionServiceChangeHandlerStrand_ = nullptr;
+		OpcUaStackCore::SecureChannelClientConfig::SPtr secureChannelClient_ = nullptr;
+		SessionConfig::SPtr session_ = nullptr;
 
 		std::string sessionServiceName_ = "SessionService";
 	};

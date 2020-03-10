@@ -135,10 +135,11 @@ namespace OpcUaStackClient
 		//
 		// session configuration
 		//
-		SessionService* sessionService_;
-		SessionMode sessionMode_;
-		SessionConfig::SPtr sessionConfig_;
-		SessionServiceChangeHandler sessionServiceChangeHandler_;
+		SessionService* sessionService_ = nullptr;
+		SessionMode sessionMode_ = SessionMode::SecureChannelAndSession;
+		SessionConfig::SPtr sessionConfig_ = nullptr;
+		SessionServiceChangeHandler sessionServiceChangeHandler_ = nullptr;
+		boost::shared_ptr<boost::asio::io_service::strand> sessionServiceChangeHandlerStrand_ = nullptr;
 
 		//
 		// message bus, thread and timer

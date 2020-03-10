@@ -55,6 +55,7 @@ namespace OpcUaStackClient
 		void setConfiguration(
 			SessionMode sessionMode,
 			SessionServiceChangeHandler& sessionServiceChangeHandler,
+			boost::shared_ptr<boost::asio::io_service::strand>& sessionServiceChangeHandlerStrand,
 			OpcUaStackCore::SecureChannelClientConfig::SPtr& secureChannelClientConfig,
 			SessionConfig::SPtr& sessionConfig
 		);

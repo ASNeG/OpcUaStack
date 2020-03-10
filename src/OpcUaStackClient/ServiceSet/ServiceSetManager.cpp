@@ -142,6 +142,7 @@ namespace OpcUaStackClient
 		sessionService->setConfiguration(
 			sessionServiceConfig.sessionMode_,
 			sessionServiceConfig.sessionServiceChangeHandler_,
+			sessionServiceConfig.sessionServiceChangeHandlerStrand_,
 			sessionServiceConfig.secureChannelClient_,
 			sessionServiceConfig.session_
 		);

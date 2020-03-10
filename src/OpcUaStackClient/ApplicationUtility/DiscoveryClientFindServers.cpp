@@ -70,7 +70,7 @@ namespace OpcUaStackClient
 		shutdownContext_ = nullptr;
 
 		auto sessionStateUpdate = [this](SessionBase& session, SessionServiceStateId sessionState) {
-
+			assert(strand_->running_in_this_thread());
 			sessionState_ = sessionState;
 
 			// ignore some states
@@ -79,18 +79,14 @@ namespace OpcUaStackClient
 				return;
 			}
 
-			strand_->dispatch(
-                [this, sessionState](void) {
-			        if (sessionState == SessionServiceStateId::Established) {
-			        	sendFindServersRequest();
-			            return;
-			        }
+			if (sessionState == SessionServiceStateId::Established) {
+			     sendFindServersRequest();
+			     return;
+			}
 
-			        if (sessionState == SessionServiceStateId::Disconnected) {
-			    	    disconnectSession();
-			        }
-			    }
-			);
+			if (sessionState == SessionServiceStateId::Disconnected) {
+			    disconnectSession();
+			}
 		};
 
 		// register thread in service set manager. All services use the
@@ -109,6 +105,7 @@ namespace OpcUaStackClient
 		sessionServiceConfig.secureChannelClient_->endpointUrl(discoveryUri_);
 		sessionServiceConfig.sessionMode_ = SessionMode::SecureChannel;
 		sessionServiceConfig.sessionServiceChangeHandler_ = sessionStateUpdate;
+		sessionServiceConfig.sessionServiceChangeHandlerStrand_ = strand_;
 		sessionServiceConfig.sessionServiceName_ = std::string("SessionService_") + id;
 		sessionService_ = serviceSetManager_.sessionService(sessionServiceConfig);
 
