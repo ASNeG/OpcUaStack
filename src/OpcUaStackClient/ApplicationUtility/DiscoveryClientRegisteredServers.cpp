@@ -85,18 +85,14 @@ namespace OpcUaStackClient
 				return;
 			}
 
-			strand_->dispatch(
-				[this, sessionState](void) {
-				    if (sessionState == SessionServiceStateId::Established) {
-				        sendDiscoveryServiceRegisterServer();
-				        return;
-				    }
+		    if (sessionState == SessionServiceStateId::Established) {
+		        sendDiscoveryServiceRegisterServer();
+				return;
+		    }
 
-				    if (sessionState == SessionServiceStateId::Disconnected) {
-				    	disconnectSession();
-				    }
-			    }
-			);
+		    if (sessionState == SessionServiceStateId::Disconnected) {
+				disconnectSession();
+		    }
 		};
 
 		// register thread in service set manager. All services use the
@@ -116,6 +112,7 @@ namespace OpcUaStackClient
 		sessionServiceConfig.secureChannelClient_->cryptoManager(cryptoManager_);
 		sessionServiceConfig.sessionMode_ = SessionMode::SecureChannel;
 		sessionServiceConfig.sessionServiceChangeHandler_ = sessionStateUpdate;
+		sessionServiceConfig.sessionServiceChangeHandlerStrand_ = strand_;
 		sessionServiceConfig.session_->reconnectTimeout(0);
 		sessionServiceConfig.sessionServiceName_ = std::string("SessionService_") + id;
 		sessionService_ = serviceSetManager_.sessionService(sessionServiceConfig);
@@ -270,13 +267,10 @@ namespace OpcUaStackClient
 
 			it->second->copyTo(req->server());
 
+			trx->resultHandlerStrand(strand_);
 			trx->resultHandler(
 			    [this](ServiceTransactionRegisterServer::SPtr& trx) {
-				    strand_->dispatch(
-				        [this, trx](void) mutable {
-					        discoveryServiceRegisterServerResponse(trx);
-				        }
-				    );
+				    discoveryServiceRegisterServerResponse(trx);
 			    }
 			);
 			discoveryService_->asyncSend(trx);

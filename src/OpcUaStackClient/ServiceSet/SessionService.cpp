@@ -193,8 +193,10 @@ namespace OpcUaStackClient
 	void
 	SessionService::asyncConnect(void)
 	{
-		ctx_->ioThread_->run(
-			boost::bind(&SessionService::asyncConnectInternal, this)
+		strand_->dispatch(
+			[this](void) {
+			    asyncConnectInternal();
+		    }
 		);
 	}
 
@@ -229,8 +231,10 @@ namespace OpcUaStackClient
 		};
 		sm_.setUpdateCallback(updateCallback);
 
-		ctx_->ioThread_->run(
-			boost::bind(&SessionService::asyncConnectInternal, this)
+		strand_->dispatch(
+			[this](void) {
+			    asyncConnectInternal();
+		    }
 		);
 
 		future.wait();
@@ -243,8 +247,10 @@ namespace OpcUaStackClient
 	void
 	SessionService::asyncDisconnect(bool deleteSubscriptions)
 	{
-		ctx_->ioThread_->run(
-			boost::bind(&SessionService::asyncDisconnectInternal, this, deleteSubscriptions)
+		strand_->dispatch(
+			[this, deleteSubscriptions](void) {
+			    asyncDisconnectInternal(deleteSubscriptions);
+		    }
 		);
 	}
 
@@ -276,8 +282,10 @@ namespace OpcUaStackClient
 		sm_.setUpdateCallback(updateCallback);
 
 
-		ctx_->ioThread_->run(
-			boost::bind(&SessionService::asyncDisconnectInternal, this, deleteSubscriptions)
+		strand_->dispatch(
+			[this, deleteSubscriptions](void) {
+			    asyncDisconnectInternal(deleteSubscriptions);
+		    }
 		);
 
 		
@@ -288,8 +296,10 @@ namespace OpcUaStackClient
 	void
 	SessionService::asyncCancel(uint32_t requestHandle)
 	{
-		ctx_->ioThread_->run(
-			boost::bind(&SessionService::asyncCancelInternal, this, requestHandle)
+		strand_->dispatch(
+			[this, requestHandle](void) {
+			    asyncCancelInternal(requestHandle);
+		    }
 		);
 	}
 

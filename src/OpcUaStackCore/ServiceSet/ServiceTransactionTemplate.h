@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -29,8 +29,8 @@ namespace OpcUaStackCore
 	  : public ServiceTransaction
 	  {
 	    public:
-		  typedef boost::shared_ptr<ServiceTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID> > SPtr;
-		  typedef std::function<void(SPtr& handler)> ResultHandler;
+		  using SPtr = boost::shared_ptr<ServiceTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID> >;
+		  using ResultHandler = std::function<void(SPtr& handler)>;
 
 		  static void name(const std::string& name);
 		  static std::string name(void);
@@ -48,6 +48,8 @@ namespace OpcUaStackCore
 
 		  void resultHandler(const ResultHandler& resultHandler);
 		  ResultHandler& resultHandler(void);
+		  void resultHandlerStrand(const boost::shared_ptr<boost::asio::io_service::strand>& resultHandlerStrand);
+		  boost::shared_ptr<boost::asio::io_service::strand>& resultHandlerStrand(void);
 
 		  bool opcUaBinaryEncodeRequest(std::ostream& os) const;
 		  bool opcUaBinaryEncodeResponse(std::ostream& os) const;
@@ -55,7 +57,8 @@ namespace OpcUaStackCore
 		  bool opcUaBinaryDecodeResponse(std::istream& is);
 
 	    private:
-		  ResultHandler resultHandler_;
+		  ResultHandler resultHandler_ = nullptr;
+		  boost::shared_ptr<boost::asio::io_service::strand> resultHandlerStrand_ = nullptr;
 		  ResponseHeader::SPtr responseHeader_;
 		  typename REQTYPE::SPtr request_;
 		  typename RESTYPE::SPtr response_;

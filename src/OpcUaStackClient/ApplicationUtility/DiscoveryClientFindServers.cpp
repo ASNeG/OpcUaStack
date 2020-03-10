@@ -201,13 +201,10 @@ namespace OpcUaStackClient
 		serverUris->push_back(serverUri);
 		req->serverUris(serverUris);
 
+		trx->resultHandlerStrand(strand_);
 		trx->resultHandler(
 			[this](ServiceTransactionFindServers::SPtr& trx) {
-			    strand_->dispatch(
-			    	[this, trx](void) mutable {
-				        discoveryServiceFindServersResponse(trx);
-			        }
-			    );
+		        discoveryServiceFindServersResponse(trx);
 			}
 		);
 		discoveryService_->asyncSend(trx);
