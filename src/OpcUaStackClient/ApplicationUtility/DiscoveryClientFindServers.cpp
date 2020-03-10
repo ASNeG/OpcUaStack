@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -17,6 +17,7 @@
 
 #include <boost/make_shared.hpp>
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/Utility/UniqueId.h"
 #include "OpcUaStackClient/ApplicationUtility/DiscoveryClientFindServers.h"
 
 using namespace OpcUaStackCore;
@@ -26,6 +27,7 @@ namespace OpcUaStackClient
 
 	DiscoveryClientFindServers::DiscoveryClientFindServers(void)
 	: ioThread_()
+	, messageBus_()
 	, discoveryUri_("")
 	, serviceSetManager_()
 	, sessionService_()
@@ -51,6 +53,12 @@ namespace OpcUaStackClient
     }
 
     void
+	DiscoveryClientFindServers::messageBus(OpcUaStackCore::MessageBus::SPtr& messageBus)
+    {
+    	messageBus_ = messageBus;
+    }
+
+    void
     DiscoveryClientFindServers::discoveryUri(const std::string& discoveryUri)
     {
     	discoveryUri_ = discoveryUri;
@@ -69,41 +77,52 @@ namespace OpcUaStackClient
 				return;
 			}
 
-			// the connection could not be opened
-			if (sessionState == SessionServiceStateId::Disconnected) {
+			strand_->dispatch(
+                [this, sessionState](void) {
+			        // the connection could not be opened
+			        if (sessionState == SessionServiceStateId::Disconnected) {
 
-				if (shutdown_) {
-					shutdownProm_.set_value();
-					return;
-				}
+				        if (shutdown_) {
+					        shutdownProm_.set_value();
+					        return;
+				        }
 
-				if (resultHandler_) {
-					resultHandler_(findStatusCode_, findResults_);
-				}
-				return;
-			}
+				        if (resultHandler_) {
+					        resultHandler_(findStatusCode_, findResults_);
+				        }
 
-			// the connection has been opened
-			sendFindServersRequest();
+				        return;
+			        }
+
+					// the connection has been opened
+					sendFindServersRequest();
+			    }
+			);
 		};
+
+		// register thread in service set manager. All services use the
+		// same thread pool
+		std::string id = UniqueId::createStringUniqueId();
+		threadPoolName_ = std::string("DiscoveryClientFindServers_") + id;
+		serviceSetManager_.registerIOThread(threadPoolName_, ioThread_);
+		serviceSetManager_.messageBus(messageBus_);
+
+		// create new strand
+		strand_ = ioThread_->createStrand();
 
 		// create service set manager
 		SessionServiceConfig sessionServiceConfig;
-		sessionServiceConfig.ioThreadName("DiscoveryIOThread");
+		sessionServiceConfig.ioThreadName(threadPoolName_);
 		sessionServiceConfig.secureChannelClient_->endpointUrl(discoveryUri_);
 		sessionServiceConfig.sessionMode_ = SessionMode::SecureChannel;
 		sessionServiceConfig.sessionServiceChangeHandler_ = sessionStateUpdate;
-		sessionServiceConfig.sessionServiceName_ = "FindServersSession";
-
-		serviceSetManager_.registerIOThread("DiscoveryIOThread", ioThread_);
-		serviceSetManager_.sessionService(sessionServiceConfig);
-
-		// create session service
+		sessionServiceConfig.sessionServiceName_ = std::string("SessionService_") + id;
 		sessionService_ = serviceSetManager_.sessionService(sessionServiceConfig);
 
 		// create discovery service
 		DiscoveryServiceConfig discoveryServiceConfig;
-		discoveryServiceConfig.ioThreadName("DiscoveryIOThread");
+		discoveryServiceConfig.ioThreadName(threadPoolName_);
+		discoveryServiceConfig.discoveryServiceName_ = std::string("DiscoveryService_") + id;
 		discoveryService_ = serviceSetManager_.discoveryService(sessionService_, discoveryServiceConfig);
 
 		return true;
@@ -119,7 +138,7 @@ namespace OpcUaStackClient
 
 		// start shutdown task and wait for shutdown signal
 		auto shutdownFuture = shutdownProm_.get_future();
-	    ioThread_->run(
+		strand_->dispatch(
 	    	[this](void) {
 	    		shutdown_ = true;
 
@@ -134,7 +153,7 @@ namespace OpcUaStackClient
 	    shutdownFuture.wait_for(std::chrono::milliseconds(3000));
 
     	// deregister io thread from service set manager
-    	serviceSetManager_.deregisterIOThread("DiscoveryIOThread");
+    	serviceSetManager_.deregisterIOThread(threadPoolName_);
 	}
 
 	void
@@ -166,7 +185,11 @@ namespace OpcUaStackClient
 
 		trx->resultHandler(
 			[this](ServiceTransactionFindServers::SPtr& trx) {
-				discoveryServiceFindServersResponse(trx);
+			    strand_->dispatch(
+			    	[this, trx](void) mutable {
+				        discoveryServiceFindServersResponse(trx);
+			        }
+			    );
 			}
 		);
 		discoveryService_->asyncSend(trx);

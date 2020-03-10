@@ -42,7 +42,6 @@ namespace OpcUaStackClient
 		SessionConfig::SPtr session_;
 
 		std::string sessionServiceName_ = "SessionService";
-		OpcUaStackCore::MessageBus::SPtr messageBus_ = nullptr;
 	};
 
 }

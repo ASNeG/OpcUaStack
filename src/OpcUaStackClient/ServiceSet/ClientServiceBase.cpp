@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <future>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackClient/ServiceSet/ClientServiceBase.h"
 
@@ -50,8 +51,8 @@ namespace OpcUaStackClient
 		Log(Info, "activate receiver")
 			.parameter("ServiceName", serviceName_);
 
-		receiverCallback_ = receiverCallback;
-		ownPtr_ = shared_from_this();
+		receiverContext_ = boost::make_shared<ReceiverContext>();
+		receiverContext_->receiverCallback_ = receiverCallback;
 
 		// call the receiver for the first time
 		receiveCallback();
@@ -60,16 +61,44 @@ namespace OpcUaStackClient
 	void
 	ClientServiceBase::deactivateReceiver(void)
 	{
-		Log(Info, "deactivate receiver")
-			.parameter("ServiceName", serviceName_);
-
-		if (!receiverCallback_) {
+		if (!receiverContext_->receiverCallback_) {
 			return;
 		}
 
-		receiverCallback_ = nullptr;
+		if (!strand_->running_in_this_thread()) {
+			// the function was not called by the strand
 
-		messageBus_->cancelReceiver(messageBusMember_);
+			std::promise<void> promise;
+			std::future<void> future = promise.get_future();
+
+			strand_->dispatch(
+				[this, &promise]() {
+				    deactivateReceiver();
+				    promise.set_value();
+			    }
+			);
+
+			future.wait();
+			return;
+		}
+
+		Log(Info, "deactivate receiver")
+			.parameter("ServiceName", serviceName_);
+
+		//
+		// the function was called by the strand
+		//
+
+		if (receiverContext_->receiverCallbackRunning_) {
+			// The receiver callback is currently running
+			receiverContext_->shutdown_ = true;
+			receiverContext_.reset();
+			return;
+		}
+
+		// the receiver is currently not running
+		messageBus_->cancelReceiver(messageBusMember_, true);
+		receiverContext_.reset();
 	}
 
 	void
@@ -87,13 +116,19 @@ namespace OpcUaStackClient
 							.parameter("ServiceName", serviceName_)
 							.parameter("Error", int(error));
 					}
-					ownPtr_.reset();
 					return;
 				}
 
 				// execute callback
-				if (receiverCallback_) {
-					receiverCallback_(message);
+				ReceiverContext::SPtr receiverContext = receiverContext_;
+				if (receiverContext->receiverCallback_) {
+					receiverContext->receiverCallbackRunning_ = true;
+					receiverContext->receiverCallback_(message);
+					receiverContext->receiverCallbackRunning_ = false;
+
+					if (receiverContext->shutdown_) {
+						return;
+					}
 				}
 
 				receiveCallback();

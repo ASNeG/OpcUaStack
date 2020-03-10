@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -41,6 +41,7 @@ namespace OpcUaStackClient
 	    ~DiscoveryClientFindServers(void);
 
 	    void ioThread(OpcUaStackCore::IOThread::SPtr& ioThread);
+	    void messageBus(OpcUaStackCore::MessageBus::SPtr& messageBus);
 	    void discoveryUri(const std::string& discoveryUri);
 
 		bool startup(void);
@@ -58,8 +59,11 @@ namespace OpcUaStackClient
 
         void sendFindServersRequest(void);
 
-        OpcUaStackCore::IOThread::SPtr ioThread_;
-		std::string discoveryUri_;
+        std::string threadPoolName_ = "";
+        OpcUaStackCore::IOThread::SPtr ioThread_ = nullptr;
+        boost::shared_ptr<boost::asio::io_service::strand> strand_ = nullptr;
+        OpcUaStackCore::MessageBus::SPtr messageBus_ = nullptr;
+		std::string discoveryUri_ = "";
 
 		ServiceSetManager serviceSetManager_;
 		SessionService::SPtr sessionService_;

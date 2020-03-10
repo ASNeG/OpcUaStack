@@ -130,7 +130,7 @@ namespace OpcUaServer
 
 		if (!enable_) return;
 
-		discoveryClient_.shutdown();
+		discoveryClient_.syncShutdown();
 
 		// delete io thread
 		if (ioThreadInt_) {

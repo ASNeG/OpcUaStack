@@ -16,6 +16,7 @@
  */
 #include <boost/make_shared.hpp>
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/Utility/UniqueId.h"
 #include "OpcUaStackClient/ApplicationUtility/DiscoveryClientRegisteredServers.h"
 
 using namespace OpcUaStackCore;
@@ -30,8 +31,6 @@ namespace OpcUaStackClient
 	, registerInterval_(40000)
 	, discoveryUri_("")
 	, sessionService_()
-	, shutdown_(false)
-	, shutdownCond_()
 	, cryptoManager_()
 	{
 	}
@@ -73,47 +72,58 @@ namespace OpcUaStackClient
 		registerInterval_ = registerInterval;
 	}
 
-	bool 
+	bool
 	DiscoveryClientRegisteredServers::startup(void)
 	{
+		shutdownContext_ = nullptr;
+
 		auto sessionStateUpdate = [this](SessionBase& session, SessionServiceStateId sessionState) {
-			if (sessionState != SessionServiceStateId::Established && sessionState == SessionServiceStateId::Disconnected) {
+			sessionState_ = sessionState;
+
+			if (sessionState != SessionServiceStateId::Established &&
+				sessionState != SessionServiceStateId::Disconnected) {
 				return;
 			}
 
-			if (sessionState == SessionServiceStateId::Established) {
-				sendDiscoveryServiceRegisterServer();
-				return;
-			}
+			strand_->dispatch(
+				[this, sessionState](void) {
+				    if (sessionState == SessionServiceStateId::Established) {
+				        sendDiscoveryServiceRegisterServer();
+				        return;
+				    }
 
-			if (shutdown_) {
-				shutdownCond_.conditionValueDec();
-			}
+				    if (sessionState == SessionServiceStateId::Disconnected) {
+				    	disconnectSession();
+				    }
+			    }
+			);
 		};
 
 		// register thread in service set manager. All services use the
 		// same thread pool
-		serviceSetManager_.registerIOThread("DiscoveryIOThread", ioThread_);
+		std::string id = UniqueId::createStringUniqueId();
+		threadPoolName_ = std::string("DiscoveryClientRegisteredServers_") + id;
+		serviceSetManager_.registerIOThread(threadPoolName_, ioThread_);
+		serviceSetManager_.messageBus(messageBus_);
+
+		// create new strand
+		strand_ = ioThread_->createStrand();
 
 		// create session service
 		SessionServiceConfig sessionServiceConfig;
-		sessionServiceConfig.ioThreadName("DiscoveryClientRegisteredServers");
+		sessionServiceConfig.ioThreadName(threadPoolName_);
 		sessionServiceConfig.secureChannelClient_->endpointUrl(discoveryUri_);
 		sessionServiceConfig.secureChannelClient_->cryptoManager(cryptoManager_);
 		sessionServiceConfig.sessionMode_ = SessionMode::SecureChannel;
 		sessionServiceConfig.sessionServiceChangeHandler_ = sessionStateUpdate;
 		sessionServiceConfig.session_->reconnectTimeout(0);
-		sessionServiceConfig.sessionServiceName_ = "ClientRegisterServers_SessionService";
-		sessionServiceConfig.messageBus_ = messageBus_;
-
+		sessionServiceConfig.sessionServiceName_ = std::string("SessionService_") + id;
 		sessionService_ = serviceSetManager_.sessionService(sessionServiceConfig);
-		strand_ = sessionService_->strand();
 
 		// create discovery service
 		DiscoveryServiceConfig discoveryServiceConfig;
-		discoveryServiceConfig.ioThreadName("DiscoveryIOThread");
-		discoveryServiceConfig.discoveryServiceName_ = "ClientRegisterServers_DiscoveryService";
-
+		discoveryServiceConfig.ioThreadName(threadPoolName_);
+		discoveryServiceConfig.discoveryServiceName_ = std::string("DiscoveryService_") + id;
 		discoveryService_ = serviceSetManager_.discoveryService(sessionService_, discoveryServiceConfig);
 
 	  	// start timer to check server entries
@@ -121,7 +131,7 @@ namespace OpcUaStackClient
 	  	slotTimerElement_->timeoutCallback(
 	  		strand_,
 	  		[this](void) {
-	  		    loop();
+	  		    sessionService_->asyncConnect();
 	  	    }
 	  	);
 	  	slotTimerElement_->expireTime(boost::posix_time::microsec_clock::local_time(), registerInterval_);
@@ -131,32 +141,64 @@ namespace OpcUaStackClient
 	}
 
 	void 
-	DiscoveryClientRegisteredServers::shutdown(void)
+	DiscoveryClientRegisteredServers::asyncShutdown(const ShutdownCompleteCallback& shutdownCompleteCallback)
 	{
-		//
-		// The shutdown thread and the communication thread (IO Thread) may not
-		// be the same
-		//
+		// check if the function is called outside the strand
+		if (!strand_->running_in_this_thread()) {
+			strand_->dispatch(
+				[this, shutdownCompleteCallback]() {
+					asyncShutdown(shutdownCompleteCallback);
+			    }
+			);
+			return;
+		}
 
-    	// stop timer
+		// init shutdown context
+		shutdownContext_ = boost::make_shared<ShutdownContext>();
+		shutdownContext_->shutdownCompleteCallback_ = shutdownCompleteCallback;
+
+		// stop timer
     	if (slotTimerElement_.get() != nullptr) {
     		ioThread_->slotTimer()->stop(slotTimerElement_);
     	}
 
-    	// deregister server entries from discovery server and wait of the
-    	// end of the process
-    	shutdownCond_.condition(1,0);
-    	strand_->dispatch(
-    		[this](void) {
-    		    shutdownLoop();
-    	    }
-    	);
-    	if (!shutdownCond_.waitForCondition(3000)) {
-    		Log(Error, "discovery client registered server shutdown timeout");
-    	}
+    	// deregister servers
+    	deregisterServers();
+
+    	// The function shutdownComplete is called asynchronously after
+    	// session shutdown.
+	}
+
+	void
+	DiscoveryClientRegisteredServers::shutdownComplete(void)
+	{
+    	// delete services
+    	discoveryService_.reset();
+    	sessionService_.reset();
 
     	// deregister io thread from service set manager
-    	serviceSetManager_.deregisterIOThread("DiscoveryIOThread");
+    	serviceSetManager_.deregisterIOThread(threadPoolName_);
+
+    	// call shutdown complete callback
+    	auto shutdownCompleteCallback = shutdownContext_->shutdownCompleteCallback_;
+    	shutdownContext_ = nullptr;
+    	shutdownCompleteCallback();
+	}
+
+	void
+	DiscoveryClientRegisteredServers::syncShutdown(void)
+	{
+		assert(!strand_->running_in_this_thread());
+
+		std::promise<void> promise;
+		std::future<void> future = promise.get_future();
+		asyncShutdown(
+			[this, &promise](void) {
+			    promise.set_value();
+				return;
+			}
+		);
+		future.wait();
 	}
 
     void
@@ -213,28 +255,12 @@ namespace OpcUaStackClient
 		registeredServer->isOnline() = false;
 	}
 
-    void
-    DiscoveryClientRegisteredServers::loop(void)
-    {
-		Log(Debug, "register server discovery loop");
-		sessionService_->asyncConnect();
-    }
-
-    void
-    DiscoveryClientRegisteredServers::shutdownLoop(void)
-    {
-		Log(Debug, "deregister server discovery loop");
-		shutdown_ = true;
-		deregisterServers();
-	    sessionService_->asyncDisconnect();
-	    shutdownCond_.conditionValueDec();
-    }
-
 	void
 	DiscoveryClientRegisteredServers::sendDiscoveryServiceRegisterServer(void)
 	{
 		if (registeredServerMap_.size() == 0) {
-			sessionService_->asyncDisconnect();
+			disconnectSession();
+			return;
 		}
 
 		for (auto it = registeredServerMap_.begin(); it != registeredServerMap_.end(); it++) {
@@ -245,9 +271,13 @@ namespace OpcUaStackClient
 			it->second->copyTo(req->server());
 
 			trx->resultHandler(
-				[this](ServiceTransactionRegisterServer::SPtr& trx) {
-					discoveryServiceRegisterServerResponse(trx);
-				}
+			    [this](ServiceTransactionRegisterServer::SPtr& trx) {
+				    strand_->dispatch(
+				        [this, trx](void) mutable {
+					        discoveryServiceRegisterServerResponse(trx);
+				        }
+				    );
+			    }
 			);
 			discoveryService_->asyncSend(trx);
 		}
@@ -265,7 +295,7 @@ namespace OpcUaStackClient
 
 		}
 
-		sessionService_->asyncDisconnect();
+		disconnectSession();
 	}
 
 	void
@@ -276,6 +306,20 @@ namespace OpcUaStackClient
 		for (auto it = registeredServerMap_.begin(); it != registeredServerMap_.end(); it++) {
 			RegisteredServer::SPtr rs = it->second;
 			rs->isOnline() = false;
+		}
+		disconnectSession();
+	}
+
+	void
+	DiscoveryClientRegisteredServers::disconnectSession(void)
+	{
+		if (sessionState_ != SessionServiceStateId::Disconnected) {
+			sessionService_->asyncDisconnect();
+			return;
+		}
+
+		if (shutdownContext_) {
+	        shutdownComplete();
 		}
 	}
 

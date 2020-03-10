@@ -51,10 +51,17 @@ namespace OpcUaStackCore
 
 	void
 	MessageBusMember::cancelReceiver(
-		void
+		bool immediately
 	)
 	{
 		boost::mutex::scoped_lock g(mutex_);
+
+		if (immediately) {
+		    strand_ = nullptr;
+		    ioThread_ = nullptr;
+		    receiverWait_ = false;
+		    return;
+		}
 
 		// check if receiver is not active. In this case, calling the function
 		// has no effect.

@@ -45,7 +45,8 @@ namespace OpcUaStackCore
 		void getMemberNames(std::vector<std::string>& names);
 
 		void cancelReceiver(
-			MessageBusMember::WPtr& receiver
+			MessageBusMember::WPtr& receiver,
+			bool immediately = false
 		);
 
 		void messageReceive(

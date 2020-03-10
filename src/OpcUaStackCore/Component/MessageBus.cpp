@@ -16,6 +16,7 @@
  */
 
 #include <boost/make_shared.hpp>
+#include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Component/MessageBus.h"
 
 namespace OpcUaStackCore
@@ -54,6 +55,9 @@ namespace OpcUaStackCore
 	MessageBusMember::WPtr
 	MessageBus::registerMember(const std::string& name)
 	{
+		Log(Debug, "register message bus member")
+			.parameter("MessageBusMember", name);
+
 		boost::mutex::scoped_lock g(mutex_);
 
 		// check if member name already exist
@@ -80,6 +84,9 @@ namespace OpcUaStackCore
 	MessageBusMember::WPtr
 	MessageBus::registerMember(const std::string& name, MessageBusMemberConfig& messageBusMemberConfig)
 	{
+		Log(Debug, "register message bus member")
+			.parameter("MessageBusMember", name);
+
 		boost::mutex::scoped_lock g(mutex_);
 
 		// check if member name already exist
@@ -115,6 +122,9 @@ namespace OpcUaStackCore
 		if (!messageBusMember) {
 			return;
 		}
+
+		Log(Debug, "deregister message bus member")
+			.parameter("MessageBusMember", messageBusMember->name());
 
 		// check if member exist
 		auto it = messageBusMemberMap_.find(messageBusMember->name());
@@ -153,7 +163,8 @@ namespace OpcUaStackCore
 
 	void
 	MessageBus::cancelReceiver(
-		MessageBusMember::WPtr& receiver
+		MessageBusMember::WPtr& receiver,
+		bool immediately
 	)
 	{
 		auto messageBusReceiver = receiver.lock();
@@ -161,7 +172,7 @@ namespace OpcUaStackCore
 			return;
 		}
 
-		messageBusReceiver->cancelReceiver();
+		messageBusReceiver->cancelReceiver(immediately);
 	}
 
 	void

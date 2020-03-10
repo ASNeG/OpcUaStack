@@ -85,6 +85,8 @@ namespace OpcUaStackClient
 	OpcUaStatusCode
 	VBIClient::syncConnect(ConnectContext& connectContext)
 	{
+		sessionService_.reset();
+
 		auto sessionServiceChangeHandler = [this](SessionBase& session, SessionServiceStateId sessionState) {
 			if (sessionChangeHandler_) {
 				sessionChangeHandler_(session, sessionState);
@@ -120,6 +122,8 @@ namespace OpcUaStackClient
 	void
 	VBIClient::asyncConnect(ConnectContext& connectContext)
 	{
+		sessionService_.reset();
+
 		auto sessionServiceChangeHandler = [this](SessionBase& session, SessionServiceStateId sessionState) {
 			if (sessionChangeHandler_) {
 				sessionChangeHandler_(session, sessionState);

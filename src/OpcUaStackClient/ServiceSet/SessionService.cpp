@@ -92,6 +92,7 @@ namespace OpcUaStackClient
 
 		// deactivate receiver
 		deactivateReceiver();
+		messageBus_->deregisterMember(messageBusMember_);
 	}
 
 	void

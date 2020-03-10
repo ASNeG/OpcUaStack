@@ -52,8 +52,15 @@ namespace OpcUaStackClient
 		OpcUaStackCore::MessageBusMember::WPtr messageBusMember_;
 
 		// runtime data
-		ReceiverCallback receiverCallback_ = nullptr;
-		SPtr ownPtr_ = nullptr;
+		class ReceiverContext
+		{
+		  public:
+			using SPtr = boost::shared_ptr<ReceiverContext>;
+			ReceiverCallback receiverCallback_ = nullptr;
+			bool receiverCallbackRunning_ = false;
+			bool shutdown_ = false;
+		};
+		ReceiverContext::SPtr receiverContext_;
 	};
 
 }

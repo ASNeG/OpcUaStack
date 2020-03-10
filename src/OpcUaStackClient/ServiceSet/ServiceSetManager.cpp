@@ -62,6 +62,12 @@ namespace OpcUaStackClient
 	}
 
 	void
+	ServiceSetManager::messageBus(MessageBus::SPtr& messageBus)
+	{
+		messageBus_ = messageBus;
+	}
+
+	void
 	ServiceSetManager::createIOThread(const std::string ioThreadName)
 	{
 		auto ioThread = getIOThread(ioThreadName);
@@ -111,10 +117,8 @@ namespace OpcUaStackClient
 
 		// create new message bus if a message bus not exist in the
 		// session service configuration.
-		messageBus_ = sessionServiceConfig.messageBus_;
 		if (!messageBus_) {
 			messageBus_ = boost::make_shared<MessageBus>();
-			sessionServiceConfig.messageBus_ = messageBus_;
 		}
 
 		// check if session service name already exist. Each session service must have

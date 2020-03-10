@@ -35,6 +35,17 @@ namespace OpcUaStackClient
 	class DLLEXPORT DiscoveryClientRegisteredServers
 	{
 	  public:
+		using SPtr = boost::shared_ptr<DiscoveryClientRegisteredServers>;
+		using StartupCompleteCallback = std::function<void (void)>;
+		using ShutdownCompleteCallback = std::function<void (void)>;
+
+		class ShutdownContext
+		{
+		  public:
+			using SPtr = boost::shared_ptr<ShutdownContext>;
+			ShutdownCompleteCallback shutdownCompleteCallback_;
+		};
+
 		DiscoveryClientRegisteredServers(void);
 	    ~DiscoveryClientRegisteredServers(void);
 
@@ -45,7 +56,8 @@ namespace OpcUaStackClient
 	    void registerInterval(uint32_t registerInterval);
 
 		bool startup(void);
-		void shutdown(void);
+		void asyncShutdown(const ShutdownCompleteCallback& shutdownCompleteCallback);
+		void syncShutdown(void);
 
 		void addRegisteredServer(
 			const std::string& name,
@@ -55,22 +67,22 @@ namespace OpcUaStackClient
 			const std::string& name
 		);
 
-	  public:
+	  private:
+		void shutdownComplete(void);
 		void discoveryServiceRegisterServerResponse(
 			OpcUaStackCore::ServiceTransactionRegisterServer::SPtr& serviceTransactionRegisterServer
 		);
-
         void sendDiscoveryServiceRegisterServer(void);
         void deregisterServers(void);
-		void loop(void);
-		void shutdownLoop(void);
+        void disconnectSession(void);
 
-		bool shutdown_;
-		OpcUaStackCore::Condition shutdownCond_;
+		ShutdownContext::SPtr shutdownContext_ = nullptr;
+		SessionServiceStateId sessionState_ = SessionServiceStateId::Disconnected;
 
 		boost::shared_ptr<boost::asio::io_service::strand> strand_;
 		OpcUaStackCore::MessageBus::SPtr messageBus_;
 		OpcUaStackCore::IOThread::SPtr ioThread_;
+		std::string threadPoolName_;
 		OpcUaStackCore::SlotTimerElement::SPtr slotTimerElement_;
 		RegisteredServerMap registeredServerMap_;
 
