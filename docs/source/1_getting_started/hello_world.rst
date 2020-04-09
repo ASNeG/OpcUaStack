@@ -280,7 +280,13 @@ Hello, World!
 
 Now we can make our application do something "useful". Open file
 **src/helloworld/Library/Library.cpp** and place the following code to method
-**startup**:
+**startup** and include at the beginning:
+
+
+.. code-block:: cpp
+
+    #include "OpcUaStackServer/ServiceSetApplication/GetNodeReference.h"
+
 
 .. code-block:: cpp
 
