@@ -25,6 +25,19 @@ Creating the application frame
 At first we need to create the frame of the future application. It is very easy to do with the stack.
 Just type in your console:
 
+For Linux:
+::
+
+    $ export PATH=$PATH:$HOME/.ASNeG/usr/bin
+    $ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/.ASNeG/usr/lib/
+    
+For Windows:
+::
+
+    $ set PATH=%PATH%;C:\ASNeG\usr\lib\
+    $ set PATH=%PATH%;C:\ASNeG\usr\bin\
+    
+And create project:
 ::
 
     $ OpcUaProjectBuilder3 helloworld "My First OPC UA Application" 8888
