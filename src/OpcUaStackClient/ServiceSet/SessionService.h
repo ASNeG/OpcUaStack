@@ -46,9 +46,12 @@ namespace OpcUaStackClient
 		using SPtr = boost::shared_ptr<SessionService>;
 
 		SessionService(
-			const std::string& serviceName,
-			OpcUaStackCore::IOThread* ioThread,
-			OpcUaStackCore::MessageBus::SPtr& messageBus
+			const std::string& serviceName,				 // Global unique name of the service. The service
+			                                             // name is used to register a unique member in the
+			                                             // message bus.
+			OpcUaStackCore::IOThread* ioThread,			 // Threads for the execution of tasks in the service
+			                                             // component.
+			OpcUaStackCore::MessageBus::SPtr& messageBus // Global message bus for service communication.
 		);
 		~SessionService(void);
 

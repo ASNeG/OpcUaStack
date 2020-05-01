@@ -246,12 +246,12 @@ namespace OpcUaStackClient
 		assert(ctx_ != nullptr);
 		assert(message.get() != nullptr);
 
-		auto serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
+		auto trx = boost::static_pointer_cast<ServiceTransaction>(message);
 
 		uint32_t requestTimeout = 3000;
-		serviceTransaction->calcRequestTimeout(requestTimeout);
+		trx->calcRequestTimeout(requestTimeout);
 
-		uint32_t requestType = serviceTransaction->nodeTypeRequest().nodeId<uint32_t>();
+		uint32_t requestType = trx->nodeTypeRequest().nodeId<uint32_t>();
 		uint32_t requestId = ctx_->requestId_++;
 
 		// only the GetEndpointRequest, FindServerRequest and the RegisterServerRequest
@@ -266,30 +266,29 @@ namespace OpcUaStackClient
 					.parameter("SessId", ctx_->id_)
 					.parameter("RequestType", OpcUaIdMap::longString(requestType));
 
-				serviceTransaction->statusCode(BadSessionClosed);
-				Component* componentService = serviceTransaction->componentService();
-				componentService->sendAsync(serviceTransaction);
+				trx->statusCode(BadSessionClosed);
+				ctx_->sendResponseToService(trx->memberService(), trx);
 
 				return SessionServiceStateId::Established;
 			}
 		}
 
 		auto secureChannelTransaction = boost::make_shared<SecureChannelTransaction>();
-		secureChannelTransaction->requestTypeNodeId_ = serviceTransaction->nodeTypeRequest();
+		secureChannelTransaction->requestTypeNodeId_ = trx->nodeTypeRequest();
 		secureChannelTransaction->requestId_ = requestId;
 		std::iostream ios(&secureChannelTransaction->os_);
 
-		RequestHeader::SPtr requestHeader = serviceTransaction->requestHeader();
-		requestHeader->requestHandle(serviceTransaction->transactionId());
+		RequestHeader::SPtr requestHeader = trx->requestHeader();
+		requestHeader->requestHandle(trx->transactionId());
 		requestHeader->sessionAuthenticationToken() = ctx_->authenticationToken_;
 		requestHeader->timeoutHint(requestTimeout);
 		requestHeader->opcUaBinaryEncode(ios);
-		serviceTransaction->opcUaBinaryEncodeRequest(ios);
+		trx->opcUaBinaryEncodeRequest(ios);
 
 		// insert request into pending queue
 		ctx_->pendingQueue_->insert(
 			secureChannelTransaction->requestId_,
-			serviceTransaction,
+			trx,
 			requestTimeout
 		);
 
