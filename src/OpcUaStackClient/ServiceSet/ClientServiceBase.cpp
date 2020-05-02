@@ -16,6 +16,7 @@
  */
 
 #include <future>
+#include <boost/make_shared.hpp>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackClient/ServiceSet/ClientServiceBase.h"
 
