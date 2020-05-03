@@ -33,7 +33,11 @@ namespace OpcUaStackServer
 	  public:
 		typedef boost::shared_ptr<QueryService> SPtr;
 
-		QueryService(void);
+		QueryService(
+			const std::string& serviceName,
+			OpcUaStackCore::IOThread::SPtr& ioThread,
+			OpcUaStackCore::MessageBus::SPtr& messageBus
+		);
 		~QueryService(void);
 
 		//- Component -----------------------------------------------------------------

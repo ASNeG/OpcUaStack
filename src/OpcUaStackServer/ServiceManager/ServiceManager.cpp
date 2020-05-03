@@ -24,12 +24,10 @@ namespace OpcUaStackServer
 
 	ServiceManager::ServiceManager(void)
 	: transactionManager_(boost::make_shared<TransactionManager>())
-	, queryService_(boost::make_shared<QueryService>())
 	, applicationService_(boost::make_shared<ApplicationService>())
 	, discoveryService_(boost::make_shared<DiscoveryService>())
 	, forwardGlobalSync_(boost::make_shared<ForwardGlobalSync>())
 	{
-		queryService_->componentName("QueryService");
 		applicationService_->componentName("ApplicationService");
 		discoveryService_->componentName("DiscoveryService");
 
@@ -43,7 +41,6 @@ namespace OpcUaStackServer
 	void
 	ServiceManager::initForwardGlobalSync(void)
 	{
-		queryService_->forwardGlobalSync(forwardGlobalSync_);
 		applicationService_->forwardGlobalSync(forwardGlobalSync_);
 		discoveryService_->forwardGlobalSync(forwardGlobalSync_);
 	}
@@ -248,6 +245,18 @@ namespace OpcUaStackServer
 		transactionManager_->registerTransaction(serviceTransactionUnregisterNodes);
 	}
 
+	void
+	ServiceManager::initQueryService(void)
+	{
+		queryService_ = boost::make_shared<QueryService>(
+			"QueryServiceServer",
+			ioThread_,
+			messageBus_
+		);
+		queryService_->componentName("QueryService");		// FIXME: obsolete
+		queryService_->forwardGlobalSync(forwardGlobalSync_);
+	}
+
 	bool
 	ServiceManager::init(SessionManager& sessionManager)
 	{
@@ -257,6 +266,7 @@ namespace OpcUaStackServer
 		initSubscriptionService();
 		initMonitoredItemService();
 		initViewService();
+		initQueryService();
 
 		//
 		// discovery service service
@@ -315,7 +325,6 @@ namespace OpcUaStackServer
 		ioThread_ = ioThread;
 
 		// FIXME: use IOThread in services...
-		queryService_->ioThread(ioThread.get());
 		applicationService_->ioThread(ioThread.get());
 		discoveryService_->ioThread(ioThread.get());
 		return true;
