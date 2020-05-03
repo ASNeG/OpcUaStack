@@ -33,7 +33,11 @@ namespace OpcUaStackServer
 	  public:
 		typedef boost::shared_ptr<MethodService> SPtr;
 
-		MethodService(void);
+		MethodService(
+			const std::string& serviceName,
+			OpcUaStackCore::IOThread::SPtr& ioThread,
+			OpcUaStackCore::MessageBus::SPtr& messageBus
+		);
 		~MethodService(void);
 
 		//- Component -----------------------------------------------------------------

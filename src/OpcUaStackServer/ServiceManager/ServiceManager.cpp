@@ -24,7 +24,6 @@ namespace OpcUaStackServer
 
 	ServiceManager::ServiceManager(void)
 	: transactionManager_(boost::make_shared<TransactionManager>())
-	, methodService_(boost::make_shared<MethodService>())
 	, monitoredItemService_(boost::make_shared<MonitoredItemService>())
 	, nodeManagementService_(boost::make_shared<NodeManagementService>())
 	, queryService_(boost::make_shared<QueryService>())
@@ -34,7 +33,6 @@ namespace OpcUaStackServer
 	, discoveryService_(boost::make_shared<DiscoveryService>())
 	, forwardGlobalSync_(boost::make_shared<ForwardGlobalSync>())
 	{
-		methodService_->componentName("MethodService");
 		monitoredItemService_->componentName("MonitoredItemService");
 		nodeManagementService_->componentName("NodeManagementService");
 		queryService_->componentName("QueryService");
@@ -53,7 +51,6 @@ namespace OpcUaStackServer
 	void
 	ServiceManager::initForwardGlobalSync(void)
 	{
-		methodService_->forwardGlobalSync(forwardGlobalSync_);
 		monitoredItemService_->forwardGlobalSync(forwardGlobalSync_);
 		nodeManagementService_->forwardGlobalSync(forwardGlobalSync_);
 		queryService_->forwardGlobalSync(forwardGlobalSync_);
@@ -95,22 +92,31 @@ namespace OpcUaStackServer
 		transactionManager_->registerTransaction(serviceTransactionHistoryUpdate);
 	}
 
-	bool
-	ServiceManager::init(SessionManager& sessionManager)
+	void
+	ServiceManager::initMethodService(void)
 	{
-		initAttributeService();
+		methodService_ = boost::make_shared<MethodService>(
+			"MethodServiceServer",
+			ioThread_,
+			messageBus_
+		);
+		methodService_->componentName("MethodService");		// FIXME: obsolete
+		methodService_->forwardGlobalSync(forwardGlobalSync_);
 
-		//
-		// method service
-		//
 		ServiceTransactionCall::name("Call");
 
-		ServiceTransactionCall::SPtr serviceTransactionCall = boost::make_shared<ServiceTransactionCall>();
+		auto serviceTransactionCall = boost::make_shared<ServiceTransactionCall>();
 
 		serviceTransactionCall->componentService(&*methodService_);
 
 		transactionManager_->registerTransaction(serviceTransactionCall);
+	}
 
+	bool
+	ServiceManager::init(SessionManager& sessionManager)
+	{
+		initAttributeService();
+		initMethodService();
 
 		//
 		// node mangement service
@@ -285,7 +291,6 @@ namespace OpcUaStackServer
 		ioThread_ = ioThread;
 
 		// FIXME: use IOThread in services...
-		methodService_->ioThread(ioThread.get());
 		monitoredItemService_->ioThread(ioThread.get());
 		nodeManagementService_->ioThread(ioThread.get());
 		queryService_->ioThread(ioThread.get());
