@@ -24,14 +24,12 @@ namespace OpcUaStackServer
 
 	ServiceManager::ServiceManager(void)
 	: transactionManager_(boost::make_shared<TransactionManager>())
-	, monitoredItemService_(boost::make_shared<MonitoredItemService>())
 	, queryService_(boost::make_shared<QueryService>())
 	, viewService_(boost::make_shared<ViewService>())
 	, applicationService_(boost::make_shared<ApplicationService>())
 	, discoveryService_(boost::make_shared<DiscoveryService>())
 	, forwardGlobalSync_(boost::make_shared<ForwardGlobalSync>())
 	{
-		monitoredItemService_->componentName("MonitoredItemService");
 		queryService_->componentName("QueryService");
 		viewService_->componentName("ViewService");
 		applicationService_->componentName("ApplicationService");
@@ -47,7 +45,6 @@ namespace OpcUaStackServer
 	void
 	ServiceManager::initForwardGlobalSync(void)
 	{
-		monitoredItemService_->forwardGlobalSync(forwardGlobalSync_);
 		queryService_->forwardGlobalSync(forwardGlobalSync_);
 		viewService_->forwardGlobalSync(forwardGlobalSync_);
 		applicationService_->forwardGlobalSync(forwardGlobalSync_);
@@ -182,29 +179,28 @@ namespace OpcUaStackServer
 		transactionManager_->registerTransaction(serviceTransactionTransferSubscriptions);
 	}
 
-	bool
-	ServiceManager::init(SessionManager& sessionManager)
+	void
+	ServiceManager::initMonitoredItemService(void)
 	{
-		initAttributeService();
-		initMethodService();
-		initNodeManagementService();
-		initSubscriptionService();
+		monitoredItemService_ = boost::make_shared<MonitoredItemService>(
+			"MonitoredItemServiceServer",
+			ioThread_,
+			messageBus_
+		);
+		monitoredItemService_->componentName("MonitoredItemService");		// FIXME: obsolete
+		monitoredItemService_->forwardGlobalSync(forwardGlobalSync_);
 
-		//
-		// monitored service
-		//
 		ServiceTransactionCreateMonitoredItems::name("CreateMonitorItems");
 		ServiceTransactionDeleteMonitoredItems::name("DeleteMonitorItems");
 		ServiceTransactionModifyMonitoredItems::name("ModifyMonitorItems");
 		ServiceTransactionSetMonitoringMode::name("SetMonitoringMode");
 		ServiceTransactionSetTriggering::name("SetTriggering");
 
-
-		ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems = boost::make_shared<ServiceTransactionCreateMonitoredItems>();
-		ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems = boost::make_shared<ServiceTransactionDeleteMonitoredItems>();
-		ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems = boost::make_shared<ServiceTransactionModifyMonitoredItems>();
-		ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode = boost::make_shared<ServiceTransactionSetMonitoringMode>();
-		ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering = boost::make_shared<ServiceTransactionSetTriggering>();
+		auto serviceTransactionCreateMonitoredItems = boost::make_shared<ServiceTransactionCreateMonitoredItems>();
+		auto serviceTransactionDeleteMonitoredItems = boost::make_shared<ServiceTransactionDeleteMonitoredItems>();
+		auto serviceTransactionModifyMonitoredItems = boost::make_shared<ServiceTransactionModifyMonitoredItems>();
+		auto serviceTransactionSetMonitoringMode = boost::make_shared<ServiceTransactionSetMonitoringMode>();
+		auto serviceTransactionSetTriggering = boost::make_shared<ServiceTransactionSetTriggering>();
 
 		serviceTransactionCreateMonitoredItems->componentService(&*subscriptionService_);
 		serviceTransactionDeleteMonitoredItems->componentService(&*subscriptionService_);
@@ -217,6 +213,16 @@ namespace OpcUaStackServer
 		transactionManager_->registerTransaction(serviceTransactionModifyMonitoredItems);
 		transactionManager_->registerTransaction(serviceTransactionSetMonitoringMode);
 		transactionManager_->registerTransaction(serviceTransactionSetTriggering);
+	}
+
+	bool
+	ServiceManager::init(SessionManager& sessionManager)
+	{
+		initAttributeService();
+		initMethodService();
+		initNodeManagementService();
+		initSubscriptionService();
+		initMonitoredItemService();
 
 
 		//
@@ -303,7 +309,6 @@ namespace OpcUaStackServer
 		ioThread_ = ioThread;
 
 		// FIXME: use IOThread in services...
-		monitoredItemService_->ioThread(ioThread.get());
 		queryService_->ioThread(ioThread.get());
 		viewService_->ioThread(ioThread.get());
 		applicationService_->ioThread(ioThread.get());

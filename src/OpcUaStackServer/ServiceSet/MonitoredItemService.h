@@ -33,7 +33,11 @@ namespace OpcUaStackServer
 	  public:
 		typedef boost::shared_ptr<MonitoredItemService> SPtr;
 
-		MonitoredItemService(void);
+		MonitoredItemService(
+			const std::string& serviceName,
+			OpcUaStackCore::IOThread::SPtr& ioThread,
+			OpcUaStackCore::MessageBus::SPtr& messageBus
+		);
 		~MonitoredItemService(void);
 
 		//- Component -----------------------------------------------------------------
