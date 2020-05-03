@@ -71,7 +71,7 @@ namespace OpcUaStackServer
 			ioThread_,
 			messageBus_
 		);
-		attributeService_->componentName("AttributeService");
+		attributeService_->componentName("AttributeService");		// FIXME: obsolete
 		attributeService_->forwardGlobalSync(forwardGlobalSync_);
 
 		ServiceTransactionRead::name("Read");

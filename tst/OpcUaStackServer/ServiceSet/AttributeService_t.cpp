@@ -24,10 +24,13 @@ struct AttributeServiceFixture
 
 	AttributeServiceFixture()
 	: core_()
-	, service_()
 	, transaction_(boost::make_shared<ServiceTransactionHistoryRead>())
 	, mockComponent_()
 	{
+		auto ioThread = boost::make_shared<IOThread>();
+		auto messageBus = boost::make_shared<MessageBus>();
+		service_ = boost::make_shared<AttributeService>("ServiceName",  ioThread, messageBus);
+
 		core_.init();
 
 
@@ -66,7 +69,7 @@ struct AttributeServiceFixture
 
 		transaction_->request()->historyReadDetails(details);
 
-		service_.informationModel(informationModel);
+		service_->informationModel(informationModel);
 	}
 
 	~AttributeServiceFixture()
@@ -82,7 +85,7 @@ struct AttributeServiceFixture
 	}
 
 	Core core_;
-	AttributeService service_;
+	AttributeService::SPtr service_ = nullptr;
 	ServiceTransactionHistoryRead::SPtr transaction_;
 	MockComponent mockComponent_;
 	OpcUaStatusCode expectedStatus_;
@@ -99,7 +102,7 @@ BOOST_AUTO_TEST_CASE(AttributeService_readHistorySuccessResultStatus)
 {
 
 	expectedStatus_ = OpcUaStatusCode::Success;
-	service_.receive(transaction_);
+	service_->receive(transaction_);
 
 	auto result = boost::make_shared<HistoryReadResult>();
 	transaction_->response()->results()->get(0, result);
@@ -110,7 +113,7 @@ BOOST_AUTO_TEST_CASE(AttributeService_readHistoryNoDataResultStatus)
 {
 
 	expectedStatus_ = OpcUaStatusCode::GoodNoData;
-	service_.receive(transaction_);
+	service_->receive(transaction_);
 
 	auto result = boost::make_shared<HistoryReadResult>();
 	transaction_->response()->results()->get(0, result);
