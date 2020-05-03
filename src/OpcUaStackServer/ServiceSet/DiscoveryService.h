@@ -39,7 +39,11 @@ namespace OpcUaStackServer
 	  public:
 		typedef boost::shared_ptr<DiscoveryService> SPtr;
 
-		DiscoveryService(void);
+		DiscoveryService(
+			const std::string& serviceName,
+			OpcUaStackCore::IOThread::SPtr& ioThread,
+			OpcUaStackCore::MessageBus::SPtr& messageBus
+		);
 		~DiscoveryService(void);
 
 		void discoveryIf(DiscoveryIf* discoveryIf);

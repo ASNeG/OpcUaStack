@@ -25,11 +25,9 @@ namespace OpcUaStackServer
 	ServiceManager::ServiceManager(void)
 	: transactionManager_(boost::make_shared<TransactionManager>())
 	, applicationService_(boost::make_shared<ApplicationService>())
-	, discoveryService_(boost::make_shared<DiscoveryService>())
 	, forwardGlobalSync_(boost::make_shared<ForwardGlobalSync>())
 	{
 		applicationService_->componentName("ApplicationService");
-		discoveryService_->componentName("DiscoveryService");
 
 		initForwardGlobalSync();
 	}
@@ -42,7 +40,6 @@ namespace OpcUaStackServer
 	ServiceManager::initForwardGlobalSync(void)
 	{
 		applicationService_->forwardGlobalSync(forwardGlobalSync_);
-		discoveryService_->forwardGlobalSync(forwardGlobalSync_);
 	}
 
 	void
@@ -226,11 +223,11 @@ namespace OpcUaStackServer
 		ServiceTransactionRegisterNodes::name("RegisterNodes");
 		ServiceTransactionUnregisterNodes::name("UnregisterNodes");
 
-		ServiceTransactionBrowse::SPtr serviceTransactionBrowse = boost::make_shared<ServiceTransactionBrowse>();
-		ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext = boost::make_shared<ServiceTransactionBrowseNext>();
-		ServiceTransactionTranslateBrowsePathsToNodeIds::SPtr serviceTransactionTranslateBrowsePathsToNodeIds = boost::make_shared<ServiceTransactionTranslateBrowsePathsToNodeIds>();
-		ServiceTransactionRegisterNodes::SPtr serviceTransactionRegisterNodes = boost::make_shared<ServiceTransactionRegisterNodes>();
-		ServiceTransactionUnregisterNodes::SPtr serviceTransactionUnregisterNodes = boost::make_shared<ServiceTransactionUnregisterNodes>();
+		auto serviceTransactionBrowse = boost::make_shared<ServiceTransactionBrowse>();
+		auto serviceTransactionBrowseNext = boost::make_shared<ServiceTransactionBrowseNext>();
+		auto serviceTransactionTranslateBrowsePathsToNodeIds = boost::make_shared<ServiceTransactionTranslateBrowsePathsToNodeIds>();
+		auto serviceTransactionRegisterNodes = boost::make_shared<ServiceTransactionRegisterNodes>();
+		auto serviceTransactionUnregisterNodes = boost::make_shared<ServiceTransactionUnregisterNodes>();
 
 		serviceTransactionBrowse->componentService(&*viewService_);
 		serviceTransactionBrowseNext->componentService(&*viewService_);
@@ -257,6 +254,26 @@ namespace OpcUaStackServer
 		queryService_->forwardGlobalSync(forwardGlobalSync_);
 	}
 
+	void
+	ServiceManager::initDiscoveryService(void)
+	{
+		discoveryService_ = boost::make_shared<DiscoveryService>(
+			"DiscoveryServiceServer",
+			ioThread_,
+			messageBus_
+		);
+		discoveryService_->componentName("DiscoveryService");		// FIXME: obsolete
+		discoveryService_->forwardGlobalSync(forwardGlobalSync_);
+
+		ServiceTransactionRegisterServer::name("RegisterServer");
+
+		auto serviceTransactionRegisterServer = boost::make_shared<ServiceTransactionRegisterServer>();
+
+		serviceTransactionRegisterServer->componentService(&*discoveryService_);
+
+		transactionManager_->registerTransaction(serviceTransactionRegisterServer);
+	}
+
 	bool
 	ServiceManager::init(SessionManager& sessionManager)
 	{
@@ -267,17 +284,8 @@ namespace OpcUaStackServer
 		initMonitoredItemService();
 		initViewService();
 		initQueryService();
+		initDiscoveryService();
 
-		//
-		// discovery service service
-		//
-		ServiceTransactionRegisterServer::name("RegisterServer");
-
-		ServiceTransactionRegisterServer::SPtr serviceTransactionRegisterServer = boost::make_shared<ServiceTransactionRegisterServer>();
-
-		serviceTransactionRegisterServer->componentService(&*discoveryService_);
-
-		transactionManager_->registerTransaction(serviceTransactionRegisterServer);
 
 		//
 		// application service
@@ -326,7 +334,6 @@ namespace OpcUaStackServer
 
 		// FIXME: use IOThread in services...
 		applicationService_->ioThread(ioThread.get());
-		discoveryService_->ioThread(ioThread.get());
 		return true;
 	}
 

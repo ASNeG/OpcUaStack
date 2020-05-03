@@ -31,16 +31,34 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
-	DiscoveryService::DiscoveryService(void)
+	DiscoveryService::DiscoveryService(
+		const std::string& serviceName,
+		IOThread::SPtr& ioThread,
+		MessageBus::SPtr& messageBus)
 	: ServerServiceBase()
 	, discoveryIf_(nullptr)
 	, cryptoManager_(nullptr)
 	, endpointDescriptionArray_()
 	{
+		Component::ioThread(ioThread.get());  // FIXME: obsolete
+
+		// set parameter in server service base
+		serviceName_ = serviceName;
+		ServerServiceBase::ioThread_ = ioThread.get();
+		strand_ = ioThread->createStrand();
+		messageBus_ = messageBus;
+
+		// register message bus receiver
+		MessageBusMemberConfig messageBusMemberConfig;
+		messageBusMemberConfig.strand(strand_);
+		messageBusMember_ = messageBus_->registerMember(serviceName_, messageBusMemberConfig);
 	}
 
 	DiscoveryService::~DiscoveryService(void)
 	{
+		// deactivate receiver
+		deactivateReceiver();
+		messageBus_->deregisterMember(messageBusMember_);
 	}
 
 	void 
