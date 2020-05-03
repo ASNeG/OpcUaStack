@@ -25,13 +25,11 @@ namespace OpcUaStackServer
 	ServiceManager::ServiceManager(void)
 	: transactionManager_(boost::make_shared<TransactionManager>())
 	, queryService_(boost::make_shared<QueryService>())
-	, viewService_(boost::make_shared<ViewService>())
 	, applicationService_(boost::make_shared<ApplicationService>())
 	, discoveryService_(boost::make_shared<DiscoveryService>())
 	, forwardGlobalSync_(boost::make_shared<ForwardGlobalSync>())
 	{
 		queryService_->componentName("QueryService");
-		viewService_->componentName("ViewService");
 		applicationService_->componentName("ApplicationService");
 		discoveryService_->componentName("DiscoveryService");
 
@@ -46,7 +44,6 @@ namespace OpcUaStackServer
 	ServiceManager::initForwardGlobalSync(void)
 	{
 		queryService_->forwardGlobalSync(forwardGlobalSync_);
-		viewService_->forwardGlobalSync(forwardGlobalSync_);
 		applicationService_->forwardGlobalSync(forwardGlobalSync_);
 		discoveryService_->forwardGlobalSync(forwardGlobalSync_);
 	}
@@ -215,19 +212,17 @@ namespace OpcUaStackServer
 		transactionManager_->registerTransaction(serviceTransactionSetTriggering);
 	}
 
-	bool
-	ServiceManager::init(SessionManager& sessionManager)
+	void
+	ServiceManager::initViewService(void)
 	{
-		initAttributeService();
-		initMethodService();
-		initNodeManagementService();
-		initSubscriptionService();
-		initMonitoredItemService();
+		viewService_ = boost::make_shared<ViewService>(
+			"ViewServiceServer",
+			ioThread_,
+			messageBus_
+		);
+		viewService_->componentName("ViewService");		// FIXME: obsolete
+		viewService_->forwardGlobalSync(forwardGlobalSync_);
 
-
-		//
-		// view service
-		//
 		ServiceTransactionBrowse::name("Browse");
 		ServiceTransactionBrowseNext::name("BrowseNext");
 		ServiceTransactionTranslateBrowsePathsToNodeIds::name("TranslateBrowsePathsToNodeIds");
@@ -251,6 +246,17 @@ namespace OpcUaStackServer
 		transactionManager_->registerTransaction(serviceTransactionTranslateBrowsePathsToNodeIds);
 		transactionManager_->registerTransaction(serviceTransactionRegisterNodes);
 		transactionManager_->registerTransaction(serviceTransactionUnregisterNodes);
+	}
+
+	bool
+	ServiceManager::init(SessionManager& sessionManager)
+	{
+		initAttributeService();
+		initMethodService();
+		initNodeManagementService();
+		initSubscriptionService();
+		initMonitoredItemService();
+		initViewService();
 
 		//
 		// discovery service service
@@ -310,7 +316,6 @@ namespace OpcUaStackServer
 
 		// FIXME: use IOThread in services...
 		queryService_->ioThread(ioThread.get());
-		viewService_->ioThread(ioThread.get());
 		applicationService_->ioThread(ioThread.get());
 		discoveryService_->ioThread(ioThread.get());
 		return true;
