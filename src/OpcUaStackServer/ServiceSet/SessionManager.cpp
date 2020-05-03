@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -16,6 +16,7 @@
  */
 
 #include <boost/make_shared.hpp>
+#include "OpcUaStackCore/Utility/UniqueId.h"
 #include "OpcUaStackCore/ServiceSet/ActivateSessionResponse.h"
 #include "OpcUaStackCore/ServiceSet/CloseSessionRequest.h"
 #include "OpcUaStackCore/ServiceSet/CloseSessionResponse.h"
@@ -70,6 +71,12 @@ namespace OpcUaStackServer
 	SessionManager::ioThread(IOThread* ioThread)
 	{
 		ioThread_ = ioThread;
+	}
+
+	void
+	SessionManager::messageBus(OpcUaStackCore::MessageBus::SPtr& messageBus)
+	{
+		messageBus_ = messageBus;
 	}
 
 	void
@@ -277,7 +284,11 @@ namespace OpcUaStackServer
 		auto endpointDescriptionArray = secureChannelServerConfig->endpointDescriptionArray();
 
 		// create new session
-		Session::SPtr session = boost::make_shared<Session>();
+		auto session = boost::make_shared<Session>(
+			std::string("Session_") + UniqueId::createStringUniqueId(),
+			ioThread_,
+			messageBus_
+		);
 		session->ioThread(ioThread_);
 		session->sessionIf(this);
 		session->cryptoManager(cryptoManager_);

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -31,7 +31,6 @@ namespace OpcUaStackServer
 
 	Server::Server(void)
 	: Core()
-	, ioThread_(boost::make_shared<IOThread>())
 	, informationModel_(boost::make_shared<InformationModel>())
 	, sessionManager_()
 	, serviceManager_()
@@ -40,6 +39,12 @@ namespace OpcUaStackServer
 	, serverStatusDataType_()
 	, cryptoManager_()
 	{
+		// create thread pool
+		ioThread_ = boost::make_shared<IOThread>();
+		ioThread_->name("Server");
+
+		// create message bus
+		messageBus_ = boost::make_shared<MessageBus>();
 	}
 
 	Server::~Server(void)
@@ -369,6 +374,16 @@ namespace OpcUaStackServer
 	bool
 	Server::initService(void)
 	{
+		if (!serviceManager_.ioThread(ioThread_)) {
+			Log log(Error, "init service manager error");
+			return false;
+		}
+
+		if (!serviceManager_.messageBus(messageBus_)) {
+			Log log(Error, "init message bus error");
+			return false;
+		}
+
 		if (!serviceManager_.init(sessionManager_)) {
 			Log log(Error, "init service manager error");
 			return false;
@@ -376,11 +391,6 @@ namespace OpcUaStackServer
 
 		if (!serviceManager_.informationModel(informationModel_)) {
 			Log log(Error, "init service manager error");
-			return false;
-		}
-
-		if (!serviceManager_.ioThread(ioThread_.get())) {
-			Log log(Error, "init servcice manager error");
 			return false;
 		}
 
@@ -408,6 +418,7 @@ namespace OpcUaStackServer
 
 		// initialize session manager
 		sessionManager_.ioThread(ioThread_.get());
+		sessionManager_.messageBus(messageBus_);
 		sessionManager_.endpointDescriptionSet(endpointDescriptionSet_);
 		sessionManager_.cryptoManager(cryptoManager_);
 		sessionManager_.config(&config());

@@ -24,7 +24,6 @@ namespace OpcUaStackServer
 
 	ServiceManager::ServiceManager(void)
 	: transactionManager_(boost::make_shared<TransactionManager>())
-	, attributeService_(boost::make_shared<AttributeService>())
 	, methodService_(boost::make_shared<MethodService>())
 	, monitoredItemService_(boost::make_shared<MonitoredItemService>())
 	, nodeManagementService_(boost::make_shared<NodeManagementService>())
@@ -35,7 +34,6 @@ namespace OpcUaStackServer
 	, discoveryService_(boost::make_shared<DiscoveryService>())
 	, forwardGlobalSync_(boost::make_shared<ForwardGlobalSync>())
 	{
-		attributeService_->componentName("AttributeService");
 		methodService_->componentName("MethodService");
 		monitoredItemService_->componentName("MonitoredItemService");
 		nodeManagementService_->componentName("NodeManagementService");
@@ -55,7 +53,6 @@ namespace OpcUaStackServer
 	void
 	ServiceManager::initForwardGlobalSync(void)
 	{
-		attributeService_->forwardGlobalSync(forwardGlobalSync_);
 		methodService_->forwardGlobalSync(forwardGlobalSync_);
 		monitoredItemService_->forwardGlobalSync(forwardGlobalSync_);
 		nodeManagementService_->forwardGlobalSync(forwardGlobalSync_);
@@ -66,21 +63,26 @@ namespace OpcUaStackServer
 		discoveryService_->forwardGlobalSync(forwardGlobalSync_);
 	}
 
-	bool
-	ServiceManager::init(SessionManager& sessionManager)
+	void
+	ServiceManager::initAttributeService(void)
 	{
-		//
-		// attribute service
-		//
+		attributeService_ = boost::make_shared<AttributeService>(
+			"AttributeServiceServer",
+			ioThread_,
+			messageBus_
+		);
+		attributeService_->componentName("AttributeService");
+		attributeService_->forwardGlobalSync(forwardGlobalSync_);
+
 		ServiceTransactionRead::name("Read");
 		ServiceTransactionWrite::name("Write");
 		ServiceTransactionHistoryRead::name("HistoryRead");
 		ServiceTransactionHistoryUpdate::name("HistoryUpdate");
 
-		ServiceTransactionRead::SPtr serviceTransactionRead = boost::make_shared<ServiceTransactionRead>();
-		ServiceTransactionWrite::SPtr serviceTransactionWrite = boost::make_shared<ServiceTransactionWrite>();
-		ServiceTransactionHistoryRead::SPtr serviceTransactionHistoryRead = boost::make_shared<ServiceTransactionHistoryRead>();
-		ServiceTransactionHistoryUpdate::SPtr serviceTransactionHistoryUpdate = boost::make_shared<ServiceTransactionHistoryUpdate>();
+		auto serviceTransactionRead = boost::make_shared<ServiceTransactionRead>();
+		auto serviceTransactionWrite = boost::make_shared<ServiceTransactionWrite>();
+		auto serviceTransactionHistoryRead = boost::make_shared<ServiceTransactionHistoryRead>();
+		auto serviceTransactionHistoryUpdate = boost::make_shared<ServiceTransactionHistoryUpdate>();
 
 		serviceTransactionRead->componentService(&*attributeService_);
 		serviceTransactionWrite->componentService(&*attributeService_);
@@ -91,7 +93,12 @@ namespace OpcUaStackServer
 		transactionManager_->registerTransaction(serviceTransactionWrite);
 		transactionManager_->registerTransaction(serviceTransactionHistoryRead);
 		transactionManager_->registerTransaction(serviceTransactionHistoryUpdate);
+	}
 
+	bool
+	ServiceManager::init(SessionManager& sessionManager)
+	{
+		initAttributeService();
 
 		//
 		// method service
@@ -273,18 +280,26 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	ServiceManager::ioThread(IOThread* ioThread)
+	ServiceManager::ioThread(IOThread::SPtr& ioThread)
 	{
+		ioThread_ = ioThread;
+
 		// FIXME: use IOThread in services...
-		attributeService_->ioThread(ioThread);
-		methodService_->ioThread(ioThread);
-		monitoredItemService_->ioThread(ioThread);
-		nodeManagementService_->ioThread(ioThread);
-		queryService_->ioThread(ioThread);
-		subscriptionService_->ioThread(ioThread);
-		viewService_->ioThread(ioThread);
-		applicationService_->ioThread(ioThread);
-		discoveryService_->ioThread(ioThread);
+		methodService_->ioThread(ioThread.get());
+		monitoredItemService_->ioThread(ioThread.get());
+		nodeManagementService_->ioThread(ioThread.get());
+		queryService_->ioThread(ioThread.get());
+		subscriptionService_->ioThread(ioThread.get());
+		viewService_->ioThread(ioThread.get());
+		applicationService_->ioThread(ioThread.get());
+		discoveryService_->ioThread(ioThread.get());
+		return true;
+	}
+
+	bool
+	ServiceManager::messageBus(OpcUaStackCore::MessageBus::SPtr& messageBus)
+	{
+		messageBus_ = messageBus;
 		return true;
 	}
 

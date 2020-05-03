@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -27,6 +27,7 @@
 #include "OpcUaStackCore/Certificate/CryptoManager.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelServer.h"
+#include "OpcUaStackCore/Component/MessageBus.h"
 #include "OpcUaStackServer/ServiceSet/EndpointDescriptionConfig.h"
 #include "OpcUaStackServer/ServiceSet/DiscoveryService.h"
 #include "OpcUaStackServer/ServiceSet/TransactionManager.h"
@@ -52,6 +53,7 @@ namespace OpcUaStackServer
 		void cryptoManager(OpcUaStackCore::CryptoManager::SPtr& cryptoManager);
 		void transactionManager(TransactionManager::SPtr transactionManagerSPtr);
 		void ioThread(OpcUaStackCore::IOThread* ioThread);
+		void messageBus(OpcUaStackCore::MessageBus::SPtr& messageBus);
 		void endpointDescriptionSet(OpcUaStackCore::EndpointDescriptionSet::SPtr& endpointDescriptionSet);
 		void config(OpcUaStackCore::Config* config);
 		void forwardGlobalSync(OpcUaStackCore::ForwardGlobalSync::SPtr& forwardGlobalSync);
@@ -146,10 +148,12 @@ namespace OpcUaStackServer
 			OpcUaStackCore::RequestHeader::SPtr requestHeader
 		);
 
-		OpcUaStackCore::IOThread* ioThread_;
+		OpcUaStackCore::IOThread* ioThread_ = nullptr;
+		OpcUaStackCore::MessageBus::SPtr messageBus_ = nullptr;
+		OpcUaStackCore::CryptoManager::SPtr cryptoManager_ = nullptr;
+
 		OpcUaStackCore::Config* config_;
 		OpcUaStackCore::EndpointDescriptionSet::SPtr endpointDescriptionSet_;
-		OpcUaStackCore::CryptoManager::SPtr cryptoManager_;
 
 		bool shutdownFlag_;
 		std::promise<bool> shutdownComplete_;

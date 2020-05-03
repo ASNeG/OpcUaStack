@@ -62,7 +62,7 @@ namespace OpcUaStackServer
 	void
 	ServerServiceBase::deactivateReceiver(void)
 	{
-		if (!receiverContext_->receiverCallback_) {
+		if (!receiverContext_ || !receiverContext_->receiverCallback_) {
 			return;
 		}
 

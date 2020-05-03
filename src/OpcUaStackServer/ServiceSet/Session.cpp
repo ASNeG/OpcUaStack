@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -61,8 +61,13 @@ namespace OpcUaStackServer
 	}
 
 
-	Session::Session(void)
+	Session::Session(
+        const std::string& serviceName,
+	    IOThread* ioThread,
+		MessageBus::SPtr& messageBus
+    )
 	: Component()
+	, ServerServiceBase()
 	, forwardGlobalSync_()
 	, sessionIf_(nullptr)
 	, sessionState_(SessionState_Close)
@@ -76,10 +81,24 @@ namespace OpcUaStackServer
 			.parameter("SessionId", sessionId_)
 			.parameter("AuthenticationToken", authenticationToken_);
 		componentName("Session");
+
+		// set parameter in server service base
+		serviceName_ = serviceName;
+		ServerServiceBase::ioThread_ = ioThread;
+		strand_ = ioThread->createStrand();
+		messageBus_ = messageBus;
+
+		// register message bus receiver
+		MessageBusMemberConfig messageBusMemberConfig;
+		messageBusMemberConfig.strand(strand_);
+		messageBusMember_ = messageBus_->registerMember(serviceName_, messageBusMemberConfig);
 	}
 
 	Session::~Session(void)
 	{
+		// deactivate receiver
+		deactivateReceiver();
+		messageBus_->deregisterMember(messageBusMember_);
 	}
 
 	void

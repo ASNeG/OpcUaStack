@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -31,6 +31,7 @@
 #include "OpcUaStackCore/Certificate/CryptoManager.h"
 #include "OpcUaStackServer/ServiceSet/SessionIf.h"
 #include "OpcUaStackServer/ServiceSet/TransactionManager.h"
+#include "OpcUaStackServer/ServiceSet/ServerServiceBase.h"
 
 namespace OpcUaStackServer
 {
@@ -47,9 +48,14 @@ namespace OpcUaStackServer
 	class DLLEXPORT Session
 	: public OpcUaStackCore::Object
 	, public OpcUaStackCore::Component
+	, public OpcUaStackServer::ServerServiceBase
 	{
 	  public:
-		Session(void);
+		Session(
+            const std::string& serviceName,
+			OpcUaStackCore::IOThread* ioThread,
+			OpcUaStackCore::MessageBus::SPtr& messageBus
+		);
 		~Session(void);
 
 		typedef boost::shared_ptr<Session> SPtr;
