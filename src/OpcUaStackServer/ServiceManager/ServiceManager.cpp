@@ -26,17 +26,10 @@ namespace OpcUaStackServer
 	: transactionManager_(boost::make_shared<TransactionManager>())
 	, forwardGlobalSync_(boost::make_shared<ForwardGlobalSync>())
 	{
-		initForwardGlobalSync();
 	}
 
 	ServiceManager::~ServiceManager(void)
 	{
-	}
-
-	void
-	ServiceManager::initForwardGlobalSync(void)
-	{
-		// FIXME: remove this function
 	}
 
 	void
@@ -338,8 +331,6 @@ namespace OpcUaStackServer
 	ServiceManager::ioThread(IOThread::SPtr& ioThread)
 	{
 		ioThread_ = ioThread;
-
-		// FIXME: remove this function
 		return true;
 	}
 
