@@ -25,7 +25,6 @@ namespace OpcUaStackServer
 	ServiceManager::ServiceManager(void)
 	: transactionManager_(boost::make_shared<TransactionManager>())
 	, monitoredItemService_(boost::make_shared<MonitoredItemService>())
-	, nodeManagementService_(boost::make_shared<NodeManagementService>())
 	, queryService_(boost::make_shared<QueryService>())
 	, subscriptionService_(boost::make_shared<SubscriptionService>())
 	, viewService_(boost::make_shared<ViewService>())
@@ -34,7 +33,6 @@ namespace OpcUaStackServer
 	, forwardGlobalSync_(boost::make_shared<ForwardGlobalSync>())
 	{
 		monitoredItemService_->componentName("MonitoredItemService");
-		nodeManagementService_->componentName("NodeManagementService");
 		queryService_->componentName("QueryService");
 		subscriptionService_->componentName("SubscriptionService");
 		viewService_->componentName("ViewService");
@@ -52,7 +50,6 @@ namespace OpcUaStackServer
 	ServiceManager::initForwardGlobalSync(void)
 	{
 		monitoredItemService_->forwardGlobalSync(forwardGlobalSync_);
-		nodeManagementService_->forwardGlobalSync(forwardGlobalSync_);
 		queryService_->forwardGlobalSync(forwardGlobalSync_);
 		subscriptionService_->forwardGlobalSync(forwardGlobalSync_);
 		viewService_->forwardGlobalSync(forwardGlobalSync_);
@@ -112,24 +109,26 @@ namespace OpcUaStackServer
 		transactionManager_->registerTransaction(serviceTransactionCall);
 	}
 
-	bool
-	ServiceManager::init(SessionManager& sessionManager)
+	void
+	ServiceManager::initNodeManagementService(void)
 	{
-		initAttributeService();
-		initMethodService();
+		nodeManagementService_ = boost::make_shared<NodeManagementService>(
+			"NodeManagementServiceServer",
+			ioThread_,
+			messageBus_
+		);
+		nodeManagementService_->componentName("NodeManagementService");		// FIXME: obsolete
+		nodeManagementService_->forwardGlobalSync(forwardGlobalSync_);
 
-		//
-		// node mangement service
-		//
 		ServiceTransactionAddNodes::name("AddNodes");
 		ServiceTransactionAddReferences::name("AddReferences");
 		ServiceTransactionDeleteNodes::name("DeleteNodes");
 		ServiceTransactionDeleteReferences::name("DeleteReferences");
 
-		ServiceTransactionAddNodes::SPtr serviceTransactionAddNodes = boost::make_shared<ServiceTransactionAddNodes>();
-		ServiceTransactionAddReferences::SPtr serviceTransactionAddReferences = boost::make_shared<ServiceTransactionAddReferences>();
-		ServiceTransactionDeleteNodes::SPtr serviceTransactionDeleteNodes = boost::make_shared<ServiceTransactionDeleteNodes>();
-		ServiceTransactionDeleteReferences::SPtr serviceTransactionDeleteReferences = boost::make_shared<ServiceTransactionDeleteReferences>();
+		auto serviceTransactionAddNodes = boost::make_shared<ServiceTransactionAddNodes>();
+		auto serviceTransactionAddReferences = boost::make_shared<ServiceTransactionAddReferences>();
+		auto serviceTransactionDeleteNodes = boost::make_shared<ServiceTransactionDeleteNodes>();
+		auto serviceTransactionDeleteReferences = boost::make_shared<ServiceTransactionDeleteReferences>();
 
 		serviceTransactionAddNodes->componentService(&*nodeManagementService_);
 		serviceTransactionAddReferences->componentService(&*nodeManagementService_);
@@ -140,7 +139,14 @@ namespace OpcUaStackServer
 		transactionManager_->registerTransaction(serviceTransactionAddReferences);
 		transactionManager_->registerTransaction(serviceTransactionDeleteNodes);
 		transactionManager_->registerTransaction(serviceTransactionDeleteReferences);
+	}
 
+	bool
+	ServiceManager::init(SessionManager& sessionManager)
+	{
+		initAttributeService();
+		initMethodService();
+		initNodeManagementService();
 
 		//
 		// subscription service
@@ -292,7 +298,6 @@ namespace OpcUaStackServer
 
 		// FIXME: use IOThread in services...
 		monitoredItemService_->ioThread(ioThread.get());
-		nodeManagementService_->ioThread(ioThread.get());
 		queryService_->ioThread(ioThread.get());
 		subscriptionService_->ioThread(ioThread.get());
 		viewService_->ioThread(ioThread.get());

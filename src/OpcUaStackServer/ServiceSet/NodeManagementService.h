@@ -35,7 +35,11 @@ namespace OpcUaStackServer
 	  public:
 		typedef boost::shared_ptr<NodeManagementService> SPtr;
 
-		NodeManagementService(void);
+		NodeManagementService(
+			const std::string& serviceName,
+			OpcUaStackCore::IOThread::SPtr& ioThread,
+			OpcUaStackCore::MessageBus::SPtr& messageBus
+		);
 		~NodeManagementService(void);
 
 		//- Component -----------------------------------------------------------------

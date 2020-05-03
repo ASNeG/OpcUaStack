@@ -26,13 +26,32 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
-	NodeManagementService::NodeManagementService(void)
+	NodeManagementService::NodeManagementService(
+		const std::string& serviceName,
+		OpcUaStackCore::IOThread::SPtr& ioThread,
+		OpcUaStackCore::MessageBus::SPtr& messageBus
+	)
 	: ServerServiceBase()
 	{
+		Component::ioThread(ioThread.get());  // FIXME: obsolete
+
+		// set parameter in server service base
+		serviceName_ = serviceName;
+		ServerServiceBase::ioThread_ = ioThread.get();
+		strand_ = ioThread->createStrand();
+		messageBus_ = messageBus;
+
+		// register message bus receiver
+		MessageBusMemberConfig messageBusMemberConfig;
+		messageBusMemberConfig.strand(strand_);
+		messageBusMember_ = messageBus_->registerMember(serviceName_, messageBusMemberConfig);
 	}
 
 	NodeManagementService::~NodeManagementService(void)
 	{
+		// deactivate receiver
+		deactivateReceiver();
+		messageBus_->deregisterMember(messageBusMember_);
 	}
 
 	void 
