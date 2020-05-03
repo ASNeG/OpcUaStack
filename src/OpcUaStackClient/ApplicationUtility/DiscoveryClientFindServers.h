@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -35,16 +35,26 @@ namespace OpcUaStackClient
 	class DLLEXPORT DiscoveryClientFindServers
 	{
 	  public:
-		typedef boost::shared_ptr<DiscoveryClientFindServers> SPtr;
+		using SPtr = boost::shared_ptr<DiscoveryClientFindServers>;
+		using ShutdownCompleteCallback = std::function<void (void)>;
+
+		class ShutdownContext
+		{
+		  public:
+			using SPtr = boost::shared_ptr<ShutdownContext>;
+			ShutdownCompleteCallback shutdownCompleteCallback_;
+		};
 
 		DiscoveryClientFindServers(void);
 	    ~DiscoveryClientFindServers(void);
 
 	    void ioThread(OpcUaStackCore::IOThread::SPtr& ioThread);
+	    void messageBus(OpcUaStackCore::MessageBus::SPtr& messageBus);
 	    void discoveryUri(const std::string& discoveryUri);
 
 		bool startup(void);
-		void shutdown(void);
+		void asyncShutdown(const ShutdownCompleteCallback& shutdownCompleteCallback);
+		void syncShutdown(void);
 
 		void asyncFind(
 			const std::string& serverUri,
@@ -52,14 +62,21 @@ namespace OpcUaStackClient
 		);
 
 	  public:
+		void shutdownComplete(void);
 		void discoveryServiceFindServersResponse(
 			OpcUaStackCore::ServiceTransactionFindServers::SPtr& serviceTransactionFindServers
 		);
-
         void sendFindServersRequest(void);
+        void disconnectSession(void);
 
-        OpcUaStackCore::IOThread::SPtr ioThread_;
-		std::string discoveryUri_;
+		ShutdownContext::SPtr shutdownContext_ = nullptr;
+		SessionServiceStateId sessionState_ = SessionServiceStateId::Disconnected;
+
+        std::string threadPoolName_ = "";
+        OpcUaStackCore::IOThread::SPtr ioThread_ = nullptr;
+        boost::shared_ptr<boost::asio::io_service::strand> strand_ = nullptr;
+        OpcUaStackCore::MessageBus::SPtr messageBus_ = nullptr;
+		std::string discoveryUri_ = "";
 
 		ServiceSetManager serviceSetManager_;
 		SessionService::SPtr sessionService_;

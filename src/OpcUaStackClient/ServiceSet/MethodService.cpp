@@ -101,8 +101,18 @@ namespace OpcUaStackClient
 			{
 				auto trx = boost::static_pointer_cast<ServiceTransactionCall>(serviceTransaction);
 				auto handler = trx->resultHandler();
+				auto handlerStrand = trx->resultHandlerStrand();
 				if (handler) {
-					handler(trx);
+					if (handlerStrand) {
+						handlerStrand->dispatch(
+							[this, handler, trx](void) mutable {
+							    handler(trx);
+						    }
+						);
+					}
+					else {
+					    handler(trx);
+					}
 				}
 				break;
 			}

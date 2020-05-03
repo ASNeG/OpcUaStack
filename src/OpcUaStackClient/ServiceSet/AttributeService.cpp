@@ -160,8 +160,18 @@ namespace OpcUaStackClient
 			{
 				auto trx = boost::static_pointer_cast<ServiceTransactionRead>(serviceTransaction);
 				auto handler = trx->resultHandler();
+				auto handlerStrand = trx->resultHandlerStrand();
 				if (handler) {
-					handler(trx);
+					if (handlerStrand) {
+						handlerStrand->dispatch(
+							[this, handler, trx](void) mutable {
+							    handler(trx);
+						    }
+						);
+					}
+					else {
+					    handler(trx);
+					}
 				}
 				break;
 			}
@@ -169,8 +179,18 @@ namespace OpcUaStackClient
 			{
 				auto trx = boost::static_pointer_cast<ServiceTransactionWrite>(serviceTransaction);
 				auto handler = trx->resultHandler();
+				auto handlerStrand = trx->resultHandlerStrand();
 				if (handler) {
-					handler(trx);
+					if (handlerStrand) {
+						handlerStrand->dispatch(
+							[this, handler, trx](void) mutable {
+							    handler(trx);
+						    }
+						);
+					}
+					else {
+					    handler(trx);
+					}
 				}
 				break;
 			}
@@ -178,8 +198,18 @@ namespace OpcUaStackClient
 			{
 				auto trx = boost::static_pointer_cast<ServiceTransactionHistoryRead>(serviceTransaction);
 				auto handler = trx->resultHandler();
+				auto handlerStrand = trx->resultHandlerStrand();
 				if (handler) {
-					handler(trx);
+					if (handlerStrand) {
+						handlerStrand->dispatch(
+							[this, handler, trx](void) mutable {
+							    handler(trx);
+						    }
+						);
+					}
+					else {
+					    handler(trx);
+					}
 				}
 				break;
 			}
@@ -187,8 +217,18 @@ namespace OpcUaStackClient
 			{
 				auto trx = boost::static_pointer_cast<ServiceTransactionHistoryUpdate>(serviceTransaction);
 				auto handler = trx->resultHandler();
+				auto handlerStrand = trx->resultHandlerStrand();
 				if (handler) {
-					handler(trx);
+					if (handlerStrand) {
+						handlerStrand->dispatch(
+							[this, handler, trx](void) mutable {
+							    handler(trx);
+						    }
+						);
+					}
+					else {
+					    handler(trx);
+					}
 				}
 				break;
 			}

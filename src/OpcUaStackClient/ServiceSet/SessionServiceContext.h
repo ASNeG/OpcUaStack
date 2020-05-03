@@ -20,7 +20,7 @@
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Component/MessageBus.h"
-#include "OpcUaStackCore/Utility/PendingQueue.h"
+#include "OpcUaStackCore/Utility/AsyncPendingQueue.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelClientConfig.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelClient.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannel.h"
@@ -135,10 +135,11 @@ namespace OpcUaStackClient
 		//
 		// session configuration
 		//
-		SessionService* sessionService_;
-		SessionMode sessionMode_;
-		SessionConfig::SPtr sessionConfig_;
-		SessionServiceChangeHandler sessionServiceChangeHandler_;
+		SessionService* sessionService_ = nullptr;
+		SessionMode sessionMode_ = SessionMode::SecureChannelAndSession;
+		SessionConfig::SPtr sessionConfig_ = nullptr;
+		SessionServiceChangeHandler sessionServiceChangeHandler_ = nullptr;
+		boost::shared_ptr<boost::asio::io_service::strand> sessionServiceChangeHandlerStrand_ = nullptr;
 
 		//
 		// message bus, thread and timer
@@ -152,7 +153,7 @@ namespace OpcUaStackClient
 		//
 		// session lifetime data
 		//
-		OpcUaStackCore::PendingQueue pendingQueue_;				// request pending queue
+		OpcUaStackCore::AsyncPendingQueue::SPtr pendingQueue_ = nullptr; // request pending queue
 
 		char clientNonce_[32];					// client nonce from create session request
 

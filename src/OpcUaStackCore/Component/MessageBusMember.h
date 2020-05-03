@@ -47,7 +47,7 @@ namespace OpcUaStackCore
 		MessageBusMemberConfig& messageBusMemberConfig(void);
 
 		void cancelReceiver(
-			void
+		    bool immediately = false
 		);
 
 		void messageReceive(

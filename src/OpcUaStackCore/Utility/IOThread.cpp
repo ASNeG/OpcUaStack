@@ -16,6 +16,7 @@
  */
 
 #include <boost/make_shared.hpp>
+#include "OpcUaStackCore/Utility/UniqueId.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
 
 namespace OpcUaStackCore
@@ -51,10 +52,23 @@ namespace OpcUaStackCore
 	, ioServiceCreateFlag_(false)
 	, slotTimerCreateFlag_(false)
 	{
+		name_ = UniqueId::createStringUniqueId();
 	}
 
 	IOThread::~IOThread(void)
 	{
+	}
+
+	void
+	IOThread::name(const std::string& name)
+	{
+		name_ = name;
+	}
+
+	std::string
+	IOThread::name(void)
+	{
+		return name_;
 	}
 
 	bool

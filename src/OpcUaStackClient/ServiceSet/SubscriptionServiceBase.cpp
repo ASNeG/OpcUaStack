@@ -196,8 +196,18 @@ namespace OpcUaStackClient
 			{
 				auto trx = boost::static_pointer_cast<ServiceTransactionCreateSubscription>(serviceTransaction);
 				auto handler = trx->resultHandler();
+				auto handlerStrand = trx->resultHandlerStrand();
 				if (handler) {
-					handler(trx);
+					if (handlerStrand) {
+						handlerStrand->dispatch(
+							[this, handler, trx](void) mutable {
+							    handler(trx);
+						    }
+						);
+					}
+					else {
+					    handler(trx);
+					}
 				}
 				break;
 			}
@@ -206,8 +216,18 @@ namespace OpcUaStackClient
 			{
 				auto trx = boost::static_pointer_cast<ServiceTransactionModifySubscription>(serviceTransaction);
 				auto handler = trx->resultHandler();
+				auto handlerStrand = trx->resultHandlerStrand();
 				if (handler) {
-					handler(trx);
+					if (handlerStrand) {
+						handlerStrand->dispatch(
+							[this, handler, trx](void) mutable {
+							    handler(trx);
+						    }
+						);
+					}
+					else {
+					    handler(trx);
+					}
 				}
 				break;
 			}
@@ -216,8 +236,18 @@ namespace OpcUaStackClient
 			{
 				auto trx = boost::static_pointer_cast<ServiceTransactionTransferSubscriptions>(serviceTransaction);
 				auto handler = trx->resultHandler();
+				auto handlerStrand = trx->resultHandlerStrand();
 				if (handler) {
-					handler(trx);
+					if (handlerStrand) {
+						handlerStrand->dispatch(
+							[this, handler, trx](void) mutable {
+							    handler(trx);
+						    }
+						);
+					}
+					else {
+					    handler(trx);
+					}
 				}
 				break;
 			}
@@ -226,8 +256,18 @@ namespace OpcUaStackClient
 			{
 				auto trx = boost::static_pointer_cast<ServiceTransactionDeleteSubscriptions>(serviceTransaction);
 				auto handler = trx->resultHandler();
+				auto handlerStrand = trx->resultHandlerStrand();
 				if (handler) {
-					handler(trx);
+					if (handlerStrand) {
+						handlerStrand->dispatch(
+							[this, handler, trx](void) mutable {
+							    handler(trx);
+						    }
+						);
+					}
+					else {
+					    handler(trx);
+					}
 				}
 				break;
 			}

@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -35,16 +35,28 @@ namespace OpcUaStackClient
 	class DLLEXPORT DiscoveryClientRegisteredServers
 	{
 	  public:
+		using SPtr = boost::shared_ptr<DiscoveryClientRegisteredServers>;
+		using ShutdownCompleteCallback = std::function<void (void)>;
+
+		class ShutdownContext
+		{
+		  public:
+			using SPtr = boost::shared_ptr<ShutdownContext>;
+			ShutdownCompleteCallback shutdownCompleteCallback_;
+		};
+
 		DiscoveryClientRegisteredServers(void);
 	    ~DiscoveryClientRegisteredServers(void);
 
 	    void cryptoManager(OpcUaStackCore::CryptoManager::SPtr& cryptoManager);
 	    void ioThread(OpcUaStackCore::IOThread::SPtr& ioThread);
+	    void messageBus(OpcUaStackCore::MessageBus::SPtr& messageBus);
 	    void discoveryUri(const std::string& discoveryUri);
 	    void registerInterval(uint32_t registerInterval);
 
 		bool startup(void);
-		void shutdown(void);
+		void asyncShutdown(const ShutdownCompleteCallback& shutdownCompleteCallback);
+		void syncShutdown(void);
 
 		void addRegisteredServer(
 			const std::string& name,
@@ -54,22 +66,23 @@ namespace OpcUaStackClient
 			const std::string& name
 		);
 
-	  public:
+	  private:
+		void shutdownComplete(void);
 		void discoveryServiceRegisterServerResponse(
 			OpcUaStackCore::ServiceTransactionRegisterServer::SPtr& serviceTransactionRegisterServer
 		);
-
         void sendDiscoveryServiceRegisterServer(void);
         void deregisterServers(void);
-		void loop(void);
-		void shutdownLoop(void);
+        void disconnectSession(void);
 
-		bool shutdown_;
-		OpcUaStackCore::Condition shutdownCond_;
+		ShutdownContext::SPtr shutdownContext_ = nullptr;
+		SessionServiceStateId sessionState_ = SessionServiceStateId::Disconnected;
 
+		boost::shared_ptr<boost::asio::io_service::strand> strand_;
+		OpcUaStackCore::MessageBus::SPtr messageBus_;
 		OpcUaStackCore::IOThread::SPtr ioThread_;
+		std::string threadPoolName_;
 		OpcUaStackCore::SlotTimerElement::SPtr slotTimerElement_;
-		boost::mutex mutex_;
 		RegisteredServerMap registeredServerMap_;
 
 		std::string discoveryUri_;

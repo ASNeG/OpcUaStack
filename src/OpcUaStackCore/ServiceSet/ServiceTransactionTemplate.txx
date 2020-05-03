@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -110,6 +110,20 @@ namespace OpcUaStackCore
       ServiceTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID>::resultHandler(void)
       {
           return resultHandler_;
+      }
+      
+    template<typename REQTYPE, typename RESTYPE, uint32_t REQID, uint32_t RESID>
+	  void 
+	  ServiceTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID>::resultHandlerStrand(const boost::shared_ptr<boost::asio::io_service::strand>& resultHandlerStrand)
+	  {
+	  	  resultHandlerStrand_ = resultHandlerStrand;
+	  }
+		  
+	template<typename REQTYPE, typename RESTYPE, uint32_t REQID, uint32_t RESID>
+      boost::shared_ptr<boost::asio::io_service::strand>& 
+      ServiceTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID>::resultHandlerStrand(void)
+      {
+          return resultHandlerStrand_;
       }
 	  
 	template<typename REQTYPE, typename RESTYPE, uint32_t REQID, uint32_t RESID>

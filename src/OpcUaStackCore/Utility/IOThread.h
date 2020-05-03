@@ -37,6 +37,8 @@ namespace OpcUaStackCore
 		IOThread(void);
 		~IOThread(void);
 
+		void name(const std::string& name);
+		std::string name(void);
 		void ioService(const IOService::SPtr& ioService);
 		IOService::SPtr& ioService(void);
 		void slotTimer(const SlotTimer::SPtr& slotTimer);
@@ -65,6 +67,7 @@ namespace OpcUaStackCore
 		void createSlotTimer(void);
 		void deleteSlotTimer(void);
 
+		std::string name_ = "";
 		uint32_t numberThreads_;
 		IOService::SPtr ioService_;
 		SlotTimer::SPtr slotTimer_;

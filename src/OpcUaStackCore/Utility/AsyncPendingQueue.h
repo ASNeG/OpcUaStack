@@ -62,7 +62,7 @@ namespace OpcUaStackCore
 		using SPtr = boost::shared_ptr<AsyncPendingQueue>;
 		using TimeoutCallback = std::function<void (bool error, uint32_t key, Object::SPtr& object)>;
 
-		AsyncPendingQueue(AsyncPendingQueueConfig& messageBusConfig);
+		AsyncPendingQueue(AsyncPendingQueueConfig& pendingQueueConfig);
 		virtual ~AsyncPendingQueue(void);
 
 		void asyncCancel(void);
@@ -70,6 +70,7 @@ namespace OpcUaStackCore
 
 		bool insert(uint32_t key, Object::SPtr object, uint32_t timeoutMSec);
 		Object::SPtr remove(uint32_t key);
+		void removeAll(std::vector<Object::SPtr>& objects);
 
 		void asyncTimeout(
 			const TimeoutCallback& timeoutCallback

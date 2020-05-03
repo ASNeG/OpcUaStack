@@ -35,9 +35,6 @@ namespace OpcUaStackClient
 	, subscriptionSetPendingDelete_()
 	, publishCount_(5)
 	, actPublishCount_(0)
-	, dataChangeNotificationHandler_()
-	, eventNotificationHandler_()
-	, subscriptionStateUpdateHandler_()
 	{
 		// set parameter in client service base
 		serviceName_ = serviceName;
@@ -58,8 +55,11 @@ namespace OpcUaStackClient
 	SubscriptionService::setConfiguration(
 		MessageBusMember::WPtr& sessionMember,
 		const DataChangeNotificationHandler& dataChangeNotificationHandler,
+		boost::shared_ptr<boost::asio::io_service::strand>& dataChangeNotificationHandlerStrand,
 		const EventNotificationHandler& eventNotificationHandler,
+		boost::shared_ptr<boost::asio::io_service::strand>& eventNotificationHandlerStrand,
 		const SubscriptionStateUpdateHandler& subscriptionStateUpdateHandler,
+		boost::shared_ptr<boost::asio::io_service::strand>& subscriptionStateUpdateHandlerStrand,
 		uint32_t publishCount,
 		uint32_t requestTimeout
 	)
@@ -67,8 +67,11 @@ namespace OpcUaStackClient
 		sessionMember_ = sessionMember;
 
 		dataChangeNotificationHandler_ = dataChangeNotificationHandler;
+		dataChangeNotificationHandlerStrand_ = dataChangeNotificationHandlerStrand;
 		eventNotificationHandler_ = eventNotificationHandler;
+		eventNotificationHandlerStrand_ = eventNotificationHandlerStrand;
 		subscriptionStateUpdateHandler_ = subscriptionStateUpdateHandler;
+		subscriptionStateUpdateHandlerStrand_ = subscriptionStateUpdateHandlerStrand;
 		publishCount_ = publishCount;
 		requestTimeout_ = requestTimeout;
 
@@ -335,7 +338,16 @@ namespace OpcUaStackClient
 
     	subscriptionSet_.insert(subscriptionId);
    		if (subscriptionStateUpdateHandler_) {
-   			subscriptionStateUpdateHandler_(SS_Open, subscriptionId);
+   			if (subscriptionStateUpdateHandlerStrand_) {
+   				subscriptionStateUpdateHandlerStrand_->dispatch(
+   				    [this, subscriptionId](void) {
+   					    subscriptionStateUpdateHandler_(SS_Open, subscriptionId);
+   				    }
+   				);
+   			}
+   			else {
+   			    subscriptionStateUpdateHandler_(SS_Open, subscriptionId);
+   			}
     	}
 
     	if (subscriptionSet_.size() != 1) return;
@@ -360,7 +372,16 @@ namespace OpcUaStackClient
     SubscriptionService::deleteSubscriptionResponse(uint32_t subscriptionId)
     {
    		if (subscriptionStateUpdateHandler_) {
-   			subscriptionStateUpdateHandler_(SS_Close, subscriptionId);
+ 			if (subscriptionStateUpdateHandlerStrand_) {
+   				subscriptionStateUpdateHandlerStrand_->dispatch(
+   				    [this, subscriptionId](void) {
+   					    subscriptionStateUpdateHandler_(SS_Close, subscriptionId);
+   				    }
+   				);
+   			}
+   			else {
+   			    subscriptionStateUpdateHandler_(SS_Close, subscriptionId);
+   			}
     	}
     }
 
@@ -414,7 +435,16 @@ namespace OpcUaStackClient
     		dataChange->monitoredItems().get(idx, monitoredItem);
 
     		if (dataChangeNotificationHandler_) {
-    			dataChangeNotificationHandler_(monitoredItem);
+    			if (dataChangeNotificationHandlerStrand_) {
+    				dataChangeNotificationHandlerStrand_->dispatch(
+    					[this, monitoredItem](void) {
+    					    dataChangeNotificationHandler_(monitoredItem);
+    				    }
+    				);
+    			}
+    			else {
+    			    dataChangeNotificationHandler_(monitoredItem);
+    			}
     		}
     	}
     }
@@ -430,7 +460,16 @@ namespace OpcUaStackClient
     		eventNotificationList->events().get(idx, eventFieldList);
 
     		if (eventNotificationHandler_) {
-    			eventNotificationHandler_(eventFieldList);
+    			if (eventNotificationHandlerStrand_) {
+    				eventNotificationHandlerStrand_->dispatch(
+    					[this, eventFieldList](void) {
+    					    eventNotificationHandler_(eventFieldList);
+    				    }
+    				);
+    			}
+    			else {
+    			    eventNotificationHandler_(eventFieldList);
+    			}
     		}
     	}
     }

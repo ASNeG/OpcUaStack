@@ -51,6 +51,7 @@ namespace OpcUaStackClient
 
 		void registerIOThread(const std::string ioThreadName, OpcUaStackCore::IOThread::SPtr ioThread);
 		void deregisterIOThread(const std::string ioThreadName);
+		void messageBus(OpcUaStackCore::MessageBus::SPtr& messageBus);
 
 		// session
 		SessionService::SPtr sessionService(

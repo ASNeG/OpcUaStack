@@ -374,7 +374,7 @@ namespace OpcUaStackServer
 			return false;
 		}
 
-		if (!serviceManager_.informatinModel(informationModel_)) {
+		if (!serviceManager_.informationModel(informationModel_)) {
 			Log log(Error, "init service manager error");
 			return false;
 		}

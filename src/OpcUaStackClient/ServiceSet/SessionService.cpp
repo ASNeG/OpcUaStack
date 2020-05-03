@@ -59,11 +59,14 @@ namespace OpcUaStackClient
 		messageBusMember_ = messageBus_->registerMember(serviceName_, messageBusMemberConfig);
 		ctx_->messageBusMember_ = messageBusMember_;
 
-		// init pending queue callback
-		ctx_->pendingQueue_.ioService(*ioThread->ioService().get());
-		ctx_->pendingQueue_.timeoutCallback(
-			boost::bind(&SessionService::pendingQueueTimeout, this, _1)
-		);
+		// create pending queue
+		AsyncPendingQueueConfig pendingQueueConfig;
+		pendingQueueConfig.slotTimer(ioThread->slotTimer());
+		pendingQueueConfig.strand(strand_);
+		ctx_->pendingQueue_ = boost::make_shared<AsyncPendingQueue>(pendingQueueConfig);
+
+		// start pending queue loop
+		pendingQueueTimeoutLoop();
 
 		// init state machine
 		sm_.setCtx(ctx_);
@@ -72,6 +75,12 @@ namespace OpcUaStackClient
 
 	SessionService::~SessionService(void)
 	{
+		// stop pending queue loop
+		ctx_->pendingQueue_->syncCancel();
+
+		// delete pending queue
+		ctx_->pendingQueue_.reset();
+
 		// stop timer element
 		if (ctx_->slotTimerElement_.get() != nullptr) {
 			ctx_->ioThread_->slotTimer()->stop(ctx_->slotTimerElement_);
@@ -83,18 +92,21 @@ namespace OpcUaStackClient
 
 		// deactivate receiver
 		deactivateReceiver();
+		messageBus_->deregisterMember(messageBusMember_);
 	}
 
 	void
 	SessionService::setConfiguration(
 		SessionMode sessionMode,
 		SessionServiceChangeHandler& sessionServiceChangeHandler,
+		boost::shared_ptr<boost::asio::io_service::strand>& sessionServiceChangeHandlerStrand,
 		SecureChannelClientConfig::SPtr& secureChannelClientConfig,
 		SessionConfig::SPtr& sessionConfig
 	)
 	{
 		ctx_->sessionMode_ = sessionMode;
 		ctx_->sessionServiceChangeHandler_ = sessionServiceChangeHandler;
+		ctx_->sessionServiceChangeHandlerStrand_ = sessionServiceChangeHandlerStrand;
 		ctx_->secureChannelClientConfig_ = secureChannelClientConfig;
 		ctx_->secureChannelClientConfigBackup_ = secureChannelClientConfig;
 		ctx_->sessionConfig_ = sessionConfig;
@@ -110,7 +122,16 @@ namespace OpcUaStackClient
 		sm_.setUpdateCallback(
 			[this](SessionServiceStateId state) {
 				if (ctx_->sessionServiceChangeHandler_) {
-					ctx_->sessionServiceChangeHandler_(*ctx_->sessionService_, state);
+					if (ctx_->sessionServiceChangeHandlerStrand_) {
+						ctx_->sessionServiceChangeHandlerStrand_->dispatch(
+							[this, state]() {
+							    ctx_->sessionServiceChangeHandler_(*ctx_->sessionService_, state);
+						    }
+						);
+					}
+					else {
+					    ctx_->sessionServiceChangeHandler_(*ctx_->sessionService_, state);
+				    }
 				}
 			}
 		);
@@ -132,6 +153,32 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
+	// handle pending queue timeout
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	void
+	SessionService::pendingQueueTimeoutLoop(void)
+	{
+		ctx_->pendingQueue_->asyncTimeout(
+			[this](bool error, uint32_t key, Object::SPtr& object) {
+			    // check error
+			    if (error) {
+			    	Log(Debug, "stop pending queue loop");
+			    }
+
+			    // handle pending queue timeout
+			    pendingQueueTimeout(object);
+
+			    // call pending queue loop
+			    pendingQueueTimeoutLoop();
+		    }
+		);
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
 	// manage secure channel and session
 	//
 	// ------------------------------------------------------------------------
@@ -146,8 +193,10 @@ namespace OpcUaStackClient
 	void
 	SessionService::asyncConnect(void)
 	{
-		ctx_->ioThread_->run(
-			boost::bind(&SessionService::asyncConnectInternal, this)
+		strand_->dispatch(
+			[this](void) {
+			    asyncConnectInternal();
+		    }
 		);
 	}
 
@@ -182,8 +231,10 @@ namespace OpcUaStackClient
 		};
 		sm_.setUpdateCallback(updateCallback);
 
-		ctx_->ioThread_->run(
-			boost::bind(&SessionService::asyncConnectInternal, this)
+		strand_->dispatch(
+			[this](void) {
+			    asyncConnectInternal();
+		    }
 		);
 
 		future.wait();
@@ -196,8 +247,10 @@ namespace OpcUaStackClient
 	void
 	SessionService::asyncDisconnect(bool deleteSubscriptions)
 	{
-		ctx_->ioThread_->run(
-			boost::bind(&SessionService::asyncDisconnectInternal, this, deleteSubscriptions)
+		strand_->dispatch(
+			[this, deleteSubscriptions](void) {
+			    asyncDisconnectInternal(deleteSubscriptions);
+		    }
 		);
 	}
 
@@ -229,8 +282,10 @@ namespace OpcUaStackClient
 		sm_.setUpdateCallback(updateCallback);
 
 
-		ctx_->ioThread_->run(
-			boost::bind(&SessionService::asyncDisconnectInternal, this, deleteSubscriptions)
+		strand_->dispatch(
+			[this, deleteSubscriptions](void) {
+			    asyncDisconnectInternal(deleteSubscriptions);
+		    }
 		);
 
 		
@@ -241,8 +296,10 @@ namespace OpcUaStackClient
 	void
 	SessionService::asyncCancel(uint32_t requestHandle)
 	{
-		ctx_->ioThread_->run(
-			boost::bind(&SessionService::asyncCancelInternal, this, requestHandle)
+		strand_->dispatch(
+			[this, requestHandle](void) {
+			    asyncCancelInternal(requestHandle);
+		    }
 		);
 	}
 
