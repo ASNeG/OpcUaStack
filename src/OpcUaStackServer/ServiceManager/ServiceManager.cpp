@@ -24,11 +24,8 @@ namespace OpcUaStackServer
 
 	ServiceManager::ServiceManager(void)
 	: transactionManager_(boost::make_shared<TransactionManager>())
-	, applicationService_(boost::make_shared<ApplicationService>())
 	, forwardGlobalSync_(boost::make_shared<ForwardGlobalSync>())
 	{
-		applicationService_->componentName("ApplicationService");
-
 		initForwardGlobalSync();
 	}
 
@@ -39,7 +36,7 @@ namespace OpcUaStackServer
 	void
 	ServiceManager::initForwardGlobalSync(void)
 	{
-		applicationService_->forwardGlobalSync(forwardGlobalSync_);
+		// FIXME: remove this function
 	}
 
 	void
@@ -274,6 +271,34 @@ namespace OpcUaStackServer
 		transactionManager_->registerTransaction(serviceTransactionRegisterServer);
 	}
 
+	void
+	ServiceManager::initApplicationService(void)
+	{
+		applicationService_ = boost::make_shared<ApplicationService>(
+			"ApplicationServiceServer",
+			ioThread_,
+			messageBus_
+		);
+		applicationService_->componentName("ApplicationService");		// FIXME: obsolete
+		applicationService_->forwardGlobalSync(forwardGlobalSync_);
+
+		ServiceTransactionRegisterForwardNode::name("RegisterForwardNode");
+		ServiceTransactionRegisterForwardMethod::name("RegisterForwardMethod");
+		ServiceTransactionRegisterForwardGlobal::name("RegisterForwardGlobal");
+
+		auto serviceTransactionRegisterForwardNode = boost::make_shared<ServiceTransactionRegisterForwardNode>();
+		auto serviceTransactionRegisterForwardMethod = boost::make_shared<ServiceTransactionRegisterForwardMethod>();
+		auto serviceTransactionRegisterForwardGlobal = boost::make_shared<ServiceTransactionRegisterForwardGlobal>();
+
+		serviceTransactionRegisterForwardNode->componentService(&*applicationService_);
+		serviceTransactionRegisterForwardMethod->componentService(&*applicationService_);
+		serviceTransactionRegisterForwardGlobal->componentService(&*applicationService_);
+
+		transactionManager_->registerTransaction(serviceTransactionRegisterForwardNode);
+		transactionManager_->registerTransaction(serviceTransactionRegisterForwardMethod);
+		transactionManager_->registerTransaction(serviceTransactionRegisterForwardGlobal);
+	}
+
 	bool
 	ServiceManager::init(SessionManager& sessionManager)
 	{
@@ -285,30 +310,12 @@ namespace OpcUaStackServer
 		initViewService();
 		initQueryService();
 		initDiscoveryService();
+		initApplicationService();
 
-
-		//
-		// application service
-		//
-		ServiceTransactionRegisterForwardNode::name("RegisterForwardNode");
-		ServiceTransactionRegisterForwardMethod::name("RegisterForwardMethod");
-		ServiceTransactionRegisterForwardGlobal::name("RegisterForwardGlobal");
-
-		ServiceTransactionRegisterForwardNode::SPtr serviceTransactionRegisterForwardNode = boost::make_shared<ServiceTransactionRegisterForwardNode>();
-		ServiceTransactionRegisterForwardMethod::SPtr serviceTransactionRegisterForwardMethod = boost::make_shared<ServiceTransactionRegisterForwardMethod>();
-		ServiceTransactionRegisterForwardGlobal::SPtr serviceTransactionRegisterForwardGlobal = boost::make_shared<ServiceTransactionRegisterForwardGlobal>();
-
-		serviceTransactionRegisterForwardNode->componentService(&*applicationService_);
-		serviceTransactionRegisterForwardMethod->componentService(&*applicationService_);
-		serviceTransactionRegisterForwardGlobal->componentService(&*applicationService_);
-
-		transactionManager_->registerTransaction(serviceTransactionRegisterForwardNode);
-		transactionManager_->registerTransaction(serviceTransactionRegisterForwardMethod);
-		transactionManager_->registerTransaction(serviceTransactionRegisterForwardGlobal);
-	
 		sessionManager.discoveryService(discoveryService_);
 		sessionManager.transactionManager(transactionManager_);
 		sessionManager.forwardGlobalSync(forwardGlobalSync_);
+
 		return true;
 	}
 
@@ -332,8 +339,7 @@ namespace OpcUaStackServer
 	{
 		ioThread_ = ioThread;
 
-		// FIXME: use IOThread in services...
-		applicationService_->ioThread(ioThread.get());
+		// FIXME: remove this function
 		return true;
 	}
 

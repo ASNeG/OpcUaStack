@@ -63,6 +63,7 @@ namespace OpcUaStackServer
 		void initViewService(void);
 		void initQueryService(void);
 		void initDiscoveryService(void);
+		void initApplicationService(void);
 		void initForwardGlobalSync(void);
 
 		OpcUaStackCore::IOThread::SPtr ioThread_ = nullptr;
