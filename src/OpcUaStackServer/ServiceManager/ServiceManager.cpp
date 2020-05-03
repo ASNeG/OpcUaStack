@@ -26,7 +26,6 @@ namespace OpcUaStackServer
 	: transactionManager_(boost::make_shared<TransactionManager>())
 	, monitoredItemService_(boost::make_shared<MonitoredItemService>())
 	, queryService_(boost::make_shared<QueryService>())
-	, subscriptionService_(boost::make_shared<SubscriptionService>())
 	, viewService_(boost::make_shared<ViewService>())
 	, applicationService_(boost::make_shared<ApplicationService>())
 	, discoveryService_(boost::make_shared<DiscoveryService>())
@@ -34,7 +33,6 @@ namespace OpcUaStackServer
 	{
 		monitoredItemService_->componentName("MonitoredItemService");
 		queryService_->componentName("QueryService");
-		subscriptionService_->componentName("SubscriptionService");
 		viewService_->componentName("ViewService");
 		applicationService_->componentName("ApplicationService");
 		discoveryService_->componentName("DiscoveryService");
@@ -51,7 +49,6 @@ namespace OpcUaStackServer
 	{
 		monitoredItemService_->forwardGlobalSync(forwardGlobalSync_);
 		queryService_->forwardGlobalSync(forwardGlobalSync_);
-		subscriptionService_->forwardGlobalSync(forwardGlobalSync_);
 		viewService_->forwardGlobalSync(forwardGlobalSync_);
 		applicationService_->forwardGlobalSync(forwardGlobalSync_);
 		discoveryService_->forwardGlobalSync(forwardGlobalSync_);
@@ -141,16 +138,17 @@ namespace OpcUaStackServer
 		transactionManager_->registerTransaction(serviceTransactionDeleteReferences);
 	}
 
-	bool
-	ServiceManager::init(SessionManager& sessionManager)
+	void
+	ServiceManager::initSubscriptionService(void)
 	{
-		initAttributeService();
-		initMethodService();
-		initNodeManagementService();
+		subscriptionService_ = boost::make_shared<SubscriptionService>(
+			"SubscriptionServiceServer",
+			ioThread_,
+			messageBus_
+		);
+		subscriptionService_->componentName("SubscriptionService");		// FIXME: obsolete
+		subscriptionService_->forwardGlobalSync(forwardGlobalSync_);
 
-		//
-		// subscription service
-		//
 		ServiceTransactionCreateSubscription::name("CreateSubscription");
 		ServiceTransactionDeleteSubscriptions::name("DeleteSubscription");
 		ServiceTransactionModifySubscription::name("ModifySubscription");
@@ -159,13 +157,13 @@ namespace OpcUaStackServer
 		ServiceTransactionSetPublishingMode::name("SetPublishingMode");
 		ServiceTransactionTransferSubscriptions::name("TransferSubscription");
 
-		ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription = boost::make_shared<ServiceTransactionCreateSubscription>();
-		ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions = boost::make_shared<ServiceTransactionDeleteSubscriptions>();
-		ServiceTransactionModifySubscription::SPtr serviceTransactionModifySubscription = boost::make_shared<ServiceTransactionModifySubscription>();
-		ServiceTransactionPublish::SPtr serviceTransactionPublish = boost::make_shared<ServiceTransactionPublish>();
-		ServiceTransactionRepublish::SPtr serviceTransactionRepublish = boost::make_shared<ServiceTransactionRepublish>();
-		ServiceTransactionSetPublishingMode::SPtr serviceTransactionSetPublishingMode = boost::make_shared<ServiceTransactionSetPublishingMode>();
-		ServiceTransactionTransferSubscriptions::SPtr serviceTransactionTransferSubscriptions = boost::make_shared<ServiceTransactionTransferSubscriptions>();
+		auto serviceTransactionCreateSubscription = boost::make_shared<ServiceTransactionCreateSubscription>();
+		auto serviceTransactionDeleteSubscriptions = boost::make_shared<ServiceTransactionDeleteSubscriptions>();
+		auto serviceTransactionModifySubscription = boost::make_shared<ServiceTransactionModifySubscription>();
+		auto serviceTransactionPublish = boost::make_shared<ServiceTransactionPublish>();
+		auto serviceTransactionRepublish = boost::make_shared<ServiceTransactionRepublish>();
+		auto serviceTransactionSetPublishingMode = boost::make_shared<ServiceTransactionSetPublishingMode>();
+		auto serviceTransactionTransferSubscriptions = boost::make_shared<ServiceTransactionTransferSubscriptions>();
 
 		serviceTransactionCreateSubscription->componentService(&*subscriptionService_);
 		serviceTransactionDeleteSubscriptions->componentService(&*subscriptionService_);
@@ -182,7 +180,15 @@ namespace OpcUaStackServer
 		transactionManager_->registerTransaction(serviceTransactionRepublish);
 		transactionManager_->registerTransaction(serviceTransactionSetPublishingMode);
 		transactionManager_->registerTransaction(serviceTransactionTransferSubscriptions);
+	}
 
+	bool
+	ServiceManager::init(SessionManager& sessionManager)
+	{
+		initAttributeService();
+		initMethodService();
+		initNodeManagementService();
+		initSubscriptionService();
 
 		//
 		// monitored service
@@ -299,7 +305,6 @@ namespace OpcUaStackServer
 		// FIXME: use IOThread in services...
 		monitoredItemService_->ioThread(ioThread.get());
 		queryService_->ioThread(ioThread.get());
-		subscriptionService_->ioThread(ioThread.get());
 		viewService_->ioThread(ioThread.get());
 		applicationService_->ioThread(ioThread.get());
 		discoveryService_->ioThread(ioThread.get());

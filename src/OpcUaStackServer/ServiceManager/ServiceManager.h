@@ -58,6 +58,7 @@ namespace OpcUaStackServer
 		void initAttributeService(void);
 		void initMethodService(void);
 		void initNodeManagementService(void);
+		void initSubscriptionService(void);
 		void initForwardGlobalSync(void);
 
 		OpcUaStackCore::IOThread::SPtr ioThread_ = nullptr;
