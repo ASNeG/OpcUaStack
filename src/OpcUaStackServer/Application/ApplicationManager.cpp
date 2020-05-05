@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -46,15 +46,14 @@ namespace OpcUaStackServer
 		ReloadIf* reloadIf
 	)
 	{
-		Application::Map::iterator it;
-		it = applicationMap_.find(applicationName);
+		auto it = applicationMap_.find(applicationName);
 		if (it != applicationMap_.end()) {
 			Log(Error, "cannot construct application, because application already exist")
 			    .parameter("ApplicationName", applicationName);
 			return false;
 		}
 
-		Application::SPtr application = boost::make_shared<Application>();
+		auto application = boost::make_shared<Application>("Application", ioThread_, messageBus_);
 		application->applicationIf(applicationIf);
 		application->reloadIf(reloadIf);
 		application->applicationName(applicationName);
@@ -70,8 +69,7 @@ namespace OpcUaStackServer
 	bool
 	ApplicationManager::deregisterApplication(const std::string& applicationName)
 	{
-		Application::Map::iterator it;
-		it = applicationMap_.find(applicationName);
+		auto it = applicationMap_.find(applicationName);
 		if (it == applicationMap_.end()) {
 			Log(Error, "cannot destruct application, because application not excist")
 				.parameter("ApplicationName", applicationName);
@@ -87,6 +85,18 @@ namespace OpcUaStackServer
 	ApplicationManager::serviceComponent(Component* serviceComponent)
 	{
 		serviceComponent_ = serviceComponent;
+	}
+
+	void
+	ApplicationManager::ioThread(const OpcUaStackCore::IOThread::SPtr& ioThread)
+	{
+		ioThread_ = ioThread;
+	}
+
+	void
+	ApplicationManager::messageBus(const OpcUaStackCore::MessageBus::SPtr& messageBus)
+	{
+		messageBus_ = messageBus;
 	}
 
 	bool

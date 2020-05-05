@@ -45,6 +45,7 @@ namespace OpcUaStackServer
 		//- Component -----------------------------------------------------------------
 
 	  private:
+		void sendAnswer(OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction);
 		void receiveCallRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 		OpcUaStackCore::OpcUaStatusCode forwardAuthorizationMethod(
 			OpcUaStackCore::UserContext::SPtr& userContext,

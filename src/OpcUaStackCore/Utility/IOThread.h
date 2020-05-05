@@ -35,6 +35,7 @@ namespace OpcUaStackCore
 		typedef std::function<void (void)> AsyncCallback;
 
 		IOThread(void);
+		IOThread(const std::string& name);
 		~IOThread(void);
 
 		void name(const std::string& name);

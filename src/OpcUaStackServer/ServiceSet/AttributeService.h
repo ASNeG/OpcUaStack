@@ -46,7 +46,9 @@ namespace OpcUaStackServer
 		void receive(OpcUaStackCore::Message::SPtr message);
 		//- Component -----------------------------------------------------------------
 
+
 	  private:
+		void sendAnswer(OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction);
 		void receiveReadRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 		void forwardRead(
 			OpcUaStackCore::UserContext::SPtr& userContext,

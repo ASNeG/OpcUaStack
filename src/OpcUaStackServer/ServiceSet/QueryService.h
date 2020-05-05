@@ -45,6 +45,7 @@ namespace OpcUaStackServer
 		//- Component -----------------------------------------------------------------
 
 	  private:
+		void sendAnswer(OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction);
 		void receiveQueryFirstRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 		void receiveQueryNextRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 	};

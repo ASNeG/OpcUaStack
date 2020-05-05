@@ -69,6 +69,8 @@ namespace OpcUaStackCore
 
 		void memberService(MessageBusMember::WPtr& memberService);
 		MessageBusMember::WPtr& memberService(void);
+		void memberServiceSession(MessageBusMember::WPtr& memberServiceSession);
+		MessageBusMember::WPtr& memberServiceSession(void);
 
 		void userContext(UserContext::SPtr& userContext);
 		UserContext::SPtr& userContext(void);
@@ -113,6 +115,7 @@ namespace OpcUaStackCore
 		Component* componentSession_;
 
 		MessageBusMember::WPtr memberService_;
+		MessageBusMember::WPtr memberServiceSession_;
 
 		UserContext::SPtr userContext_;
 		OpcUaStatusCode statusCode_;

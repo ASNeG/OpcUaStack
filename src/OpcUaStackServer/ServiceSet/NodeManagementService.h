@@ -47,6 +47,7 @@ namespace OpcUaStackServer
 		//- Component -----------------------------------------------------------------
 
 	  private:
+		void sendAnswer(OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction);
 		void receiveAddNodesRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 		void receiveAddReferencesRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 		void receiveDeleteNodesRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);

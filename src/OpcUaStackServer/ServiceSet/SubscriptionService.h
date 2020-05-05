@@ -51,6 +51,8 @@ namespace OpcUaStackServer
 		//- Component -----------------------------------------------------------------
 
 	  private:
+		void sendAnswer(OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction);
+
 		 // subscription
 		void receiveCreateSubscriptionRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 		void receiveDeleteSubscriptionsRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);

@@ -45,6 +45,7 @@ namespace OpcUaStackServer
 		//- Component -----------------------------------------------------------------
 
 	  private:
+		void sendAnswer(OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction);
 		void receiveBrowseRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 		void receiveBrowseNextRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 		void receiveTranslateBrowsePathsToNodeIdsRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);

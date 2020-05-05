@@ -191,6 +191,17 @@ namespace OpcUaStackCore
 	}
 
 	void
+	ServiceTransaction::memberServiceSession(MessageBusMember::WPtr& memberServiceSession) {
+		memberServiceSession_ = memberServiceSession;
+	}
+
+	MessageBusMember::WPtr&
+	ServiceTransaction::memberServiceSession(void)
+	{
+		return memberServiceSession_;
+	}
+
+	void
 	ServiceTransaction::userContext(UserContext::SPtr& userContext)
 	{
 		userContext_ = userContext;

@@ -45,6 +45,7 @@ namespace OpcUaStackCore
 		void name(const std::string& name);
 		std::string& name(void);
 		MessageBusMemberConfig& messageBusMemberConfig(void);
+		void debugLogging(bool debugLogging);
 
 		void cancelReceiver(
 		    bool immediately = false
@@ -88,6 +89,10 @@ namespace OpcUaStackCore
 		};
 		using MsgList = std::list<Msg>;
 
+		void receiveMessageDebug(
+			const std::string& message,
+			const MessageBusMember::WPtr& sender
+		);
 		void sendFirstMessageToReceiver(void);
 
 		std::string name_;
@@ -95,6 +100,7 @@ namespace OpcUaStackCore
 		boost::mutex mutex_;
 		MsgList msgList_;
 
+		bool debugLogging_ = false;
 		bool receiverWait_ = false;
 		IOThread::SPtr ioThread_ = nullptr;
 		boost::shared_ptr<boost::asio::io_service::strand> strand_ = nullptr;

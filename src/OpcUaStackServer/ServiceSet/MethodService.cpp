@@ -46,6 +46,13 @@ namespace OpcUaStackServer
 		MessageBusMemberConfig messageBusMemberConfig;
 		messageBusMemberConfig.strand(strand_);
 		messageBusMember_ = messageBus_->registerMember(serviceName_, messageBusMemberConfig);
+
+		// activate receiver
+		activateReceiver(
+			[this](Message::SPtr& message){
+				receive(message);
+			}
+		);
 	}
 
 	MethodService::~MethodService(void)
@@ -66,8 +73,18 @@ namespace OpcUaStackServer
 				break;
 			default:
 				serviceTransaction->statusCode(BadInternalError);
-				serviceTransaction->componentSession()->send(serviceTransaction);
+				sendAnswer(serviceTransaction);
 		}
+	}
+
+	void
+	MethodService::sendAnswer(OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction)
+	{
+		messageBus_->messageSend(
+			messageBusMember_,
+			serviceTransaction->memberServiceSession(),
+			serviceTransaction
+		);
 	}
 
 	void 
@@ -88,12 +105,12 @@ namespace OpcUaStackServer
 		// check node id array
 		if (callRequest->methodsToCall()->size() == 0) {
 			trx->statusCode(BadNothingToDo);
-			trx->componentSession()->send(serviceTransaction);
+			sendAnswer(serviceTransaction);
 			return;
 		}
 		if (callRequest->methodsToCall()->size() > 1000) { // FIXME: todo
 			trx->statusCode(BadTooManyOperations);
-			trx->componentSession()->send(serviceTransaction);
+			sendAnswer(serviceTransaction);
 			return;
 		}
 
@@ -198,7 +215,7 @@ namespace OpcUaStackServer
 			}
 		}
 
-		serviceTransaction->componentSession()->send(serviceTransaction);
+		sendAnswer(serviceTransaction);
 	}
 
 	OpcUaStatusCode

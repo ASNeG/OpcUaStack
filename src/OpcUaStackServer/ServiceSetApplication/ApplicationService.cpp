@@ -52,6 +52,13 @@ namespace OpcUaStackServer
 		MessageBusMemberConfig messageBusMemberConfig;
 		messageBusMemberConfig.strand(strand_);
 		messageBusMember_ = messageBus_->registerMember(serviceName_, messageBusMemberConfig);
+
+		// activate receiver
+		activateReceiver(
+			[this](Message::SPtr& message){
+				receive(message);
+			}
+		);
 	}
 
 	ApplicationService::~ApplicationService(void)
@@ -106,8 +113,18 @@ namespace OpcUaStackServer
 					.parameter("TypeId", serviceTransaction->nodeTypeRequest());
 
 				serviceTransaction->statusCode(BadInternalError);
-				serviceTransaction->componentSession()->send(serviceTransaction);
+				sendAnswer(serviceTransaction);
 		}
+	}
+
+	void
+	ApplicationService::sendAnswer(OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction)
+	{
+		messageBus_->messageSend(
+			messageBusMember_,
+			serviceTransaction->memberServiceSession(),
+			serviceTransaction
+		);
 	}
 
 	void
@@ -124,12 +141,12 @@ namespace OpcUaStackServer
 
 		if (registerForwardNodeRequest->nodesToRegister()->size() == 0) {
 			trx->statusCode(BadNothingToDo);
-			trx->componentSession()->send(serviceTransaction);
+			sendAnswer(serviceTransaction);
 			return;
 		}
 		if (registerForwardNodeRequest->nodesToRegister()->size() > 1000) { // FIXME: todo
 			trx->statusCode(BadTooManyOperations);
-			trx->componentSession()->send(serviceTransaction);
+			sendAnswer(serviceTransaction);
 			return;
 		}
 		bool applicationContextArray = false;
@@ -191,7 +208,7 @@ namespace OpcUaStackServer
 		}
 
 		trx->statusCode(Success);
-		trx->componentSession()->send(serviceTransaction);
+		sendAnswer(serviceTransaction);
 	}
 
 	void
@@ -217,7 +234,7 @@ namespace OpcUaStackServer
 				.parameter("ObjectNode", registerForwardMethodRequest->objectNodeId().toString());
 
 			trx->statusCode(Success);
-			trx->componentSession()->send(serviceTransaction);
+			sendAnswer(serviceTransaction);
 			return;
 		}
 
@@ -230,7 +247,7 @@ namespace OpcUaStackServer
 				.parameter("MethodNode", registerForwardMethodRequest->methodNodeId().toString());
 
 			trx->statusCode(Success);
-			trx->componentSession()->send(serviceTransaction);
+			sendAnswer(serviceTransaction);
 			return;
 		}
 
@@ -250,7 +267,7 @@ namespace OpcUaStackServer
 		}
 
 		trx->statusCode(Success);
-		trx->componentSession()->send(serviceTransaction);
+		sendAnswer(serviceTransaction);
 	}
 
 	void
@@ -267,7 +284,7 @@ namespace OpcUaStackServer
 		forwardGlobalSync()->updateFrom(*registerForwardGlobalRequest->forwardGlobalSync());
 
 		trx->statusCode(Success);
-		trx->componentSession()->send(serviceTransaction);
+		sendAnswer(serviceTransaction);
 	}
 
 
@@ -285,12 +302,12 @@ namespace OpcUaStackServer
 
 		if (getNodeReferenceRequest->nodes()->size() == 0) {
 			trx->statusCode(BadNothingToDo);
-			trx->componentSession()->send(serviceTransaction);
+			sendAnswer(serviceTransaction);
 			return;
 		}
 		if (getNodeReferenceRequest->nodes()->size() > 1000) { // FIXME: todo
 			trx->statusCode(BadTooManyOperations);
-			trx->componentSession()->send(serviceTransaction);
+			sendAnswer(serviceTransaction);
 			return;
 		}
 
@@ -328,7 +345,7 @@ namespace OpcUaStackServer
 		}
 
 		trx->statusCode(Success);
-		trx->componentSession()->send(serviceTransaction);
+		sendAnswer(serviceTransaction);
 	}
 
 	void
@@ -360,7 +377,7 @@ namespace OpcUaStackServer
 		}
 
 		trx->statusCode(Success);
-		trx->componentSession()->send(serviceTransaction);
+		sendAnswer(serviceTransaction);
 	}
 
 	void
@@ -398,7 +415,7 @@ namespace OpcUaStackServer
 		else {
 			trx->statusCode(BadInternalError);
 		}
-		trx->componentSession()->send(serviceTransaction);
+		sendAnswer(serviceTransaction);
 	}
 
 	void
@@ -426,7 +443,7 @@ namespace OpcUaStackServer
 		else {
 			trx->statusCode(BadInternalError);
 		}
-		trx->componentSession()->send(serviceTransaction);
+		sendAnswer(serviceTransaction);
 	}
 
 	void
@@ -447,7 +464,7 @@ namespace OpcUaStackServer
 				.parameter("Node", fireEventRequest->nodeId());
 
 			trx->statusCode(BadNodeIdUnknown);
-			trx->componentSession()->send(serviceTransaction);
+			sendAnswer(serviceTransaction);
 			return;
 		}
 
@@ -522,7 +539,7 @@ namespace OpcUaStackServer
 		}
 
 		trx->statusCode(Success);
-		trx->componentSession()->send(serviceTransaction);
+		sendAnswer(serviceTransaction);
 	}
 
 	void
@@ -536,7 +553,7 @@ namespace OpcUaStackServer
 		uint32_t size = req->browseNameArray()->size();
 		if (size == 0) {
 			trx->statusCode(BadInvalidArgument);
-			trx->componentSession()->send(serviceTransaction);
+			sendAnswer(serviceTransaction);
 		}
 
 		res->nodeIdResults()->resize(size);
@@ -550,7 +567,7 @@ namespace OpcUaStackServer
 		}
 
 		trx->statusCode(Success);
-		trx->componentSession()->send(serviceTransaction);
+		sendAnswer(serviceTransaction);
 	}
 
 	void
@@ -572,7 +589,7 @@ namespace OpcUaStackServer
 		);
 
 		trx->statusCode(result);
-		trx->componentSession()->send(serviceTransaction);
+		sendAnswer(serviceTransaction);
 	}
 
 	void
@@ -594,7 +611,7 @@ namespace OpcUaStackServer
 		);
 
 		trx->statusCode(result);
-		trx->componentSession()->send(serviceTransaction);
+		sendAnswer(serviceTransaction);
 	}
 
 	void

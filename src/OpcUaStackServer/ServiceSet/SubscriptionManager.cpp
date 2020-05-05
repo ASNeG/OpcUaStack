@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -40,6 +40,18 @@ namespace OpcUaStackServer
 	SubscriptionManager::ioThread(IOThread* ioThread)
 	{
 		ioThread_ = ioThread;
+	}
+
+	void
+	SubscriptionManager::messageBus(OpcUaStackCore::MessageBus::SPtr& messageBus)
+	{
+		messageBus_ = messageBus;
+	}
+
+	void
+	SubscriptionManager::messageBusMember(OpcUaStackCore::MessageBusMember::WPtr& messageBusMember)
+	{
+		messageBusMember_ = messageBusMember;
 	}
 
 	void 
@@ -150,7 +162,7 @@ namespace OpcUaStackServer
 				OpcUaNodeId typeId;
 				typeId.set(OpcUaId_PublishResponse_Encoding_DefaultBinary);
 				trx->statusCode(BadNoSubscription);
-				trx->componentSession()->send(trx);
+				sendAnswer(trx);
 			}
 		}
 	
@@ -222,7 +234,7 @@ namespace OpcUaStackServer
 				OpcUaNodeId typeId;
 				typeId.set(OpcUaId_PublishResponse_Encoding_DefaultBinary);
 				trx->statusCode(Success);
-				trx->componentSession()->send(trx);
+				sendAnswer(trx);
 				break;
 			}
 			case SubscriptionTimeout:
@@ -302,6 +314,16 @@ namespace OpcUaStackServer
 		it = subscriptionMap_.find(subscriptionId);
 		if (it == subscriptionMap_.end()) return BadNotFound;
 		return it->second->receiveAcknowledgement(acknowledgmentNumber);
+	}
+
+	void
+	SubscriptionManager::sendAnswer(const ServiceTransaction::SPtr& serviceTransaction)
+	{
+		messageBus_->messageSend(
+			messageBusMember_,
+			serviceTransaction->memberServiceSession(),
+			serviceTransaction
+		);
 	}
 
 }

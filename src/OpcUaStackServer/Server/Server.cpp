@@ -41,10 +41,12 @@ namespace OpcUaStackServer
 	{
 		// create thread pool
 		ioThread_ = boost::make_shared<IOThread>();
+		ioThread_->numberThreads(2);
 		ioThread_->name("Server");
 
 		// create message bus
 		messageBus_ = boost::make_shared<MessageBus>();
+		messageBus_->debugLogging(true); // FIXME: add parameter to configuration file or rework logging
 	}
 
 	Server::~Server(void)
@@ -114,6 +116,12 @@ namespace OpcUaStackServer
 	Server::start(void)
 	{
 
+		if (!ioThread_->startup())
+		{
+			Log(Error, "server io thread start failed");
+			return false;
+		}
+
 		// startup application
 		Log(Info, "startup application");
 		Component* applicationService = Component::getComponent("ApplicationService");
@@ -126,12 +134,6 @@ namespace OpcUaStackServer
 
 		// startup opc ua stack
 		Log(Info, "start opc ua server stack");
-		if (!ioThread_->startup())
-		{
-			Log(Error, "server io thread start failed");
-			return false;
-		}
-		
 		if (!sessionManager_.startup()) {
 			Log(Error, "server session manager start failed");
 			return false;
@@ -442,6 +444,8 @@ namespace OpcUaStackServer
 	bool
 	Server::initApplication(void)
 	{
+		applicationManager_.ioThread(ioThread_);
+		applicationManager_.messageBus(messageBus_);
 		applicationManager_.cryptoManager(cryptoManager_);
 		return true;
 	}

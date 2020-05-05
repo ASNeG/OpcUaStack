@@ -37,6 +37,7 @@ namespace OpcUaStackCore
 		MessageBus(MessageBusConfig& messageBusConfig);
 		virtual ~MessageBus(void);
 
+		void debugLogging(bool debugLogging);
 		bool existMember(const std::string& name);
 		MessageBusMember::WPtr registerMember(const std::string& name);
 		MessageBusMember::WPtr registerMember(const std::string& name, MessageBusMemberConfig& messageBusMemberConfig);
@@ -91,6 +92,7 @@ namespace OpcUaStackCore
 		);
 
 	  private:
+		bool debugLogging_ = false;
 		boost::mutex mutex_;
 		MessageBusConfig messageBusConfig_;
 		MessageBusMember::Map messageBusMemberMap_;

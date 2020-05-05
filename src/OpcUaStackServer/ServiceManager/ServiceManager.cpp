@@ -53,10 +53,15 @@ namespace OpcUaStackServer
 		auto serviceTransactionHistoryRead = boost::make_shared<ServiceTransactionHistoryRead>();
 		auto serviceTransactionHistoryUpdate = boost::make_shared<ServiceTransactionHistoryUpdate>();
 
-		serviceTransactionRead->componentService(&*attributeService_);
-		serviceTransactionWrite->componentService(&*attributeService_);
-		serviceTransactionHistoryRead->componentService(&*attributeService_);
-		serviceTransactionHistoryUpdate->componentService(&*attributeService_);
+		serviceTransactionRead->componentService(&*attributeService_);	// FIXME: must be removed
+		serviceTransactionWrite->componentService(&*attributeService_); // FIXME: must be removed
+		serviceTransactionHistoryRead->componentService(&*attributeService_); // FIXME: must be removed
+		serviceTransactionHistoryUpdate->componentService(&*attributeService_); // FIXME: must be removed
+
+		serviceTransactionRead->memberService(attributeService_->messageBusMember());
+		serviceTransactionWrite->memberService(attributeService_->messageBusMember());
+		serviceTransactionHistoryRead->memberService(attributeService_->messageBusMember());
+		serviceTransactionHistoryUpdate->memberService(attributeService_->messageBusMember());
 
 		transactionManager_->registerTransaction(serviceTransactionRead);
 		transactionManager_->registerTransaction(serviceTransactionWrite);
@@ -79,7 +84,9 @@ namespace OpcUaStackServer
 
 		auto serviceTransactionCall = boost::make_shared<ServiceTransactionCall>();
 
-		serviceTransactionCall->componentService(&*methodService_);
+		serviceTransactionCall->componentService(&*methodService_); 	// FIXME: must be removed
+
+		serviceTransactionCall->memberService(methodService_->messageBusMember());
 
 		transactionManager_->registerTransaction(serviceTransactionCall);
 	}
@@ -105,10 +112,15 @@ namespace OpcUaStackServer
 		auto serviceTransactionDeleteNodes = boost::make_shared<ServiceTransactionDeleteNodes>();
 		auto serviceTransactionDeleteReferences = boost::make_shared<ServiceTransactionDeleteReferences>();
 
-		serviceTransactionAddNodes->componentService(&*nodeManagementService_);
-		serviceTransactionAddReferences->componentService(&*nodeManagementService_);
-		serviceTransactionDeleteNodes->componentService(&*nodeManagementService_);
-		serviceTransactionDeleteReferences->componentService(&*nodeManagementService_);
+		serviceTransactionAddNodes->componentService(&*nodeManagementService_);	// FIXME: must be removed
+		serviceTransactionAddReferences->componentService(&*nodeManagementService_);	// FIXME: must be removed
+		serviceTransactionDeleteNodes->componentService(&*nodeManagementService_);	// FIXME: must be removed
+		serviceTransactionDeleteReferences->componentService(&*nodeManagementService_);	// FIXME: must be removed
+
+		serviceTransactionAddNodes->memberService(nodeManagementService_->messageBusMember());
+		serviceTransactionAddReferences->memberService(nodeManagementService_->messageBusMember());
+		serviceTransactionDeleteNodes->memberService(nodeManagementService_->messageBusMember());
+		serviceTransactionDeleteReferences->memberService(nodeManagementService_->messageBusMember());
 
 		transactionManager_->registerTransaction(serviceTransactionAddNodes);
 		transactionManager_->registerTransaction(serviceTransactionAddReferences);
@@ -143,13 +155,21 @@ namespace OpcUaStackServer
 		auto serviceTransactionSetPublishingMode = boost::make_shared<ServiceTransactionSetPublishingMode>();
 		auto serviceTransactionTransferSubscriptions = boost::make_shared<ServiceTransactionTransferSubscriptions>();
 
-		serviceTransactionCreateSubscription->componentService(&*subscriptionService_);
-		serviceTransactionDeleteSubscriptions->componentService(&*subscriptionService_);
-		serviceTransactionModifySubscription->componentService(&*subscriptionService_);
-		serviceTransactionPublish->componentService(&*subscriptionService_);
-		serviceTransactionRepublish->componentService(&*subscriptionService_);
-		serviceTransactionSetPublishingMode->componentService(&*subscriptionService_);
-		serviceTransactionTransferSubscriptions->componentService(&*subscriptionService_);
+		serviceTransactionCreateSubscription->componentService(&*subscriptionService_);	// FIXME: must be removed
+		serviceTransactionDeleteSubscriptions->componentService(&*subscriptionService_);	// FIXME: must be removed
+		serviceTransactionModifySubscription->componentService(&*subscriptionService_);	// FIXME: must be removed
+		serviceTransactionPublish->componentService(&*subscriptionService_);	// FIXME: must be removed
+		serviceTransactionRepublish->componentService(&*subscriptionService_);	// FIXME: must be removed
+		serviceTransactionSetPublishingMode->componentService(&*subscriptionService_);	// FIXME: must be removed
+		serviceTransactionTransferSubscriptions->componentService(&*subscriptionService_);	// FIXME: must be removed
+
+		serviceTransactionCreateSubscription->memberService(subscriptionService_->messageBusMember());
+		serviceTransactionDeleteSubscriptions->memberService(subscriptionService_->messageBusMember());
+		serviceTransactionModifySubscription->memberService(subscriptionService_->messageBusMember());
+		serviceTransactionPublish->memberService(subscriptionService_->messageBusMember());
+		serviceTransactionRepublish->memberService(subscriptionService_->messageBusMember());
+		serviceTransactionSetPublishingMode->memberService(subscriptionService_->messageBusMember());
+		serviceTransactionTransferSubscriptions->memberService(subscriptionService_->messageBusMember());
 
 		transactionManager_->registerTransaction(serviceTransactionCreateSubscription);
 		transactionManager_->registerTransaction(serviceTransactionDeleteSubscriptions);
@@ -183,11 +203,17 @@ namespace OpcUaStackServer
 		auto serviceTransactionSetMonitoringMode = boost::make_shared<ServiceTransactionSetMonitoringMode>();
 		auto serviceTransactionSetTriggering = boost::make_shared<ServiceTransactionSetTriggering>();
 
-		serviceTransactionCreateMonitoredItems->componentService(&*subscriptionService_);
-		serviceTransactionDeleteMonitoredItems->componentService(&*subscriptionService_);
-		serviceTransactionModifyMonitoredItems->componentService(&*subscriptionService_);
-		serviceTransactionSetMonitoringMode->componentService(&*subscriptionService_);
-		serviceTransactionSetTriggering->componentService(&*subscriptionService_);
+		serviceTransactionCreateMonitoredItems->componentService(&*subscriptionService_);	// FIXME: must be removed
+		serviceTransactionDeleteMonitoredItems->componentService(&*subscriptionService_);	// FIXME: must be removed
+		serviceTransactionModifyMonitoredItems->componentService(&*subscriptionService_);	// FIXME: must be removed
+		serviceTransactionSetMonitoringMode->componentService(&*subscriptionService_);	// FIXME: must be removed
+		serviceTransactionSetTriggering->componentService(&*subscriptionService_);	// FIXME: must be removed
+
+		serviceTransactionCreateMonitoredItems->memberService(subscriptionService_->messageBusMember());
+		serviceTransactionDeleteMonitoredItems->memberService(subscriptionService_->messageBusMember());
+		serviceTransactionModifyMonitoredItems->memberService(subscriptionService_->messageBusMember());
+		serviceTransactionSetMonitoringMode->memberService(subscriptionService_->messageBusMember());
+		serviceTransactionSetTriggering->memberService(subscriptionService_->messageBusMember());
 
 		transactionManager_->registerTransaction(serviceTransactionCreateMonitoredItems);
 		transactionManager_->registerTransaction(serviceTransactionDeleteMonitoredItems);
@@ -219,11 +245,17 @@ namespace OpcUaStackServer
 		auto serviceTransactionRegisterNodes = boost::make_shared<ServiceTransactionRegisterNodes>();
 		auto serviceTransactionUnregisterNodes = boost::make_shared<ServiceTransactionUnregisterNodes>();
 
-		serviceTransactionBrowse->componentService(&*viewService_);
-		serviceTransactionBrowseNext->componentService(&*viewService_);
-		serviceTransactionTranslateBrowsePathsToNodeIds->componentService(&*viewService_);
-		serviceTransactionRegisterNodes->componentService(&*viewService_);
-		serviceTransactionUnregisterNodes->componentService(&*viewService_);
+		serviceTransactionBrowse->componentService(&*viewService_);	// FIXME: must be removed
+		serviceTransactionBrowseNext->componentService(&*viewService_);	// FIXME: must be removed
+		serviceTransactionTranslateBrowsePathsToNodeIds->componentService(&*viewService_);	// FIXME: must be removed
+		serviceTransactionRegisterNodes->componentService(&*viewService_);	// FIXME: must be removed
+		serviceTransactionUnregisterNodes->componentService(&*viewService_);	// FIXME: must be removed
+
+		serviceTransactionBrowse->memberService(viewService_->messageBusMember());
+		serviceTransactionBrowseNext->memberService(viewService_->messageBusMember());
+		serviceTransactionTranslateBrowsePathsToNodeIds->memberService(viewService_->messageBusMember());
+		serviceTransactionRegisterNodes->memberService(viewService_->messageBusMember());
+		serviceTransactionUnregisterNodes->memberService(viewService_->messageBusMember());
 
 		transactionManager_->registerTransaction(serviceTransactionBrowse);
 		transactionManager_->registerTransaction(serviceTransactionBrowseNext);
@@ -259,7 +291,9 @@ namespace OpcUaStackServer
 
 		auto serviceTransactionRegisterServer = boost::make_shared<ServiceTransactionRegisterServer>();
 
-		serviceTransactionRegisterServer->componentService(&*discoveryService_);
+		serviceTransactionRegisterServer->componentService(&*discoveryService_);	// FIXME: must be removed
+
+		serviceTransactionRegisterServer->memberService(discoveryService_->messageBusMember());
 
 		transactionManager_->registerTransaction(serviceTransactionRegisterServer);
 	}
@@ -283,9 +317,13 @@ namespace OpcUaStackServer
 		auto serviceTransactionRegisterForwardMethod = boost::make_shared<ServiceTransactionRegisterForwardMethod>();
 		auto serviceTransactionRegisterForwardGlobal = boost::make_shared<ServiceTransactionRegisterForwardGlobal>();
 
-		serviceTransactionRegisterForwardNode->componentService(&*applicationService_);
-		serviceTransactionRegisterForwardMethod->componentService(&*applicationService_);
-		serviceTransactionRegisterForwardGlobal->componentService(&*applicationService_);
+		serviceTransactionRegisterForwardNode->componentService(&*applicationService_);	// FIXME: must be removed
+		serviceTransactionRegisterForwardMethod->componentService(&*applicationService_);	// FIXME: must be removed
+		serviceTransactionRegisterForwardGlobal->componentService(&*applicationService_);	// FIXME: must be removed
+
+		serviceTransactionRegisterForwardNode->memberService(applicationService_->messageBusMember());
+		serviceTransactionRegisterForwardMethod->memberService(applicationService_->messageBusMember());
+		serviceTransactionRegisterForwardGlobal->memberService(applicationService_->messageBusMember());
 
 		transactionManager_->registerTransaction(serviceTransactionRegisterForwardNode);
 		transactionManager_->registerTransaction(serviceTransactionRegisterForwardMethod);

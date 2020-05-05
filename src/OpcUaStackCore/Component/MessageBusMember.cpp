@@ -16,6 +16,7 @@
  */
 
 #include <boost/make_shared.hpp>
+#include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Component/MessageBusMember.h"
 
 namespace OpcUaStackCore
@@ -47,6 +48,12 @@ namespace OpcUaStackCore
 	MessageBusMember::messageBusMemberConfig(void)
 	{
 		return messageBusMemberConfig_;
+	}
+
+	void
+	MessageBusMember::debugLogging(bool debugLogging)
+	{
+		debugLogging_ = debugLogging;
 	}
 
 	void
@@ -113,6 +120,27 @@ namespace OpcUaStackCore
 	}
 
 	void
+	MessageBusMember::receiveMessageDebug(
+		const std::string& message,
+		const MessageBusMember::WPtr& sender
+	)
+	{
+		if (!debugLogging_) {
+			return;
+		}
+
+		auto senderLock = sender.lock();
+		if (!senderLock) {
+			return;
+		}
+
+		Log(Debug, "plan on receive message")
+			.parameter("Sender", senderLock->name())
+			.parameter("Receiver", name());
+
+	}
+
+	void
 	MessageBusMember::sendFirstMessageToReceiver(void)
 	{
 		// get message from message list
@@ -120,10 +148,13 @@ namespace OpcUaStackCore
 	    auto message = msgList_.front().message_;
 		msgList_.pop_front();
 
+		receiveMessageDebug("plan on receive message", sender);
+
 		// call receiver callback with message
 		if (strand_) {
 			strand_->post(
 			    [this, sender, message](void) mutable {
+				    receiveMessageDebug("execute receive message (strand)", sender);
 					receiveCallback_(MessageBusError::Ok, sender, message);
 				}
 			);
@@ -131,6 +162,7 @@ namespace OpcUaStackCore
 		else if (ioThread_) {
 			ioThread_->run(
 			    [this, sender, message](void) mutable {
+				receiveMessageDebug("execute receive message (ioThread)", sender);
 					receiveCallback_(MessageBusError::Ok, sender, message);
 				}
 			);
@@ -138,6 +170,7 @@ namespace OpcUaStackCore
 		else if (messageBusMemberConfig_.strand()) {
 			messageBusMemberConfig_.strand()->post(
 			    [this, sender, message](void) mutable {
+				    receiveMessageDebug("execute receive message (strand config)", sender);
 					receiveCallback_(MessageBusError::Ok, sender, message);
 				}
 			);
@@ -145,6 +178,7 @@ namespace OpcUaStackCore
 		else if (messageBusMemberConfig_.ioThread()) {
 			messageBusMemberConfig_.ioThread()->run(
 			    [this, sender, message](void) mutable {
+					receiveMessageDebug("execute receive message (ioThread config)", sender);
 					receiveCallback_(MessageBusError::Ok, sender, message);
 				}
 			);

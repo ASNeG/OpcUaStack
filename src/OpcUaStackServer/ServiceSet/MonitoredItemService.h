@@ -45,6 +45,7 @@ namespace OpcUaStackServer
 		//- Component -----------------------------------------------------------------
 
 	  private:
+		void sendAnswer(OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction);
 		void receiveCreateMonitoredItemsRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 		void receiveDeleteMonitoredItemsRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 		void receiveModifyMonitoredItemsRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);

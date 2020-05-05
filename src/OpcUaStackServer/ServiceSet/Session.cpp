@@ -1059,7 +1059,7 @@ namespace OpcUaStackServer
 			return;
 		}
 		secureChannelTransaction->responseTypeNodeId_ = OpcUaNodeId(serviceTransactionSPtr->nodeTypeResponse().nodeId<uint32_t>());
-		serviceTransactionSPtr->componentSession(this);
+		serviceTransactionSPtr->componentSession(this); // FIXME: can be removed
 		serviceTransactionSPtr->sessionId(sessionId_);
 		serviceTransactionSPtr->userContext(userContext_);
 		Object::SPtr handle = secureChannelTransaction;
@@ -1083,7 +1083,15 @@ namespace OpcUaStackServer
 			.parameter("RequestId", serviceTransactionSPtr->requestId_);
 
 		// send message request to service component
-		serviceTransactionSPtr->componentService()->send(serviceTransactionSPtr);
+#if 0
+		serviceTransactionSPtr->componentService()->send(serviceTransactionSPtr);  // FIXME: must be removed
+#endif
+		serviceTransactionSPtr->memberServiceSession(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			serviceTransactionSPtr->memberService(),
+			serviceTransactionSPtr
+		);
 	}
 
 	void

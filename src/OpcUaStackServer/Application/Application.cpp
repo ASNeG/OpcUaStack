@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -25,17 +25,44 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
-	Application::Application(void)
-	: applicationIf_(nullptr)
+	Application::Application(
+		const std::string& serviceName,
+		OpcUaStackCore::IOThread::SPtr& ioThread,
+		OpcUaStackCore::MessageBus::SPtr& messageBus
+	)
+	: ServerServiceBase()
+	, applicationIf_(nullptr)
 	, reloadIf_(nullptr)
 	, state_(ApplConstruct)
 	, applicationName_("")
 	, serviceComponent_(nullptr)
 	{
+		Component::ioThread(ioThread.get());  // FIXME: obsolete
+
+		// set parameter in server service base
+		serviceName_ = serviceName;
+		ServerServiceBase::ioThread_ = ioThread.get();
+		strand_ = ioThread->createStrand();
+		messageBus_ = messageBus;
+
+		// register message bus receiver
+		MessageBusMemberConfig messageBusMemberConfig;
+		messageBusMemberConfig.strand(strand_);
+		messageBusMember_ = messageBus_->registerMember(serviceName_, messageBusMemberConfig);
+
+		// activate receiver
+		activateReceiver(
+			[this](Message::SPtr& message){
+				receive(message);
+			}
+		);
 	}
 
 	Application::~Application(void)
 	{
+		// deactivate receiver
+		deactivateReceiver();
+		messageBus_->deregisterMember(messageBusMember_);
 	}
 
 	void
@@ -72,6 +99,14 @@ namespace OpcUaStackServer
 	bool
 	Application::startup(void)
 	{
+		// get application service member
+		messageBusMemberApplication_ = messageBus_->getMember("ApplicationServiceServer");
+		if (!messageBusMemberApplication_.lock()) {
+			Log(Error, "application service member do not exist")
+				.parameter("Member", "ApplicationServiceServer");
+			return false;
+		}
+
 		if (state_ != ApplConstruct) {
 			Log(Error, "cannot startup application, because application is in invalid state")
 			    .parameter("ApplicationName", applicationName_)
@@ -138,7 +173,7 @@ namespace OpcUaStackServer
 	{
 		updateServiceTransactionRequest(serviceTransaction);
 		serviceTransaction->sync(false);
-		serviceComponent_->send(serviceTransaction);
+		messageBus_->messageSend(messageBusMember_, messageBusMemberApplication_, serviceTransaction);
 	}
 
 	void
@@ -149,7 +184,7 @@ namespace OpcUaStackServer
 		serviceTransaction->sync(true);
 
 		auto future = serviceTransaction->promise().get_future();
-		serviceComponent_->send(serviceTransaction);
+		messageBus_->messageSend(messageBusMember_, messageBusMemberApplication_, serviceTransaction);
 		future.wait();
 	}
 
@@ -185,7 +220,7 @@ namespace OpcUaStackServer
 			case OpcUaId_CreateVariableRequest_Encoding_DefaultBinary:
 			case OpcUaId_CreateObjectRequest_Encoding_DefaultBinary:
 			{
-				serviceTransaction->componentSession(this);
+				serviceTransaction->memberServiceSession(messageBusMember_);
 				break;
 			}
 			default:

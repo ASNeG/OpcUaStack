@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -33,12 +33,14 @@ namespace OpcUaStackCore
 	  public:
 		typedef boost::shared_ptr<IOService> SPtr;
 
-		IOService();
-		virtual ~IOService();
+		IOService(void);
+		IOService(const std::string& name);
+		virtual ~IOService(void);
 
 		static void secSleep(uint32_t sec);
 		static void msecSleep(uint32_t msec);
 
+		void name(const std::string& name);
 		void start(uint32_t numberThreads = 1);
 		void stop(void);
 		void threadIdVec(std::vector<std::string>& threadIdVec);
@@ -49,6 +51,7 @@ namespace OpcUaStackCore
 	  private:
 		void runThreads(void);
 
+		std::string name_ = "";
 		uint32_t numberThreads_;
 		uint32_t runningThreads_;
 		boost::asio::io_service io_service_;

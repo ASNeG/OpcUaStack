@@ -46,6 +46,7 @@ namespace OpcUaStackServer
 		//- Component -----------------------------------------------------------------
 
 	  private:
+		void sendAnswer(OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction);
 		void receiveRegisterForwardNodeRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 		void receiveRegisterForwardMethodRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 		void receiveRegisterForwardGlobalRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
