@@ -31,8 +31,6 @@ namespace OpcUaStackServer
 	)
 	: ServerServiceBase()
 	{
-		Component::ioThread(ioThread.get());  // FIXME: obsolete
-
 		// set parameter in server service base
 		serviceName_ = serviceName;
 		ServerServiceBase::ioThread_ = ioThread.get();
@@ -151,7 +149,7 @@ namespace OpcUaStackServer
 		SubscriptionManagerMap::iterator it = subscriptionManagerMap_.find(trx->sessionId());
 		if (it == subscriptionManagerMap_.end()) {
 			subscriptionManager = boost::make_shared<SubscriptionManager>();
-			subscriptionManager->ioThread(ioThread());
+			subscriptionManager->ioThread(ioThread_);
 			subscriptionManager->messageBus(messageBus_);
 			subscriptionManager->messageBusMember(messageBusMember_);
 			subscriptionManager->informationModel(informationModel_);

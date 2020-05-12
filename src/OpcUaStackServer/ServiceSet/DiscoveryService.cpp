@@ -40,8 +40,6 @@ namespace OpcUaStackServer
 	, cryptoManager_(nullptr)
 	, endpointDescriptionArray_()
 	{
-		Component::ioThread(ioThread.get());  // FIXME: obsolete
-
 		// set parameter in server service base
 		serviceName_ = serviceName;
 		ServerServiceBase::ioThread_ = ioThread.get();

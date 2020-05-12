@@ -29,7 +29,6 @@ namespace OpcUaStackServer
 {
 
 	class DLLEXPORT ServiceSetBase
-	: public OpcUaStackCore::Component
 	{
 	  public:
 		ServiceSetBase(void);
