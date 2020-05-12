@@ -120,6 +120,7 @@ namespace OpcUaStackClient
 		if (!messageBus_) {
 			messageBus_ = boost::make_shared<MessageBus>();
 		}
+		messageBus_->debugLogging(true);  // FIXME: mus be moved into a configuration file or interface funtion
 
 		// check if session service name already exist. Each session service must have
 		// a unique name.

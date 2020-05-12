@@ -54,7 +54,8 @@ namespace OpcUaStackServer
 		Session(
             const std::string& serviceName,
 			OpcUaStackCore::IOThread* ioThread,
-			OpcUaStackCore::MessageBus::SPtr& messageBus
+			OpcUaStackCore::MessageBus::SPtr& messageBus,
+			boost::shared_ptr<boost::asio::io_service::strand>& strand
 		);
 		~Session(void);
 

@@ -89,11 +89,17 @@ namespace OpcUaStackCore
 		};
 		using MsgList = std::list<Msg>;
 
+		void receiveCancelDebug(
+			const std::string& message
+		);
 		void receiveMessageDebug(
 			const std::string& message,
-			const MessageBusMember::WPtr& sender
+			const MessageBusMember::WPtr& sender,
+			uint32_t sequence
 		);
 		void sendFirstMessageToReceiver(void);
+
+		uint32_t sequence_ = 0;
 
 		std::string name_;
 		MessageBusMemberConfig messageBusMemberConfig_;

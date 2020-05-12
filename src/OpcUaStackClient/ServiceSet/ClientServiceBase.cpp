@@ -62,7 +62,7 @@ namespace OpcUaStackClient
 	void
 	ClientServiceBase::deactivateReceiver(void)
 	{
-		if (!receiverContext_->receiverCallback_) {
+		if (!receiverContext_ || !receiverContext_->receiverCallback_) {
 			return;
 		}
 
@@ -84,7 +84,8 @@ namespace OpcUaStackClient
 		}
 
 		Log(Info, "deactivate receiver")
-			.parameter("ServiceName", serviceName_);
+			.parameter("ServiceName", serviceName_)
+			.parameter("ServiceRunning", receiverContext_->receiverCallbackRunning_);
 
 		//
 		// the function was called by the strand
@@ -99,18 +100,26 @@ namespace OpcUaStackClient
 
 		// the receiver is currently not running
 		messageBus_->cancelReceiver(messageBusMember_, true);
+		receiverContext_->shutdown_ = true;
 		receiverContext_.reset();
 	}
 
 	void
 	ClientServiceBase::receiveCallback(void)
 	{
+		ReceiverContext::SPtr receiverContext = receiverContext_;
+		receiverContext->shutdown_ = false;
+
 		messageBus_->messageReceive(
 			messageBusMember_,
 			strand_,
-			[this](MessageBusError error, const MessageBusMember::WPtr& handleFrom, Message::SPtr& message) {
+			[this, receiverContext](MessageBusError error, const MessageBusMember::WPtr& handleFrom, Message::SPtr& message) {
+				// check receiver context
+				if (receiverContext->shutdown_) {
+					return;
+				}
 
-				// check error
+			    // check error
 				if (error != MessageBusError::Ok) {
 					if (error != MessageBusError::Cancel) {
 						Log(Error, "message receiver error")

@@ -99,16 +99,24 @@ namespace OpcUaStackServer
 
 		// the receiver is currently not running
 		messageBus_->cancelReceiver(messageBusMember_, true);
+		receiverContext_->shutdown_ = true;
 		receiverContext_.reset();
 	}
 
 	void
 	ServerServiceBase::receiveCallback(void)
 	{
+		ReceiverContext::SPtr receiverContext = receiverContext_;
+		receiverContext->shutdown_ = false;
+
 		messageBus_->messageReceive(
 			messageBusMember_,
 			strand_,
-			[this](MessageBusError error, const MessageBusMember::WPtr& handleFrom, Message::SPtr& message) {
+			[this, receiverContext](MessageBusError error, const MessageBusMember::WPtr& handleFrom, Message::SPtr& message) {
+				// check receiver context
+				if (receiverContext->shutdown_) {
+					return;
+				}
 
 				// check error
 				if (error != MessageBusError::Ok) {

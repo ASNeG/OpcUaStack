@@ -64,7 +64,8 @@ namespace OpcUaStackServer
 	Session::Session(
         const std::string& serviceName,
 	    IOThread* ioThread,
-		MessageBus::SPtr& messageBus
+		MessageBus::SPtr& messageBus,
+		boost::shared_ptr<boost::asio::io_service::strand>& strand
     )
 	: Component()
 	, ServerServiceBase()
@@ -85,13 +86,25 @@ namespace OpcUaStackServer
 		// set parameter in server service base
 		serviceName_ = serviceName;
 		ServerServiceBase::ioThread_ = ioThread;
-		strand_ = ioThread->createStrand();
+		if (!strand) {
+			strand_ = ioThread->createStrand();
+		}
+		else {
+		    strand_ = strand;
+		}
 		messageBus_ = messageBus;
 
 		// register message bus receiver
 		MessageBusMemberConfig messageBusMemberConfig;
 		messageBusMemberConfig.strand(strand_);
 		messageBusMember_ = messageBus_->registerMember(serviceName_, messageBusMemberConfig);
+
+		// activate receiver
+		activateReceiver(
+			[this](Message::SPtr& message){
+				receive(message);
+			}
+		);
 	}
 
 	Session::~Session(void)

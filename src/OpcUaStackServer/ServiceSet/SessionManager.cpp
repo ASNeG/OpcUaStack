@@ -100,6 +100,9 @@ namespace OpcUaStackServer
 	bool
 	SessionManager::startup(void)
 	{
+		// create strand for use in secure channel server and session
+		strand_ = ioThread_->createStrand();
+
 		// read SecureChannelLog parameter from configuration file
 		bool secureChannelLog = false;
 		config_->getConfigParameter("OpcUaServer.Logging.SecureChannelLog", secureChannelLog, "0");
@@ -125,6 +128,7 @@ namespace OpcUaStackServer
 
 			// create new secure channel
 			auto secureChannelServer = boost::make_shared<SecureChannelServer>(ioThread_);
+			secureChannelServer->strand(strand_);
 			secureChannelServer->secureChannelServerIf(this);
 
 			// open server socket
@@ -287,9 +291,9 @@ namespace OpcUaStackServer
 		auto session = boost::make_shared<Session>(
 			std::string("Session_") + UniqueId::createStringUniqueId(),
 			ioThread_,
-			messageBus_
+			messageBus_,
+			strand_
 		);
-		session->ioThread(ioThread_);
 		session->sessionIf(this);
 		session->cryptoManager(cryptoManager_);
 		session->endpointDescriptionArray(endpointDescriptionArray);

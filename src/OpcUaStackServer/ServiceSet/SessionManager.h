@@ -148,6 +148,7 @@ namespace OpcUaStackServer
 			OpcUaStackCore::RequestHeader::SPtr requestHeader
 		);
 
+		boost::shared_ptr<boost::asio::io_service::strand> strand_ = nullptr;
 		OpcUaStackCore::IOThread* ioThread_ = nullptr;
 		OpcUaStackCore::MessageBus::SPtr messageBus_ = nullptr;
 		OpcUaStackCore::CryptoManager::SPtr cryptoManager_ = nullptr;
