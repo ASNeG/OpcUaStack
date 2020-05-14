@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -20,6 +20,7 @@
 
 #include "OpcUaStackCore/ServiceSet/QueryServiceTransaction.h"
 #include "OpcUaStackServer/ServiceSet/ServiceSetBase.h"
+#include "OpcUaStackServer/ServiceSet/ServerServiceBase.h"
 
 namespace OpcUaStackServer
 {
@@ -27,18 +28,21 @@ namespace OpcUaStackServer
 	class DLLEXPORT QueryService 
 	: public ServiceSetBase
 	, public OpcUaStackCore::Object
+	, public OpcUaStackServer::ServerServiceBase
 	{
 	  public:
 		typedef boost::shared_ptr<QueryService> SPtr;
 
-		QueryService(void);
+		QueryService(
+			const std::string& serviceName,
+			OpcUaStackCore::IOThread::SPtr& ioThread,
+			OpcUaStackCore::MessageBus::SPtr& messageBus
+		);
 		~QueryService(void);
 
-		//- Component -----------------------------------------------------------------
-		void receive(OpcUaStackCore::Message::SPtr message);
-		//- Component -----------------------------------------------------------------
-
 	  private:
+		void receive(OpcUaStackCore::Message::SPtr message);
+		void sendAnswer(OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction);
 		void receiveQueryFirstRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 		void receiveQueryNextRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 	};

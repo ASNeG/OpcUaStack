@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -1279,7 +1279,7 @@ namespace OpcUaStackCore
 		if (secureChannel->secureChannelTransactionList_.size() == 0) return;
 		if (secureChannel->asyncSend_) return;
 
-		SecureChannelTransaction::SPtr secureChannelTransaction = secureChannel->secureChannelTransactionList_.front();
+		auto secureChannelTransaction = secureChannel->secureChannelTransactionList_.front();
 
 		boost::asio::streambuf sb1;
 		std::iostream ios1(&sb1);
@@ -1599,7 +1599,7 @@ namespace OpcUaStackCore
 		if (secureChannel->secureChannelTransactionList_.size() == 0) return;
 		if (secureChannel->asyncSend_) return;
 
-		SecureChannelTransaction::SPtr secureChannelTransaction = secureChannel->secureChannelTransactionList_.front();
+		auto secureChannelTransaction = secureChannel->secureChannelTransactionList_.front();
 
 		boost::asio::streambuf sb1;
 		std::iostream ios1(&sb1);
@@ -1655,7 +1655,7 @@ namespace OpcUaStackCore
 		}
 
 		// encode MessageHeader
-		MessageHeader::SPtr messageHeaderSPtr = boost::make_shared<MessageHeader>();
+		auto messageHeaderSPtr = boost::make_shared<MessageHeader>();
 		messageHeaderSPtr->messageType(MessageType_Message);
 		messageHeaderSPtr->segmentFlag(secureChannel->actSegmentFlag_);
 		messageHeaderSPtr->messageSize(packetSize);
@@ -1671,7 +1671,7 @@ namespace OpcUaStackCore
 
 		secureChannel->asyncSend_ = true;
 
-		if (secureChannel->actSegmentFlag_ == 'C') {
+		if (secureChannel->actSegmentFlag_ == 'C') { // send a part of the package
 			boost::asio::streambuf sb;
 			std::iostream ios(&sb);
 			boost::asio::const_buffer buffer(secureChannelTransaction->os_.data());
@@ -1703,7 +1703,7 @@ namespace OpcUaStackCore
 
 			secureChannel->sendFirstSegment_ = false;
 		}
-		else {
+		else { // send the entire paket
 			secureChannel->secureChannelTransactionList_.pop_front();
 			secureChannel->sendFirstSegment_ = true;
 

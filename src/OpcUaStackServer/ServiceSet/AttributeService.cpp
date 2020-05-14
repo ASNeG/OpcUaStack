@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -36,12 +36,37 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
-	AttributeService::AttributeService(void)
+	AttributeService::AttributeService(
+		const std::string& serviceName,
+		OpcUaStackCore::IOThread::SPtr& ioThread,
+		OpcUaStackCore::MessageBus::SPtr& messageBus
+	)
+	: ServerServiceBase()
 	{
+		// set parameter in server service base
+		serviceName_ = serviceName;
+		ServerServiceBase::ioThread_ = ioThread.get();
+		strand_ = ioThread->createStrand();
+		messageBus_ = messageBus;
+
+		// register message bus receiver
+		MessageBusMemberConfig messageBusMemberConfig;
+		messageBusMemberConfig.strand(strand_);
+		messageBusMember_ = messageBus_->registerMember(serviceName_, messageBusMemberConfig);
+
+		// activate receiver
+		activateReceiver(
+			[this](Message::SPtr& message){
+				receive(message);
+			}
+		);
 	}
 
 	AttributeService::~AttributeService(void)
 	{
+		// deactivate receiver
+		deactivateReceiver();
+		messageBus_->deregisterMember(messageBusMember_);
 	}
 
 	void 
@@ -67,8 +92,18 @@ namespace OpcUaStackServer
 					.parameter("TypeId", serviceTransaction->nodeTypeRequest());
 
 				serviceTransaction->statusCode(BadInternalError);
-				serviceTransaction->componentSession()->send(serviceTransaction);
+				sendAnswer(serviceTransaction);
 		}
+	}
+
+	void
+	AttributeService::sendAnswer(OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction)
+	{
+		messageBus_->messageSend(
+			messageBusMember_,
+			serviceTransaction->memberServiceSession(),
+			serviceTransaction
+		);
 	}
 
 	// ------------------------------------------------------------------------
@@ -101,12 +136,12 @@ namespace OpcUaStackServer
 		// check node id array
 		if (readRequest->readValueIdArray()->size() == 0) {
 			trx->statusCode(BadNothingToDo);
-			trx->componentSession()->send(serviceTransaction);
+			sendAnswer(serviceTransaction);
 			return;
 		}
 		if (readRequest->readValueIdArray()->size() > 3000) { // FIXME: todo
 			trx->statusCode(BadTooManyOperations);
-			trx->componentSession()->send(serviceTransaction);
+			sendAnswer(serviceTransaction);
 			return;
 		}
 
@@ -202,7 +237,7 @@ namespace OpcUaStackServer
 		}
 
 		trx->statusCode(Success);
-		trx->componentSession()->send(serviceTransaction);
+		sendAnswer(serviceTransaction);
 	}
 
 	OpcUaStatusCode
@@ -273,12 +308,12 @@ namespace OpcUaStackServer
 		// check node id array
 		if (writeRequest->writeValueArray()->size() == 0) {
 			trx->statusCode(BadNothingToDo);
-			trx->componentSession()->send(serviceTransaction);
+			sendAnswer(serviceTransaction);
 			return;
 		}
 		if (writeRequest->writeValueArray()->size() > 3000) {  // FIXME: todo
 			trx->statusCode(BadTooManyOperations);
-			trx->componentSession()->receive(serviceTransaction);
+			sendAnswer(serviceTransaction);
 			return;
 		}
 
@@ -366,7 +401,7 @@ namespace OpcUaStackServer
 		}
 
 		serviceTransaction->statusCode(Success);
-		serviceTransaction->componentSession()->send(serviceTransaction);
+		sendAnswer(serviceTransaction);
 	}
 
 	OpcUaStatusCode
@@ -437,19 +472,19 @@ namespace OpcUaStackServer
 		// check timestampsToReturn attribute
 		if (readRequest->timestampsToReturn() == TimestampsToReturn_Neither) {
 			trx->statusCode(BadInvalidTimestampArgument);
-			trx->componentSession()->send(serviceTransaction);
+			sendAnswer(serviceTransaction);
 			return;
 		}
 
 		// check node id array
 		if (readRequest->nodesToRead()->size() == 0) {
 			trx->statusCode(BadNothingToDo);
-			trx->componentSession()->send(serviceTransaction);
+			sendAnswer(serviceTransaction);
 			return;
 		}
 		if (readRequest->nodesToRead()->size() > 1000) { // FIXME: todo
 			trx->statusCode(BadTooManyOperations);
-			trx->componentSession()->send(serviceTransaction);
+			sendAnswer(serviceTransaction);
 			return;
 		}
 
@@ -480,7 +515,7 @@ namespace OpcUaStackServer
 
 		Log(Error, "receive invalid attribute history read details");
 		trx->statusCode(BadServiceUnsupported);
-		trx->componentSession()->send(serviceTransaction);
+		sendAnswer(serviceTransaction);
 	}
 
 	void
@@ -597,7 +632,7 @@ namespace OpcUaStackServer
 		}
 
 		trx->statusCode(Success);
-		trx->componentSession()->send(serviceTransaction);
+		sendAnswer(serviceTransaction);
 	}
 
 	void
@@ -714,7 +749,7 @@ namespace OpcUaStackServer
 		}
 
 		trx->statusCode(Success);
-		trx->componentSession()->send(serviceTransaction);
+		sendAnswer(serviceTransaction);
 	}
 
 	OpcUaStatusCode
@@ -757,12 +792,12 @@ namespace OpcUaStackServer
 		// check data array
 		if (updateRequest->historyUpdateDetails()->size() == 0) {
 			trx->statusCode(BadNothingToDo);
-			trx->componentSession()->send(serviceTransaction);
+			sendAnswer(serviceTransaction);
 			return;
 		}
 		if (updateRequest->historyUpdateDetails()->size() > 1000) { // FIXME: todo
 			trx->statusCode(BadTooManyOperations);
-			trx->componentSession()->send(serviceTransaction);
+			sendAnswer(serviceTransaction);
 			return;
 		}
 
@@ -857,7 +892,7 @@ namespace OpcUaStackServer
 		}
 
 		serviceTransaction->statusCode(Success);
-		serviceTransaction->componentSession()->send(serviceTransaction);
+		sendAnswer(serviceTransaction);
 	}
 
 	OpcUaStatusCode

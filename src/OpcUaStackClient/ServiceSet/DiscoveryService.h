@@ -18,8 +18,8 @@
 #ifndef __OpcUaStackClient_DiscoveryService_h__
 #define __OpcUaStackClient_DiscoveryService_h__
 
+#include <OpcUaStackCore/MessageBus/MessageBus.h>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Component/MessageBus.h"
 #include "OpcUaStackClient/ServiceSet/ClientServiceBase.h"
 #include "OpcUaStackCore/ServiceSet/DiscoveryServiceTransaction.h"
 
@@ -50,11 +50,8 @@ namespace OpcUaStackClient
 		void syncSend(OpcUaStackCore::ServiceTransactionRegisterServer::SPtr serviceTransactionRegisterServer);
 		void asyncSend(OpcUaStackCore::ServiceTransactionRegisterServer::SPtr serviceTransactionRegisterServer);
 
-		//- Component -----------------------------------------------------------------
-		void receive(OpcUaStackCore::Message::SPtr message);
-		//- Component -----------------------------------------------------------------
-
 	  private:
+		void receive(OpcUaStackCore::Message::SPtr message);
 		OpcUaStackCore::MessageBusMember::WPtr sessionMember_;
 	};
 

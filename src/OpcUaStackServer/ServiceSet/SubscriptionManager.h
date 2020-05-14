@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -21,6 +21,7 @@
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackCore/Utility/SlotTimer.h"
+#include "OpcUaStackCore/MessageBus/MessageBus.h"
 #include "OpcUaStackCore/ServiceSetApplication/ForwardGlobalSync.h"
 #include "OpcUaStackCore/ServiceSet/SubscriptionServiceTransaction.h"
 #include "OpcUaStackCore/ServiceSet/MonitoredItemServiceTransaction.h"
@@ -45,6 +46,8 @@ namespace OpcUaStackServer
 		~SubscriptionManager(void);
 
 		void ioThread(OpcUaStackCore::IOThread* ioThread);
+		void messageBus(OpcUaStackCore::MessageBus::SPtr& messageBus);
+		void messageBusMember(OpcUaStackCore::MessageBusMember::WPtr& messageBusMember);
 		void informationModel(InformationModel::SPtr informationModel);
 		void forwardGlobalSync(OpcUaStackCore::ForwardGlobalSync::SPtr& forwardGlobalSync);
 		void sessionId(uint32_t sessionId);
@@ -62,10 +65,13 @@ namespace OpcUaStackServer
 		size_t size(void);
 
 	  private:
+		void sendAnswer(const OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction);
 		void subscriptionPublishTimeout(Subscription::SPtr subscription);
 		OpcUaStackCore::OpcUaStatusCode receiveAcknowledgement(uint32_t subscriptionId, uint32_t acknowledgmentNumber);
 
 		OpcUaStackCore::IOThread* ioThread_;
+		OpcUaStackCore::MessageBus::SPtr messageBus_ = nullptr;
+		OpcUaStackCore::MessageBusMember::WPtr messageBusMember_;
 		InformationModel::SPtr informationModel_;
 		OpcUaStackCore::ForwardGlobalSync::SPtr forwardGlobalSync_;
 		SubscriptionMap subscriptionMap_;

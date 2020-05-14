@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -23,6 +23,7 @@
 #include "OpcUaStackCore/ServiceSet/MonitoredItemServiceTransaction.h"
 #include "OpcUaStackServer/ServiceSet/ServiceSetBase.h"
 #include "OpcUaStackServer/ServiceSet/SubscriptionManager.h"
+#include "OpcUaStackServer/ServiceSet/ServerServiceBase.h"
 
 namespace OpcUaStackServer
 {
@@ -30,21 +31,25 @@ namespace OpcUaStackServer
 	class DLLEXPORT SubscriptionService 
 	: public ServiceSetBase
 	, public OpcUaStackCore::Object
+	, public OpcUaStackServer::ServerServiceBase
 	{
 	  public:
 		typedef boost::shared_ptr<SubscriptionService> SPtr;
 		typedef std::map<uint32_t, SubscriptionManager::SPtr> SubscriptionManagerMap;
 
-		SubscriptionService(void);
+		SubscriptionService(
+			const std::string& serviceName,
+			OpcUaStackCore::IOThread::SPtr& ioThread,
+			OpcUaStackCore::MessageBus::SPtr& messageBus
+		);
 		~SubscriptionService(void);
 
 		bool init(void);
 
-		//- Component -----------------------------------------------------------------
-		void receive(OpcUaStackCore::Message::SPtr message);
-		//- Component -----------------------------------------------------------------
-
 	  private:
+		void receive(OpcUaStackCore::Message::SPtr message);
+		void sendAnswer(OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction);
+
 		 // subscription
 		void receiveCreateSubscriptionRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 		void receiveDeleteSubscriptionsRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);

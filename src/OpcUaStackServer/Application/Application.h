@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,7 +18,7 @@
 #ifndef __OpcUaStackServer_Application_h__
 #define __OpcUaStackServer_Application_h__
 
-#include "OpcUaStackCore/Component/Component.h"
+#include "OpcUaStackServer/ServiceSet/ServerServiceBase.h"
 #include "OpcUaStackServer/Application/ApplicationBase.h"
 #include "OpcUaStackServer/Application/ApplicationServiceIf.h"
 #include "OpcUaStackServer/Application/ReloadIf.h"
@@ -31,6 +31,7 @@ namespace OpcUaStackServer
 	: public ApplicationBase
 	, public OpcUaStackCore::Object
 	, public ApplicationServiceIf
+	, public OpcUaStackServer::ServerServiceBase
 	{
 	  public:
 		typedef boost::shared_ptr<Application> SPtr;
@@ -43,21 +44,20 @@ namespace OpcUaStackServer
 			ApplShutdown
 		} State;
 
-		Application(void);
+		Application(
+			const std::string& serviceName,
+			OpcUaStackCore::IOThread::SPtr& ioThread,
+			OpcUaStackCore::MessageBus::SPtr& messageBus
+		);
 		~Application(void);
 
 		void applicationIf(ApplicationIf* applicationIf);
 		ApplicationIf* applicationIf(void);
 		void reloadIf(ReloadIf* reloadIf);
 		void applicationName(const std::string& applicationName);
-		void serviceComponent(OpcUaStackCore::Component* serviceComponent);
 
 		bool startup(void);
 		bool shutdown(void);
-
-		//- Component -----------------------------------------------------------------
-		virtual void receive(OpcUaStackCore::Message::SPtr message);
-		//- Component -----------------------------------------------------------------
 
 		//- ApplicationServiceIf ------------------------------------------------------
 		virtual void send(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
@@ -66,13 +66,15 @@ namespace OpcUaStackServer
 		//- ApplicationServiceIf ------------------------------------------------------
 
 	  private:
+		void receive(OpcUaStackCore::Message::SPtr message);
 		void updateServiceTransactionRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 
 		State state_;
 		ApplicationIf* applicationIf_;
 		ReloadIf* reloadIf_;
 		std::string applicationName_;
-		OpcUaStackCore::Component* serviceComponent_;
+
+		OpcUaStackCore::MessageBusMember::WPtr messageBusMemberApplication_;
 	};
 
 }

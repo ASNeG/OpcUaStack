@@ -18,7 +18,7 @@
 #ifndef __OpcUaStackClient_AttributeService_h__
 #define __OpcUaStackClient_AttributeService_h__
 
-#include "OpcUaStackCore/Component/MessageBus.h"
+#include <OpcUaStackCore/MessageBus/MessageBus.h>
 #include "OpcUaStackClient/ServiceSet/ClientServiceBase.h"
 #include "OpcUaStackCore/ServiceSet/AttributeServiceTransaction.h"
 
@@ -51,11 +51,8 @@ namespace OpcUaStackClient
 		void syncSend(OpcUaStackCore::ServiceTransactionHistoryUpdate::SPtr serviceTransactionHistoryUpdate);
 		void asyncSend(OpcUaStackCore::ServiceTransactionHistoryUpdate::SPtr serviceTransactionHistoryUpdate);
 
-		//- Component -----------------------------------------------------------------
-		void receive(OpcUaStackCore::Message::SPtr message);
-		//- Component -----------------------------------------------------------------
-
 	  private:
+		void receive(OpcUaStackCore::Message::SPtr message);
 		OpcUaStackCore::MessageBusMember::WPtr sessionMember_;
 	};
 

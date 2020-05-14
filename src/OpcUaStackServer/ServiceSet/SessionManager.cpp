@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -16,6 +16,7 @@
  */
 
 #include <boost/make_shared.hpp>
+#include "OpcUaStackCore/Utility/UniqueId.h"
 #include "OpcUaStackCore/ServiceSet/ActivateSessionResponse.h"
 #include "OpcUaStackCore/ServiceSet/CloseSessionRequest.h"
 #include "OpcUaStackCore/ServiceSet/CloseSessionResponse.h"
@@ -73,6 +74,12 @@ namespace OpcUaStackServer
 	}
 
 	void
+	SessionManager::messageBus(OpcUaStackCore::MessageBus::SPtr& messageBus)
+	{
+		messageBus_ = messageBus;
+	}
+
+	void
 	SessionManager::endpointDescriptionSet(EndpointDescriptionSet::SPtr& endpointDescriptionSet)
 	{
 		endpointDescriptionSet_ = endpointDescriptionSet;
@@ -93,6 +100,9 @@ namespace OpcUaStackServer
 	bool
 	SessionManager::startup(void)
 	{
+		// create strand for use in secure channel server and session
+		strand_ = ioThread_->createStrand();
+
 		// read SecureChannelLog parameter from configuration file
 		bool secureChannelLog = false;
 		config_->getConfigParameter("OpcUaServer.Logging.SecureChannelLog", secureChannelLog, "0");
@@ -118,6 +128,7 @@ namespace OpcUaStackServer
 
 			// create new secure channel
 			auto secureChannelServer = boost::make_shared<SecureChannelServer>(ioThread_);
+			secureChannelServer->strand(strand_);
 			secureChannelServer->secureChannelServerIf(this);
 
 			// open server socket
@@ -277,8 +288,12 @@ namespace OpcUaStackServer
 		auto endpointDescriptionArray = secureChannelServerConfig->endpointDescriptionArray();
 
 		// create new session
-		Session::SPtr session = boost::make_shared<Session>();
-		session->ioThread(ioThread_);
+		auto session = boost::make_shared<Session>(
+			std::string("Session_") + UniqueId::createStringUniqueId(),
+			ioThread_,
+			messageBus_,
+			strand_
+		);
 		session->sessionIf(this);
 		session->cryptoManager(cryptoManager_);
 		session->endpointDescriptionArray(endpointDescriptionArray);

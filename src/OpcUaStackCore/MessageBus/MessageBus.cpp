@@ -17,7 +17,7 @@
 
 #include <boost/make_shared.hpp>
 #include "OpcUaStackCore/Base/Log.h"
-#include "OpcUaStackCore/Component/MessageBus.h"
+#include "OpcUaStackCore/MessageBus/MessageBus.h"
 
 namespace OpcUaStackCore
 {
@@ -36,6 +36,12 @@ namespace OpcUaStackCore
 		boost::mutex::scoped_lock g(mutex_);
 
 		messageBusMemberMap_.clear();
+	}
+
+	void
+	MessageBus::debugLogging(bool debugLogging)
+	{
+		debugLogging_ = debugLogging;
 	}
 
 	bool
@@ -74,6 +80,7 @@ namespace OpcUaStackCore
 
 		auto messageBusMember = boost::make_shared<MessageBusMember>(messageBusMemberConfig);
 		messageBusMember->name(name);
+		messageBusMember->debugLogging(debugLogging_);
 
 		// add new member to list
 		messageBusMemberMap_.insert(std::make_pair(name, messageBusMember));
@@ -105,6 +112,7 @@ namespace OpcUaStackCore
 
 		auto messageBusMember = boost::make_shared<MessageBusMember>(messageBusMemberConfig);
 		messageBusMember->name(name);
+		messageBusMember->debugLogging(debugLogging_);
 
 		// add new member to list
 		messageBusMemberMap_.insert(std::make_pair(name, messageBusMember));
@@ -266,6 +274,12 @@ namespace OpcUaStackCore
 			return;
 		}
 
+		if (debugLogging_) {
+			Log(Debug, "send message")
+				.parameter("Sender", messageBusSender->name())
+				.parameter("Receiver", messageBusReceiver->name());
+		}
+
 		// send message
 		messageBusReceiver->messageSend(sender, message);
 	}
@@ -331,6 +345,12 @@ namespace OpcUaStackCore
 			return;
 		}
 
+		if (debugLogging_) {
+			Log(Debug, "send message")
+				.parameter("Sender", messageBusSender->name())
+				.parameter("Receiver", messageBusReceiver->name());
+		}
+
 		// send message
 		if (strandSender) {
 			messageBusReceiver->messageSend(sender, message, strandSender, sendCompleteCallback);
@@ -377,6 +397,12 @@ namespace OpcUaStackCore
 			return;
 		}
 
+		if (debugLogging_) {
+			Log(Debug, "send message")
+				.parameter("Sender", messageBusSender->name())
+				.parameter("Receiver", messageBusReceiver->name());
+		}
+
 		// send message
 		messageBusReceiver->messageSend(sender, message, ioThreadSender, sendCompleteCallback);
 	}
@@ -413,8 +439,23 @@ namespace OpcUaStackCore
 			return;
 		}
 
+		if (debugLogging_) {
+			Log(Debug, "send message")
+				.parameter("Sender", messageBusSender->name())
+				.parameter("Receiver", messageBusReceiver->name());
+		}
+
 		// send message
 		messageBusReceiver->messageSend(sender, message, strandSender, sendCompleteCallback);
+	}
+
+	void
+	MessageBus::log(void)
+	{
+		for (auto it : messageBusMemberMap_) {
+			Log(Debug, "MessageBusMember")
+			    .parameter("Name", it.first);
+		}
 	}
 
 }

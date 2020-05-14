@@ -16,7 +16,8 @@
  */
 
 #include <boost/make_shared.hpp>
-#include "OpcUaStackCore/Component/MessageBusMember.h"
+#include <OpcUaStackCore/MessageBus/MessageBusMember.h>
+#include "OpcUaStackCore/Base/Log.h"
 
 namespace OpcUaStackCore
 {
@@ -50,6 +51,26 @@ namespace OpcUaStackCore
 	}
 
 	void
+	MessageBusMember::debugLogging(bool debugLogging)
+	{
+		debugLogging_ = debugLogging;
+	}
+
+	void
+	MessageBusMember::receiveCancelDebug(
+		const std::string& message
+	)
+	{
+		if (!debugLogging_) {
+			return;
+		}
+
+		Log(Debug, message)
+			.parameter("Receiver", name());
+
+	}
+
+	void
 	MessageBusMember::cancelReceiver(
 		bool immediately
 	)
@@ -69,12 +90,15 @@ namespace OpcUaStackCore
 			return;
 		}
 
+		receiveCancelDebug("plan on receive cancel");
+
 		// call receiver callback with error code cancel
 		ReceiveCallback receiveCallback = receiveCallback_;
 		if (strand_) {
 			strand_->post(
 				[this, receiveCallback](void) {
 					Message::SPtr message;
+					receiveCancelDebug("execute receive cancel (strand)");
 					receiveCallback(MessageBusError::Cancel, MessageBusMember::WPtr(), message);
 				}
 			);
@@ -83,6 +107,7 @@ namespace OpcUaStackCore
 			ioThread_->run(
 				[this, receiveCallback](void) {
 					Message::SPtr message;
+					receiveCancelDebug("execute receive cancel (ioThread)");
 					receiveCallback(MessageBusError::Cancel, MessageBusMember::WPtr(), message);
 				}
 			);
@@ -91,6 +116,7 @@ namespace OpcUaStackCore
 			messageBusMemberConfig_.strand()->post(
 				[this, receiveCallback](void) {
 					Message::SPtr message;
+					receiveCancelDebug("execute receive cancel (strand config)");
 					receiveCallback(MessageBusError::Cancel, MessageBusMember::WPtr(), message);
 				}
 			);
@@ -99,6 +125,7 @@ namespace OpcUaStackCore
 			messageBusMemberConfig_.ioThread()->run(
 				[this, receiveCallback](void) {
 					Message::SPtr message;
+					receiveCancelDebug("execute receive cancel (ioThread config)");
 					receiveCallback(MessageBusError::Cancel, MessageBusMember::WPtr(), message);
 				}
 			);
@@ -113,17 +140,45 @@ namespace OpcUaStackCore
 	}
 
 	void
+	MessageBusMember::receiveMessageDebug(
+		const std::string& message,
+		const MessageBusMember::WPtr& sender,
+		uint32_t sequence
+	)
+	{
+		if (!debugLogging_) {
+			return;
+		}
+
+		auto senderLock = sender.lock();
+		if (!senderLock) {
+			return;
+		}
+
+		Log(Debug, message)
+			.parameter("Sender", senderLock->name())
+			.parameter("Receiver", name())
+			.parameter("Sequence", sequence);
+
+	}
+
+	void
 	MessageBusMember::sendFirstMessageToReceiver(void)
 	{
+		// This function must be called inside the mutex_.
+
 		// get message from message list
 		auto sender = msgList_.front().sender_;
 	    auto message = msgList_.front().message_;
 		msgList_.pop_front();
 
+		receiveMessageDebug("plan on receive message", sender, message->sequence_);
+
 		// call receiver callback with message
 		if (strand_) {
 			strand_->post(
 			    [this, sender, message](void) mutable {
+				    receiveMessageDebug("execute receive message (strand)", sender, message->sequence_);
 					receiveCallback_(MessageBusError::Ok, sender, message);
 				}
 			);
@@ -131,6 +186,7 @@ namespace OpcUaStackCore
 		else if (ioThread_) {
 			ioThread_->run(
 			    [this, sender, message](void) mutable {
+				receiveMessageDebug("execute receive message (ioThread)", sender, message->sequence_);
 					receiveCallback_(MessageBusError::Ok, sender, message);
 				}
 			);
@@ -138,6 +194,7 @@ namespace OpcUaStackCore
 		else if (messageBusMemberConfig_.strand()) {
 			messageBusMemberConfig_.strand()->post(
 			    [this, sender, message](void) mutable {
+				    receiveMessageDebug("execute receive message (strand config)", sender, message->sequence_);
 					receiveCallback_(MessageBusError::Ok, sender, message);
 				}
 			);
@@ -145,6 +202,7 @@ namespace OpcUaStackCore
 		else if (messageBusMemberConfig_.ioThread()) {
 			messageBusMemberConfig_.ioThread()->run(
 			    [this, sender, message](void) mutable {
+					receiveMessageDebug("execute receive message (ioThread config)", sender, message->sequence_);
 					receiveCallback_(MessageBusError::Ok, sender, message);
 				}
 			);
@@ -247,7 +305,10 @@ namespace OpcUaStackCore
 		const Message::SPtr& message
 	)
 	{
+		// This function transfers a message to the message bus member
+
 		boost::mutex::scoped_lock g(mutex_);
+		message->sequence_ = sequence_++;
 
 		// check number of entries in list
 		auto maxReceiveQueueSize = messageBusMemberConfig_.maxReceiveQueueSize();
@@ -275,7 +336,10 @@ namespace OpcUaStackCore
 		const SendCompleteCallback& sendCompleteCallback
 	)
 	{
+		// This function transfers a message to the message bus member
+
 		boost::mutex::scoped_lock g(mutex_);
+		message->sequence_ = sequence_++;
 		sendCompleteCallback_ = sendCompleteCallback;
 
 		// check number of entries in list
@@ -316,7 +380,10 @@ namespace OpcUaStackCore
 		const SendCompleteCallback& sendCompleteCallback
 	)
 	{
+		// This function transfers a message to the message bus member
+
 		boost::mutex::scoped_lock g(mutex_);
+		message->sequence_ = sequence_++;
 		sendCompleteCallback_ = sendCompleteCallback;
 
 		// check number of entries in list

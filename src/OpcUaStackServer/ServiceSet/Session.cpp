@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -61,8 +61,13 @@ namespace OpcUaStackServer
 	}
 
 
-	Session::Session(void)
-	: Component()
+	Session::Session(
+        const std::string& serviceName,
+	    IOThread* ioThread,
+		MessageBus::SPtr& messageBus,
+		boost::shared_ptr<boost::asio::io_service::strand>& strand
+    )
+	: ServerServiceBase()
 	, forwardGlobalSync_()
 	, sessionIf_(nullptr)
 	, sessionState_(SessionState_Close)
@@ -75,11 +80,36 @@ namespace OpcUaStackServer
 		Log(Info, "session construct")
 			.parameter("SessionId", sessionId_)
 			.parameter("AuthenticationToken", authenticationToken_);
-		componentName("Session");
+
+		// set parameter in server service base
+		serviceName_ = serviceName;
+		ServerServiceBase::ioThread_ = ioThread;
+		if (!strand) {
+			strand_ = ioThread->createStrand();
+		}
+		else {
+		    strand_ = strand;
+		}
+		messageBus_ = messageBus;
+
+		// register message bus receiver
+		MessageBusMemberConfig messageBusMemberConfig;
+		messageBusMemberConfig.strand(strand_);
+		messageBusMember_ = messageBus_->registerMember(serviceName_, messageBusMemberConfig);
+
+		// activate receiver
+		activateReceiver(
+			[this](Message::SPtr& message){
+				receive(message);
+			}
+		);
 	}
 
 	Session::~Session(void)
 	{
+		// deactivate receiver
+		deactivateReceiver();
+		messageBus_->deregisterMember(messageBusMember_);
 	}
 
 	void
@@ -1040,7 +1070,6 @@ namespace OpcUaStackServer
 			return;
 		}
 		secureChannelTransaction->responseTypeNodeId_ = OpcUaNodeId(serviceTransactionSPtr->nodeTypeResponse().nodeId<uint32_t>());
-		serviceTransactionSPtr->componentSession(this);
 		serviceTransactionSPtr->sessionId(sessionId_);
 		serviceTransactionSPtr->userContext(userContext_);
 		Object::SPtr handle = secureChannelTransaction;
@@ -1064,7 +1093,12 @@ namespace OpcUaStackServer
 			.parameter("RequestId", serviceTransactionSPtr->requestId_);
 
 		// send message request to service component
-		serviceTransactionSPtr->componentService()->send(serviceTransactionSPtr);
+		serviceTransactionSPtr->memberServiceSession(messageBusMember_);
+		messageBus_->messageSend(
+			messageBusMember_,
+			serviceTransactionSPtr->memberService(),
+			serviceTransactionSPtr
+		);
 	}
 
 	void

@@ -18,8 +18,8 @@
 #ifndef __OpcUaServer_DiscoveryClient_h__
 #define __OpcUaServer_DiscoveryClient_h__
 
+#include <OpcUaStackCore/MessageBus/MessageBus.h>
 #include "OpcUaStackCore/Base/Config.h"
-#include "OpcUaStackCore/Component/MessageBus.h"
 #include "OpcUaStackClient/ApplicationUtility/DiscoveryClientRegisteredServers.h"
 
 namespace OpcUaServer
@@ -32,8 +32,8 @@ namespace OpcUaServer
 		~DiscoveryClient(void);
 
 		void cryptoManager(OpcUaStackCore::CryptoManager::SPtr& cryptoManager);
-		void ioThread(OpcUaStackCore::IOThread::SPtr& ioThread);
-		void messageBus(OpcUaStackCore::MessageBus::SPtr& messageBus);
+		void ioThread(const OpcUaStackCore::IOThread::SPtr& ioThread);
+		void messageBus(const OpcUaStackCore::MessageBus::SPtr& messageBus);
 
 		bool startup(OpcUaStackCore::Config& config);
 		void shutdown(void);

@@ -21,9 +21,10 @@
 #include <boost/thread/mutex.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/asio/strand.hpp>
-#include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Component/MessageBusConfig.h"
-#include "OpcUaStackCore/Component/MessageBusMember.h"
+#include <OpcUaStackCore/MessageBus/MessageBusConfig.h>
+#include <OpcUaStackCore/MessageBus/MessageBusMember.h>
+
+#include <OpcUaStackCore/MessageBus/MessageBus.h>
 
 namespace OpcUaStackCore
 {
@@ -37,6 +38,7 @@ namespace OpcUaStackCore
 		MessageBus(MessageBusConfig& messageBusConfig);
 		virtual ~MessageBus(void);
 
+		void debugLogging(bool debugLogging);
 		bool existMember(const std::string& name);
 		MessageBusMember::WPtr registerMember(const std::string& name);
 		MessageBusMember::WPtr registerMember(const std::string& name, MessageBusMemberConfig& messageBusMemberConfig);
@@ -90,7 +92,10 @@ namespace OpcUaStackCore
 			const MessageBusMember::SendCompleteCallback& sendCompleteCallback
 		);
 
+		void log(void);
+
 	  private:
+		bool debugLogging_ = false;
 		boost::mutex mutex_;
 		MessageBusConfig messageBusConfig_;
 		MessageBusMember::Map messageBusMemberMap_;

@@ -18,7 +18,7 @@
 #ifndef __OpcUaStackClient_MethodService_h__
 #define __OpcUaStackClient_MethodService_h__
 
-#include "OpcUaStackCore/Component/MessageBus.h"
+#include <OpcUaStackCore/MessageBus/MessageBus.h>
 #include "OpcUaStackCore/ServiceSet/MethodServiceTransaction.h"
 #include "OpcUaStackClient/ServiceSet/ClientServiceBase.h"
 
@@ -45,11 +45,8 @@ namespace OpcUaStackClient
 		void syncSend(OpcUaStackCore::ServiceTransactionCall::SPtr serviceTransactionRead);
 		void asyncSend(OpcUaStackCore::ServiceTransactionCall::SPtr serviceTransactionRead);
 
-		//- Component -----------------------------------------------------------------
-		void receive(OpcUaStackCore::Message::SPtr message);
-		//- Component -----------------------------------------------------------------
-
 	  private:
+		void receive(OpcUaStackCore::Message::SPtr message);
 		OpcUaStackCore::MessageBusMember::WPtr sessionMember_;
 	};
 

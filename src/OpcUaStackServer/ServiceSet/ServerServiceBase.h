@@ -15,25 +15,25 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackClient_ClientServiceBase_h__
-#define __OpcUaStackClient_ClientServiceBase_h__
+#ifndef __OpcUaStackServer_ServerServiceBase_h__
+#define __OpcUaStackServer_ServerServiceBase_h__
 
 #include <OpcUaStackCore/MessageBus/MessageBus.h>
 #include <functional>
 #include "OpcUaStackCore/Utility/IOThread.h"
 
-namespace OpcUaStackClient 
+namespace OpcUaStackServer
 {
 
-	class DLLEXPORT ClientServiceBase
-	: public boost::enable_shared_from_this<ClientServiceBase>
+	class DLLEXPORT ServerServiceBase
+	: public boost::enable_shared_from_this<ServerServiceBase>
 	{
 	  public:
-		using SPtr = boost::shared_ptr<ClientServiceBase>;
+		using SPtr = boost::shared_ptr<ServerServiceBase>;
 		using ReceiverCallback = std::function<void (OpcUaStackCore::Message::SPtr&)>;
 
-		ClientServiceBase(void);
-		virtual ~ClientServiceBase(void);
+		ServerServiceBase(void);
+		virtual ~ServerServiceBase(void);
 
 		OpcUaStackCore::MessageBusMember::WPtr& messageBusMember(void);
 		boost::shared_ptr<boost::asio::io_service::strand>& strand(void);

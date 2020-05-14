@@ -37,12 +37,17 @@ namespace OpcUaStackServer
 	class DLLEXPORT ServiceManager
 	{
 	  public:
+		using SPtr = boost::shared_ptr<ServiceManager>;
+
 		ServiceManager(void);
 		~ServiceManager(void);
 
-		bool init(SessionManager& sessionManager);
+		bool init(
+			SessionManager& sessionManager
+		);
 		bool informationModel(InformationModel::SPtr informatinModel);
-		bool ioThread(OpcUaStackCore::IOThread* ioThread);
+		bool ioThread(OpcUaStackCore::IOThread::SPtr& ioThread);
+		bool messageBus(OpcUaStackCore::MessageBus::SPtr& messageBus);
 		bool init(void);
 		bool shutdown(void);
 
@@ -50,20 +55,31 @@ namespace OpcUaStackServer
 		DiscoveryService::SPtr discoveryService(void);
 
 	  private:
-		void initForwardGlobalSync(void);
+		void initAttributeService(void);
+		void initMethodService(void);
+		void initNodeManagementService(void);
+		void initSubscriptionService(void);
+		void initMonitoredItemService(void);
+		void initViewService(void);
+		void initQueryService(void);
+		void initDiscoveryService(void);
+		void initApplicationService(void);
 
-		OpcUaStackCore::ForwardGlobalSync::SPtr forwardGlobalSync_;
+		OpcUaStackCore::IOThread::SPtr ioThread_ = nullptr;
+		OpcUaStackCore::MessageBus::SPtr messageBus_ = nullptr;
 
-		TransactionManager::SPtr transactionManager_;
-		AttributeService::SPtr attributeService_;
-		MethodService::SPtr methodService_;
-		MonitoredItemService::SPtr monitoredItemService_;
-		NodeManagementService::SPtr nodeManagementService_;
-		QueryService::SPtr queryService_;
-		SubscriptionService::SPtr subscriptionService_;
-		ViewService::SPtr viewService_;
-		ApplicationService::SPtr applicationService_;
-		DiscoveryService::SPtr discoveryService_;
+		OpcUaStackCore::ForwardGlobalSync::SPtr forwardGlobalSync_ = nullptr;
+
+		TransactionManager::SPtr transactionManager_ = nullptr;
+		AttributeService::SPtr attributeService_ = nullptr;
+		MethodService::SPtr methodService_ = nullptr;
+		MonitoredItemService::SPtr monitoredItemService_ = nullptr;
+		NodeManagementService::SPtr nodeManagementService_ = nullptr;
+		QueryService::SPtr queryService_ = nullptr;
+		SubscriptionService::SPtr subscriptionService_ = nullptr;
+		ViewService::SPtr viewService_ = nullptr;
+		ApplicationService::SPtr applicationService_ = nullptr;
+		DiscoveryService::SPtr discoveryService_ = nullptr;
 	};
 
 }

@@ -24,28 +24,8 @@ namespace OpcUaStackServer
 
 	ServiceManager::ServiceManager(void)
 	: transactionManager_(boost::make_shared<TransactionManager>())
-	, attributeService_(boost::make_shared<AttributeService>())
-	, methodService_(boost::make_shared<MethodService>())
-	, monitoredItemService_(boost::make_shared<MonitoredItemService>())
-	, nodeManagementService_(boost::make_shared<NodeManagementService>())
-	, queryService_(boost::make_shared<QueryService>())
-	, subscriptionService_(boost::make_shared<SubscriptionService>())
-	, viewService_(boost::make_shared<ViewService>())
-	, applicationService_(boost::make_shared<ApplicationService>())
-	, discoveryService_(boost::make_shared<DiscoveryService>())
 	, forwardGlobalSync_(boost::make_shared<ForwardGlobalSync>())
 	{
-		attributeService_->componentName("AttributeService");
-		methodService_->componentName("MethodService");
-		monitoredItemService_->componentName("MonitoredItemService");
-		nodeManagementService_->componentName("NodeManagementService");
-		queryService_->componentName("QueryService");
-		subscriptionService_->componentName("SubscriptionService");
-		viewService_->componentName("ViewService");
-		applicationService_->componentName("ApplicationService");
-		discoveryService_->componentName("DiscoveryService");
-
-		initForwardGlobalSync();
 	}
 
 	ServiceManager::~ServiceManager(void)
@@ -53,85 +33,96 @@ namespace OpcUaStackServer
 	}
 
 	void
-	ServiceManager::initForwardGlobalSync(void)
+	ServiceManager::initAttributeService(void)
 	{
+		attributeService_ = boost::make_shared<AttributeService>(
+			"AttributeServiceServer",
+			ioThread_,
+			messageBus_
+		);
 		attributeService_->forwardGlobalSync(forwardGlobalSync_);
-		methodService_->forwardGlobalSync(forwardGlobalSync_);
-		monitoredItemService_->forwardGlobalSync(forwardGlobalSync_);
-		nodeManagementService_->forwardGlobalSync(forwardGlobalSync_);
-		queryService_->forwardGlobalSync(forwardGlobalSync_);
-		subscriptionService_->forwardGlobalSync(forwardGlobalSync_);
-		viewService_->forwardGlobalSync(forwardGlobalSync_);
-		applicationService_->forwardGlobalSync(forwardGlobalSync_);
-		discoveryService_->forwardGlobalSync(forwardGlobalSync_);
-	}
 
-	bool
-	ServiceManager::init(SessionManager& sessionManager)
-	{
-		//
-		// attribute service
-		//
 		ServiceTransactionRead::name("Read");
 		ServiceTransactionWrite::name("Write");
 		ServiceTransactionHistoryRead::name("HistoryRead");
 		ServiceTransactionHistoryUpdate::name("HistoryUpdate");
 
-		ServiceTransactionRead::SPtr serviceTransactionRead = boost::make_shared<ServiceTransactionRead>();
-		ServiceTransactionWrite::SPtr serviceTransactionWrite = boost::make_shared<ServiceTransactionWrite>();
-		ServiceTransactionHistoryRead::SPtr serviceTransactionHistoryRead = boost::make_shared<ServiceTransactionHistoryRead>();
-		ServiceTransactionHistoryUpdate::SPtr serviceTransactionHistoryUpdate = boost::make_shared<ServiceTransactionHistoryUpdate>();
+		auto serviceTransactionRead = boost::make_shared<ServiceTransactionRead>();
+		auto serviceTransactionWrite = boost::make_shared<ServiceTransactionWrite>();
+		auto serviceTransactionHistoryRead = boost::make_shared<ServiceTransactionHistoryRead>();
+		auto serviceTransactionHistoryUpdate = boost::make_shared<ServiceTransactionHistoryUpdate>();
 
-		serviceTransactionRead->componentService(&*attributeService_);
-		serviceTransactionWrite->componentService(&*attributeService_);
-		serviceTransactionHistoryRead->componentService(&*attributeService_);
-		serviceTransactionHistoryUpdate->componentService(&*attributeService_);
+		serviceTransactionRead->memberService(attributeService_->messageBusMember());
+		serviceTransactionWrite->memberService(attributeService_->messageBusMember());
+		serviceTransactionHistoryRead->memberService(attributeService_->messageBusMember());
+		serviceTransactionHistoryUpdate->memberService(attributeService_->messageBusMember());
 
 		transactionManager_->registerTransaction(serviceTransactionRead);
 		transactionManager_->registerTransaction(serviceTransactionWrite);
 		transactionManager_->registerTransaction(serviceTransactionHistoryRead);
 		transactionManager_->registerTransaction(serviceTransactionHistoryUpdate);
+	}
 
+	void
+	ServiceManager::initMethodService(void)
+	{
+		methodService_ = boost::make_shared<MethodService>(
+			"MethodServiceServer",
+			ioThread_,
+			messageBus_
+		);
+		methodService_->forwardGlobalSync(forwardGlobalSync_);
 
-		//
-		// method service
-		//
 		ServiceTransactionCall::name("Call");
 
-		ServiceTransactionCall::SPtr serviceTransactionCall = boost::make_shared<ServiceTransactionCall>();
+		auto serviceTransactionCall = boost::make_shared<ServiceTransactionCall>();
 
-		serviceTransactionCall->componentService(&*methodService_);
+		serviceTransactionCall->memberService(methodService_->messageBusMember());
 
 		transactionManager_->registerTransaction(serviceTransactionCall);
+	}
 
+	void
+	ServiceManager::initNodeManagementService(void)
+	{
+		nodeManagementService_ = boost::make_shared<NodeManagementService>(
+			"NodeManagementServiceServer",
+			ioThread_,
+			messageBus_
+		);
+		nodeManagementService_->forwardGlobalSync(forwardGlobalSync_);
 
-		//
-		// node mangement service
-		//
 		ServiceTransactionAddNodes::name("AddNodes");
 		ServiceTransactionAddReferences::name("AddReferences");
 		ServiceTransactionDeleteNodes::name("DeleteNodes");
 		ServiceTransactionDeleteReferences::name("DeleteReferences");
 
-		ServiceTransactionAddNodes::SPtr serviceTransactionAddNodes = boost::make_shared<ServiceTransactionAddNodes>();
-		ServiceTransactionAddReferences::SPtr serviceTransactionAddReferences = boost::make_shared<ServiceTransactionAddReferences>();
-		ServiceTransactionDeleteNodes::SPtr serviceTransactionDeleteNodes = boost::make_shared<ServiceTransactionDeleteNodes>();
-		ServiceTransactionDeleteReferences::SPtr serviceTransactionDeleteReferences = boost::make_shared<ServiceTransactionDeleteReferences>();
+		auto serviceTransactionAddNodes = boost::make_shared<ServiceTransactionAddNodes>();
+		auto serviceTransactionAddReferences = boost::make_shared<ServiceTransactionAddReferences>();
+		auto serviceTransactionDeleteNodes = boost::make_shared<ServiceTransactionDeleteNodes>();
+		auto serviceTransactionDeleteReferences = boost::make_shared<ServiceTransactionDeleteReferences>();
 
-		serviceTransactionAddNodes->componentService(&*nodeManagementService_);
-		serviceTransactionAddReferences->componentService(&*nodeManagementService_);
-		serviceTransactionDeleteNodes->componentService(&*nodeManagementService_);
-		serviceTransactionDeleteReferences->componentService(&*nodeManagementService_);
+		serviceTransactionAddNodes->memberService(nodeManagementService_->messageBusMember());
+		serviceTransactionAddReferences->memberService(nodeManagementService_->messageBusMember());
+		serviceTransactionDeleteNodes->memberService(nodeManagementService_->messageBusMember());
+		serviceTransactionDeleteReferences->memberService(nodeManagementService_->messageBusMember());
 
 		transactionManager_->registerTransaction(serviceTransactionAddNodes);
 		transactionManager_->registerTransaction(serviceTransactionAddReferences);
 		transactionManager_->registerTransaction(serviceTransactionDeleteNodes);
 		transactionManager_->registerTransaction(serviceTransactionDeleteReferences);
+	}
 
+	void
+	ServiceManager::initSubscriptionService(void)
+	{
+		subscriptionService_ = boost::make_shared<SubscriptionService>(
+			"SubscriptionServiceServer",
+			ioThread_,
+			messageBus_
+		);
+		subscriptionService_->forwardGlobalSync(forwardGlobalSync_);
 
-		//
-		// subscription service
-		//
 		ServiceTransactionCreateSubscription::name("CreateSubscription");
 		ServiceTransactionDeleteSubscriptions::name("DeleteSubscription");
 		ServiceTransactionModifySubscription::name("ModifySubscription");
@@ -140,21 +131,21 @@ namespace OpcUaStackServer
 		ServiceTransactionSetPublishingMode::name("SetPublishingMode");
 		ServiceTransactionTransferSubscriptions::name("TransferSubscription");
 
-		ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription = boost::make_shared<ServiceTransactionCreateSubscription>();
-		ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions = boost::make_shared<ServiceTransactionDeleteSubscriptions>();
-		ServiceTransactionModifySubscription::SPtr serviceTransactionModifySubscription = boost::make_shared<ServiceTransactionModifySubscription>();
-		ServiceTransactionPublish::SPtr serviceTransactionPublish = boost::make_shared<ServiceTransactionPublish>();
-		ServiceTransactionRepublish::SPtr serviceTransactionRepublish = boost::make_shared<ServiceTransactionRepublish>();
-		ServiceTransactionSetPublishingMode::SPtr serviceTransactionSetPublishingMode = boost::make_shared<ServiceTransactionSetPublishingMode>();
-		ServiceTransactionTransferSubscriptions::SPtr serviceTransactionTransferSubscriptions = boost::make_shared<ServiceTransactionTransferSubscriptions>();
+		auto serviceTransactionCreateSubscription = boost::make_shared<ServiceTransactionCreateSubscription>();
+		auto serviceTransactionDeleteSubscriptions = boost::make_shared<ServiceTransactionDeleteSubscriptions>();
+		auto serviceTransactionModifySubscription = boost::make_shared<ServiceTransactionModifySubscription>();
+		auto serviceTransactionPublish = boost::make_shared<ServiceTransactionPublish>();
+		auto serviceTransactionRepublish = boost::make_shared<ServiceTransactionRepublish>();
+		auto serviceTransactionSetPublishingMode = boost::make_shared<ServiceTransactionSetPublishingMode>();
+		auto serviceTransactionTransferSubscriptions = boost::make_shared<ServiceTransactionTransferSubscriptions>();
 
-		serviceTransactionCreateSubscription->componentService(&*subscriptionService_);
-		serviceTransactionDeleteSubscriptions->componentService(&*subscriptionService_);
-		serviceTransactionModifySubscription->componentService(&*subscriptionService_);
-		serviceTransactionPublish->componentService(&*subscriptionService_);
-		serviceTransactionRepublish->componentService(&*subscriptionService_);
-		serviceTransactionSetPublishingMode->componentService(&*subscriptionService_);
-		serviceTransactionTransferSubscriptions->componentService(&*subscriptionService_);
+		serviceTransactionCreateSubscription->memberService(subscriptionService_->messageBusMember());
+		serviceTransactionDeleteSubscriptions->memberService(subscriptionService_->messageBusMember());
+		serviceTransactionModifySubscription->memberService(subscriptionService_->messageBusMember());
+		serviceTransactionPublish->memberService(subscriptionService_->messageBusMember());
+		serviceTransactionRepublish->memberService(subscriptionService_->messageBusMember());
+		serviceTransactionSetPublishingMode->memberService(subscriptionService_->messageBusMember());
+		serviceTransactionTransferSubscriptions->memberService(subscriptionService_->messageBusMember());
 
 		transactionManager_->registerTransaction(serviceTransactionCreateSubscription);
 		transactionManager_->registerTransaction(serviceTransactionDeleteSubscriptions);
@@ -163,97 +154,152 @@ namespace OpcUaStackServer
 		transactionManager_->registerTransaction(serviceTransactionRepublish);
 		transactionManager_->registerTransaction(serviceTransactionSetPublishingMode);
 		transactionManager_->registerTransaction(serviceTransactionTransferSubscriptions);
+	}
 
+	void
+	ServiceManager::initMonitoredItemService(void)
+	{
+		monitoredItemService_ = boost::make_shared<MonitoredItemService>(
+			"MonitoredItemServiceServer",
+			ioThread_,
+			messageBus_
+		);
+		monitoredItemService_->forwardGlobalSync(forwardGlobalSync_);
 
-		//
-		// monitored service
-		//
 		ServiceTransactionCreateMonitoredItems::name("CreateMonitorItems");
 		ServiceTransactionDeleteMonitoredItems::name("DeleteMonitorItems");
 		ServiceTransactionModifyMonitoredItems::name("ModifyMonitorItems");
 		ServiceTransactionSetMonitoringMode::name("SetMonitoringMode");
 		ServiceTransactionSetTriggering::name("SetTriggering");
 
+		auto serviceTransactionCreateMonitoredItems = boost::make_shared<ServiceTransactionCreateMonitoredItems>();
+		auto serviceTransactionDeleteMonitoredItems = boost::make_shared<ServiceTransactionDeleteMonitoredItems>();
+		auto serviceTransactionModifyMonitoredItems = boost::make_shared<ServiceTransactionModifyMonitoredItems>();
+		auto serviceTransactionSetMonitoringMode = boost::make_shared<ServiceTransactionSetMonitoringMode>();
+		auto serviceTransactionSetTriggering = boost::make_shared<ServiceTransactionSetTriggering>();
 
-		ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems = boost::make_shared<ServiceTransactionCreateMonitoredItems>();
-		ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems = boost::make_shared<ServiceTransactionDeleteMonitoredItems>();
-		ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems = boost::make_shared<ServiceTransactionModifyMonitoredItems>();
-		ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode = boost::make_shared<ServiceTransactionSetMonitoringMode>();
-		ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering = boost::make_shared<ServiceTransactionSetTriggering>();
-
-		serviceTransactionCreateMonitoredItems->componentService(&*subscriptionService_);
-		serviceTransactionDeleteMonitoredItems->componentService(&*subscriptionService_);
-		serviceTransactionModifyMonitoredItems->componentService(&*subscriptionService_);
-		serviceTransactionSetMonitoringMode->componentService(&*subscriptionService_);
-		serviceTransactionSetTriggering->componentService(&*subscriptionService_);
+		serviceTransactionCreateMonitoredItems->memberService(subscriptionService_->messageBusMember());
+		serviceTransactionDeleteMonitoredItems->memberService(subscriptionService_->messageBusMember());
+		serviceTransactionModifyMonitoredItems->memberService(subscriptionService_->messageBusMember());
+		serviceTransactionSetMonitoringMode->memberService(subscriptionService_->messageBusMember());
+		serviceTransactionSetTriggering->memberService(subscriptionService_->messageBusMember());
 
 		transactionManager_->registerTransaction(serviceTransactionCreateMonitoredItems);
 		transactionManager_->registerTransaction(serviceTransactionDeleteMonitoredItems);
 		transactionManager_->registerTransaction(serviceTransactionModifyMonitoredItems);
 		transactionManager_->registerTransaction(serviceTransactionSetMonitoringMode);
 		transactionManager_->registerTransaction(serviceTransactionSetTriggering);
+	}
 
+	void
+	ServiceManager::initViewService(void)
+	{
+		viewService_ = boost::make_shared<ViewService>(
+			"ViewServiceServer",
+			ioThread_,
+			messageBus_
+		);
+		viewService_->forwardGlobalSync(forwardGlobalSync_);
 
-		//
-		// view service
-		//
 		ServiceTransactionBrowse::name("Browse");
 		ServiceTransactionBrowseNext::name("BrowseNext");
 		ServiceTransactionTranslateBrowsePathsToNodeIds::name("TranslateBrowsePathsToNodeIds");
 		ServiceTransactionRegisterNodes::name("RegisterNodes");
 		ServiceTransactionUnregisterNodes::name("UnregisterNodes");
 
-		ServiceTransactionBrowse::SPtr serviceTransactionBrowse = boost::make_shared<ServiceTransactionBrowse>();
-		ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext = boost::make_shared<ServiceTransactionBrowseNext>();
-		ServiceTransactionTranslateBrowsePathsToNodeIds::SPtr serviceTransactionTranslateBrowsePathsToNodeIds = boost::make_shared<ServiceTransactionTranslateBrowsePathsToNodeIds>();
-		ServiceTransactionRegisterNodes::SPtr serviceTransactionRegisterNodes = boost::make_shared<ServiceTransactionRegisterNodes>();
-		ServiceTransactionUnregisterNodes::SPtr serviceTransactionUnregisterNodes = boost::make_shared<ServiceTransactionUnregisterNodes>();
+		auto serviceTransactionBrowse = boost::make_shared<ServiceTransactionBrowse>();
+		auto serviceTransactionBrowseNext = boost::make_shared<ServiceTransactionBrowseNext>();
+		auto serviceTransactionTranslateBrowsePathsToNodeIds = boost::make_shared<ServiceTransactionTranslateBrowsePathsToNodeIds>();
+		auto serviceTransactionRegisterNodes = boost::make_shared<ServiceTransactionRegisterNodes>();
+		auto serviceTransactionUnregisterNodes = boost::make_shared<ServiceTransactionUnregisterNodes>();
 
-		serviceTransactionBrowse->componentService(&*viewService_);
-		serviceTransactionBrowseNext->componentService(&*viewService_);
-		serviceTransactionTranslateBrowsePathsToNodeIds->componentService(&*viewService_);
-		serviceTransactionRegisterNodes->componentService(&*viewService_);
-		serviceTransactionUnregisterNodes->componentService(&*viewService_);
+		serviceTransactionBrowse->memberService(viewService_->messageBusMember());
+		serviceTransactionBrowseNext->memberService(viewService_->messageBusMember());
+		serviceTransactionTranslateBrowsePathsToNodeIds->memberService(viewService_->messageBusMember());
+		serviceTransactionRegisterNodes->memberService(viewService_->messageBusMember());
+		serviceTransactionUnregisterNodes->memberService(viewService_->messageBusMember());
 
 		transactionManager_->registerTransaction(serviceTransactionBrowse);
 		transactionManager_->registerTransaction(serviceTransactionBrowseNext);
 		transactionManager_->registerTransaction(serviceTransactionTranslateBrowsePathsToNodeIds);
 		transactionManager_->registerTransaction(serviceTransactionRegisterNodes);
 		transactionManager_->registerTransaction(serviceTransactionUnregisterNodes);
+	}
 
-		//
-		// discovery service service
-		//
+	void
+	ServiceManager::initQueryService(void)
+	{
+		queryService_ = boost::make_shared<QueryService>(
+			"QueryServiceServer",
+			ioThread_,
+			messageBus_
+		);
+		queryService_->forwardGlobalSync(forwardGlobalSync_);
+	}
+
+	void
+	ServiceManager::initDiscoveryService(void)
+	{
+		discoveryService_ = boost::make_shared<DiscoveryService>(
+			"DiscoveryServiceServer",
+			ioThread_,
+			messageBus_
+		);
+		discoveryService_->forwardGlobalSync(forwardGlobalSync_);
+
 		ServiceTransactionRegisterServer::name("RegisterServer");
 
-		ServiceTransactionRegisterServer::SPtr serviceTransactionRegisterServer = boost::make_shared<ServiceTransactionRegisterServer>();
+		auto serviceTransactionRegisterServer = boost::make_shared<ServiceTransactionRegisterServer>();
 
-		serviceTransactionRegisterServer->componentService(&*discoveryService_);
+		serviceTransactionRegisterServer->memberService(discoveryService_->messageBusMember());
 
 		transactionManager_->registerTransaction(serviceTransactionRegisterServer);
+	}
 
-		//
-		// application service
-		//
+	void
+	ServiceManager::initApplicationService(void)
+	{
+		applicationService_ = boost::make_shared<ApplicationService>(
+			"ApplicationServiceServer",
+			ioThread_,
+			messageBus_
+		);
+		applicationService_->forwardGlobalSync(forwardGlobalSync_);
+
 		ServiceTransactionRegisterForwardNode::name("RegisterForwardNode");
 		ServiceTransactionRegisterForwardMethod::name("RegisterForwardMethod");
 		ServiceTransactionRegisterForwardGlobal::name("RegisterForwardGlobal");
 
-		ServiceTransactionRegisterForwardNode::SPtr serviceTransactionRegisterForwardNode = boost::make_shared<ServiceTransactionRegisterForwardNode>();
-		ServiceTransactionRegisterForwardMethod::SPtr serviceTransactionRegisterForwardMethod = boost::make_shared<ServiceTransactionRegisterForwardMethod>();
-		ServiceTransactionRegisterForwardGlobal::SPtr serviceTransactionRegisterForwardGlobal = boost::make_shared<ServiceTransactionRegisterForwardGlobal>();
+		auto serviceTransactionRegisterForwardNode = boost::make_shared<ServiceTransactionRegisterForwardNode>();
+		auto serviceTransactionRegisterForwardMethod = boost::make_shared<ServiceTransactionRegisterForwardMethod>();
+		auto serviceTransactionRegisterForwardGlobal = boost::make_shared<ServiceTransactionRegisterForwardGlobal>();
 
-		serviceTransactionRegisterForwardNode->componentService(&*applicationService_);
-		serviceTransactionRegisterForwardMethod->componentService(&*applicationService_);
-		serviceTransactionRegisterForwardGlobal->componentService(&*applicationService_);
+		serviceTransactionRegisterForwardNode->memberService(applicationService_->messageBusMember());
+		serviceTransactionRegisterForwardMethod->memberService(applicationService_->messageBusMember());
+		serviceTransactionRegisterForwardGlobal->memberService(applicationService_->messageBusMember());
 
 		transactionManager_->registerTransaction(serviceTransactionRegisterForwardNode);
 		transactionManager_->registerTransaction(serviceTransactionRegisterForwardMethod);
 		transactionManager_->registerTransaction(serviceTransactionRegisterForwardGlobal);
-	
+	}
+
+	bool
+	ServiceManager::init(SessionManager& sessionManager)
+	{
+		initAttributeService();
+		initMethodService();
+		initNodeManagementService();
+		initSubscriptionService();
+		initMonitoredItemService();
+		initViewService();
+		initQueryService();
+		initDiscoveryService();
+		initApplicationService();
+
 		sessionManager.discoveryService(discoveryService_);
 		sessionManager.transactionManager(transactionManager_);
 		sessionManager.forwardGlobalSync(forwardGlobalSync_);
+
 		return true;
 	}
 
@@ -273,18 +319,16 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	ServiceManager::ioThread(IOThread* ioThread)
+	ServiceManager::ioThread(IOThread::SPtr& ioThread)
 	{
-		// FIXME: use IOThread in services...
-		attributeService_->ioThread(ioThread);
-		methodService_->ioThread(ioThread);
-		monitoredItemService_->ioThread(ioThread);
-		nodeManagementService_->ioThread(ioThread);
-		queryService_->ioThread(ioThread);
-		subscriptionService_->ioThread(ioThread);
-		viewService_->ioThread(ioThread);
-		applicationService_->ioThread(ioThread);
-		discoveryService_->ioThread(ioThread);
+		ioThread_ = ioThread;
+		return true;
+	}
+
+	bool
+	ServiceManager::messageBus(OpcUaStackCore::MessageBus::SPtr& messageBus)
+	{
+		messageBus_ = messageBus;
 		return true;
 	}
 

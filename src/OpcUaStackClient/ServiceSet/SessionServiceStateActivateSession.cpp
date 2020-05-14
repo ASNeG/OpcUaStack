@@ -205,8 +205,10 @@ namespace OpcUaStackClient
 
 		// send response
 		serviceTransaction->statusCode(BadSessionClosed);
-		Component* componentService = serviceTransaction->componentService();
-		componentService->sendAsync(serviceTransaction);
+		ctx_->sendResponseToService(
+			serviceTransaction->memberService(),
+			serviceTransaction
+		);
 
 		return SessionServiceStateId::ActivateSession;
 	}

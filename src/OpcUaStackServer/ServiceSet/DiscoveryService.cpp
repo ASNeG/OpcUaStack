@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -31,15 +31,39 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
-	DiscoveryService::DiscoveryService(void)
-	: discoveryIf_(nullptr)
+	DiscoveryService::DiscoveryService(
+		const std::string& serviceName,
+		IOThread::SPtr& ioThread,
+		MessageBus::SPtr& messageBus)
+	: ServerServiceBase()
+	, discoveryIf_(nullptr)
 	, cryptoManager_(nullptr)
 	, endpointDescriptionArray_()
 	{
+		// set parameter in server service base
+		serviceName_ = serviceName;
+		ServerServiceBase::ioThread_ = ioThread.get();
+		strand_ = ioThread->createStrand();
+		messageBus_ = messageBus;
+
+		// register message bus receiver
+		MessageBusMemberConfig messageBusMemberConfig;
+		messageBusMemberConfig.strand(strand_);
+		messageBusMember_ = messageBus_->registerMember(serviceName_, messageBusMemberConfig);
+
+		// activate receiver
+		activateReceiver(
+			[this](Message::SPtr& message){
+				receive(message);
+			}
+		);
 	}
 
 	DiscoveryService::~DiscoveryService(void)
 	{
+		// deactivate receiver
+		deactivateReceiver();
+		messageBus_->deregisterMember(messageBusMember_);
 	}
 
 	void 

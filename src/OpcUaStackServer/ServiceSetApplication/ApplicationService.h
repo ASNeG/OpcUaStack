@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,9 +18,10 @@
 #ifndef __OpcUaStackServer_ApplicationService_h__
 #define __OpcUaStackServer_ApplicationService_h__
 
-#include "OpcUaStackServer/ServiceSet/ServiceSetBase.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransactionIf.h"
 #include "OpcUaStackCore/ServiceSetApplication/ApplicationServiceTransaction.h"
+#include "OpcUaStackServer/ServiceSet/ServiceSetBase.h"
+#include "OpcUaStackServer/ServiceSet/ServerServiceBase.h"
 
 namespace OpcUaStackServer
 {
@@ -28,18 +29,21 @@ namespace OpcUaStackServer
 	class DLLEXPORT ApplicationService
 	: public ServiceSetBase
 	, public OpcUaStackCore::Object
+	, public OpcUaStackServer::ServerServiceBase
 	{
 	  public:
 		typedef boost::shared_ptr<ApplicationService> SPtr;
 
-		ApplicationService(void);
+		ApplicationService(
+			const std::string& serviceName,
+			OpcUaStackCore::IOThread::SPtr& ioThread,
+			OpcUaStackCore::MessageBus::SPtr& messageBus
+		);
 		~ApplicationService(void);
 
-		//- Component -----------------------------------------------------------------
-		void receive(OpcUaStackCore::Message::SPtr message);
-		//- Component -----------------------------------------------------------------
-
 	  private:
+		void receive(OpcUaStackCore::Message::SPtr message);
+		void sendAnswer(OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction);
 		void receiveRegisterForwardNodeRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 		void receiveRegisterForwardMethodRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 		void receiveRegisterForwardGlobalRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);

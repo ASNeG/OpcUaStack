@@ -19,13 +19,13 @@
 #define __OpcUaStackCore_MessageBusMember_h__
 
 #include <boost/shared_ptr.hpp>
+#include <OpcUaStackCore/MessageBus/Message.h>
+#include <OpcUaStackCore/MessageBus/MessageBusError.h>
+#include <OpcUaStackCore/MessageBus/MessageBusMemberConfig.h>
 #include <map>
 #include <list>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
-#include "OpcUaStackCore/Component/Message.h"
-#include "OpcUaStackCore/Component/MessageBusMemberConfig.h"
-#include "OpcUaStackCore/Component/MessageBusError.h"
 
 namespace OpcUaStackCore
 {
@@ -45,6 +45,7 @@ namespace OpcUaStackCore
 		void name(const std::string& name);
 		std::string& name(void);
 		MessageBusMemberConfig& messageBusMemberConfig(void);
+		void debugLogging(bool debugLogging);
 
 		void cancelReceiver(
 		    bool immediately = false
@@ -88,13 +89,24 @@ namespace OpcUaStackCore
 		};
 		using MsgList = std::list<Msg>;
 
+		void receiveCancelDebug(
+			const std::string& message
+		);
+		void receiveMessageDebug(
+			const std::string& message,
+			const MessageBusMember::WPtr& sender,
+			uint32_t sequence
+		);
 		void sendFirstMessageToReceiver(void);
+
+		uint32_t sequence_ = 0;
 
 		std::string name_;
 		MessageBusMemberConfig messageBusMemberConfig_;
 		boost::mutex mutex_;
 		MsgList msgList_;
 
+		bool debugLogging_ = false;
 		bool receiverWait_ = false;
 		IOThread::SPtr ioThread_ = nullptr;
 		boost::shared_ptr<boost::asio::io_service::strand> strand_ = nullptr;

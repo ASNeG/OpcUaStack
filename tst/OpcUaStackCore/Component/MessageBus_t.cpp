@@ -1,9 +1,9 @@
 #include <boost/make_shared.hpp>
 #include <boost/thread/mutex.hpp>
+#include <OpcUaStackCore/MessageBus/MessageBus.h>
 #include <future>
 #include <chrono>
 #include "unittest.h"
-#include "OpcUaStackCore/Component/MessageBus.h"
 
 using namespace OpcUaStackCore;
 
@@ -145,7 +145,7 @@ BOOST_AUTO_TEST_CASE(MessageBus_receive_send_1_ioThread)
 	);
 
 	// send
-	Message::SPtr message;
+	Message::SPtr message = boost::make_shared<Message>();
 	messageBus.messageSend(sender, receiver, message);
 
 	// wait for receiver to finish
@@ -185,7 +185,7 @@ BOOST_AUTO_TEST_CASE(MessageBus_receive_send_1_strand)
 	);
 
 	// send
-	Message::SPtr message;
+	Message::SPtr message = boost::make_shared<Message>();
 	messageBus.messageSend(sender, receiver, message);
 
 	// wait for receiver to finish
@@ -226,7 +226,7 @@ BOOST_AUTO_TEST_CASE(MessageBus_receive_send_1_member_ioThread)
 	);
 
 	// send
-	Message::SPtr message;
+	Message::SPtr message = boost::make_shared<Message>();
 	messageBus.messageSend(sender, receiver, message);
 
 	// wait for receiver to finish
@@ -268,7 +268,7 @@ BOOST_AUTO_TEST_CASE(MessageBus_receive_send_1_member_strand)
 	);
 
 	// send
-	Message::SPtr message;
+	Message::SPtr message = boost::make_shared<Message>();
 	messageBus.messageSend(sender, receiver, message);
 
 	// wait for receiver to finish
@@ -309,7 +309,7 @@ BOOST_AUTO_TEST_CASE(MessageBus_receive_send_10)
 
 	// send
 	for (uint32_t idx = 0; idx < 10; idx++) {
-		Message::SPtr message;
+		Message::SPtr message = boost::make_shared<Message>();
 		messageBus.messageSend(sender, receiver, message);
 	}
 
@@ -337,7 +337,7 @@ BOOST_AUTO_TEST_CASE(MessageBus_send_receive_1)
 	auto receiver = messageBus.registerMember("receiver");
 
 	// send
-	Message::SPtr message;
+	Message::SPtr message = boost::make_shared<Message>();
 	messageBus.messageSend(sender, receiver, message);
 
 	// receive
@@ -377,7 +377,7 @@ BOOST_AUTO_TEST_CASE(MessageBus_send_receive_10)
 
 	// send
 	for (uint32_t idx = 0; idx < 10; idx++) {
-		Message::SPtr message;
+		Message::SPtr message = boost::make_shared<Message>();
 		messageBus.messageSend(sender, receiver, message);
 	}
 
@@ -426,7 +426,7 @@ BOOST_AUTO_TEST_CASE(MessageBus_maxReceiveQueueSize)
 
 	// send
 	for (uint32_t idx = 0; idx < 11; idx++) {
-		Message::SPtr message;
+		Message::SPtr message = boost::make_shared<Message>();
 		messageBus.messageSend(
 			sender, receiver, message,
 			[&testSender](MessageBusError error) {
@@ -474,7 +474,7 @@ BOOST_AUTO_TEST_CASE(MessageBus_iothread_member)
 	);
 
 	// send
-	Message::SPtr message;
+	Message::SPtr message = boost::make_shared<Message>();
 	messageBus.messageSend(sender, receiver, message);
 
 	// wait for receiver to finish
@@ -513,7 +513,7 @@ BOOST_AUTO_TEST_CASE(MessageBus_ioThread)
 	);
 
 	// send
-	Message::SPtr message;
+	Message::SPtr message = boost::make_shared<Message>();
 	messageBus.messageSend(sender, receiver, message);
 
 	// wait for receiver to finish
@@ -554,7 +554,7 @@ BOOST_AUTO_TEST_CASE(MessageBus_strand)
 	);
 
 	// send
-	Message::SPtr message;
+	Message::SPtr message = boost::make_shared<Message>();
 	messageBus.messageSend(sender, receiver, message);
 
 	// wait for receiver to finish
@@ -606,7 +606,7 @@ BOOST_AUTO_TEST_CASE(MessageBus_2_ioThreads)
 	auto future2 = promise2.get_future();
 	TestSender testSender(&promise2, 1);
 
-	Message::SPtr message;
+	Message::SPtr message = boost::make_shared<Message>();
 	messageBus.messageSend(
 		sender, receiver, message,
 		[&testSender](MessageBusError error) {
@@ -673,7 +673,7 @@ BOOST_AUTO_TEST_CASE(MessageBus_2_strands)
 	auto future2 = promise2.get_future();
 	TestSender testSender(&promise2, 1);
 
-	Message::SPtr message;
+	Message::SPtr message = boost::make_shared<Message>();
 	messageBus.messageSend(
 		sender, receiver, message,
 		[&testSender](MessageBusError error) {

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -24,12 +24,37 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
-	SubscriptionService::SubscriptionService(void)
+	SubscriptionService::SubscriptionService(
+		const std::string& serviceName,
+		OpcUaStackCore::IOThread::SPtr& ioThread,
+		OpcUaStackCore::MessageBus::SPtr& messageBus
+	)
+	: ServerServiceBase()
 	{
+		// set parameter in server service base
+		serviceName_ = serviceName;
+		ServerServiceBase::ioThread_ = ioThread.get();
+		strand_ = ioThread->createStrand();
+		messageBus_ = messageBus;
+
+		// register message bus receiver
+		MessageBusMemberConfig messageBusMemberConfig;
+		messageBusMemberConfig.strand(strand_);
+		messageBusMember_ = messageBus_->registerMember(serviceName_, messageBusMemberConfig);
+
+		// activate receiver
+		activateReceiver(
+			[this](Message::SPtr& message){
+				receive(message);
+			}
+		);
 	}
 
 	SubscriptionService::~SubscriptionService(void)
 	{
+		// deactivate receiver
+		deactivateReceiver();
+		messageBus_->deregisterMember(messageBusMember_);
 	}
 
 	bool
@@ -90,9 +115,19 @@ namespace OpcUaStackServer
 
 			default:
 				serviceTransaction->statusCode(BadInternalError);
-				serviceTransaction->componentSession()->send(serviceTransaction);
+				sendAnswer(serviceTransaction);
 				break;
 		}
+	}
+
+	void
+	SubscriptionService::sendAnswer(OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction)
+	{
+		messageBus_->messageSend(
+			messageBusMember_,
+			serviceTransaction->memberServiceSession(),
+			serviceTransaction
+		);
 	}
 
 	void 
@@ -114,7 +149,9 @@ namespace OpcUaStackServer
 		SubscriptionManagerMap::iterator it = subscriptionManagerMap_.find(trx->sessionId());
 		if (it == subscriptionManagerMap_.end()) {
 			subscriptionManager = boost::make_shared<SubscriptionManager>();
-			subscriptionManager->ioThread(ioThread());
+			subscriptionManager->ioThread(ioThread_);
+			subscriptionManager->messageBus(messageBus_);
+			subscriptionManager->messageBusMember(messageBusMember_);
 			subscriptionManager->informationModel(informationModel_);
 			subscriptionManager->forwardGlobalSync(forwardGlobalSync_);
 			subscriptionManager->sessionId(trx->sessionId());
@@ -125,7 +162,7 @@ namespace OpcUaStackServer
 		}
 
 		serviceTransaction->statusCode(subscriptionManager->receive(trx));
-		serviceTransaction->componentSession()->send(serviceTransaction);
+		sendAnswer(serviceTransaction);
 	}
 
 	void 
@@ -143,13 +180,13 @@ namespace OpcUaStackServer
 		SubscriptionManagerMap::iterator it = subscriptionManagerMap_.find(trx->sessionId());
 		if (it == subscriptionManagerMap_.end()) {
 			serviceTransaction->statusCode(BadNothingToDo);
-			serviceTransaction->componentSession()->send(serviceTransaction);
+			sendAnswer(serviceTransaction);
 			return;
 		}
 		subscriptionManager = it->second;
 		
 		serviceTransaction->statusCode(subscriptionManager->receive(trx));
-		serviceTransaction->componentSession()->send(serviceTransaction);
+		sendAnswer(serviceTransaction);
 
 		if (subscriptionManager->size() == 0) {
 			subscriptionManagerMap_.erase(it);
@@ -161,7 +198,7 @@ namespace OpcUaStackServer
 	{
 		// FIXME:
 		serviceTransaction->statusCode(BadInternalError);
-		serviceTransaction->componentSession()->send(serviceTransaction);
+		sendAnswer(serviceTransaction);
 	}
 
 	void 
@@ -189,7 +226,7 @@ namespace OpcUaStackServer
 		SubscriptionManagerMap::iterator it = subscriptionManagerMap_.find(trx->sessionId());
 		if (it == subscriptionManagerMap_.end()) {
 			serviceTransaction->statusCode(BadNothingToDo);
-			serviceTransaction->componentSession()->send(serviceTransaction);
+			sendAnswer(serviceTransaction);
 			return;
 		}
 		subscriptionManager = it->second;
@@ -210,7 +247,7 @@ namespace OpcUaStackServer
 
 		// FIXME:
 		serviceTransaction->statusCode(BadMessageNotAvailable);
-		serviceTransaction->componentSession()->send(serviceTransaction);
+		sendAnswer(serviceTransaction);
 	}
 
 	void 
@@ -218,7 +255,7 @@ namespace OpcUaStackServer
 	{
 		// FIXME:
 		serviceTransaction->statusCode(BadInternalError);
-		serviceTransaction->componentSession()->send(serviceTransaction);
+		sendAnswer(serviceTransaction);
 	}
 
 	void 
@@ -226,7 +263,7 @@ namespace OpcUaStackServer
 	{
 		// FIXME:
 		serviceTransaction->statusCode(BadInternalError);
-		serviceTransaction->componentSession()->send(serviceTransaction);
+		sendAnswer(serviceTransaction);
 	}
 
 
@@ -248,14 +285,14 @@ namespace OpcUaStackServer
 		SubscriptionManagerMap::iterator it = subscriptionManagerMap_.find(trx->sessionId());
 		if (it == subscriptionManagerMap_.end()) {
 			serviceTransaction->statusCode(BadSubscriptionIdInvalid);
-			serviceTransaction->componentSession()->send(serviceTransaction);
+			sendAnswer(serviceTransaction);
 			return;
 		}
 		subscriptionManager = it->second;
 		
 		// call service function in subscription manager
 		serviceTransaction->statusCode(subscriptionManager->receive(trx));
-		serviceTransaction->componentSession()->send(serviceTransaction);
+		sendAnswer(serviceTransaction);
 	}
 
 	void 
@@ -267,14 +304,14 @@ namespace OpcUaStackServer
 		auto it = subscriptionManagerMap_.find(trx->sessionId());
 		if (it == subscriptionManagerMap_.end()) {
 			serviceTransaction->statusCode(BadSubscriptionIdInvalid);
-			serviceTransaction->componentSession()->send(serviceTransaction);
+			sendAnswer(serviceTransaction);
 			return;
 		}
 		auto subscriptionManager = it->second;
 		
 		// call service function in subscription manager
 		serviceTransaction->statusCode(subscriptionManager->receive(trx));
-		serviceTransaction->componentSession()->send(serviceTransaction);
+		sendAnswer(serviceTransaction);
 	}
 
 	void 
@@ -287,14 +324,14 @@ namespace OpcUaStackServer
 		SubscriptionManagerMap::iterator it = subscriptionManagerMap_.find(trx->sessionId());
 		if (it == subscriptionManagerMap_.end()) {
 			serviceTransaction->statusCode(BadSubscriptionIdInvalid);
-			serviceTransaction->componentSession()->send(serviceTransaction);
+			sendAnswer(serviceTransaction);
 			return;
 		}
 		subscriptionManager = it->second;
 		
 		// call service function in subscription manager
 		serviceTransaction->statusCode(subscriptionManager->receive(trx));
-		serviceTransaction->componentSession()->send(serviceTransaction);
+		sendAnswer(serviceTransaction);
 	}
 
 	void 
@@ -307,14 +344,14 @@ namespace OpcUaStackServer
 		SubscriptionManagerMap::iterator it = subscriptionManagerMap_.find(trx->sessionId());
 		if (it == subscriptionManagerMap_.end()) {
 			serviceTransaction->statusCode(BadSubscriptionIdInvalid);
-			serviceTransaction->componentSession()->send(serviceTransaction);
+			sendAnswer(serviceTransaction);
 			return;
 		}
 		subscriptionManager = it->second;
 		
 		// call service function in subscription manager
 		serviceTransaction->statusCode(subscriptionManager->receive(trx));
-		serviceTransaction->componentSession()->send(serviceTransaction);
+		sendAnswer(serviceTransaction);
 	}
 
 	void 
@@ -327,14 +364,14 @@ namespace OpcUaStackServer
 		SubscriptionManagerMap::iterator it = subscriptionManagerMap_.find(trx->sessionId());
 		if (it == subscriptionManagerMap_.end()) {
 			serviceTransaction->statusCode(BadSubscriptionIdInvalid);
-			serviceTransaction->componentSession()->send(serviceTransaction);
+			sendAnswer(serviceTransaction);
 			return;
 		}
 		subscriptionManager = it->second;
 		
 		// call service function in subscription manager
 		serviceTransaction->statusCode(subscriptionManager->receive(trx));
-		serviceTransaction->componentSession()->send(serviceTransaction);
+		sendAnswer(serviceTransaction);
 	}
 
 }

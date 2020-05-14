@@ -46,13 +46,25 @@ namespace OpcUaStackCore
 
 
 	IOThread::IOThread(void)
-	: ioService_()
+	: ioService_(boost::make_shared<IOService>())
 	, slotTimer_()
 	, numberThreads_(1)
 	, ioServiceCreateFlag_(false)
 	, slotTimerCreateFlag_(false)
 	{
 		name_ = UniqueId::createStringUniqueId();
+		ioService_->name(name_);
+	}
+
+	IOThread::IOThread(const std::string& name)
+	: ioService_(boost::make_shared<IOService>())
+	, slotTimer_()
+	, numberThreads_(1)
+	, ioServiceCreateFlag_(false)
+	, slotTimerCreateFlag_(false)
+	, name_(name)
+	{
+		ioService_->name(name_);
 	}
 
 	IOThread::~IOThread(void)
@@ -63,6 +75,7 @@ namespace OpcUaStackCore
 	IOThread::name(const std::string& name)
 	{
 		name_ = name;
+		ioService_->name(name_);
 	}
 
 	std::string
@@ -197,10 +210,9 @@ namespace OpcUaStackCore
 	void
 	IOThread::createIOService(void)
 	{
-		if (ioService_.get() != nullptr) return;
+		if (ioService_.get() == nullptr) return;
 
 		ioServiceCreateFlag_ = true;
-		ioService_ = boost::make_shared<IOService>();
 		ioService_->start(numberThreads_);
 	}
 

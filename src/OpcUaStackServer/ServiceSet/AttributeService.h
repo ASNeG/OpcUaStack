@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -22,6 +22,7 @@
 #include "OpcUaStackCore/ServiceSet/AttributeServiceTransaction.h"
 #include "OpcUaStackCore/StandardDataTypes/UpdateStructureDataDetails.h"
 #include "OpcUaStackServer/ServiceSet/ServiceSetBase.h"
+#include "OpcUaStackServer/ServiceSet/ServerServiceBase.h"
 
 namespace OpcUaStackServer
 {
@@ -29,18 +30,22 @@ namespace OpcUaStackServer
 	class DLLEXPORT AttributeService 
 	: public ServiceSetBase
 	, public OpcUaStackCore::Object
+	, public OpcUaStackServer::ServerServiceBase
 	{
 	  public:
 		typedef boost::shared_ptr<AttributeService> SPtr;
 
-		AttributeService(void);
+		AttributeService(
+			const std::string& serviceName,
+			OpcUaStackCore::IOThread::SPtr& ioThread,
+			OpcUaStackCore::MessageBus::SPtr& messageBus
+		);
 		~AttributeService(void);
 
-		//- Component -----------------------------------------------------------------
-		void receive(OpcUaStackCore::Message::SPtr message);
-		//- Component -----------------------------------------------------------------
-
 	  private:
+		void receive(OpcUaStackCore::Message::SPtr message);
+
+		void sendAnswer(OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction);
 		void receiveReadRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 		void forwardRead(
 			OpcUaStackCore::UserContext::SPtr& userContext,

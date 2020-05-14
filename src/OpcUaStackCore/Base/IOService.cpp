@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,6 +18,7 @@
 #include <boost/lexical_cast.hpp>
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/Utility/UniqueId.h"
 
 namespace OpcUaStackCore
 {
@@ -31,6 +32,20 @@ namespace OpcUaStackCore
 	, startCondition_()
 	, stopMutex_()
 	, stopCondition_()
+	{
+		name_ = UniqueId::createStringUniqueId();
+	}
+
+	IOService::IOService(const std::string& name)
+	: io_service_()
+	, work_(0)
+	, numberThreads_(0)
+	, runningThreads_(0)
+	, startMutex_()
+	, startCondition_()
+	, stopMutex_()
+	, stopCondition_()
+	, name_(name)
 	{
 	}
 
@@ -50,10 +65,17 @@ namespace OpcUaStackCore
 		boost::this_thread::sleep(boost::posix_time::milliseconds(msec));
 	}
 
+	void
+	IOService::name(const std::string& name)
+	{
+		name_ = name;
+	}
+
 	void 
 	IOService::start(uint32_t numberThreads)
 	{
 		Log(Debug, "ioservice threads starting")
+			.parameter("Name", name_)
 			.parameter("NumberThreads", numberThreads);
 
 		numberThreads_ = numberThreads;
@@ -77,7 +99,8 @@ namespace OpcUaStackCore
 
 		startMutex_.unlock();
 
-		Log(Debug, "io ervice threads started")
+		Log(Debug, "io service threads started")
+		    .parameter("Name", name_)
 			.parameter("NumberThreads", numberThreads);
 	}
 
@@ -85,6 +108,7 @@ namespace OpcUaStackCore
 	IOService::stop(void)
 	{
 		Log(Debug, "ioservice threads stopping")
+			.parameter("Name", name_)
 			.parameter("NumberThreads", runningThreads_);
 
 		if (work_) {
@@ -112,7 +136,8 @@ namespace OpcUaStackCore
 
 		io_service_.reset();
 
-		Log(Debug, "ioservice threads stoped");
+		Log(Debug, "ioservice threads stoped")
+			.parameter("Name", name_);
 	}
 
 	void
@@ -135,13 +160,17 @@ namespace OpcUaStackCore
 		if (runningThreads_ == numberThreads_) {
 			startCondition_.notify_one();
 		}
-		Log(Debug, "start thread").parameter("ThreadId", boost::this_thread::get_id());
+		Log(Debug, "start thread")
+			.parameter("Name", name_)
+			.parameter("ThreadId", boost::this_thread::get_id());
 		startMutex_.unlock();
 
 		io_service_.run();
 
 		stopMutex_.lock();
-		Log(Debug, "stop thread").parameter("ThreadId", boost::this_thread::get_id());
+		Log(Debug, "stop thread")
+			.parameter("Name", name_)
+			.parameter("ThreadId", boost::this_thread::get_id());
 		runningThreads_--;
 		if (runningThreads_ == 0) {
 			stopCondition_.notify_one();

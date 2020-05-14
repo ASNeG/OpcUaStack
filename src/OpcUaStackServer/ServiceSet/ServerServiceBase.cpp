@@ -18,36 +18,36 @@
 #include <future>
 #include <boost/make_shared.hpp>
 #include "OpcUaStackCore/Base/Log.h"
-#include "OpcUaStackClient/ServiceSet/ClientServiceBase.h"
+#include "OpcUaStackServer/ServiceSet/ServerServiceBase.h"
 
 using namespace OpcUaStackCore;
 
-namespace OpcUaStackClient
+namespace OpcUaStackServer
 {
 
-	ClientServiceBase::ClientServiceBase(void)
-	: boost::enable_shared_from_this<ClientServiceBase>()
+	ServerServiceBase::ServerServiceBase(void)
+	: boost::enable_shared_from_this<ServerServiceBase>()
 	{
 	}
 
-	ClientServiceBase::~ClientServiceBase(void)
+	ServerServiceBase::~ServerServiceBase(void)
 	{
 	}
 
 	MessageBusMember::WPtr&
-	ClientServiceBase::messageBusMember(void)
+	ServerServiceBase::messageBusMember(void)
 	{
 		return messageBusMember_;
 	}
 
 	boost::shared_ptr<boost::asio::io_service::strand>&
-	ClientServiceBase::strand(void)
+	ServerServiceBase::strand(void)
 	{
 		return strand_;
 	}
 
 	void
-	ClientServiceBase::activateReceiver(const ReceiverCallback& receiverCallback)
+	ServerServiceBase::activateReceiver(const ReceiverCallback& receiverCallback)
 	{
 		Log(Info, "activate receiver")
 			.parameter("ServiceName", serviceName_);
@@ -60,7 +60,7 @@ namespace OpcUaStackClient
 	}
 
 	void
-	ClientServiceBase::deactivateReceiver(void)
+	ServerServiceBase::deactivateReceiver(void)
 	{
 		if (!receiverContext_ || !receiverContext_->receiverCallback_) {
 			return;
@@ -84,8 +84,7 @@ namespace OpcUaStackClient
 		}
 
 		Log(Info, "deactivate receiver")
-			.parameter("ServiceName", serviceName_)
-			.parameter("ServiceRunning", receiverContext_->receiverCallbackRunning_);
+			.parameter("ServiceName", serviceName_);
 
 		//
 		// the function was called by the strand
@@ -105,7 +104,7 @@ namespace OpcUaStackClient
 	}
 
 	void
-	ClientServiceBase::receiveCallback(void)
+	ServerServiceBase::receiveCallback(void)
 	{
 		ReceiverContext::SPtr receiverContext = receiverContext_;
 		receiverContext->shutdown_ = false;
@@ -119,7 +118,7 @@ namespace OpcUaStackClient
 					return;
 				}
 
-			    // check error
+				// check error
 				if (error != MessageBusError::Ok) {
 					if (error != MessageBusError::Cancel) {
 						Log(Error, "message receiver error")

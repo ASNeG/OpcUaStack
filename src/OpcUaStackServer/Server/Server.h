@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -20,6 +20,7 @@
 
 #include <OpcUaStackCore/Certificate/ApplicationCertificate.h>
 #include "OpcUaStackCore/Utility/IOThread.h"
+#include "OpcUaStackCore/MessageBus/MessageBus.h"
 #include "OpcUaStackCore/Core/Core.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
 #include "OpcUaStackServer/ServiceSet/SessionManager.h"
@@ -44,7 +45,8 @@ namespace OpcUaStackServer
 		void stop(void);
 
 		InformationModel::SPtr getInformationModel(void);
-		OpcUaStackCore::IOThread* ioThread(void);
+		OpcUaStackCore::IOThread::SPtr ioThread(void);
+		OpcUaStackCore::MessageBus::SPtr messageBus(void);
 		ApplicationManager& applicationManager(void);
 		ServiceManager& serviceManager(void);
 		OpcUaStackCore::CryptoManager::SPtr& cryptoManager(void);
@@ -62,12 +64,14 @@ namespace OpcUaStackServer
 		bool initApplication(void);
 
 		OpcUaStackCore::EndpointDescriptionSet::SPtr endpointDescriptionSet_;
-		OpcUaStackCore::CryptoManager::SPtr cryptoManager_;
 
-		OpcUaStackCore::IOThread::SPtr ioThread_;
+		OpcUaStackCore::IOThread::SPtr ioThread_ = nullptr;
+		OpcUaStackCore::MessageBus::SPtr messageBus_ = nullptr;
+		OpcUaStackCore::CryptoManager::SPtr cryptoManager_ = nullptr;
+
+		ServiceManager serviceManager_;
 		InformationModel::SPtr informationModel_;
 		SessionManager sessionManager_;
-		ServiceManager serviceManager_;
 		ApplicationManager applicationManager_;
 		ServerInfo serverInfo_;
 

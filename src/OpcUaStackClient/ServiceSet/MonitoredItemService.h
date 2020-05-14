@@ -18,7 +18,7 @@
 #ifndef __OpcUaStackClient_MonitoredItemService_h__
 #define __OpcUaStackClient_MonitoredItemService_h__
 
-#include "OpcUaStackCore/Component/MessageBus.h"
+#include <OpcUaStackCore/MessageBus/MessageBus.h>
 #include "OpcUaStackClient/ServiceSet/ClientServiceBase.h"
 #include "OpcUaStackCore/ServiceSet/MonitoredItemServiceTransaction.h"
 
@@ -52,11 +52,8 @@ namespace OpcUaStackClient
 		void syncSend(OpcUaStackCore::ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering);
 		void asyncSend(OpcUaStackCore::ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering);
 
-		//- Component -----------------------------------------------------------------
-		void receive(OpcUaStackCore::Message::SPtr message);
-		//- Component -----------------------------------------------------------------
-
 	  private:
+		void receive(OpcUaStackCore::Message::SPtr message);
 		OpcUaStackCore::MessageBusMember::WPtr sessionMember_;
 	};
 

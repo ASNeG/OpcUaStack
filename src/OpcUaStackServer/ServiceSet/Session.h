@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,7 +19,6 @@
 #define __OpcUaStackServer_Session_h__
 
 #include "OpcUaStackCore/Base/UserContext.h"
-#include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannel.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelTransaction.h"
@@ -31,6 +30,7 @@
 #include "OpcUaStackCore/Certificate/CryptoManager.h"
 #include "OpcUaStackServer/ServiceSet/SessionIf.h"
 #include "OpcUaStackServer/ServiceSet/TransactionManager.h"
+#include "OpcUaStackServer/ServiceSet/ServerServiceBase.h"
 
 namespace OpcUaStackServer
 {
@@ -46,10 +46,15 @@ namespace OpcUaStackServer
 
 	class DLLEXPORT Session
 	: public OpcUaStackCore::Object
-	, public OpcUaStackCore::Component
+	, public OpcUaStackServer::ServerServiceBase
 	{
 	  public:
-		Session(void);
+		Session(
+            const std::string& serviceName,
+			OpcUaStackCore::IOThread* ioThread,
+			OpcUaStackCore::MessageBus::SPtr& messageBus,
+			boost::shared_ptr<boost::asio::io_service::strand>& strand
+		);
 		~Session(void);
 
 		typedef boost::shared_ptr<Session> SPtr;
@@ -86,11 +91,8 @@ namespace OpcUaStackServer
 		void endpointDescription(OpcUaStackCore::EndpointDescription::SPtr& endpointDescription);
 		void endpointDescriptionArray(OpcUaStackCore::EndpointDescriptionArray::SPtr& endpointDescriptionArray);
 
-		// - Component -------------------------------------------------------
-		void receive(OpcUaStackCore::Message::SPtr message);
-		// - Component -------------------------------------------------------
-
 	  private:
+		void receive(OpcUaStackCore::Message::SPtr message);
 		void createServerNonce(void);
 
 		OpcUaStackCore::OpcUaStatusCode authentication(OpcUaStackCore::ActivateSessionRequest& activateSessionRequest);

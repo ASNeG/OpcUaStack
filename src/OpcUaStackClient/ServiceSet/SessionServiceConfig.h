@@ -17,8 +17,8 @@
 #ifndef __OpcUaStackClient_SessionServiceConfig_h__
 #define __OpcUaStackClient_SessionServiceConfig_h__
 
+#include <OpcUaStackCore/MessageBus/MessageBus.h>
 #include "OpcUaStackCore/Utility/IOThread.h"
-#include "OpcUaStackCore/Component/MessageBus.h"
 #include "OpcUaStackClient/ServiceSet/SessionMode.h"
 #include "OpcUaStackClient/ServiceSet/SessionService.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceHandler.h"

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -32,12 +32,18 @@ namespace OpcUaStackCore
 	, tcpAcceptor_(nullptr)
 	, endpointUrl_("")
 	{
-		// FIXME: workaround
 		strand_ = ioThread_->createStrand();
 	}
 
 	SecureChannelServer::~SecureChannelServer(void)
 	{
+	}
+
+	void
+	SecureChannelServer::strand(boost::shared_ptr<boost::asio::io_service::strand>& strand)
+	{
+		// Overrides the strand from the constructor
+		strand_ = strand;
 	}
 
 	void
@@ -178,6 +184,7 @@ namespace OpcUaStackCore
 		secureChannel->state_ = SecureChannel::S_Accepting;
 		tcpAcceptor_->async_accept(
 			secureChannel->socket(),
+			strand_,
 			boost::bind(
 				&SecureChannelServer::acceptComplete,
 				this,

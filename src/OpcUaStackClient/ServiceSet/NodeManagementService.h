@@ -18,8 +18,8 @@
 #ifndef __OpcUaStackClient_NodeManagementService_h__
 #define __OpcUaStackClient_NodeManagementService_h__
 
+#include <OpcUaStackCore/MessageBus/MessageBus.h>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Component/MessageBus.h"
 #include "OpcUaStackCore/ServiceSet/NodeManagementServiceTransaction.h"
 #include "OpcUaStackClient/ServiceSet/ClientServiceBase.h"
 
@@ -52,11 +52,8 @@ namespace OpcUaStackClient
 		void syncSend(OpcUaStackCore::ServiceTransactionDeleteReferences::SPtr serviceTransactionDeleteReferences);
 		void asyncSend(OpcUaStackCore::ServiceTransactionDeleteReferences::SPtr serviceTransactionDeleteReferences);
 
-		//- Component -----------------------------------------------------------------
-		void receive(OpcUaStackCore::Message::SPtr message);
-		//- Component -----------------------------------------------------------------
-
 	  private:
+		void receive(OpcUaStackCore::Message::SPtr message);
 		OpcUaStackCore::MessageBusMember::WPtr sessionMember_;
 	};
 

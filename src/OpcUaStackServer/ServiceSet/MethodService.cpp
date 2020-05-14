@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -27,12 +27,37 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
-	MethodService::MethodService(void)
+	MethodService::MethodService(
+		const std::string& serviceName,
+		OpcUaStackCore::IOThread::SPtr& ioThread,
+		OpcUaStackCore::MessageBus::SPtr& messageBus
+	)
+	: ServerServiceBase()
 	{
+		// set parameter in server service base
+		serviceName_ = serviceName;
+		ServerServiceBase::ioThread_ = ioThread.get();
+		strand_ = ioThread->createStrand();
+		messageBus_ = messageBus;
+
+		// register message bus receiver
+		MessageBusMemberConfig messageBusMemberConfig;
+		messageBusMemberConfig.strand(strand_);
+		messageBusMember_ = messageBus_->registerMember(serviceName_, messageBusMemberConfig);
+
+		// activate receiver
+		activateReceiver(
+			[this](Message::SPtr& message){
+				receive(message);
+			}
+		);
 	}
 
 	MethodService::~MethodService(void)
 	{
+		// deactivate receiver
+		deactivateReceiver();
+		messageBus_->deregisterMember(messageBusMember_);
 	}
 
 	void 
@@ -46,8 +71,18 @@ namespace OpcUaStackServer
 				break;
 			default:
 				serviceTransaction->statusCode(BadInternalError);
-				serviceTransaction->componentSession()->send(serviceTransaction);
+				sendAnswer(serviceTransaction);
 		}
+	}
+
+	void
+	MethodService::sendAnswer(OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction)
+	{
+		messageBus_->messageSend(
+			messageBusMember_,
+			serviceTransaction->memberServiceSession(),
+			serviceTransaction
+		);
 	}
 
 	void 
@@ -68,12 +103,12 @@ namespace OpcUaStackServer
 		// check node id array
 		if (callRequest->methodsToCall()->size() == 0) {
 			trx->statusCode(BadNothingToDo);
-			trx->componentSession()->send(serviceTransaction);
+			sendAnswer(serviceTransaction);
 			return;
 		}
 		if (callRequest->methodsToCall()->size() > 1000) { // FIXME: todo
 			trx->statusCode(BadTooManyOperations);
-			trx->componentSession()->send(serviceTransaction);
+			sendAnswer(serviceTransaction);
 			return;
 		}
 
@@ -178,7 +213,7 @@ namespace OpcUaStackServer
 			}
 		}
 
-		serviceTransaction->componentSession()->send(serviceTransaction);
+		sendAnswer(serviceTransaction);
 	}
 
 	OpcUaStatusCode

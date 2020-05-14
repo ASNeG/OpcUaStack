@@ -17,7 +17,7 @@
 #ifndef __OpcUaStackClient_SessionService_h__
 #define __OpcUaStackClient_SessionService_h__
 
-#include "OpcUaStackCore/Component/MessageBus.h"
+#include <OpcUaStackCore/MessageBus/MessageBus.h>
 #include "OpcUaStackCore/Utility/SlotTimer.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackCore/Utility/PendingQueue.h"
@@ -78,14 +78,11 @@ namespace OpcUaStackClient
 		virtual void handleMessageResponse(OpcUaStackCore::SecureChannel* secureChannel);
 		//- SecureChannelClientIf ---------------------------------------------
 
-		// - Component -------------------------------------------------------
-		void receive(OpcUaStackCore::Message::SPtr message);
-		// - Component -------------------------------------------------------
-
 		void pendingQueueTimeout(OpcUaStackCore::Object::SPtr object);
 		void reconnectTimeout(void);
 
 	  private:
+		void receive(OpcUaStackCore::Message::SPtr message);
 		SessionService(void);
 
 		void pendingQueueTimeoutLoop(void);

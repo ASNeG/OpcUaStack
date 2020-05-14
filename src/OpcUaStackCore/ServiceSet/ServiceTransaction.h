@@ -20,9 +20,8 @@
 
 #include <future>
 #include <boost/thread/mutex.hpp>
+#include <OpcUaStackCore/MessageBus/MessageBus.h>
 #include "OpcUaStackCore/Base/UserContext.h"
-#include "OpcUaStackCore/Component/Component.h"
-#include "OpcUaStackCore/Component/MessageBus.h"
 #include "OpcUaStackCore/SecureChannel/RequestHeader.h"
 #include "OpcUaStackCore/SecureChannel/ResponseHeader.h"
 
@@ -62,13 +61,10 @@ namespace OpcUaStackCore
 		void responseHeader(ResponseHeader::SPtr responseHeader);
 		ResponseHeader::SPtr responseHeader(void);
 
-		Component* componentService(void);
-		void componentService(Component* componentService);
-		Component* componentSession(void);
-		void componentSession(Component* componentSession);
-
 		void memberService(MessageBusMember::WPtr& memberService);
 		MessageBusMember::WPtr& memberService(void);
+		void memberServiceSession(MessageBusMember::WPtr& memberServiceSession);
+		MessageBusMember::WPtr& memberServiceSession(void);
 
 		void userContext(UserContext::SPtr& userContext);
 		UserContext::SPtr& userContext(void);
@@ -109,10 +105,8 @@ namespace OpcUaStackCore
 		RequestHeader::SPtr requestHeader_;
 		ResponseHeader::SPtr responseHeader_;
 
-		Component* componentService_;
-		Component* componentSession_;
-
 		MessageBusMember::WPtr memberService_;
+		MessageBusMember::WPtr memberServiceSession_;
 
 		UserContext::SPtr userContext_;
 		OpcUaStatusCode statusCode_;

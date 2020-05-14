@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,7 +18,6 @@
 #ifndef __OpcUaStackServer_ApplicationManager_h__
 #define __OpcUaStackServer_ApplicationManager_h__
 
-#include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/Certificate/CryptoManager.h"
 #include "OpcUaStackServer/Application/ApplicationIf.h"
 #include "OpcUaStackServer/Application/ReloadIf.h"
@@ -43,16 +42,17 @@ namespace OpcUaStackServer
 		bool deregisterApplication(
 			const std::string& applicationName
 		);
-		void serviceComponent(
-			OpcUaStackCore::Component* serviceComponent
-		);
+		void ioThread(const OpcUaStackCore::IOThread::SPtr& ioThread);
+		void messageBus(const OpcUaStackCore::MessageBus::SPtr& messageBus);
 
 		bool startup(void);
 		bool shutdown(void);
 
 	  private:
 		Application::Map applicationMap_;
-		OpcUaStackCore::Component* serviceComponent_;
+
+		OpcUaStackCore::IOThread::SPtr ioThread_ = nullptr;
+		OpcUaStackCore::MessageBus::SPtr messageBus_ = nullptr;
 
 		OpcUaStackCore::CryptoManager::SPtr cryptoManager_;
 	};
