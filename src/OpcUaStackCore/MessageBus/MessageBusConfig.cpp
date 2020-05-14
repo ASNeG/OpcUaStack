@@ -16,7 +16,7 @@
  */
 
 #include <boost/make_shared.hpp>
-#include "OpcUaStackCore/Component/MessageBusConfig.h"
+#include <OpcUaStackCore/MessageBus/MessageBusConfig.h>
 
 namespace OpcUaStackCore
 {

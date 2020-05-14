@@ -18,9 +18,9 @@
 #ifndef __OpcUaStackClient_SubscriptionManager_h__
 #define __OpcUaStackClient_SubscriptionManager_h__
 
+#include <OpcUaStackCore/MessageBus/MessageBus.h>
 #include <set>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Component/MessageBus.h"
 #include "OpcUaStackClient/ServiceSet/SubscriptionServiceBase.h"
 #include "OpcUaStackClient/ServiceSet/SubscriptionServiceHandler.h"
 

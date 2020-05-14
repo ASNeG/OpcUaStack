@@ -18,8 +18,8 @@
 #ifndef __OpcUaServer_DiscoveryClient_h__
 #define __OpcUaServer_DiscoveryClient_h__
 
+#include <OpcUaStackCore/MessageBus/MessageBus.h>
 #include "OpcUaStackCore/Base/Config.h"
-#include "OpcUaStackCore/Component/MessageBus.h"
 #include "OpcUaStackClient/ApplicationUtility/DiscoveryClientRegisteredServers.h"
 
 namespace OpcUaServer

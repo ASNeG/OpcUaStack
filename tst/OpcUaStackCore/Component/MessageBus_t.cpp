@@ -1,9 +1,9 @@
 #include <boost/make_shared.hpp>
 #include <boost/thread/mutex.hpp>
+#include <OpcUaStackCore/MessageBus/MessageBus.h>
 #include <future>
 #include <chrono>
 #include "unittest.h"
-#include "OpcUaStackCore/Component/MessageBus.h"
 
 using namespace OpcUaStackCore;
 

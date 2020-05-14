@@ -18,7 +18,7 @@
 #ifndef __OpcUaStackClient_QueryService_h__
 #define __OpcUaStackClient_QueryService_h__
 
-#include "OpcUaStackCore/Component/MessageBus.h"
+#include <OpcUaStackCore/MessageBus/MessageBus.h>
 #include "OpcUaStackCore/ServiceSet/QueryServiceTransaction.h"
 #include "OpcUaStackClient/ServiceSet/ClientServiceBase.h"
 

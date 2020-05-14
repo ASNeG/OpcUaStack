@@ -18,8 +18,8 @@
 #ifndef __OpcUaStackClient_ClientServiceBase_h__
 #define __OpcUaStackClient_ClientServiceBase_h__
 
+#include <OpcUaStackCore/MessageBus/MessageBus.h>
 #include <functional>
-#include "OpcUaStackCore/Component/MessageBus.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
 
 namespace OpcUaStackClient 

@@ -27,7 +27,7 @@
 #include "OpcUaStackCore/Certificate/CryptoManager.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelServer.h"
-#include "OpcUaStackCore/Component/MessageBus.h"
+#include "OpcUaStackCore/MessageBus/MessageBus.h"
 #include "OpcUaStackServer/ServiceSet/EndpointDescriptionConfig.h"
 #include "OpcUaStackServer/ServiceSet/DiscoveryService.h"
 #include "OpcUaStackServer/ServiceSet/TransactionManager.h"

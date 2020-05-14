@@ -18,8 +18,8 @@
 #ifndef __OpcUaStackClient_DiscoveryService_h__
 #define __OpcUaStackClient_DiscoveryService_h__
 
+#include <OpcUaStackCore/MessageBus/MessageBus.h>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Component/MessageBus.h"
 #include "OpcUaStackClient/ServiceSet/ClientServiceBase.h"
 #include "OpcUaStackCore/ServiceSet/DiscoveryServiceTransaction.h"
 

@@ -20,7 +20,7 @@
 
 #include <OpcUaStackCore/Certificate/ApplicationCertificate.h>
 #include "OpcUaStackCore/Utility/IOThread.h"
-#include "OpcUaStackCore/Component/MessageBus.h"
+#include "OpcUaStackCore/MessageBus/MessageBus.h"
 #include "OpcUaStackCore/Core/Core.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
 #include "OpcUaStackServer/ServiceSet/SessionManager.h"

@@ -18,7 +18,7 @@
 #ifndef __OpcUaStackClient_MonitoredItemService_h__
 #define __OpcUaStackClient_MonitoredItemService_h__
 
-#include "OpcUaStackCore/Component/MessageBus.h"
+#include <OpcUaStackCore/MessageBus/MessageBus.h>
 #include "OpcUaStackClient/ServiceSet/ClientServiceBase.h"
 #include "OpcUaStackCore/ServiceSet/MonitoredItemServiceTransaction.h"
 

@@ -3,6 +3,7 @@
 
 **Features**:
 
+* Add new thread and communication concept #339, by @huebl 
 * Add configuration file to opc ua client application #301, by @huebl
 * Replace slot timer callback function by timeoutfunction #285, by @huebl
 * Added historical access vbi interface #155, by @huebl

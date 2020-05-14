@@ -21,9 +21,10 @@
 #include <boost/thread/mutex.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/asio/strand.hpp>
-#include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Component/MessageBusConfig.h"
-#include "OpcUaStackCore/Component/MessageBusMember.h"
+#include <OpcUaStackCore/MessageBus/MessageBusConfig.h>
+#include <OpcUaStackCore/MessageBus/MessageBusMember.h>
+
+#include <OpcUaStackCore/MessageBus/MessageBus.h>
 
 namespace OpcUaStackCore
 {

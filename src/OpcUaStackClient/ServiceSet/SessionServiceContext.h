@@ -18,8 +18,8 @@
 #define __OpcUaStackClient_SessionServiceContext_h__
 
 #include <boost/shared_ptr.hpp>
+#include <OpcUaStackCore/MessageBus/MessageBus.h>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Component/MessageBus.h"
 #include "OpcUaStackCore/Utility/AsyncPendingQueue.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelClientConfig.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelClient.h"

@@ -17,8 +17,8 @@
 #ifndef __OpcUaStackClient_SessionServiceStateIf_h__
 #define __OpcUaStackClient_SessionServiceStateIf_h__
 
+#include <OpcUaStackCore/MessageBus/Message.h>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Component/Message.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannel.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceStateId.h"
 

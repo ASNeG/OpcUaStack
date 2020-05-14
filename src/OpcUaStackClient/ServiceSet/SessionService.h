@@ -17,7 +17,7 @@
 #ifndef __OpcUaStackClient_SessionService_h__
 #define __OpcUaStackClient_SessionService_h__
 
-#include "OpcUaStackCore/Component/MessageBus.h"
+#include <OpcUaStackCore/MessageBus/MessageBus.h>
 #include "OpcUaStackCore/Utility/SlotTimer.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackCore/Utility/PendingQueue.h"

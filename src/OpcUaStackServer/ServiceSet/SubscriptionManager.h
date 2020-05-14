@@ -21,7 +21,7 @@
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackCore/Utility/SlotTimer.h"
-#include "OpcUaStackCore/Component/MessageBus.h"
+#include "OpcUaStackCore/MessageBus/MessageBus.h"
 #include "OpcUaStackCore/ServiceSetApplication/ForwardGlobalSync.h"
 #include "OpcUaStackCore/ServiceSet/SubscriptionServiceTransaction.h"
 #include "OpcUaStackCore/ServiceSet/MonitoredItemServiceTransaction.h"

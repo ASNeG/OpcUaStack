@@ -20,8 +20,8 @@
 
 #include <future>
 #include <boost/thread/mutex.hpp>
+#include <OpcUaStackCore/MessageBus/MessageBus.h>
 #include "OpcUaStackCore/Base/UserContext.h"
-#include "OpcUaStackCore/Component/MessageBus.h"
 #include "OpcUaStackCore/SecureChannel/RequestHeader.h"
 #include "OpcUaStackCore/SecureChannel/ResponseHeader.h"
 
