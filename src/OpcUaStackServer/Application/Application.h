@@ -18,7 +18,6 @@
 #ifndef __OpcUaStackServer_Application_h__
 #define __OpcUaStackServer_Application_h__
 
-#include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackServer/ServiceSet/ServerServiceBase.h"
 #include "OpcUaStackServer/Application/ApplicationBase.h"
 #include "OpcUaStackServer/Application/ApplicationServiceIf.h"
@@ -56,14 +55,9 @@ namespace OpcUaStackServer
 		ApplicationIf* applicationIf(void);
 		void reloadIf(ReloadIf* reloadIf);
 		void applicationName(const std::string& applicationName);
-		void serviceComponent(OpcUaStackCore::Component* serviceComponent);
 
 		bool startup(void);
 		bool shutdown(void);
-
-		//- Component -----------------------------------------------------------------
-		virtual void receive(OpcUaStackCore::Message::SPtr message);
-		//- Component -----------------------------------------------------------------
 
 		//- ApplicationServiceIf ------------------------------------------------------
 		virtual void send(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
@@ -72,13 +66,13 @@ namespace OpcUaStackServer
 		//- ApplicationServiceIf ------------------------------------------------------
 
 	  private:
+		void receive(OpcUaStackCore::Message::SPtr message);
 		void updateServiceTransactionRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 
 		State state_;
 		ApplicationIf* applicationIf_;
 		ReloadIf* reloadIf_;
 		std::string applicationName_;
-		OpcUaStackCore::Component* serviceComponent_;
 
 		OpcUaStackCore::MessageBusMember::WPtr messageBusMemberApplication_;
 	};

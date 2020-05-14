@@ -78,14 +78,11 @@ namespace OpcUaStackClient
 		virtual void handleMessageResponse(OpcUaStackCore::SecureChannel* secureChannel);
 		//- SecureChannelClientIf ---------------------------------------------
 
-		// - Component -------------------------------------------------------
-		void receive(OpcUaStackCore::Message::SPtr message);
-		// - Component -------------------------------------------------------
-
 		void pendingQueueTimeout(OpcUaStackCore::Object::SPtr object);
 		void reconnectTimeout(void);
 
 	  private:
+		void receive(OpcUaStackCore::Message::SPtr message);
 		SessionService(void);
 
 		void pendingQueueTimeoutLoop(void);

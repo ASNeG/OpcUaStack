@@ -25,7 +25,6 @@ namespace OpcUaStackServer
 
 	ApplicationManager::ApplicationManager(void) 
 	: applicationMap_()
-	, serviceComponent_(nullptr)
 	{
 	}
 
@@ -57,7 +56,6 @@ namespace OpcUaStackServer
 		application->applicationIf(applicationIf);
 		application->reloadIf(reloadIf);
 		application->applicationName(applicationName);
-		application->serviceComponent(serviceComponent_);
 		application->applicationIf()->cryptoManager(cryptoManager_);
 		applicationMap_.insert(
 			std::make_pair(applicationName, application)
@@ -82,12 +80,6 @@ namespace OpcUaStackServer
 	}
 
 	void
-	ApplicationManager::serviceComponent(Component* serviceComponent)
-	{
-		serviceComponent_ = serviceComponent;
-	}
-
-	void
 	ApplicationManager::ioThread(const OpcUaStackCore::IOThread::SPtr& ioThread)
 	{
 		ioThread_ = ioThread;
@@ -102,10 +94,8 @@ namespace OpcUaStackServer
 	bool
 	ApplicationManager::startup(void)
 	{
-		Application::Map::iterator it;
-		for (it = applicationMap_.begin(); it !=  applicationMap_.end(); it++) {
-			Application::SPtr application = it->second;
-			application->serviceComponent(serviceComponent_);
+		for (auto it = applicationMap_.begin(); it !=  applicationMap_.end(); it++) {
+			auto application = it->second;
 			if (!application->startup()) return false;
 		}
 		return true;
@@ -114,9 +104,8 @@ namespace OpcUaStackServer
 	bool
 	ApplicationManager::shutdown(void)
 	{
-		Application::Map::iterator it;
-		for (it = applicationMap_.begin(); it !=  applicationMap_.end(); it++) {
-			Application::SPtr application = it->second;
+		for (auto it = applicationMap_.begin(); it !=  applicationMap_.end(); it++) {
+			auto application = it->second;
 			application->shutdown();
 		}
 		return true;

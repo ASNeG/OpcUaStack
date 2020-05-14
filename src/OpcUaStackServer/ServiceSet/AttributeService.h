@@ -42,12 +42,9 @@ namespace OpcUaStackServer
 		);
 		~AttributeService(void);
 
-		//- Component -----------------------------------------------------------------
-		void receive(OpcUaStackCore::Message::SPtr message);
-		//- Component -----------------------------------------------------------------
-
-
 	  private:
+		void receive(OpcUaStackCore::Message::SPtr message);
+
 		void sendAnswer(OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction);
 		void receiveReadRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 		void forwardRead(

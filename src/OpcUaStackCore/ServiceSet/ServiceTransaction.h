@@ -21,7 +21,6 @@
 #include <future>
 #include <boost/thread/mutex.hpp>
 #include "OpcUaStackCore/Base/UserContext.h"
-#include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/Component/MessageBus.h"
 #include "OpcUaStackCore/SecureChannel/RequestHeader.h"
 #include "OpcUaStackCore/SecureChannel/ResponseHeader.h"
@@ -61,11 +60,6 @@ namespace OpcUaStackCore
 		RequestHeader::SPtr requestHeader(void);
 		void responseHeader(ResponseHeader::SPtr responseHeader);
 		ResponseHeader::SPtr responseHeader(void);
-
-		Component* componentService(void);
-		void componentService(Component* componentService);
-		Component* componentSession(void);
-		void componentSession(Component* componentSession);
 
 		void memberService(MessageBusMember::WPtr& memberService);
 		MessageBusMember::WPtr& memberService(void);
@@ -110,9 +104,6 @@ namespace OpcUaStackCore
 
 		RequestHeader::SPtr requestHeader_;
 		ResponseHeader::SPtr responseHeader_;
-
-		Component* componentService_;
-		Component* componentSession_;
 
 		MessageBusMember::WPtr memberService_;
 		MessageBusMember::WPtr memberServiceSession_;

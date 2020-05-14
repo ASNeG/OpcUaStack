@@ -46,13 +46,13 @@ namespace OpcUaServer
 	}
 
 	void
-	DiscoveryClient::ioThread(OpcUaStackCore::IOThread::SPtr& ioThread)
+	DiscoveryClient::ioThread(const IOThread::SPtr& ioThread)
 	{
 		ioThread_ = ioThread;
 	}
 
 	void
-	DiscoveryClient::messageBus(OpcUaStackCore::MessageBus::SPtr& messageBus)
+	DiscoveryClient::messageBus(const MessageBus::SPtr& messageBus)
 	{
 		messageBus_ = messageBus;
 	}

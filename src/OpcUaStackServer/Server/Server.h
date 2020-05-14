@@ -45,7 +45,8 @@ namespace OpcUaStackServer
 		void stop(void);
 
 		InformationModel::SPtr getInformationModel(void);
-		OpcUaStackCore::IOThread* ioThread(void);
+		OpcUaStackCore::IOThread::SPtr ioThread(void);
+		OpcUaStackCore::MessageBus::SPtr messageBus(void);
 		ApplicationManager& applicationManager(void);
 		ServiceManager& serviceManager(void);
 		OpcUaStackCore::CryptoManager::SPtr& cryptoManager(void);

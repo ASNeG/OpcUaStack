@@ -449,4 +449,13 @@ namespace OpcUaStackCore
 		messageBusReceiver->messageSend(sender, message, strandSender, sendCompleteCallback);
 	}
 
+	void
+	MessageBus::log(void)
+	{
+		for (auto it : messageBusMemberMap_) {
+			Log(Debug, "MessageBusMember")
+			    .parameter("Name", it.first);
+		}
+	}
+
 }

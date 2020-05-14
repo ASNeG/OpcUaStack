@@ -19,7 +19,6 @@
 #define __OpcUaStackServer_Session_h__
 
 #include "OpcUaStackCore/Base/UserContext.h"
-#include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannel.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelTransaction.h"
@@ -47,7 +46,6 @@ namespace OpcUaStackServer
 
 	class DLLEXPORT Session
 	: public OpcUaStackCore::Object
-	, public OpcUaStackCore::Component
 	, public OpcUaStackServer::ServerServiceBase
 	{
 	  public:
@@ -93,11 +91,8 @@ namespace OpcUaStackServer
 		void endpointDescription(OpcUaStackCore::EndpointDescription::SPtr& endpointDescription);
 		void endpointDescriptionArray(OpcUaStackCore::EndpointDescriptionArray::SPtr& endpointDescriptionArray);
 
-		// - Component -------------------------------------------------------
-		void receive(OpcUaStackCore::Message::SPtr message);
-		// - Component -------------------------------------------------------
-
 	  private:
+		void receive(OpcUaStackCore::Message::SPtr message);
 		void createServerNonce(void);
 
 		OpcUaStackCore::OpcUaStatusCode authentication(OpcUaStackCore::ActivateSessionRequest& activateSessionRequest);

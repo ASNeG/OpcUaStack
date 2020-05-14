@@ -35,10 +35,7 @@ namespace OpcUaStackServer
 	, reloadIf_(nullptr)
 	, state_(ApplConstruct)
 	, applicationName_("")
-	, serviceComponent_(nullptr)
 	{
-		Component::ioThread(ioThread.get());  // FIXME: obsolete
-
 		// set parameter in server service base
 		serviceName_ = serviceName;
 		ServerServiceBase::ioThread_ = ioThread.get();
@@ -88,12 +85,6 @@ namespace OpcUaStackServer
 	Application::applicationName(const std::string& applicationName)
 	{
 		applicationName_ = applicationName;
-	}
-
-	void
-	Application::serviceComponent(Component* serviceComponent)
-	{
-		serviceComponent_ = serviceComponent;
 	}
 
 	bool

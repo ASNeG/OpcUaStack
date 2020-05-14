@@ -67,8 +67,7 @@ namespace OpcUaStackServer
 		MessageBus::SPtr& messageBus,
 		boost::shared_ptr<boost::asio::io_service::strand>& strand
     )
-	: Component()
-	, ServerServiceBase()
+	: ServerServiceBase()
 	, forwardGlobalSync_()
 	, sessionIf_(nullptr)
 	, sessionState_(SessionState_Close)
@@ -81,7 +80,6 @@ namespace OpcUaStackServer
 		Log(Info, "session construct")
 			.parameter("SessionId", sessionId_)
 			.parameter("AuthenticationToken", authenticationToken_);
-		componentName("Session");
 
 		// set parameter in server service base
 		serviceName_ = serviceName;
@@ -1072,7 +1070,6 @@ namespace OpcUaStackServer
 			return;
 		}
 		secureChannelTransaction->responseTypeNodeId_ = OpcUaNodeId(serviceTransactionSPtr->nodeTypeResponse().nodeId<uint32_t>());
-		serviceTransactionSPtr->componentSession(this); // FIXME: can be removed
 		serviceTransactionSPtr->sessionId(sessionId_);
 		serviceTransactionSPtr->userContext(userContext_);
 		Object::SPtr handle = secureChannelTransaction;
@@ -1096,9 +1093,6 @@ namespace OpcUaStackServer
 			.parameter("RequestId", serviceTransactionSPtr->requestId_);
 
 		// send message request to service component
-#if 0
-		serviceTransactionSPtr->componentService()->send(serviceTransactionSPtr);  // FIXME: must be removed
-#endif
 		serviceTransactionSPtr->memberServiceSession(messageBusMember_);
 		messageBus_->messageSend(
 			messageBusMember_,

@@ -91,6 +91,8 @@ namespace OpcUaStackCore
 			const MessageBusMember::SendCompleteCallback& sendCompleteCallback
 		);
 
+		void log(void);
+
 	  private:
 		bool debugLogging_ = false;
 		boost::mutex mutex_;

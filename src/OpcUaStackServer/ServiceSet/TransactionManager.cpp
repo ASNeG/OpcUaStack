@@ -65,7 +65,6 @@ namespace OpcUaStackServer
 		}
 
 		serviceTransactionSPtr = it->second->constructTransaction();
-		serviceTransactionSPtr->componentService(it->second->componentService());  // FIXME: Must be removed
 		serviceTransactionSPtr->memberService(it->second->memberService());
 		return serviceTransactionSPtr;
 	}

@@ -59,10 +59,16 @@ namespace OpcUaStackServer
 		return informationModel_;
 	}
 
-	IOThread*
+	IOThread::SPtr
 	Server::ioThread(void)
 	{
-		return ioThread_.get();
+		return ioThread_;
+	}
+
+	MessageBus::SPtr
+	Server::messageBus(void)
+	{
+		return messageBus_;
 	}
 
 	bool
@@ -124,9 +130,6 @@ namespace OpcUaStackServer
 
 		// startup application
 		Log(Info, "startup application");
-		Component* applicationService = Component::getComponent("ApplicationService");
-		applicationManager_.serviceComponent(applicationService);
-
 		if (!applicationManager_.startup()) {
 			Log(Error, "server application manager start failed");
 			return false;

@@ -18,7 +18,6 @@
 #ifndef __OpcUaStackServer_ApplicationManager_h__
 #define __OpcUaStackServer_ApplicationManager_h__
 
-#include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/Certificate/CryptoManager.h"
 #include "OpcUaStackServer/Application/ApplicationIf.h"
 #include "OpcUaStackServer/Application/ReloadIf.h"
@@ -43,9 +42,6 @@ namespace OpcUaStackServer
 		bool deregisterApplication(
 			const std::string& applicationName
 		);
-		void serviceComponent(
-			OpcUaStackCore::Component* serviceComponent
-		);
 		void ioThread(const OpcUaStackCore::IOThread::SPtr& ioThread);
 		void messageBus(const OpcUaStackCore::MessageBus::SPtr& messageBus);
 
@@ -54,7 +50,6 @@ namespace OpcUaStackServer
 
 	  private:
 		Application::Map applicationMap_;
-		OpcUaStackCore::Component* serviceComponent_;
 
 		OpcUaStackCore::IOThread::SPtr ioThread_ = nullptr;
 		OpcUaStackCore::MessageBus::SPtr messageBus_ = nullptr;

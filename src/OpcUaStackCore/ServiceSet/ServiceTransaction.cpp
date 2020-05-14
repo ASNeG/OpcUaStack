@@ -154,30 +154,6 @@ namespace OpcUaStackCore
 		return nodeTypeResponse_;
 	}
 
-	Component*
-	ServiceTransaction::componentService(void)
-	{
-		return componentService_;
-	}
-
-	void 
-	ServiceTransaction::componentService(Component* componentService)
-	{
-		componentService_ = componentService;
-	}
-	
-	Component*
-	ServiceTransaction::componentSession(void)
-	{
-		return componentSession_;
-	}
-
-	void 
-	ServiceTransaction::componentSession(Component* componentSession)
-	{
-		componentSession_ = componentSession;
-	}
-
 	void
 	ServiceTransaction::memberService(MessageBusMember::WPtr& memberService)
 	{

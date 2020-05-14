@@ -107,28 +107,14 @@ namespace OpcUaServer
 
 		// start discovery client
 		discoveryClient_.cryptoManager(server_.cryptoManager());
-		// FIXME: todo
-		//discoveryClient_.ioThread(ioThread);
-		//discoveryClient_.messageBus(messageBus);
+		discoveryClient_.ioThread(server_.ioThread());
+		discoveryClient_.messageBus(server_.messageBus());
 		if (!discoveryClient_.startup(*config_)) {
 			return false;
 		}
 
-		// log components
-		std::vector<std::string> componentNameVec;
-		Component::getComponentNames(componentNameVec);
-		std::vector<std::string>::iterator it;
-		for (it = componentNameVec.begin(); it != componentNameVec.end(); it++) {
-			Component* component = Component::getComponent(*it);
-			if (component == nullptr) {
-				Log(Debug, "Component")
-					.parameter("Name", *it);
-				continue;
-			}
-			else {
-				component->logComponent();
-			}
-		}
+		// log message bus information
+		server_.messageBus()->log();
 
 		Log(Info, "application started...");
 		return true;

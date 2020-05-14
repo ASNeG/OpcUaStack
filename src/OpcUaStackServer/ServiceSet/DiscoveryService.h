@@ -63,11 +63,9 @@ namespace OpcUaStackServer
 			OpcUaStackCore::SecureChannelTransaction::SPtr secureChannelTransaction
 		);
 
-		//- Component -----------------------------------------------------------------
-		void receive(OpcUaStackCore::Message::SPtr message);
-		//- Component -----------------------------------------------------------------
-
 	  private:
+		void receive(OpcUaStackCore::Message::SPtr message);
+
 		OpcUaStackCore::EndpointDescriptionArray::SPtr endpointDescriptionArray_;
 		OpcUaStackCore::CryptoManager::SPtr cryptoManager_;
 		DiscoveryIf* discoveryIf_;

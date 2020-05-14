@@ -47,11 +47,8 @@ namespace OpcUaStackClient
 		void syncSend(OpcUaStackCore::ServiceTransactionQueryNext::SPtr serviceTransactionQueryNext);
 		void asyncSend(OpcUaStackCore::ServiceTransactionQueryNext::SPtr serviceTransactionQueryNext);
 
-		//- Component -----------------------------------------------------------------
-		void receive(OpcUaStackCore::Message::SPtr message);
-		//- Component -----------------------------------------------------------------
-
 	  private:
+		void receive(OpcUaStackCore::Message::SPtr message);
 		OpcUaStackCore::MessageBusMember::WPtr sessionMember_;
 	};
 
