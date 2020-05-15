@@ -54,7 +54,7 @@ namespace OpcUaStackServer
 		// activate receiver
 		activateReceiver(
 			[this](Message::SPtr& message){
-				receive(message);
+				// nothing to do
 			}
 		);
 	}
@@ -251,12 +251,6 @@ namespace OpcUaStackServer
 			auto responseHeader = findServersResponse.responseHeader();
 			discoveryIf_->discoveryResponseMessage(responseHeader, secureChannelTransaction);
 		}
-	}
-
-
-	void
-	DiscoveryService::receive(Message::SPtr message)
-	{
 	}
 
 }

@@ -64,8 +64,6 @@ namespace OpcUaStackServer
 		);
 
 	  private:
-		void receive(OpcUaStackCore::Message::SPtr message);
-
 		OpcUaStackCore::EndpointDescriptionArray::SPtr endpointDescriptionArray_;
 		OpcUaStackCore::CryptoManager::SPtr cryptoManager_;
 		DiscoveryIf* discoveryIf_;

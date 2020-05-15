@@ -254,6 +254,9 @@ namespace OpcUaStackServer
 		serviceTransactionRegisterServer->memberService(discoveryService_->messageBusMember());
 
 		transactionManager_->registerTransaction(serviceTransactionRegisterServer);
+
+		discoveryService_->endpointDescriptionSet(endpointDescriptionSet_);
+		discoveryService_->cryptoManager(cryptoManager_);
 	}
 
 	void
@@ -284,7 +287,7 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	ServiceManager::init(SessionManager& sessionManager)
+	ServiceManager::initService(SessionManager& sessionManager)
 	{
 		initAttributeService();
 		initMethodService();
@@ -303,7 +306,7 @@ namespace OpcUaStackServer
 		return true;
 	}
 
-	bool 
+	void
 	ServiceManager::informationModel(InformationModel::SPtr informationModel)
 	{
 		attributeService_->informationModel(informationModel);
@@ -315,21 +318,30 @@ namespace OpcUaStackServer
 		viewService_->informationModel(informationModel);
 		applicationService_->informationModel(informationModel);
 		discoveryService_->informationModel(informationModel);
-		return true;
 	}
 
-	bool 
+	void
 	ServiceManager::ioThread(IOThread::SPtr& ioThread)
 	{
 		ioThread_ = ioThread;
-		return true;
 	}
 
-	bool
+	void
 	ServiceManager::messageBus(OpcUaStackCore::MessageBus::SPtr& messageBus)
 	{
 		messageBus_ = messageBus;
-		return true;
+	}
+
+	void
+	ServiceManager::endpointDescriptionSet(EndpointDescriptionSet::SPtr& endpointDescriptionSet)
+	{
+		endpointDescriptionSet_ = endpointDescriptionSet;
+	}
+
+	void
+	ServiceManager::cryptoManager(CryptoManager::SPtr& cryptoManager)
+	{
+		cryptoManager_ = cryptoManager;
 	}
 
 	bool

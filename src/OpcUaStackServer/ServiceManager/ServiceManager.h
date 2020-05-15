@@ -19,6 +19,7 @@
 #define __OpcUaStackServer_ServiceManager_h__
 
 #include "OpcUaStackCore/Base/IOService.h"
+#include "OpcUaStackCore/ServiceSet/EndpointDescriptionSet.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
 #include "OpcUaStackServer/ServiceSet/SessionManager.h"
 #include "OpcUaStackServer/ServiceSet/AttributeService.h"
@@ -42,12 +43,14 @@ namespace OpcUaStackServer
 		ServiceManager(void);
 		~ServiceManager(void);
 
-		bool init(
+		bool initService(
 			SessionManager& sessionManager
 		);
-		bool informationModel(InformationModel::SPtr informatinModel);
-		bool ioThread(OpcUaStackCore::IOThread::SPtr& ioThread);
-		bool messageBus(OpcUaStackCore::MessageBus::SPtr& messageBus);
+		void informationModel(InformationModel::SPtr informatinModel);
+		void ioThread(OpcUaStackCore::IOThread::SPtr& ioThread);
+		void endpointDescriptionSet(OpcUaStackCore::EndpointDescriptionSet::SPtr& endpointDescriptionSet);
+		void messageBus(OpcUaStackCore::MessageBus::SPtr& messageBus);
+		void cryptoManager(OpcUaStackCore::CryptoManager::SPtr& cryptoManager);
 		bool init(void);
 		bool shutdown(void);
 
@@ -67,6 +70,8 @@ namespace OpcUaStackServer
 
 		OpcUaStackCore::IOThread::SPtr ioThread_ = nullptr;
 		OpcUaStackCore::MessageBus::SPtr messageBus_ = nullptr;
+		OpcUaStackCore::EndpointDescriptionSet::SPtr endpointDescriptionSet_ = nullptr;
+		OpcUaStackCore::CryptoManager::SPtr cryptoManager_ = nullptr;
 
 		OpcUaStackCore::ForwardGlobalSync::SPtr forwardGlobalSync_ = nullptr;
 

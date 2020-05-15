@@ -338,7 +338,7 @@ namespace OpcUaStackServer
 		}
 
 		// decode certificate configuration
-		CertificateManager::SPtr certificateManager = boost::make_shared<CertificateManager>();
+		auto certificateManager = boost::make_shared<CertificateManager>();
 		rc = ApplicationCertificateConfig::parse(
 			certificateManager,
 			"OpcUaServer.ServerInfo",
@@ -355,7 +355,7 @@ namespace OpcUaStackServer
 		}
 
 		// create application certificate
-		ApplicationCertificate::SPtr applicationCertificate = boost::make_shared<ApplicationCertificate>();
+		auto applicationCertificate = boost::make_shared<ApplicationCertificate>();
 		if (!applicationCertificate->init(certificateManager)) {
 			Log(Error, "init application certificate error");
 			return false;
@@ -379,25 +379,17 @@ namespace OpcUaStackServer
 	bool
 	Server::initService(void)
 	{
-		if (!serviceManager_.ioThread(ioThread_)) {
+		serviceManager_.ioThread(ioThread_);
+		serviceManager_.messageBus(messageBus_);
+		serviceManager_.endpointDescriptionSet(endpointDescriptionSet_);
+		serviceManager_.cryptoManager(cryptoManager_);
+
+		if (!serviceManager_.initService(sessionManager_)) {
 			Log log(Error, "init service manager error");
 			return false;
 		}
 
-		if (!serviceManager_.messageBus(messageBus_)) {
-			Log log(Error, "init message bus error");
-			return false;
-		}
-
-		if (!serviceManager_.init(sessionManager_)) {
-			Log log(Error, "init service manager error");
-			return false;
-		}
-
-		if (!serviceManager_.informationModel(informationModel_)) {
-			Log log(Error, "init service manager error");
-			return false;
-		}
+		serviceManager_.informationModel(informationModel_);
 
 		if (!serviceManager_.init()) {
 			Log log(Error, "init service manager error");
@@ -416,11 +408,6 @@ namespace OpcUaStackServer
 	bool
 	Server::initSession(void)
 	{
-		// create discovery service
-		DiscoveryService::SPtr discoveryService = serviceManager_.discoveryService();
-		discoveryService->endpointDescriptionSet(endpointDescriptionSet_);
-		discoveryService->cryptoManager(cryptoManager_);
-
 		// initialize session manager
 		sessionManager_.ioThread(ioThread_.get());
 		sessionManager_.messageBus(messageBus_);
