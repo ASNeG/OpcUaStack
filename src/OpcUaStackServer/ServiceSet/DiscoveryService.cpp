@@ -36,7 +36,6 @@ namespace OpcUaStackServer
 		IOThread::SPtr& ioThread,
 		MessageBus::SPtr& messageBus)
 	: ServerServiceBase()
-	, discoveryIf_(nullptr)
 	, cryptoManager_(nullptr)
 	, endpointDescriptionArray_()
 	{
@@ -64,12 +63,6 @@ namespace OpcUaStackServer
 		// deactivate receiver
 		deactivateReceiver();
 		messageBus_->deregisterMember(messageBusMember_);
-	}
-
-	void 
-	DiscoveryService::discoveryIf(DiscoveryIf* discoveryIf)
-	{
-		discoveryIf_ = discoveryIf;
 	}
 
 	void 
@@ -116,7 +109,7 @@ namespace OpcUaStackServer
 
 	void
 	DiscoveryService::getEndpointRequest(
-		RequestHeader::SPtr requestHeader,
+		RequestHeader::SPtr& requestHeader,
 		SecureChannelTransaction::SPtr secureChannelTransaction
 	)
 	{
@@ -147,11 +140,6 @@ namespace OpcUaStackServer
 
 		responseHeader.opcUaBinaryEncode(os);
 		getEndpointsResponse.opcUaBinaryEncode(os);
-
-		if (discoveryIf_ != nullptr) {
-			ResponseHeader::SPtr responseHeader = getEndpointsResponse.responseHeader();
-			discoveryIf_->discoveryResponseMessage(responseHeader, secureChannelTransaction);
-		}
 	}
 
 	void
@@ -191,11 +179,6 @@ namespace OpcUaStackServer
 
 		responseHeader.opcUaBinaryEncode(os);
 		registerServerResponse.opcUaBinaryEncode(os);
-
-		if (discoveryIf_ != nullptr) {
-			ResponseHeader::SPtr responseHeader = registerServerResponse.responseHeader();
-			discoveryIf_->discoveryResponseMessage(responseHeader, secureChannelTransaction);
-		}
 	}
 
 	void
@@ -246,11 +229,6 @@ namespace OpcUaStackServer
 
 		responseHeader.opcUaBinaryEncode(os);
 		findServersResponse.opcUaBinaryEncode(os);
-
-		if (discoveryIf_ != nullptr) {
-			auto responseHeader = findServersResponse.responseHeader();
-			discoveryIf_->discoveryResponseMessage(responseHeader, secureChannelTransaction);
-		}
 	}
 
 }

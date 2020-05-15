@@ -52,7 +52,6 @@ namespace OpcUaStackServer
 	SessionManager::discoveryService(DiscoveryService::SPtr& discoveryService)
 	{
 		discoveryService_ = discoveryService;
-		discoveryService_->discoveryIf(this);
 	}
 
 	void
@@ -548,7 +547,14 @@ namespace OpcUaStackServer
 		secureChannel->secureChannelTransaction_->handle_ = secureChannel->handle();
 
 		// handle get endpoints request
-		discoveryService_->getEndpointRequest(requestHeader, secureChannel->secureChannelTransaction_);
+		ResponseHeader::SPtr responseHeader;
+		discoveryService_->getEndpointRequest(
+			requestHeader,
+			secureChannel->secureChannelTransaction_
+		);
+
+		// send response
+		discoveryResponseMessage(secureChannel->secureChannelTransaction_);
 	}
 
 	// ------------------------------------------------------------------------
@@ -569,6 +575,9 @@ namespace OpcUaStackServer
 
 		// handle find servers request
 		discoveryService_->findServersRequest(requestHeader, secureChannel->secureChannelTransaction_);
+
+		// send response
+		discoveryResponseMessage(secureChannel->secureChannelTransaction_);
 	}
 
 	// ------------------------------------------------------------------------
@@ -589,6 +598,35 @@ namespace OpcUaStackServer
 
 		// handle register server request
 		discoveryService_->registerServerRequest(requestHeader, secureChannel->secureChannelTransaction_);
+
+		// send response
+		discoveryResponseMessage(secureChannel->secureChannelTransaction_);
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// send discovery response
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	void
+	SessionManager::discoveryResponseMessage(
+		SecureChannelTransaction::SPtr& secureChannelTransaction
+	)
+	{
+		// get channel session handle
+		auto channelSessionHandle = boost::static_pointer_cast<ChannelSessionHandle>(secureChannelTransaction->handle_);
+		if (!channelSessionHandle->secureChannelIsValid()) {
+			// channel do not exist anymore - ignore response
+			return;
+		}
+
+		// send response
+		channelSessionHandle->secureChannelServer()->sendResponse(
+			channelSessionHandle->secureChannel(),
+			secureChannelTransaction
+		);
 	}
 
 
@@ -685,33 +723,6 @@ namespace OpcUaStackServer
 	)
 	{
 		channelSessionHandleMap_.deleteSession(authenticationToken);
-	}
-
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	//
-	// DiscoveryIf
-	//
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	void
-	SessionManager::discoveryResponseMessage(
-		ResponseHeader::SPtr& responseHeader,
-		SecureChannelTransaction::SPtr& secureChannelTransaction
-	)
-	{
-		// get channel session handle
-		auto channelSessionHandle = boost::static_pointer_cast<ChannelSessionHandle>(secureChannelTransaction->handle_);
-		if (!channelSessionHandle->secureChannelIsValid()) {
-			// channel do not exist anymore - ignore response
-			return;
-		}
-
-		// send response
-		channelSessionHandle->secureChannelServer()->sendResponse(
-			channelSessionHandle->secureChannel(),
-			secureChannelTransaction
-		);
 	}
 
 }
