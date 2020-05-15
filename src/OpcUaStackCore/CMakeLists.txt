@@ -74,7 +74,7 @@ message(STATUS "  library name: ${OPCUASTACK_CORE_LIB_NAME}")
 # -----------------------------------------------------------------------------
 file(GLOB INC_OpcUaStackCore_Base OpcUaStackCore/Base/*.h OpcUaStackCore/Base/*.txx)
 file(GLOB INC_OpcUaStackCore_BuildInTypes OpcUaStackCore/BuildInTypes/*.h)
-file(GLOB INC_OpcUaStackCore_Component OpcUaStackCore/Component/*.h)
+file(GLOB INC_OpcUaStackCore_MessageBus OpcUaStackCore/MessageBus/*.h)
 file(GLOB INC_OpcUaStackCore_Certificate OpcUaStackCore/Certificate/*.h)
 file(GLOB INC_OpcUaStackCore_Core OpcUaStackCore/Core/*.h)
 file(GLOB INC_OpcUaStackCore_Logging OpcUaStackCore/Logging/*.h)
@@ -115,8 +115,8 @@ install(
 )
 
 install(
-    FILES ${INC_OpcUaStackCore_Component} 
-    DESTINATION ${INSTALL_PREFIX}/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/Component
+    FILES ${INC_OpcUaStackCore_MessageBus} 
+    DESTINATION ${INSTALL_PREFIX}/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/MessageBus
     COMPONENT headers
 )
 
