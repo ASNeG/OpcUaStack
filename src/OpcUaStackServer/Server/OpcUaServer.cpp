@@ -17,9 +17,9 @@
 
 #include <boost/asio/ip/host_name.hpp>
 #include <OpcUaStackCore/Certificate/ApplicationCertificateConfig.h>
+#include <OpcUaStackServer/Server/OpcUaServer.h>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/ConfigXml.h"
-#include "OpcUaStackServer/Server/Server.h"
 #include "OpcUaStackServer/InformationModel/InformationModelNodeSet.h"
 #include "OpcUaStackServer/NodeSet/NodeSetXmlParser.h"
 #include "OpcUaStackServer/ServiceSet/EndpointDescriptionConfig.h"
@@ -29,7 +29,7 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
-	Server::Server(void)
+	OpcUaServer::OpcUaServer(void)
 	: Core()
 	, informationModel_(boost::make_shared<InformationModel>())
 	, sessionManager_()
@@ -49,30 +49,30 @@ namespace OpcUaStackServer
 		messageBus_->debugLogging(true); // FIXME: add parameter to configuration file or rework logging
 	}
 
-	Server::~Server(void)
+	OpcUaServer::~OpcUaServer(void)
 	{
 	}
 
 	InformationModel::SPtr 
-	Server::getInformationModel(void)
+	OpcUaServer::getInformationModel(void)
 	{
 		return informationModel_;
 	}
 
 	IOThread::SPtr
-	Server::ioThread(void)
+	OpcUaServer::ioThread(void)
 	{
 		return ioThread_;
 	}
 
 	MessageBus::SPtr
-	Server::messageBus(void)
+	OpcUaServer::messageBus(void)
 	{
 		return messageBus_;
 	}
 
 	bool
-	Server::init(void)
+	OpcUaServer::startup(void)
 	{
 		bool rc = true;
 
@@ -88,11 +88,11 @@ namespace OpcUaStackServer
 		Log(Info, "init opc ua server stack information model (data)");
 		rc = rc && initInformationModel();
 
-		Log(Info, "init opc ua server stack service");
-		rc = rc && initService();
+		Log(Info, "init opc ua server stack service manager");
+		rc = rc && initServiceManager();
 
-		Log(Info, "init opc ua server stack session");
-		rc = rc && initSession();
+		Log(Info, "init opc ua server stack session manager");
+		rc = rc && initSessionManager();
 
 		Log(Info, "init application");
 		rc = rc && initApplication();
@@ -101,13 +101,13 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	Server::shutdown(void)
+	OpcUaServer::shutdown(void)
 	{
 		Log(Info, "shutdown opc ua server stack session");
-		shutdownSession();
+		shutdownSessionManager();
 
 		Log(Info, "shutdown opc ua server stack service");
-		shutdownService();
+		shutdownServiceManager();
 
 		Log(Info, "shutdown opc ua server stack information model (data)");
 		shutdownInformationModel();
@@ -115,11 +115,15 @@ namespace OpcUaStackServer
 		Log(Info, "shutdown opc ua core stack");
 		Core::cleanup();
 
+		// stop threads
+		Log(Info, "shutdown ioThread");
+		ioThread_->shutdown();
+
 		return true;
 	}
 
 	bool 
-	Server::start(void)
+	OpcUaServer::start(void)
 	{
 		Log(Info, "startup ioThread");
 		if (!ioThread_->startup())
@@ -146,7 +150,7 @@ namespace OpcUaStackServer
 	}
 	
 	void 
-	Server::stop(void)
+	OpcUaServer::stop(void)
 	{
 		// shutdown opc ua stack
 		Log(Info, "shutdown session manager");
@@ -155,32 +159,28 @@ namespace OpcUaStackServer
 		// shutdown application
 		Log(Info, "shutdown application");
 		applicationManager_.shutdown();
-
-		// stop threads
-		Log(Info, "shutdown ioThread");
-		ioThread_->shutdown();
 	}
 
 	ApplicationManager&
-	Server::applicationManager(void)
+	OpcUaServer::applicationManager(void)
 	{
 		return applicationManager_;
 	}
 
 	ServiceManager&
-	Server::serviceManager(void)
+	OpcUaServer::serviceManager(void)
 	{
 		return serviceManager_;
 	}
 
 	CryptoManager::SPtr&
-	Server::cryptoManager(void)
+	OpcUaServer::cryptoManager(void)
 	{
 		return cryptoManager_;
 	}
 
 	bool
-	Server::writeInformationModel(const std::string& nodeSetFileName, std::vector<std::string>& namespaceUris)
+	OpcUaServer::writeInformationModel(const std::string& nodeSetFileName, std::vector<std::string>& namespaceUris)
 	{
 		NodeSetXmlParser nodeSetXmlParser;
 
@@ -208,7 +208,7 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	Server::readInformationModel(void)
+	OpcUaServer::readInformationModel(void)
 	{
 		std::vector<std::string> configVec;
 		config().getValues("OpcUaServer.InformationModel.NodeSetFile", configVec);
@@ -264,7 +264,7 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	bool
-	Server::initInformationModel(void)
+	OpcUaServer::initInformationModel(void)
 	{
 		// replace namespaces by namespace array
 		{
@@ -302,7 +302,7 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	Server::shutdownInformationModel(void)
+	OpcUaServer::shutdownInformationModel(void)
 	{
 		serverStatusDataType_.shutdown();
 		return true;
@@ -316,7 +316,7 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	bool
-	Server::initCrypto(void)
+	OpcUaServer::initCrypto(void)
 	{
 		bool rc;
 
@@ -380,7 +380,7 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	bool
-	Server::initService(void)
+	OpcUaServer::initServiceManager(void)
 	{
 		serviceManager_.ioThread(ioThread_);
 		serviceManager_.messageBus(messageBus_);
@@ -402,14 +402,14 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	Server::shutdownService(void)
+	OpcUaServer::shutdownServiceManager(void)
 	{
 		serviceManager_.shutdown();
 		return true;
 	}
 
 	bool
-	Server::initSession(void)
+	OpcUaServer::initSessionManager(void)
 	{
 		// initialize session manager
 		sessionManager_.ioThread(ioThread_.get());
@@ -422,7 +422,7 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	Server::shutdownSession(void)
+	OpcUaServer::shutdownSessionManager(void)
 	{
 		return true;
 	}
@@ -435,7 +435,7 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	bool
-	Server::initApplication(void)
+	OpcUaServer::initApplication(void)
 	{
 		applicationManager_.ioThread(ioThread_);
 		applicationManager_.messageBus(messageBus_);

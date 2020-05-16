@@ -66,6 +66,9 @@ namespace OpcUaServer
 	bool 
 	ServerLoop::shutdown(void)
 	{
+		//
+		// Shutdown all application server components
+		//
 
 		return true;
 	}
@@ -101,9 +104,13 @@ namespace OpcUaServer
 			boost::this_thread::sleep(boost::posix_time::seconds(1));
 		}
 
-		// shutdown application
+		// stop server
+		Log(Debug, "stop server");
+		server_.stop();
+
+		// shutdown server
+		Log(Debug, "shutdown server");
 		server_.shutdown();
-		Log(Debug, "shutdown application server complete");
 
 		return true;
 	}
@@ -111,6 +118,10 @@ namespace OpcUaServer
 	void 
 	ServerLoop::stopLoop(void)
 	{
+		//
+		// Receive stop signal to stop all application server components.
+		//
+
 		// check if application is starting
 		{
 			boost::mutex::scoped_lock g(mutex_);
@@ -125,9 +136,6 @@ namespace OpcUaServer
 			}
 		}
 
-		// handle stop signal from user
-		Log(Debug, "service application stop");
-		server_.stop();
 		running_ = false;
 	}
 

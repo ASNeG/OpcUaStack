@@ -52,7 +52,7 @@ namespace OpcUaServer
 		void log(const std::string& logLevel, const std::string& message);
 		void eventLog(const std::string& logLevel, const std::string& message);
 
-		void serverLoopIf(serverLoopIf* serverLoopIf);
+		void serverLoopIf(ServerLoopIf* serverLoopIf);
 
 	  private:
 		bool setServiceDescription(const std::string& serviceName, const std::string& serviceDescription);

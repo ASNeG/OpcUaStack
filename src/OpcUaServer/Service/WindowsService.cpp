@@ -92,7 +92,7 @@ namespace OpcUaServer
 	}
 
 	void 
-	WindowsService::serverLoopIf(serverLoopIf* serverLoopIf)
+	WindowsService::serverLoopIf(ServerLoopIf* serverLoopIf)
 	{
 		serverLoopIf_ = serverLoopIf;
 	}
@@ -234,7 +234,7 @@ namespace OpcUaServer
 	{
 		serverLoopIf_->serviceCommandLine(serviceName, argc, argv);
 		if (!serverLoopIf_->startup()) return false;
-		if (!serverLoopIf_->runLoop()) return false;
+		if (!serverLoopIf_->loop()) return false;
 		serverLoopIf_->shutdown();
 		return true;
 	}
@@ -588,7 +588,7 @@ namespace OpcUaServer
 		serviceStatus_.dwCheckPoint			= 0; 
 		serviceStatus_.dwWaitHint			= 0;  
 		SetServiceStatus(ssHandle_, &serviceStatus_);
-		rc = serverLoopIf_->runLoop();
+		rc = serverLoopIf_->loop();
 		if (!rc) {
 			serviceStatus_.dwCurrentState		= SERVICE_STOPPED;
 			serviceStatus_.dwControlsAccepted	= 0;

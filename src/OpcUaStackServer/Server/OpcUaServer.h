@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackServer_Server_h__
-#define __OpcUaStackServer_Server_h__
+#ifndef __OpcUaStackServer_OpcUaServer_h__
+#define __OpcUaStackServer_OpcUaServer_h__
 
 #include <OpcUaStackCore/Certificate/ApplicationCertificate.h>
 #include "OpcUaStackCore/Utility/IOThread.h"
@@ -32,14 +32,14 @@
 namespace OpcUaStackServer
 {
 
-	class DLLEXPORT Server 
+	class DLLEXPORT OpcUaServer
 	: public OpcUaStackCore::Core
 	{
 	  public:
-	    Server(void);
-	    ~Server(void);
+	    OpcUaServer(void);
+	    ~OpcUaServer(void);
 
-		bool init(void);
+		bool startup(void);
 		bool shutdown(void);
 		bool start(void);
 		void stop(void);
@@ -57,10 +57,10 @@ namespace OpcUaStackServer
 		bool initInformationModel(void);
 		bool shutdownInformationModel(void);
 		bool initCrypto(void);
-		bool initService(void);
-		bool shutdownService(void);
-		bool initSession(void);
-		bool shutdownSession(void);
+		bool initServiceManager(void);
+		bool shutdownServiceManager(void);
+		bool initSessionManager(void);
+		bool shutdownSessionManager(void);
 		bool initApplication(void);
 
 		OpcUaStackCore::EndpointDescriptionSet::SPtr endpointDescriptionSet_;

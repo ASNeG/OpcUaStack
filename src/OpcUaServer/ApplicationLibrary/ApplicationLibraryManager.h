@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaServer_ApplicationManager_h__
-#define __OpcUaServer_ApplicationManager_h__
+#ifndef __OpcUaServer_ApplicationLibraryManager_h__
+#define __OpcUaServer_ApplicationLibraryManager_h__
 
 #include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaServer/ApplicationLibrary/ApplicationLibrary.h"
@@ -24,11 +24,11 @@
 namespace OpcUaServer
 {
 
-	class DLLEXPORT ApplicationManager
+	class DLLEXPORT ApplicationLibraryManager
 	{
 	  public:
-		ApplicationManager(void);
-		~ApplicationManager(void);
+		ApplicationLibraryManager(void);
+		~ApplicationLibraryManager(void);
 
 		bool startup(void);
 		bool shutdown(void);

@@ -157,17 +157,20 @@ namespace OpcUaStackServer
 	bool
 	SessionManager::shutdown(void)
 	{
-		// close acceptor socket
+		// close acceptor socket and all secure channel servers
 		shutdownFlag_ = true;
 		auto future = shutdownComplete_.get_future();
 		for (auto it = secureChannelServerMap_.begin(); it != secureChannelServerMap_.end(); it++) {
-			SecureChannelServer::SPtr secureChannelServer = it->second;
+			auto secureChannelServer = it->second;
 			secureChannelServer->disconnect();
 		}
 		future.wait();
 
-		// delete secure channel server
+		// delete all secure channel server
 		secureChannelServerMap_.clear();
+
+		// delete all sessions
+		channelSessionHandleMap_.deleteSession();
 
 		return true;
 	}
