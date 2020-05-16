@@ -121,7 +121,7 @@ namespace OpcUaStackServer
 	bool 
 	Server::start(void)
 	{
-
+		Log(Info, "startup ioThread");
 		if (!ioThread_->startup())
 		{
 			Log(Error, "server io thread start failed");
@@ -149,13 +149,16 @@ namespace OpcUaStackServer
 	Server::stop(void)
 	{
 		// shutdown opc ua stack
-		Log(Info, "stop opc ua server stack");
+		Log(Info, "shutdown session manager");
 		sessionManager_.shutdown();
-		ioThread_->shutdown();
 
 		// shutdown application
 		Log(Info, "shutdown application");
 		applicationManager_.shutdown();
+
+		// stop threads
+		Log(Info, "shutdown ioThread");
+		ioThread_->shutdown();
 	}
 
 	ApplicationManager&

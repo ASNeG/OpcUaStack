@@ -234,7 +234,7 @@ namespace OpcUaServer
 	{
 		serverApplicationIf_->serviceCommandLine(serviceName, argc, argv);
 		if (!serverApplicationIf_->startup()) return false;
-		if (!serverApplicationIf_->run()) return false;
+		if (!serverApplicationIf_->runLoop()) return false;
 		serverApplicationIf_->shutdown();
 		return true;
 	}
@@ -588,7 +588,7 @@ namespace OpcUaServer
 		serviceStatus_.dwCheckPoint			= 0; 
 		serviceStatus_.dwWaitHint			= 0;  
 		SetServiceStatus(ssHandle_, &serviceStatus_);
-		rc = serverApplicationIf_->run();
+		rc = serverApplicationIf_->runLoop();
 		if (!rc) {
 			serviceStatus_.dwCurrentState		= SERVICE_STOPPED;
 			serviceStatus_.dwControlsAccepted	= 0;
@@ -621,7 +621,7 @@ namespace OpcUaServer
 				serviceStatus_.dwCurrentState		= SERVICE_STOP_PENDING;
 				serviceStatus_.dwControlsAccepted	= SERVICE_ACCEPT_STOP | SERVICE_ACCEPT_SHUTDOWN;
 				SetServiceStatus(ssHandle_, &serviceStatus_);
-				serverApplicationIf_->stop();
+				serverApplicationIf_->stopLoop();
 				break; 
 			}
 		}

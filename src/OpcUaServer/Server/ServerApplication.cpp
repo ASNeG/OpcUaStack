@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -71,7 +71,7 @@ namespace OpcUaServer
 	}
 
 	bool 
-	ServerApplication::run(void)
+	ServerApplication::loop(void)
 	{
 		// startup application
 		server_.reloadIf(this);
@@ -91,7 +91,7 @@ namespace OpcUaServer
 
 		Log(Debug, "service application loop");
 		if (stopFlag) {
-			stop();
+			stopLoop();
 		}
 		while (running_) {
 			if (reload_) {
@@ -109,7 +109,7 @@ namespace OpcUaServer
 	}
 
 	void 
-	ServerApplication::stop(void)
+	ServerApplication::stopLoop(void)
 	{
 		// check if application is starting
 		{

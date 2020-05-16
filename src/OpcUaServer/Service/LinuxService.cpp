@@ -74,7 +74,7 @@ namespace OpcUaServer
 
 		signal(SIGINT, signalHandler);
 
-		if (!serverApplicationIf_->run()) return;
+		if (!serverApplicationIf_->loop()) return;
 		serverApplicationIf_->shutdown();
 		return;
 	}
@@ -88,7 +88,7 @@ namespace OpcUaServer
 	void
 	LinuxService::stop(void)
 	{
-		serverApplicationIf_->stop();
+		serverApplicationIf_->stopLoop();
 	}
 
 }

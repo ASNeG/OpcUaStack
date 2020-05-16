@@ -299,7 +299,27 @@ namespace OpcUaStackServer
 		initDiscoveryService();
 		initApplicationService();
 
-		sessionManager.discoveryService(discoveryService_);
+		sessionManager.getEndpointRequestCallback(
+			[this](OpcUaStackCore::RequestHeader::SPtr& requestHeader,
+				   OpcUaStackCore::SecureChannelTransaction::SPtr secureChannelTransaction) {
+				discoveryService_->getEndpointRequest(requestHeader, secureChannelTransaction);
+		    }
+		);
+
+		sessionManager.findServersRequestCallback(
+			[this](OpcUaStackCore::RequestHeader::SPtr& requestHeader,
+				   OpcUaStackCore::SecureChannelTransaction::SPtr secureChannelTransaction) {
+				discoveryService_->findServersRequest(requestHeader, secureChannelTransaction);
+		    }
+		);
+
+		sessionManager.registerServerRequestCallback(
+			[this](OpcUaStackCore::RequestHeader::SPtr& requestHeader,
+				   OpcUaStackCore::SecureChannelTransaction::SPtr secureChannelTransaction) {
+				discoveryService_->registerServerRequest(requestHeader, secureChannelTransaction);
+		    }
+		);
+
 		sessionManager.transactionManager(transactionManager_);
 		sessionManager.forwardGlobalSync(forwardGlobalSync_);
 
@@ -372,6 +392,17 @@ namespace OpcUaStackServer
 		methodService_->shutdown();
 		attributeService_->shutdown();
 		discoveryService_->shutdown();
+
+		applicationService_.reset();
+		viewService_.reset();
+		subscriptionService_.reset();
+		queryService_.reset();
+		nodeManagementService_.reset();
+		monitoredItemService_.reset();
+		methodService_.reset();
+		attributeService_.reset();
+		discoveryService_.reset();
+
 		return true;
 	}
 

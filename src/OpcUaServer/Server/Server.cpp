@@ -149,7 +149,7 @@ namespace OpcUaServer
 		}
 
 		// shutdown application library manager
-		applicationManager_.shutdown();
+		//applicationManager_.shutdown();
 
 		// shutdown opc ua server
 		server_.shutdown();

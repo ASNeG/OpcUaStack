@@ -16,6 +16,7 @@
  */
 
 #include <boost/make_shared.hpp>
+#include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/Utility/UniqueId.h"
 #include "OpcUaStackCore/ServiceSet/ActivateSessionResponse.h"
 #include "OpcUaStackCore/ServiceSet/CloseSessionRequest.h"
@@ -37,7 +38,6 @@ namespace OpcUaStackServer
 	, cryptoManager_()
 	, shutdownFlag_(false)
 	, shutdownComplete_()
-	, discoveryService_()
 	, transactionManagerSPtr_()
 	, channelSessionHandleMap_()
 	, forwardGlobalSync_()
@@ -49,9 +49,20 @@ namespace OpcUaStackServer
 	}
 
 	void
-	SessionManager::discoveryService(DiscoveryService::SPtr& discoveryService)
+	SessionManager::getEndpointRequestCallback(const DiscoveryRequestCallback& getEndpointRequestCallback)
 	{
-		discoveryService_ = discoveryService;
+		getEndpointRequestCallback_ = getEndpointRequestCallback;
+	}
+	void
+	SessionManager::findServersRequestCallback(const DiscoveryRequestCallback& findServersRequestCallback)
+	{
+		findServersRequestCallback_ = findServersRequestCallback;
+	}
+
+	void
+	SessionManager::registerServerRequestCallback(const DiscoveryRequestCallback& registerServerRequestCallback)
+	{
+		registerServerRequestCallback_ = registerServerRequestCallback;
 	}
 
 	void
@@ -548,7 +559,7 @@ namespace OpcUaStackServer
 
 		// handle get endpoints request
 		ResponseHeader::SPtr responseHeader;
-		discoveryService_->getEndpointRequest(
+		getEndpointRequestCallback_(
 			requestHeader,
 			secureChannel->secureChannelTransaction_
 		);
@@ -574,7 +585,7 @@ namespace OpcUaStackServer
 		secureChannel->secureChannelTransaction_->handle_ = secureChannel->handle();
 
 		// handle find servers request
-		discoveryService_->findServersRequest(requestHeader, secureChannel->secureChannelTransaction_);
+		findServersRequestCallback_(requestHeader, secureChannel->secureChannelTransaction_);
 
 		// send response
 		discoveryResponseMessage(secureChannel->secureChannelTransaction_);
@@ -597,7 +608,7 @@ namespace OpcUaStackServer
 		secureChannel->secureChannelTransaction_->handle_ = secureChannel->handle();
 
 		// handle register server request
-		discoveryService_->registerServerRequest(requestHeader, secureChannel->secureChannelTransaction_);
+		registerServerRequestCallback_(requestHeader, secureChannel->secureChannelTransaction_);
 
 		// send response
 		discoveryResponseMessage(secureChannel->secureChannelTransaction_);
