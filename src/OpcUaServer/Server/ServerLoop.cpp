@@ -18,7 +18,7 @@
 #include <boost/thread.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
-#include "OpcUaServer/Server/ServerApplication.h"
+#include <OpcUaServer/Server/ServerLoop.h>
 #include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Utility/Environment.h"
@@ -29,8 +29,8 @@ using namespace OpcUaStackServer;
 namespace OpcUaServer
 {
 
-	ServerApplication::ServerApplication(void)
-	: ServerApplicationIf()
+	ServerLoop::ServerLoop(void)
+	: ServerLoopIf()
 	, running_(false)
 	, reload_(false)
 	, serviceName_("")
@@ -41,12 +41,12 @@ namespace OpcUaServer
 	{
 	}
 
-	ServerApplication::~ServerApplication(void)
+	ServerLoop::~ServerLoop(void)
 	{
 	}
 
 	void 
-	ServerApplication::serviceCommandLine(const std::string& configFileName, unsigned int argc, char** argv)
+	ServerLoop::serviceCommandLine(const std::string& configFileName, unsigned int argc, char** argv)
 	{
 		configFileName_ = boost::filesystem::absolute(configFileName).string();
 		std::string configFilePath = boost::filesystem::path(configFileName_).parent_path().string();
@@ -54,7 +54,7 @@ namespace OpcUaServer
 	}
 
 	bool 
-	ServerApplication::startup(void)
+	ServerLoop::startup(void)
 	{
 		// set global config alias variables
 		Config* config = Config::instance();
@@ -64,14 +64,14 @@ namespace OpcUaServer
 	}
 
 	bool 
-	ServerApplication::shutdown(void)
+	ServerLoop::shutdown(void)
 	{
 
 		return true;
 	}
 
 	bool 
-	ServerApplication::loop(void)
+	ServerLoop::loop(void)
 	{
 		// startup application
 		server_.reloadIf(this);
@@ -109,7 +109,7 @@ namespace OpcUaServer
 	}
 
 	void 
-	ServerApplication::stopLoop(void)
+	ServerLoop::stopLoop(void)
 	{
 		// check if application is starting
 		{
@@ -132,14 +132,14 @@ namespace OpcUaServer
 	}
 
 	void
-	ServerApplication::reload(void)
+	ServerLoop::reload(void)
 	{
 		Log(Debug, "reload application server");
 		reload_ = true;
 	}
 
 	void
-	ServerApplication::processReload(void)
+	ServerLoop::processReload(void)
 	{
 		server_.stop();
 		server_.shutdown();

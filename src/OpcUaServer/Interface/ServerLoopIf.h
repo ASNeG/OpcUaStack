@@ -15,19 +15,20 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaServer_ServerApplicationIf_h__
-#define __OpcUaServer_ServerApplicationIf_h__
+#ifndef __OpcUaServer_ServerLoopIf_h__
+#define __OpcUaServer_ServerLoopIf_h__
 
 #include <string>
+#include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaServer
 {
 
-	class DLLEXPORT ServerApplicationIf
+	class DLLEXPORT ServerLoopIf
 	{
 	  public:
-		ServerApplicationIf(void) {}
-		virtual ~ServerApplicationIf(void) {}
+		ServerLoopIf(void) {}
+		virtual ~ServerLoopIf(void) {}
 
 		virtual void serviceCommandLine(const std::string& configFileName, unsigned int argc, char** argv) {}
 		virtual bool startup(void) = 0;

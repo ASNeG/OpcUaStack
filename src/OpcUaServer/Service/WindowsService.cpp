@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -81,7 +81,7 @@ namespace OpcUaServer
 	, criticalSection_()		
 	, serviceStatus_()
 	, ssHandle_()
-	, serverApplicationIf_(nullptr)
+	, serverLoopIf_(nullptr)
 	{
 		::InitializeCriticalSection(&criticalSection_);
 	}
@@ -92,9 +92,9 @@ namespace OpcUaServer
 	}
 
 	void 
-	WindowsService::serverApplicationIf(ServerApplicationIf* serverApplicationIf)
+	WindowsService::serverLoopIf(serverLoopIf* serverLoopIf)
 	{
-		serverApplicationIf_ = serverApplicationIf;
+		serverLoopIf_ = serverLoopIf;
 	}
 
 	void
@@ -232,10 +232,10 @@ namespace OpcUaServer
 	bool 
 	WindowsService::runConsole(const std::string& serviceName, unsigned int argc, char** argv)
 	{
-		serverApplicationIf_->serviceCommandLine(serviceName, argc, argv);
-		if (!serverApplicationIf_->startup()) return false;
-		if (!serverApplicationIf_->runLoop()) return false;
-		serverApplicationIf_->shutdown();
+		serverLoopIf_->serviceCommandLine(serviceName, argc, argv);
+		if (!serverLoopIf_->startup()) return false;
+		if (!serverLoopIf_->runLoop()) return false;
+		serverLoopIf_->shutdown();
 		return true;
 	}
 
@@ -566,12 +566,12 @@ namespace OpcUaServer
 			return; 
 		} 
 
-		serverApplicationIf_->serviceCommandLine(pathToConfiguration, 0, NULL);
+		serverLoopIf_->serviceCommandLine(pathToConfiguration, 0, NULL);
 
 		// startup service
 		serviceStatus_.dwCurrentState		= SERVICE_START_PENDING;
 		SetServiceStatus(ssHandle_, &serviceStatus_);
-		bool rc = serverApplicationIf_->startup();
+		bool rc = serverLoopIf_->startup();
 		if (!rc) {
 			serviceStatus_.dwCurrentState		= SERVICE_STOPPED;
 			serviceStatus_.dwControlsAccepted	= 0;
@@ -588,7 +588,7 @@ namespace OpcUaServer
 		serviceStatus_.dwCheckPoint			= 0; 
 		serviceStatus_.dwWaitHint			= 0;  
 		SetServiceStatus(ssHandle_, &serviceStatus_);
-		rc = serverApplicationIf_->runLoop();
+		rc = serverLoopIf_->runLoop();
 		if (!rc) {
 			serviceStatus_.dwCurrentState		= SERVICE_STOPPED;
 			serviceStatus_.dwControlsAccepted	= 0;
@@ -603,7 +603,7 @@ namespace OpcUaServer
 		serviceStatus_.dwCurrentState		= SERVICE_STOP_PENDING;
 		serviceStatus_.dwControlsAccepted	= SERVICE_ACCEPT_STOP | SERVICE_ACCEPT_SHUTDOWN;
 		SetServiceStatus(ssHandle_, &serviceStatus_);
-		serverApplicationIf_->shutdown();
+		serverLoopIf_->shutdown();
 
 		serviceStatus_.dwCurrentState		= SERVICE_STOPPED;
 		serviceStatus_.dwControlsAccepted	= 0;
@@ -621,7 +621,7 @@ namespace OpcUaServer
 				serviceStatus_.dwCurrentState		= SERVICE_STOP_PENDING;
 				serviceStatus_.dwControlsAccepted	= SERVICE_ACCEPT_STOP | SERVICE_ACCEPT_SHUTDOWN;
 				SetServiceStatus(ssHandle_, &serviceStatus_);
-				serverApplicationIf_->stopLoop();
+				serverLoopIf_->stopLoop();
 				break; 
 			}
 		}

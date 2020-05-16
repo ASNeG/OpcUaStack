@@ -15,22 +15,22 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaServer_ServerApplication_h__
-#define __OpcUaServer_ServerApplication_h__
+#ifndef __OpcUaServer_ServerLoop_h__
+#define __OpcUaServer_ServerLoop_h__
 
+#include "OpcUaServer/Interface/ServerLoopIf.h"
 #include "OpcUaStackServer/Application/ReloadIf.h"
-#include "OpcUaServer/Interface/ServerApplicationIf.h"
 #include "OpcUaServer/Server/Server.h"
 
 namespace OpcUaServer
 {
-	class DLLEXPORT ServerApplication
-	: public ServerApplicationIf
+	class DLLEXPORT ServerLoop
+	: public ServerLoopIf
 	, public OpcUaStackServer::ReloadIf
 	{
 	  public:
-		ServerApplication(void);
-		~ServerApplication(void);
+		ServerLoop(void);
+		~ServerLoop(void);
 
 		virtual void serviceCommandLine(const std::string& configFileName, unsigned int argc, char** argv);
 		virtual bool startup(void);
