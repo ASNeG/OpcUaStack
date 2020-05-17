@@ -88,6 +88,7 @@ namespace OpcUaStackServer
 		//- SessionIf ---------------------------------------------------------
 
 	  private:
+		bool endpointOpen(const std::string& endpointUrl);
 		void createSessionRequest(
 			OpcUaStackCore::SecureChannel* secureChannel,
 			OpcUaStackCore::RequestHeader::SPtr requestHeader
@@ -160,6 +161,9 @@ namespace OpcUaStackServer
 		DiscoveryRequestCallback getEndpointRequestCallback_;
 		DiscoveryRequestCallback findServersRequestCallback_;
 		DiscoveryRequestCallback registerServerRequestCallback_;
+
+		OpcUaStackCore::SlotTimerElement::SPtr slotTimerElement_;
+		std::vector<std::string> disconnectedEndpointUrls_;
 
 		OpcUaStackCore::Config* config_;
 		OpcUaStackCore::EndpointDescriptionSet::SPtr endpointDescriptionSet_;

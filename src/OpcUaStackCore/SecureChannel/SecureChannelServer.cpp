@@ -203,6 +203,9 @@ namespace OpcUaStackCore
 				delete secureChannel;
 
 				secureChannelServerIf_->handleEndpointClose(endpointUrl);
+
+				delete tcpAcceptor_;
+				tcpAcceptor_ = nullptr;
 				return;
 			}
 
