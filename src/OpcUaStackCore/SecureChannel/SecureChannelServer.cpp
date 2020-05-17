@@ -148,6 +148,20 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
+		// call this function in strand
+		if (!strand_->running_in_this_thread()) {
+			strand_->dispatch(
+				[this, error, endpointIterator, secureChannel](void) {
+				    resolveComplete(
+				    	error,
+						endpointIterator,
+						secureChannel
+				    );
+			    }
+			);
+			return;
+		}
+
 		if (error) {
 			Log(Error, "address resolver error")
 				.parameter("EndpointUrl", secureChannel->endpointUrl_)
