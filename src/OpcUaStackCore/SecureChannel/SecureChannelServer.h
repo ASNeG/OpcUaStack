@@ -44,7 +44,7 @@ namespace OpcUaStackCore
 		void secureChannelServerIf(SecureChannelServerIf* secureChannelServerIf);
 		SecureChannelServerIf* secureChannelServerIf(void);
 
-		bool accept(SecureChannelServerConfig::SPtr secureChannelServerConfig);
+		bool accept(SecureChannelServerConfig::SPtr& secureChannelServerConfig);
 		void disconnect(void);
 		void disconnect(SecureChannel* secureChannel);
 		void sendResponse(SecureChannel* secureChannel, SecureChannelTransaction::SPtr& secureChannelTransaction);
