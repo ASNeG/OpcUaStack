@@ -254,6 +254,9 @@ namespace OpcUaStackServer
 		serviceTransactionRegisterServer->memberService(discoveryService_->messageBusMember());
 
 		transactionManager_->registerTransaction(serviceTransactionRegisterServer);
+
+		discoveryService_->endpointDescriptionSet(endpointDescriptionSet_);
+		discoveryService_->cryptoManager(cryptoManager_);
 	}
 
 	void
@@ -284,7 +287,7 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	ServiceManager::init(SessionManager& sessionManager)
+	ServiceManager::initService(SessionManager& sessionManager)
 	{
 		initAttributeService();
 		initMethodService();
@@ -296,14 +299,34 @@ namespace OpcUaStackServer
 		initDiscoveryService();
 		initApplicationService();
 
-		sessionManager.discoveryService(discoveryService_);
+		sessionManager.getEndpointRequestCallback(
+			[this](OpcUaStackCore::RequestHeader::SPtr& requestHeader,
+				   OpcUaStackCore::SecureChannelTransaction::SPtr secureChannelTransaction) {
+				discoveryService_->getEndpointRequest(requestHeader, secureChannelTransaction);
+		    }
+		);
+
+		sessionManager.findServersRequestCallback(
+			[this](OpcUaStackCore::RequestHeader::SPtr& requestHeader,
+				   OpcUaStackCore::SecureChannelTransaction::SPtr secureChannelTransaction) {
+				discoveryService_->findServersRequest(requestHeader, secureChannelTransaction);
+		    }
+		);
+
+		sessionManager.registerServerRequestCallback(
+			[this](OpcUaStackCore::RequestHeader::SPtr& requestHeader,
+				   OpcUaStackCore::SecureChannelTransaction::SPtr secureChannelTransaction) {
+				discoveryService_->registerServerRequest(requestHeader, secureChannelTransaction);
+		    }
+		);
+
 		sessionManager.transactionManager(transactionManager_);
 		sessionManager.forwardGlobalSync(forwardGlobalSync_);
 
 		return true;
 	}
 
-	bool 
+	void
 	ServiceManager::informationModel(InformationModel::SPtr informationModel)
 	{
 		attributeService_->informationModel(informationModel);
@@ -315,21 +338,30 @@ namespace OpcUaStackServer
 		viewService_->informationModel(informationModel);
 		applicationService_->informationModel(informationModel);
 		discoveryService_->informationModel(informationModel);
-		return true;
 	}
 
-	bool 
+	void
 	ServiceManager::ioThread(IOThread::SPtr& ioThread)
 	{
 		ioThread_ = ioThread;
-		return true;
 	}
 
-	bool
+	void
 	ServiceManager::messageBus(OpcUaStackCore::MessageBus::SPtr& messageBus)
 	{
 		messageBus_ = messageBus;
-		return true;
+	}
+
+	void
+	ServiceManager::endpointDescriptionSet(EndpointDescriptionSet::SPtr& endpointDescriptionSet)
+	{
+		endpointDescriptionSet_ = endpointDescriptionSet;
+	}
+
+	void
+	ServiceManager::cryptoManager(CryptoManager::SPtr& cryptoManager)
+	{
+		cryptoManager_ = cryptoManager;
 	}
 
 	bool
@@ -360,6 +392,17 @@ namespace OpcUaStackServer
 		methodService_->shutdown();
 		attributeService_->shutdown();
 		discoveryService_->shutdown();
+
+		applicationService_.reset();
+		viewService_.reset();
+		subscriptionService_.reset();
+		queryService_.reset();
+		nodeManagementService_.reset();
+		monitoredItemService_.reset();
+		methodService_.reset();
+		attributeService_.reset();
+		discoveryService_.reset();
+
 		return true;
 	}
 

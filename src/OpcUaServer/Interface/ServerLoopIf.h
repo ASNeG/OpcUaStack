@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,25 +15,26 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaServer_ServerApplicationIf_h__
-#define __OpcUaServer_ServerApplicationIf_h__
+#ifndef __OpcUaServer_ServerLoopIf_h__
+#define __OpcUaServer_ServerLoopIf_h__
 
 #include <string>
+#include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaServer
 {
 
-	class DLLEXPORT ServerApplicationIf
+	class DLLEXPORT ServerLoopIf
 	{
 	  public:
-		ServerApplicationIf(void) {}
-		virtual ~ServerApplicationIf(void) {}
+		ServerLoopIf(void) {}
+		virtual ~ServerLoopIf(void) {}
 
 		virtual void serviceCommandLine(const std::string& configFileName, unsigned int argc, char** argv) {}
 		virtual bool startup(void) = 0;
 		virtual bool shutdown(void) = 0;
-		virtual bool run(void) = 0;
-		virtual void stop(void) = 0;
+		virtual bool loop(void) = 0;
+		virtual void stopLoop(void) = 0;
 	};
 
 }

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,28 +15,28 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaServer_ServerApplication_h__
-#define __OpcUaServer_ServerApplication_h__
+#ifndef __OpcUaServer_ServerLoop_h__
+#define __OpcUaServer_ServerLoop_h__
 
+#include "OpcUaServer/Interface/ServerLoopIf.h"
 #include "OpcUaStackServer/Application/ReloadIf.h"
-#include "OpcUaServer/Interface/ServerApplicationIf.h"
 #include "OpcUaServer/Server/Server.h"
 
 namespace OpcUaServer
 {
-	class DLLEXPORT ServerApplication
-	: public ServerApplicationIf
+	class DLLEXPORT ServerLoop
+	: public ServerLoopIf
 	, public OpcUaStackServer::ReloadIf
 	{
 	  public:
-		ServerApplication(void);
-		~ServerApplication(void);
+		ServerLoop(void);
+		~ServerLoop(void);
 
 		virtual void serviceCommandLine(const std::string& configFileName, unsigned int argc, char** argv);
 		virtual bool startup(void);
 		virtual bool shutdown(void);
-		virtual bool run(void);
-		virtual void stop(void);
+		virtual bool loop(void);
+		virtual void stopLoop(void);
 
 		// -- interface RestartIf ---------------------------------------------
 		virtual void reload(void);

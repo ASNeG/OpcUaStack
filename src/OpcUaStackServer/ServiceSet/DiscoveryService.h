@@ -25,7 +25,6 @@
 #include "OpcUaStackCore/ServiceSet/EndpointDescriptionSet.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelTransaction.h"
 #include "OpcUaStackServer/ServiceSet/ServiceSetBase.h"
-#include "OpcUaStackServer/ServiceSet/DiscoveryIf.h"
 #include "OpcUaStackServer/ServiceSet/ServerServiceBase.h"
 
 namespace OpcUaStackServer
@@ -46,12 +45,11 @@ namespace OpcUaStackServer
 		);
 		~DiscoveryService(void);
 
-		void discoveryIf(DiscoveryIf* discoveryIf);
 		void endpointDescriptionSet(OpcUaStackCore::EndpointDescriptionSet::SPtr& endpointDescriptionSet);
 		void cryptoManager(OpcUaStackCore::CryptoManager::SPtr& cryptoManager);
 
 		void getEndpointRequest(
-			OpcUaStackCore::RequestHeader::SPtr requestHeader,
+			OpcUaStackCore::RequestHeader::SPtr& requestHeader,
 			OpcUaStackCore::SecureChannelTransaction::SPtr secureChannelTransaction
 		);
 		void registerServerRequest(
@@ -64,11 +62,8 @@ namespace OpcUaStackServer
 		);
 
 	  private:
-		void receive(OpcUaStackCore::Message::SPtr message);
-
 		OpcUaStackCore::EndpointDescriptionArray::SPtr endpointDescriptionArray_;
 		OpcUaStackCore::CryptoManager::SPtr cryptoManager_;
-		DiscoveryIf* discoveryIf_;
 	};
 
 }

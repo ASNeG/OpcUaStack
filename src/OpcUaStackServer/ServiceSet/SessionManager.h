@@ -29,11 +29,9 @@
 #include "OpcUaStackCore/SecureChannel/SecureChannelServer.h"
 #include "OpcUaStackCore/MessageBus/MessageBus.h"
 #include "OpcUaStackServer/ServiceSet/EndpointDescriptionConfig.h"
-#include "OpcUaStackServer/ServiceSet/DiscoveryService.h"
 #include "OpcUaStackServer/ServiceSet/TransactionManager.h"
 #include "OpcUaStackServer/ServiceSet/ChannelSessionHandleMap.h"
 #include "OpcUaStackServer/ServiceSet/SessionIf.h"
-#include "OpcUaStackServer/ServiceSet/DiscoveryIf.h"
 
 namespace OpcUaStackServer
 {
@@ -41,15 +39,24 @@ namespace OpcUaStackServer
 	class DLLEXPORT SessionManager
 	: public OpcUaStackCore::SecureChannelServerIf
 	, public SessionIf
-	, public DiscoveryIf
 	{
 	  public:
-		typedef boost::shared_ptr<SessionManager> SPtr;
+		using SPtr = boost::shared_ptr<SessionManager>;
+		using DiscoveryRequestCallback = std::function<
+			void
+			(
+				OpcUaStackCore::RequestHeader::SPtr& requestHeader,
+				OpcUaStackCore::SecureChannelTransaction::SPtr secureChannelTransaction
+			)
+		>;
 
 		SessionManager(void);
 		virtual ~SessionManager(void);
 
-		void discoveryService(DiscoveryService::SPtr& discoveryService);
+		void getEndpointRequestCallback(const DiscoveryRequestCallback& getEndpointRequestCallback);
+		void findServersRequestCallback(const DiscoveryRequestCallback& findServerRequestCallback);
+		void registerServerRequestCallback(const DiscoveryRequestCallback& registerServerRequestCallback);
+
 		void cryptoManager(OpcUaStackCore::CryptoManager::SPtr& cryptoManager);
 		void transactionManager(TransactionManager::SPtr transactionManagerSPtr);
 		void ioThread(OpcUaStackCore::IOThread* ioThread);
@@ -79,13 +86,6 @@ namespace OpcUaStackServer
 			uint32_t authenticationToken
 		);
 		//- SessionIf ---------------------------------------------------------
-
-		//- DiscoveryIf -------------------------------------------------------
-		virtual void discoveryResponseMessage(
-			OpcUaStackCore::ResponseHeader::SPtr& responseHeader,
-			OpcUaStackCore::SecureChannelTransaction::SPtr& secureChannelTransaction
-		);
-		//- DiscoveryIf -------------------------------------------------------
 
 	  private:
 		void createSessionRequest(
@@ -148,10 +148,18 @@ namespace OpcUaStackServer
 			OpcUaStackCore::RequestHeader::SPtr requestHeader
 		);
 
+		void discoveryResponseMessage(
+			OpcUaStackCore::SecureChannelTransaction::SPtr& secureChannelTransaction
+		);
+
 		boost::shared_ptr<boost::asio::io_service::strand> strand_ = nullptr;
 		OpcUaStackCore::IOThread* ioThread_ = nullptr;
 		OpcUaStackCore::MessageBus::SPtr messageBus_ = nullptr;
 		OpcUaStackCore::CryptoManager::SPtr cryptoManager_ = nullptr;
+
+		DiscoveryRequestCallback getEndpointRequestCallback_;
+		DiscoveryRequestCallback findServersRequestCallback_;
+		DiscoveryRequestCallback registerServerRequestCallback_;
 
 		OpcUaStackCore::Config* config_;
 		OpcUaStackCore::EndpointDescriptionSet::SPtr endpointDescriptionSet_;
@@ -161,7 +169,6 @@ namespace OpcUaStackServer
 		OpcUaStackCore::SecureChannelServer::Map secureChannelServerMap_;
 		OpcUaStackCore::ForwardGlobalSync::SPtr forwardGlobalSync_;
 
-		DiscoveryService::SPtr discoveryService_;
 		TransactionManager::SPtr transactionManagerSPtr_;
 
 		ChannelSessionHandleMap channelSessionHandleMap_;

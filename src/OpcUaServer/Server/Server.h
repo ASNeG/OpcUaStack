@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,14 +18,13 @@
 #ifndef __OpcUaServer_Server_h__
 #define __OpcUaServer_Server_h__
 
+#include <OpcUaServer/ApplicationLibrary/ApplicationLibraryManager.h>
+#include <OpcUaStackServer/Server/OpcUaServer.h>
 #include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackCore/Base/ConfigXml.h"
 #include "OpcUaStackCore/Logging/FileLogger.h"
-#include "OpcUaStackServer/Server/Server.h"
 #include "OpcUaStackServer/Application/ReloadIf.h"
 #include "OpcUaServer/Server/DiscoveryClient.h"
-#include "OpcUaServer/ApplicationLibrary/ApplicationManager.h"
-
 #include <string>
 
 namespace OpcUaServer
@@ -50,12 +49,12 @@ namespace OpcUaServer
 
 		std::string configurationFile_;
 		OpcUaStackCore::Config* config_;
-		OpcUaStackServer::Server server_;
+		OpcUaStackServer::OpcUaServer opcuaServer_;
 		OpcUaStackCore::FileLogger fileLogger_;
 
 		OpcUaStackServer::ReloadIf* reloadIf_;
 		DiscoveryClient discoveryClient_;
-		ApplicationManager applicationManager_;
+		ApplicationLibraryManager applicationLibraryManager_;
 	};
 
 }

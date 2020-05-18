@@ -31,9 +31,9 @@ namespace OpcUaServer
 	Server::Server(void)
 	: configurationFile_("")
 	, config_(nullptr)
-	, server_()
+	, opcuaServer_()
 	, fileLogger_()
-	, applicationManager_()
+	, applicationLibraryManager_()
 	, reloadIf_(nullptr)
 	{
 	}
@@ -51,6 +51,11 @@ namespace OpcUaServer
 	bool
 	Server::startup(const std::string& configurationFile)
 	{
+		//
+		// In this function, all components of the application server are
+		// initialized.
+		//
+
 		configurationFile_ = Environment::getAbsolutePath(configurationFile);
 
 		// read configuration file
@@ -66,15 +71,15 @@ namespace OpcUaServer
 		}
 		logServerInfo();
 
-		// initial application library manager
-		applicationManager_.config(*config_);
-		if (!applicationManager_.startup()) {
+		// initial application library manager and load configured libraries.
+		applicationLibraryManager_.config(*config_);
+		if (!applicationLibraryManager_.startup()) {
 			Log(Error, "shutdown server, because startup application manager error");
 			return false;
 		}
 
 		// initial opc ua server
-		if (!server_.init()) {
+		if (!opcuaServer_.startup()) {
 			Log(Error, "shutdown server, because init server error");
 			return false;
 		}
@@ -82,12 +87,12 @@ namespace OpcUaServer
 		// register application libraries
 		ApplicationLibrary::Map::iterator it;
 		for (
-			it = applicationManager_.applicationLibraryMap().begin();
-			it != applicationManager_.applicationLibraryMap().end();
+			it = applicationLibraryManager_.applicationLibraryMap().begin();
+			it != applicationLibraryManager_.applicationLibraryMap().end();
 			it++
 		) {
 			ApplicationLibrary::SPtr applicationLibrary = it->second;
-			bool success = server_.applicationManager().registerApplication(
+			bool success = opcuaServer_.applicationManager().registerApplication(
 				it->first,
 				applicationLibrary->applicationIf(),
 				reloadIf_
@@ -102,19 +107,24 @@ namespace OpcUaServer
 	bool
 	Server::start(void)
 	{
+		//
+		// In this function, all components of the application server are
+		// started.
+		//
+
 		// start opc ua server
-		server_.start();
+		opcuaServer_.start();
 
 		// start discovery client
-		discoveryClient_.cryptoManager(server_.cryptoManager());
-		discoveryClient_.ioThread(server_.ioThread());
-		discoveryClient_.messageBus(server_.messageBus());
+		discoveryClient_.cryptoManager(opcuaServer_.cryptoManager());
+		discoveryClient_.ioThread(opcuaServer_.ioThread());
+		discoveryClient_.messageBus(opcuaServer_.messageBus());
 		if (!discoveryClient_.startup(*config_)) {
 			return false;
 		}
 
 		// log message bus information
-		server_.messageBus()->log();
+		opcuaServer_.messageBus()->log();
 
 		Log(Info, "application started...");
 		return true;
@@ -129,7 +139,7 @@ namespace OpcUaServer
 		discoveryClient_.shutdown();
 
 		// stop opc ua server
-		server_.stop();
+		opcuaServer_.stop();
 	}
 
 	void 
@@ -138,21 +148,21 @@ namespace OpcUaServer
 		// deregister application libraries
 		ApplicationLibrary::Map::iterator it;
 		for (
-			it = applicationManager_.applicationLibraryMap().begin();
-			it != applicationManager_.applicationLibraryMap().end();
+			it = applicationLibraryManager_.applicationLibraryMap().begin();
+			it != applicationLibraryManager_.applicationLibraryMap().end();
 			it++
 		) {
 			ApplicationLibrary::SPtr applicationLibrary = it->second;
-			server_.applicationManager().deregisterApplication(
+			opcuaServer_.applicationManager().deregisterApplication(
 				it->first
 			);
 		}
 
-		// shutdown application library manager
-		applicationManager_.shutdown();
+		// shutdown application library manager and close configured libraries.
+		applicationLibraryManager_.shutdown();
 
 		// shutdown opc ua server
-		server_.shutdown();
+		opcuaServer_.shutdown();
 	}
 
 	bool 
@@ -167,7 +177,7 @@ namespace OpcUaServer
 			return false;
 		}
 
-		server_.config(*config_);
+		opcuaServer_.config(*config_);
 		return true;
 	}
 

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -43,7 +43,7 @@ namespace OpcUaServer
 	}
 
 	LinuxService::LinuxService(void)
-	: serverApplicationIf_(nullptr)
+	: serverLoopIf_(nullptr)
 	{
 	}
 
@@ -69,26 +69,26 @@ namespace OpcUaServer
 
 		std::string serviceName(argv[1]);
 
-		serverApplicationIf_->serviceCommandLine(serviceName, argc-1, &argv[1]);
-		if (!serverApplicationIf_->startup()) return;
+		serverLoopIf_->serviceCommandLine(serviceName, argc-1, &argv[1]);
+		if (!serverLoopIf_->startup()) return;
 
 		signal(SIGINT, signalHandler);
 
-		if (!serverApplicationIf_->run()) return;
-		serverApplicationIf_->shutdown();
+		if (!serverLoopIf_->loop()) return;
+		serverLoopIf_->shutdown();
 		return;
 	}
 
 	void
-	LinuxService::serverApplicationIf(ServerApplicationIf* serverApplicationIf)
+	LinuxService::serverLoopIf(ServerLoopIf* serverLoopIf)
 	{
-		serverApplicationIf_ = serverApplicationIf;
+		serverLoopIf_ = serverLoopIf;
 	}
 
 	void
 	LinuxService::stop(void)
 	{
-		serverApplicationIf_->stop();
+		serverLoopIf_->stopLoop();
 	}
 
 }

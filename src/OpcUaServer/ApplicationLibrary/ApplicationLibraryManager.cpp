@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,10 +15,10 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <OpcUaServer/ApplicationLibrary/ApplicationLibraryManager.h>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Utility/Environment.h"
 #include "OpcUaStackServer/Application/ApplicationInfo.h"
-#include "OpcUaServer/ApplicationLibrary/ApplicationManager.h"
 
 using namespace OpcUaStackCore;
 using namespace OpcUaStackServer;
@@ -26,19 +26,19 @@ using namespace OpcUaStackServer;
 namespace OpcUaServer
 {
 
-	ApplicationManager::ApplicationManager(void)
+	ApplicationLibraryManager::ApplicationLibraryManager(void)
 	: applicationLibraryMap_()
 	, config_(nullptr)
 	{
 	}
 
-	ApplicationManager::~ApplicationManager(void)
+	ApplicationLibraryManager::~ApplicationLibraryManager(void)
 	{
 		applicationLibraryMap_.clear();
 	}
 
 	bool
-	ApplicationManager::startup(void)
+	ApplicationLibraryManager::startup(void)
 	{
 		std::string configurationFileName = config_->getValue("Global.ConfigurationFileName", "Unknown");
 
@@ -145,26 +145,26 @@ namespace OpcUaServer
 	}
 
 	bool
-	ApplicationManager::shutdown(void)
+	ApplicationLibraryManager::shutdown(void)
 	{
 		applicationLibraryMap_.clear();
 		return true;
 	}
 
 	void
-	ApplicationManager::config(Config& config)
+	ApplicationLibraryManager::config(Config& config)
 	{
 		config_ = &config;
 	}
 
 	Config&
-	ApplicationManager::config(void)
+	ApplicationLibraryManager::config(void)
 	{
 		return *config_;
 	}
 
 	ApplicationLibrary::Map&
-	ApplicationManager::applicationLibraryMap(void)
+	ApplicationLibraryManager::applicationLibraryMap(void)
 	{
 		return applicationLibraryMap_;
 	}

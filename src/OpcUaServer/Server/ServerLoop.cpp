@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,7 +18,7 @@
 #include <boost/thread.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
-#include "OpcUaServer/Server/ServerApplication.h"
+#include <OpcUaServer/Server/ServerLoop.h>
 #include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Utility/Environment.h"
@@ -29,8 +29,8 @@ using namespace OpcUaStackServer;
 namespace OpcUaServer
 {
 
-	ServerApplication::ServerApplication(void)
-	: ServerApplicationIf()
+	ServerLoop::ServerLoop(void)
+	: ServerLoopIf()
 	, running_(false)
 	, reload_(false)
 	, serviceName_("")
@@ -41,12 +41,12 @@ namespace OpcUaServer
 	{
 	}
 
-	ServerApplication::~ServerApplication(void)
+	ServerLoop::~ServerLoop(void)
 	{
 	}
 
 	void 
-	ServerApplication::serviceCommandLine(const std::string& configFileName, unsigned int argc, char** argv)
+	ServerLoop::serviceCommandLine(const std::string& configFileName, unsigned int argc, char** argv)
 	{
 		configFileName_ = boost::filesystem::absolute(configFileName).string();
 		std::string configFilePath = boost::filesystem::path(configFileName_).parent_path().string();
@@ -54,7 +54,7 @@ namespace OpcUaServer
 	}
 
 	bool 
-	ServerApplication::startup(void)
+	ServerLoop::startup(void)
 	{
 		// set global config alias variables
 		Config* config = Config::instance();
@@ -64,14 +64,17 @@ namespace OpcUaServer
 	}
 
 	bool 
-	ServerApplication::shutdown(void)
+	ServerLoop::shutdown(void)
 	{
+		//
+		// Shutdown all application server components
+		//
 
 		return true;
 	}
 
 	bool 
-	ServerApplication::run(void)
+	ServerLoop::loop(void)
 	{
 		// startup application
 		server_.reloadIf(this);
@@ -91,7 +94,7 @@ namespace OpcUaServer
 
 		Log(Debug, "service application loop");
 		if (stopFlag) {
-			stop();
+			stopLoop();
 		}
 		while (running_) {
 			if (reload_) {
@@ -101,16 +104,24 @@ namespace OpcUaServer
 			boost::this_thread::sleep(boost::posix_time::seconds(1));
 		}
 
-		// shutdown application
+		// stop server
+		Log(Debug, "stop server");
+		server_.stop();
+
+		// shutdown server
+		Log(Debug, "shutdown server");
 		server_.shutdown();
-		Log(Debug, "shutdown application server complete");
 
 		return true;
 	}
 
 	void 
-	ServerApplication::stop(void)
+	ServerLoop::stopLoop(void)
 	{
+		//
+		// Receive stop signal to stop all application server components.
+		//
+
 		// check if application is starting
 		{
 			boost::mutex::scoped_lock g(mutex_);
@@ -125,21 +136,18 @@ namespace OpcUaServer
 			}
 		}
 
-		// handle stop signal from user
-		Log(Debug, "service application stop");
-		server_.stop();
 		running_ = false;
 	}
 
 	void
-	ServerApplication::reload(void)
+	ServerLoop::reload(void)
 	{
 		Log(Debug, "reload application server");
 		reload_ = true;
 	}
 
 	void
-	ServerApplication::processReload(void)
+	ServerLoop::processReload(void)
 	{
 		server_.stop();
 		server_.shutdown();

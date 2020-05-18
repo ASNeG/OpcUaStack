@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -52,12 +52,11 @@ namespace OpcUaStackServer
 	ChannelSessionHandleMap::deleteSecureChannel(SecureChannel* secureChannel)
 	{
 		// find secure channel
-		ChannelSessionHandle::Map::iterator it;
-		it = channelIdMap_.find(secureChannel->channelId_);
+		auto it = channelIdMap_.find(secureChannel->channelId_);
 		if (it == channelIdMap_.end()) {
 			return;
 		}
-		ChannelSessionHandle::SPtr channelSessionHandle = it->second;
+		auto channelSessionHandle = it->second;
 		channelSessionHandle->secureChannel(nullptr);
 
 		// delete element from map
@@ -68,8 +67,7 @@ namespace OpcUaStackServer
 	ChannelSessionHandleMap::getSecureChannelList(std::vector<SecureChannel*>& secureChannelList)
 	{
 		// get all secure channel
-		ChannelSessionHandle::Map::iterator it;
-		for (it = channelIdMap_.begin(); it != channelIdMap_.end(); it++) {
+		for (auto it = channelIdMap_.begin(); it != channelIdMap_.end(); it++) {
 			if (it->second->secureChannelState() == ChannelSessionHandle::SCS_Valid) {
 				secureChannelList.push_back(it->second->secureChannel());
 			}
@@ -88,8 +86,7 @@ namespace OpcUaStackServer
 		ChannelSessionHandle::SPtr channelSessionHandle;
 
 		// find secure channel
-		ChannelSessionHandle::Map::iterator it;
-		it = channelIdMap_.find(secureChannel->channelId_);
+		auto it = channelIdMap_.find(secureChannel->channelId_);
 		if (it == channelIdMap_.end()) {
 			return channelSessionHandle;
 		}
@@ -103,6 +100,12 @@ namespace OpcUaStackServer
 	}
 
 	void
+	ChannelSessionHandleMap::deleteSession(void)
+	{
+		sessionMap_.clear();
+	}
+
+	void
 	ChannelSessionHandleMap::deleteSession(Session::SPtr& session)
 	{
 		deleteSession(session->authenticationToken());
@@ -112,8 +115,7 @@ namespace OpcUaStackServer
 	ChannelSessionHandleMap::deleteSession(uint32_t authenticationToken)
 	{
 		// find session
-		ChannelSessionHandle::Map::iterator it;
-		it = sessionMap_.find(authenticationToken);
+		auto it = sessionMap_.find(authenticationToken);
 		if (it == sessionMap_.end()) {
 			return;
 		}

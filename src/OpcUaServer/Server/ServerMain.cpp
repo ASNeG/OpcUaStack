@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2016 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <OpcUaServer/Server/ServerLoop.h>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaServer/Server/Server.h"
 #include "OpcUaStackCore/Base/Config.h"
@@ -22,7 +23,6 @@
 #include "BuildConfig.h"
 #include <iostream>
 
-#include "OpcUaServer/Server/ServerApplication.h"
 #include "OpcUaServer/Service/WindowsService.h"
 #include "OpcUaServer/Service/LinuxService.h"
 
@@ -30,12 +30,12 @@ using namespace OpcUaStackCore;
 
 int main(int argc, char** argv)
 {
-	OpcUaServer::ServerApplication serverApplication;
+	OpcUaServer::ServerLoop serverLoop;
 #if _WIN32
 	OpcUaServer::WindowsService* service = OpcUaServer::WindowsService::instance();
 #else
 	OpcUaServer::LinuxService* service = OpcUaServer::LinuxService::instance();
 #endif
-	service->serverApplicationIf(&serverApplication);
+	service->serverLoopIf(&serverLoop);
 	service->main(argc, argv);
 }
