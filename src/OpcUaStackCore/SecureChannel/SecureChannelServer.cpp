@@ -59,7 +59,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	SecureChannelServer::accept(SecureChannelServerConfig::SPtr secureChannelServerConfig)
+	SecureChannelServer::accept(SecureChannelServerConfig::SPtr& secureChannelServerConfig)
 	{
 		cryptoManager(secureChannelServerConfig->cryptoManager());
 
@@ -183,14 +183,31 @@ namespace OpcUaStackCore
 		}
 		secureChannel->local_ = ((*endpointIterator).endpoint());
 
-		// open connection from client to server
+		// open opc ua server endpoint
 		if (tcpAcceptor_ == nullptr) {
 			Log(Info, "secure channel endpoint open")
 				.parameter("Address", secureChannel->local_.address().to_string())
 				.parameter("Port", secureChannel->local_.port());
 
-			tcpAcceptor_ = new TCPAcceptor(ioThread_->ioService()->io_service(), secureChannel->local_);
-			tcpAcceptor_->listen();
+			try {
+			    tcpAcceptor_ = new TCPAcceptor(ioThread_->ioService()->io_service(), secureChannel->local_);
+			    tcpAcceptor_->listen();
+			}
+			catch (...) {
+				Log(Error, "cannot open secure channel endpoint")
+					.parameter("Address", secureChannel->local_.address().to_string())
+					.parameter("Port", secureChannel->local_.port());
+
+				// we do not need the secure channel anymore.
+				auto endpointUrl = secureChannel->endpointUrl_;
+				delete secureChannel;
+
+				secureChannelServerIf_->handleEndpointClose(endpointUrl);
+
+				delete tcpAcceptor_;
+				tcpAcceptor_ = nullptr;
+				return;
+			}
 
 			secureChannelServerIf_->handleEndpointOpen(secureChannel->endpointUrl_);
 		}

@@ -81,6 +81,9 @@ namespace OpcUaStackServer
 	SessionManager::ioThread(IOThread* ioThread)
 	{
 		ioThread_ = ioThread;
+
+		// create strand for use in secure channel server and session
+		strand_ = ioThread_->createStrand();
 	}
 
 	void
@@ -110,54 +113,65 @@ namespace OpcUaStackServer
 	bool
 	SessionManager::startup(void)
 	{
-		// create strand for use in secure channel server and session
-		strand_ = ioThread_->createStrand();
-
-		// read SecureChannelLog parameter from configuration file
-		bool secureChannelLog = false;
-		config_->getConfigParameter("OpcUaServer.Logging.SecureChannelLog", secureChannelLog, "0");
-
 		// get all endpoint urls from endpoint description set
 		std::vector<std::string> endpointUrls;
 		endpointDescriptionSet_->getEndpointUrls(endpointUrls);
 
 		// create secure channel server for each endpoint url
-		for (auto it = endpointUrls.begin(); it != endpointUrls.end(); it++) {
-
-			// get endpoint description array
-			std::string endpointUrl = *it;
-			auto endpointDescriptionArray = boost::make_shared<EndpointDescriptionArray>();
-			endpointDescriptionSet_->getEndpoints(endpointUrl, endpointDescriptionArray);
-
-			// create secure channel server configuration
-			auto secureChannelServerConfig = boost::make_shared<SecureChannelServerConfig>();
-			secureChannelServerConfig->endpointDescriptionArray(endpointDescriptionArray);
-			secureChannelServerConfig->endpointUrl(endpointUrl);
-			secureChannelServerConfig->secureChannelLog(secureChannelLog);
-			secureChannelServerConfig->cryptoManager(cryptoManager_);
-
-			// create new secure channel
-			auto secureChannelServer = boost::make_shared<SecureChannelServer>(ioThread_);
-			secureChannelServer->strand(strand_);
-			secureChannelServer->secureChannelServerIf(this);
-
-			// open server socket
-			if (!secureChannelServer->accept(secureChannelServerConfig)) {
-				Log(Error, "open secure channel endpoint error")
-					.parameter("EndpointUrl", endpointUrl);
+		for(auto endpointUrl : endpointUrls) {
+			if (!endpointOpen(endpointUrl)) {
 				return false;
 			}
-
-			secureChannelServerMap_.insert(std::make_pair(endpointUrl, secureChannelServer));
 		}
 
 		return true;
 	}
 
 	bool
+	SessionManager::endpointOpen(const std::string& endpointUrl)
+	{
+		// read SecureChannelLog parameter from configuration file
+		bool secureChannelLog = false;
+		config_->getConfigParameter("OpcUaServer.Logging.SecureChannelLog", secureChannelLog, "0");
+
+		// get endpoint description array
+		auto endpointDescriptionArray = boost::make_shared<EndpointDescriptionArray>();
+		endpointDescriptionSet_->getEndpoints(endpointUrl, endpointDescriptionArray);
+
+		// create secure channel server configuration
+		auto secureChannelServerConfig = boost::make_shared<SecureChannelServerConfig>();
+		secureChannelServerConfig->endpointDescriptionArray(endpointDescriptionArray);
+		secureChannelServerConfig->endpointUrl(endpointUrl);
+		secureChannelServerConfig->secureChannelLog(secureChannelLog);
+		secureChannelServerConfig->cryptoManager(cryptoManager_);
+
+		// create new secure channel
+		auto secureChannelServer = boost::make_shared<SecureChannelServer>(ioThread_);
+		secureChannelServer->strand(strand_);
+		secureChannelServer->secureChannelServerIf(this);
+
+		// open server socket
+		if (!secureChannelServer->accept(secureChannelServerConfig)) {
+			Log(Error, "open secure channel endpoint error")
+				.parameter("EndpointUrl", endpointUrl);
+			return false;
+		}
+
+		secureChannelServerMap_.insert(std::make_pair(endpointUrl, secureChannelServer));
+		return true;
+	}
+
+	bool
 	SessionManager::shutdown(void)
 	{
-		// close acceptor socket and all secure channel servers
+		// stop reopen timer
+		if (slotTimerElement_) {
+			ioThread_->slotTimer()->stop(slotTimerElement_);
+			slotTimerElement_.reset();
+			disconnectedEndpointUrls_.clear();
+		}
+
+		// close acceptor socket
 		shutdownFlag_ = true;
 		auto future = shutdownComplete_.get_future();
 		for (auto it = secureChannelServerMap_.begin(); it != secureChannelServerMap_.end(); it++) {
@@ -198,7 +212,7 @@ namespace OpcUaStackServer
 				.parameter("EndpointUrl", secureChannel->endpointUrl_);
 			return;
 		}
-		SecureChannelServer::SPtr secureChannelServer = it->second;
+		auto secureChannelServer = it->second;
 
 		// create new secure channel handle
 		Object::SPtr handle = channelSessionHandleMap_.createSecureChannel(secureChannelServer, secureChannel);
@@ -698,9 +712,40 @@ namespace OpcUaStackServer
 			}
 		}
 
+		// delete secure channel server
+		secureChannelServerMap_.erase(endpointUrl);
+
 		if (secureChannelList.size() == 0 && shutdownFlag_) {
 			shutdownComplete_.set_value(true);
+			return;
 		}
+		if (shutdownFlag_) {
+			return;
+		}
+
+		// If we are not in the shutdown state, the opc ua server socket must
+		// be open again. But we wait 20 seconds.
+		disconnectedEndpointUrls_.push_back(endpointUrl);
+		if (disconnectedEndpointUrls_.size() > 1) {
+			// timer already running
+			return;
+		}
+
+		slotTimerElement_ = boost::make_shared<SlotTimerElement>();
+		slotTimerElement_->expireFromNow(20000);
+		slotTimerElement_->timeoutCallback(
+			strand_,
+			[this](void) {
+				for (auto endpointUrl : disconnectedEndpointUrls_) {
+					Log(Info, "reopen opc ua endpoint")
+						.parameter("EndpointUrl", endpointUrl);
+
+					endpointOpen(endpointUrl);
+				}
+				disconnectedEndpointUrls_.clear();
+		    }
+		);
+		ioThread_->slotTimer()->start(slotTimerElement_);
 	}
 
 	// ------------------------------------------------------------------------
