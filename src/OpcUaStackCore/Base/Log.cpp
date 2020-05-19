@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -21,6 +21,7 @@
 
 #include <iostream>
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/Base/ThreadStorage.h"
 
 namespace OpcUaStackCore
 {
@@ -100,7 +101,8 @@ namespace OpcUaStackCore
 	Log::~Log(void)
 	{
 		if (!activate_) return;
-		std::string threadId = boost::lexical_cast<std::string>(boost::this_thread::get_id());
+
+		std::string threadId = ThreadStorage::getInstance()->name();
 
 		if (logIf() != nullptr) {
 			std::string message = "[" + threadId + "] " + message_;

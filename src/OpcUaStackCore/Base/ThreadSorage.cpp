@@ -15,7 +15,9 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/Utility/ThreadStorage.h"
+#include <boost/lexical_cast.hpp>
+#include <boost/thread.hpp>
+#include <OpcUaStackCore/Base/ThreadStorage.h>
 
 namespace OpcUaStackCore
 {
@@ -35,7 +37,9 @@ namespace OpcUaStackCore
 	{
 		ThreadStorage* threadStorage = instance_.get();
 		if (!threadStorage) {
-			instance_.reset(new ThreadStorage());
+			threadStorage = new ThreadStorage();
+			threadStorage->name(boost::lexical_cast<std::string>(boost::this_thread::get_id()));
+			instance_.reset(threadStorage);
 		}
 		return threadStorage;
 	}

@@ -16,6 +16,8 @@
  */
 
 #include <boost/lexical_cast.hpp>
+#include <OpcUaStackCore/Base/ThreadStorage.h>
+#include <string>
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Utility/UniqueId.h"
@@ -160,6 +162,11 @@ namespace OpcUaStackCore
 		if (runningThreads_ == numberThreads_) {
 			startCondition_.notify_one();
 		}
+
+		// set thread specific data
+		std::string name = name_ + "_" + std::to_string(runningThreads_);
+		ThreadStorage::getInstance()->name(name);
+
 		Log(Debug, "start thread")
 			.parameter("Name", name_)
 			.parameter("ThreadId", boost::this_thread::get_id());
