@@ -25,7 +25,6 @@
 
 namespace OpcUaStackCore
 {
-
 	class DLLEXPORT IOThread
 	{
 	  public:
