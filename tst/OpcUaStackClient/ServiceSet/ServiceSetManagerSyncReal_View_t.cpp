@@ -7,33 +7,21 @@ using namespace OpcUaStackClient;
 
 #ifdef REAL_SERVER
 
-BOOST_AUTO_TEST_SUITE(ServiceSetManagerAsyncReal_View_)
+BOOST_AUTO_TEST_SUITE(ServiceSetManagerSyncReal_View_)
 
-struct GValueFixture {
-	GValueFixture(void)
-    : cond_()
-	, sessionState_(SessionServiceStateId::None)
-    {}
-    ~GValueFixture(void)
-    {}
-
-    Condition cond_;
-    SessionServiceStateId sessionState_;
-};
-
-BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_View_)
+BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_View_)
 {
-	std::cout << "ServiceSetManagerAsyncReal_View_t" << std::endl;
+	std::cout << "ServiceSetManagerSyncReal_View_t" << std::endl;
 }
 
-BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_View_discovery_GetEndpoints, GValueFixture)
+BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_View_discovery_GetEndpoints)
 {
 	ServiceSetManager serviceSetManager;
 
 	//
 	// init certificate and crypto manager
 	//
-	CryptoManager::SPtr cryptoManager = CryptoManagerTest::getInstance();
+	auto cryptoManager = CryptoManagerTest::getInstance();
 	BOOST_REQUIRE(cryptoManager.get() != nullptr);
 
 	// set secure channel configuration
@@ -41,25 +29,13 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_View_discovery_GetEndpoints, 
 	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
 	sessionServiceConfig.secureChannelClient_->cryptoManager(cryptoManager);
 	sessionServiceConfig.session_->sessionName(REAL_SESSION_NAME);
-	sessionServiceConfig.sessionServiceChangeHandler_ =
-		[this] (SessionBase& session, SessionServiceStateId sessionState) {
-			if (sessionState == SessionServiceStateId::Established ||
-				sessionState == SessionServiceStateId::Disconnected) {
-				sessionState_ = sessionState;
-				cond_.sendEvent();
-			}
-		};
 
 	// create session
-	SessionService::SPtr sessionService;
-	sessionService = serviceSetManager.sessionService(sessionServiceConfig);
+	auto sessionService = serviceSetManager.sessionService(sessionServiceConfig);
 	BOOST_REQUIRE(sessionService.get() != nullptr);
 
 	// connect secure channel
-	cond_.condition(1,0);
-	sessionService->asyncConnect();
-	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
+	BOOST_REQUIRE(sessionService->syncConnect() == Success);
 
 	// create view service
 	ViewService::SPtr viewService;
@@ -68,8 +44,8 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_View_discovery_GetEndpoints, 
 	BOOST_REQUIRE(viewService.get() != nullptr);
 
 	// call view
-	ServiceTransactionBrowse::SPtr trx = boost::make_shared<ServiceTransactionBrowse>();
-	BrowseRequest::SPtr req = trx->request();
+	auto trx = boost::make_shared<ServiceTransactionBrowse>();
+	auto req = trx->request();
 	req->nodesToBrowse()->resize(1);
 
 	BrowseDescription::SPtr browseDescription = boost::make_shared<BrowseDescription>();
@@ -79,14 +55,7 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_View_discovery_GetEndpoints, 
 	browseDescription->resultMask(0xFFFFFFFF);
 	req->nodesToBrowse()->push_back(browseDescription);
 
-	cond_.initEvent();
-	trx->resultHandler(
-		[this](ServiceTransactionBrowse::SPtr& trx) {
-			cond_.sendEvent();
-		}
-	);
-	viewService->asyncSend(trx);
-	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
+	viewService->syncSend(trx);
 	BOOST_REQUIRE(trx->responseHeader()->serviceResult() == Success);
 
 	BrowseResponse::SPtr res = trx->response();
@@ -103,10 +72,7 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_View_discovery_GetEndpoints, 
 	}
 
 	// disconnect secure channel
-	cond_.condition(1,0);
-	sessionService->asyncDisconnect();
-	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
+	BOOST_REQUIRE(sessionService->syncDisconnect() == Success);
 }
 
 
