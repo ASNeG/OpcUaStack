@@ -105,6 +105,31 @@ namespace OpcUaStackClient
 	}
 
 	void
+	ClientServiceBase::syncSend(
+		const MessageBusMember::WPtr& targetMember,
+		const ServiceTransaction::SPtr& serviceTransaction
+	)
+	{
+		serviceTransaction->sync(true);
+		auto future = serviceTransaction->promise().get_future();
+		asyncSend(targetMember, serviceTransaction);
+		future.wait();
+	}
+
+	void
+	ClientServiceBase::asyncSend(
+		const MessageBusMember::WPtr& targetMember,
+		const ServiceTransaction::SPtr& serviceTransaction
+	)
+	{
+		messageBus_->messageSend(
+			messageBusMember_,
+			targetMember,
+			serviceTransaction
+		);
+	}
+
+	void
 	ClientServiceBase::receiveCallback(void)
 	{
 		ReceiverContext::SPtr receiverContext = receiverContext_;
@@ -119,6 +144,15 @@ namespace OpcUaStackClient
 					return;
 				}
 
+				// check if transaction is synchron
+#if 0
+				auto serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
+				if (serviceTransaction->sync()) {
+					serviceTransaction->promise().set_value(true);
+					return;
+				}
+#endif
+
 			    // check error
 				if (error != MessageBusError::Ok) {
 					if (error != MessageBusError::Cancel) {
@@ -130,7 +164,7 @@ namespace OpcUaStackClient
 				}
 
 				// execute callback
-				ReceiverContext::SPtr receiverContext = receiverContext_;
+				auto receiverContext = receiverContext_;
 				if (receiverContext->receiverCallback_) {
 					receiverContext->receiverCallbackRunning_ = true;
 					receiverContext->receiverCallback_(handleFrom, message);

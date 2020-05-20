@@ -43,12 +43,12 @@ namespace OpcUaStackClient
 			OpcUaStackCore::MessageBusMember::WPtr& sessionMember
 		);
 
-		void syncSend(OpcUaStackCore::ServiceTransactionFindServers::SPtr serviceTransactionFindServers);
-		void asyncSend(OpcUaStackCore::ServiceTransactionFindServers::SPtr serviceTransactionFindServers);
-		void syncSend(OpcUaStackCore::ServiceTransactionGetEndpoints::SPtr serviceTransactionGetEndpoints);
-		void asyncSend(OpcUaStackCore::ServiceTransactionGetEndpoints::SPtr serviceTransactionGetEndpoints);
-		void syncSend(OpcUaStackCore::ServiceTransactionRegisterServer::SPtr serviceTransactionRegisterServer);
-		void asyncSend(OpcUaStackCore::ServiceTransactionRegisterServer::SPtr serviceTransactionRegisterServer);
+		void syncSend(const OpcUaStackCore::ServiceTransactionFindServers::SPtr& serviceTransactionFindServers);
+		void asyncSend(const OpcUaStackCore::ServiceTransactionFindServers::SPtr& serviceTransactionFindServers);
+		void syncSend(const OpcUaStackCore::ServiceTransactionGetEndpoints::SPtr& serviceTransactionGetEndpoints);
+		void asyncSend(const OpcUaStackCore::ServiceTransactionGetEndpoints::SPtr& serviceTransactionGetEndpoints);
+		void syncSend(const OpcUaStackCore::ServiceTransactionRegisterServer::SPtr& serviceTransactionRegisterServer);
+		void asyncSend(const OpcUaStackCore::ServiceTransactionRegisterServer::SPtr& serviceTransactionRegisterServer);
 
 	  private:
 		void receive(

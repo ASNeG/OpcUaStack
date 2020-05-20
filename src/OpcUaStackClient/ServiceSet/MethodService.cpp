@@ -64,22 +64,15 @@ namespace OpcUaStackClient
 	}
 
 	void 
-	MethodService::syncSend(ServiceTransactionCall::SPtr serviceTransactionCall)
+	MethodService::syncSend(const ServiceTransactionCall::SPtr& serviceTransactionCall)
 	{
-		serviceTransactionCall->sync(true);
-		auto future = serviceTransactionCall->promise().get_future();
-		asyncSend(serviceTransactionCall);
-		future.wait();
+		ClientServiceBase::syncSend(sessionMember_, serviceTransactionCall);
 	}
 
 	void 
-	MethodService::asyncSend(ServiceTransactionCall::SPtr serviceTransactionCall)
+	MethodService::asyncSend(const ServiceTransactionCall::SPtr& serviceTransactionCall)
 	{
-		messageBus_->messageSend(
-			messageBusMember_,
-			sessionMember_,
-			serviceTransactionCall
-		);
+		ClientServiceBase::asyncSend(sessionMember_, serviceTransactionCall);
 	}
 
 

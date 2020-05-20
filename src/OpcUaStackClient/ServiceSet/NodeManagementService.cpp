@@ -64,79 +64,51 @@ namespace OpcUaStackClient
 	}
 
 	void 
-	NodeManagementService::syncSend(ServiceTransactionAddNodes::SPtr serviceTransactionAddNodes)
+	NodeManagementService::syncSend(const ServiceTransactionAddNodes::SPtr& serviceTransactionAddNodes)
 	{
-		serviceTransactionAddNodes->sync(true);
-		auto future = serviceTransactionAddNodes->promise().get_future();
-		asyncSend(serviceTransactionAddNodes);
-		future.wait();
+		ClientServiceBase::syncSend(sessionMember_, serviceTransactionAddNodes);
 	}
 
 	void 
-	NodeManagementService::asyncSend(ServiceTransactionAddNodes::SPtr serviceTransactionAddNodes)
+	NodeManagementService::asyncSend(const ServiceTransactionAddNodes::SPtr& serviceTransactionAddNodes)
 	{
-		messageBus_->messageSend(
-			messageBusMember_,
-			sessionMember_,
-			serviceTransactionAddNodes
-		);
+		ClientServiceBase::asyncSend(sessionMember_, serviceTransactionAddNodes);
 	}
 
 	void 
-	NodeManagementService::syncSend(ServiceTransactionAddReferences::SPtr serviceTransactionAddReferences)
+	NodeManagementService::syncSend(const ServiceTransactionAddReferences::SPtr& serviceTransactionAddReferences)
 	{
-		serviceTransactionAddReferences->sync(true);
-		auto future = serviceTransactionAddReferences->promise().get_future();
-		asyncSend(serviceTransactionAddReferences);
-		future.wait();
+		ClientServiceBase::syncSend(sessionMember_, serviceTransactionAddReferences);
 	}
 
 	void 
-	NodeManagementService::asyncSend(ServiceTransactionAddReferences::SPtr serviceTransactionAddReferences)
+	NodeManagementService::asyncSend(const ServiceTransactionAddReferences::SPtr& serviceTransactionAddReferences)
 	{
-		messageBus_->messageSend(
-			messageBusMember_,
-			sessionMember_,
-			serviceTransactionAddReferences
-		);
+		ClientServiceBase::asyncSend(sessionMember_, serviceTransactionAddReferences);
 	}
 
 	void 
-	NodeManagementService::syncSend(ServiceTransactionDeleteNodes::SPtr serviceTransactionDeleteNodes)
+	NodeManagementService::syncSend(const ServiceTransactionDeleteNodes::SPtr& serviceTransactionDeleteNodes)
 	{
-		serviceTransactionDeleteNodes->sync(true);
-		auto future = serviceTransactionDeleteNodes->promise().get_future();
-		asyncSend(serviceTransactionDeleteNodes);
-		future.wait();
+		ClientServiceBase::syncSend(sessionMember_, serviceTransactionDeleteNodes);
 	}
 
 	void 
-	NodeManagementService::asyncSend(ServiceTransactionDeleteNodes::SPtr serviceTransactionDeleteNodes)
+	NodeManagementService::asyncSend(const ServiceTransactionDeleteNodes::SPtr& serviceTransactionDeleteNodes)
 	{
-		messageBus_->messageSend(
-			messageBusMember_,
-			sessionMember_,
-			serviceTransactionDeleteNodes
-		);
+		ClientServiceBase::asyncSend(sessionMember_, serviceTransactionDeleteNodes);
 	}
 
 	void
-	NodeManagementService::syncSend(ServiceTransactionDeleteReferences::SPtr serviceTransactionDeleteReferences)
+	NodeManagementService::syncSend(const ServiceTransactionDeleteReferences::SPtr& serviceTransactionDeleteReferences)
 	{
-		serviceTransactionDeleteReferences->sync(true);
-		auto future = serviceTransactionDeleteReferences->promise().get_future();
-		asyncSend(serviceTransactionDeleteReferences);
-		future.wait();
+		ClientServiceBase::syncSend(sessionMember_, serviceTransactionDeleteReferences);
 	}
 
 	void 
-	NodeManagementService::asyncSend(ServiceTransactionDeleteReferences::SPtr serviceTransactionDeleteReferences)
+	NodeManagementService::asyncSend(const ServiceTransactionDeleteReferences::SPtr& serviceTransactionDeleteReferences)
 	{
-		messageBus_->messageSend(
-			messageBusMember_,
-			sessionMember_,
-			serviceTransactionDeleteReferences
-		);
+		ClientServiceBase::asyncSend(sessionMember_, serviceTransactionDeleteReferences);
 	}
 
 	void 

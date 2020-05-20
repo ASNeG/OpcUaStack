@@ -64,60 +64,39 @@ namespace OpcUaStackClient
 	}
 
 	void 
-	DiscoveryService::syncSend(ServiceTransactionFindServers::SPtr serviceTransactionFindServers)
+	DiscoveryService::syncSend(const ServiceTransactionFindServers::SPtr& serviceTransactionFindServers)
 	{
-		serviceTransactionFindServers->sync(true);
-		auto future = serviceTransactionFindServers->promise().get_future();
-		asyncSend(serviceTransactionFindServers);
-		future.wait();
+		ClientServiceBase::syncSend(sessionMember_, serviceTransactionFindServers);
 	}
 
 	void 
-	DiscoveryService::asyncSend(ServiceTransactionFindServers::SPtr serviceTransactionFindServers)
+	DiscoveryService::asyncSend(const ServiceTransactionFindServers::SPtr& serviceTransactionFindServers)
 	{
-		messageBus_->messageSend(
-			messageBusMember_,
-			sessionMember_,
-			serviceTransactionFindServers
-		);
+		ClientServiceBase::asyncSend(sessionMember_, serviceTransactionFindServers);
 	}
 
 	void
-	DiscoveryService::syncSend(ServiceTransactionGetEndpoints::SPtr serviceTransactionGetEndpoints)
+	DiscoveryService::syncSend(const ServiceTransactionGetEndpoints::SPtr& serviceTransactionGetEndpoints)
 	{
-		serviceTransactionGetEndpoints->sync(true);
-		auto future = serviceTransactionGetEndpoints->promise().get_future();
-		asyncSend(serviceTransactionGetEndpoints);
-		future.wait();
+		ClientServiceBase::syncSend(sessionMember_, serviceTransactionGetEndpoints);
 	}
 
 	void
-	DiscoveryService::asyncSend(ServiceTransactionGetEndpoints::SPtr serviceTransactionGetEndpoints)
+	DiscoveryService::asyncSend(const ServiceTransactionGetEndpoints::SPtr& serviceTransactionGetEndpoints)
 	{
-		messageBus_->messageSend(
-			messageBusMember_,
-			sessionMember_,
-			serviceTransactionGetEndpoints
-		);
+		ClientServiceBase::asyncSend(sessionMember_, serviceTransactionGetEndpoints);
 	}
 
 	void
-	DiscoveryService::syncSend(ServiceTransactionRegisterServer::SPtr serviceTransactionRegisterServer)
+	DiscoveryService::syncSend(const ServiceTransactionRegisterServer::SPtr& serviceTransactionRegisterServer)
 	{
-		serviceTransactionRegisterServer->sync(true);
-		auto future = serviceTransactionRegisterServer->promise().get_future();
-		asyncSend(serviceTransactionRegisterServer);
-		future.wait();
+		ClientServiceBase::syncSend(sessionMember_, serviceTransactionRegisterServer);
 	}
 
 	void
-	DiscoveryService::asyncSend(ServiceTransactionRegisterServer::SPtr serviceTransactionRegisterServer)
+	DiscoveryService::asyncSend(const ServiceTransactionRegisterServer::SPtr& serviceTransactionRegisterServer)
 	{
-		messageBus_->messageSend(
-			messageBusMember_,
-			sessionMember_,
-			serviceTransactionRegisterServer
-		);
+		ClientServiceBase::asyncSend(sessionMember_, serviceTransactionRegisterServer);
 	}
 
 	void 

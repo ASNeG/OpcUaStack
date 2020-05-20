@@ -40,136 +40,87 @@ namespace OpcUaStackClient
 	}
 
 	void
-	SubscriptionServiceBase::syncSend(ServiceTransactionCreateSubscription::SPtr& serviceTransactionCreateSubscription)
+	SubscriptionServiceBase::syncSend(const ServiceTransactionCreateSubscription::SPtr& serviceTransactionCreateSubscription)
 	{
-		serviceTransactionCreateSubscription->sync(true);
-		auto future = serviceTransactionCreateSubscription->promise().get_future();
-		asyncSend(serviceTransactionCreateSubscription);
-		future.wait();
+		ClientServiceBase::syncSend(sessionMember_, serviceTransactionCreateSubscription);
 	}
 
 	void
-	SubscriptionServiceBase::asyncSend(ServiceTransactionCreateSubscription::SPtr& serviceTransactionCreateSubscription)
+	SubscriptionServiceBase::asyncSend(const ServiceTransactionCreateSubscription::SPtr& serviceTransactionCreateSubscription)
 	{
-		messageBus_->messageSend(
-			messageBusMember_,
-			sessionMember_,
-			serviceTransactionCreateSubscription
-		);
+		ClientServiceBase::asyncSend(sessionMember_, serviceTransactionCreateSubscription);
 	}
 
 	void
-	SubscriptionServiceBase::syncSend(ServiceTransactionModifySubscription::SPtr& serviceTransactionModifySubscription)
+	SubscriptionServiceBase::syncSend(const ServiceTransactionModifySubscription::SPtr& serviceTransactionModifySubscription)
 	{
-		auto future = serviceTransactionModifySubscription->promise().get_future();
-		asyncSend(serviceTransactionModifySubscription);
-		future.wait();
+		ClientServiceBase::syncSend(sessionMember_, serviceTransactionModifySubscription);
 	}
 
 	void
-	SubscriptionServiceBase::asyncSend(ServiceTransactionModifySubscription::SPtr& serviceTransactionModifySubscription)
+	SubscriptionServiceBase::asyncSend(const ServiceTransactionModifySubscription::SPtr& serviceTransactionModifySubscription)
 	{
-		serviceTransactionModifySubscription->memberService(messageBusMember_);
-		messageBus_->messageSend(
-			messageBusMember_,
-			sessionMember_,
-			serviceTransactionModifySubscription
-		);
+		ClientServiceBase::asyncSend(sessionMember_, serviceTransactionModifySubscription);
 	}
 
 	void
-	SubscriptionServiceBase::syncSend(ServiceTransactionTransferSubscriptions::SPtr& serviceTransactionTransferSubscriptions)
+	SubscriptionServiceBase::syncSend(const ServiceTransactionTransferSubscriptions::SPtr& serviceTransactionTransferSubscriptions)
 	{
-		serviceTransactionTransferSubscriptions->sync(true);
-		auto future = serviceTransactionTransferSubscriptions->promise().get_future();
-		asyncSend(serviceTransactionTransferSubscriptions);
-		future.wait();
+		ClientServiceBase::syncSend(sessionMember_, serviceTransactionTransferSubscriptions);
 	}
 
 	void
-	SubscriptionServiceBase::asyncSend(ServiceTransactionTransferSubscriptions::SPtr& serviceTransactionTransferSubscriptions)
+	SubscriptionServiceBase::asyncSend(const ServiceTransactionTransferSubscriptions::SPtr& serviceTransactionTransferSubscriptions)
 	{
-		messageBus_->messageSend(
-			messageBusMember_,
-			sessionMember_,
-			serviceTransactionTransferSubscriptions
-		);
+		ClientServiceBase::asyncSend(sessionMember_, serviceTransactionTransferSubscriptions);
 	}
 
 	void
-	SubscriptionServiceBase::syncSend(ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions)
+	SubscriptionServiceBase::syncSend(const ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions)
 	{
-		serviceTransactionDeleteSubscriptions->sync(true);
-		auto future = serviceTransactionDeleteSubscriptions->promise().get_future();
-		asyncSend(serviceTransactionDeleteSubscriptions);
-		future.wait();
+		ClientServiceBase::syncSend(sessionMember_, serviceTransactionDeleteSubscriptions);
 	}
 
 	void
-	SubscriptionServiceBase::asyncSend(ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions)
+	SubscriptionServiceBase::asyncSend(const ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions)
 	{
-		messageBus_->messageSend(
-			messageBusMember_,
-			sessionMember_,
-			serviceTransactionDeleteSubscriptions
-		);
+		ClientServiceBase::asyncSend(sessionMember_, serviceTransactionDeleteSubscriptions);
 	}
 
 	void
-	SubscriptionServiceBase::syncSend(ServiceTransactionSetPublishingMode::SPtr& serviceTransactionSetPublishingMode)
+	SubscriptionServiceBase::syncSend(const ServiceTransactionSetPublishingMode::SPtr& serviceTransactionSetPublishingMode)
 	{
-		serviceTransactionSetPublishingMode->sync(true);
-		auto future = serviceTransactionSetPublishingMode->promise().get_future();
-		asyncSend(serviceTransactionSetPublishingMode);
-		future.wait();
+		ClientServiceBase::syncSend(sessionMember_, serviceTransactionSetPublishingMode);
 	}
 
 	void
-	SubscriptionServiceBase::asyncSend(ServiceTransactionSetPublishingMode::SPtr& serviceTransactionSetPublishingMode)
+	SubscriptionServiceBase::asyncSend(const ServiceTransactionSetPublishingMode::SPtr& serviceTransactionSetPublishingMode)
 	{
-		messageBus_->messageSend(
-			messageBusMember_,
-			sessionMember_,
-			serviceTransactionSetPublishingMode
-		);
+		ClientServiceBase::asyncSend(sessionMember_, serviceTransactionSetPublishingMode);
 	}
 
 	void
-	SubscriptionServiceBase::syncSend(ServiceTransactionPublish::SPtr& serviceTransactionPublish)
+	SubscriptionServiceBase::syncSend(const ServiceTransactionPublish::SPtr& serviceTransactionPublish)
 	{
-		serviceTransactionPublish->sync(true);
-		auto future = serviceTransactionPublish->promise().get_future();
-		asyncSend(serviceTransactionPublish);
-		future.wait();
+		ClientServiceBase::syncSend(sessionMember_, serviceTransactionPublish);
 	}
 
 	void
-	SubscriptionServiceBase::asyncSend(ServiceTransactionPublish::SPtr& serviceTransactionPublish)
+	SubscriptionServiceBase::asyncSend(const ServiceTransactionPublish::SPtr& serviceTransactionPublish)
 	{
-		messageBus_->messageSend(
-			messageBusMember_,
-			sessionMember_,
-			serviceTransactionPublish
-		);
+		ClientServiceBase::asyncSend(sessionMember_, serviceTransactionPublish);
 	}
 
 	void
-	SubscriptionServiceBase::syncSend(ServiceTransactionRepublish::SPtr& serviceTransactionRepublish)
+	SubscriptionServiceBase::syncSend(const ServiceTransactionRepublish::SPtr& serviceTransactionRepublish)
 	{
-		serviceTransactionRepublish->sync(true);
-		auto future = serviceTransactionRepublish->promise().get_future();
-		asyncSend(serviceTransactionRepublish);
-		future.wait();
+		ClientServiceBase::syncSend(sessionMember_, serviceTransactionRepublish);
 	}
 
 	void
-	SubscriptionServiceBase::asyncSend(ServiceTransactionRepublish::SPtr& serviceTransactionRepublish)
+	SubscriptionServiceBase::asyncSend(const ServiceTransactionRepublish::SPtr& serviceTransactionRepublish)
 	{
-		messageBus_->messageSend(
-			messageBusMember_,
-			sessionMember_,
-			serviceTransactionRepublish
-		);
+		ClientServiceBase::asyncSend(sessionMember_, serviceTransactionRepublish);
 	}
 
 	void

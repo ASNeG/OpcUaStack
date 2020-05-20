@@ -64,79 +64,51 @@ namespace OpcUaStackClient
 	}
 
 	void 
-	AttributeService::syncSend(ServiceTransactionRead::SPtr serviceTransactionRead)
+	AttributeService::syncSend(const ServiceTransactionRead::SPtr& serviceTransactionRead)
 	{
-		serviceTransactionRead->sync(true);
-		auto future = serviceTransactionRead->promise().get_future();
-		asyncSend(serviceTransactionRead);
-		future.wait();
+		ClientServiceBase::syncSend(sessionMember_, serviceTransactionRead);
 	}
 
 	void 
-	AttributeService::asyncSend(ServiceTransactionRead::SPtr serviceTransactionRead)
+	AttributeService::asyncSend(const ServiceTransactionRead::SPtr& serviceTransactionRead)
 	{
-		messageBus_->messageSend(
-			messageBusMember_,
-			sessionMember_,
-			serviceTransactionRead
-		);
+		ClientServiceBase::asyncSend(sessionMember_, serviceTransactionRead);
 	}
 
 	void 
-	AttributeService::syncSend(ServiceTransactionWrite::SPtr serviceTransactionWrite)
+	AttributeService::syncSend(const ServiceTransactionWrite::SPtr& serviceTransactionWrite)
 	{
-		serviceTransactionWrite->sync(true);
-		auto future = serviceTransactionWrite->promise().get_future();
-		asyncSend(serviceTransactionWrite);
-		future.wait();
+		ClientServiceBase::syncSend(sessionMember_, serviceTransactionWrite);
 	}
 
 	void 
-	AttributeService::asyncSend(ServiceTransactionWrite::SPtr serviceTransactionWrite)
+	AttributeService::asyncSend(const ServiceTransactionWrite::SPtr& serviceTransactionWrite)
 	{
-		messageBus_->messageSend(
-			messageBusMember_,
-			sessionMember_,
-			serviceTransactionWrite
-		);
+		ClientServiceBase::asyncSend(sessionMember_, serviceTransactionWrite);
 	}
 
 	void 
-	AttributeService::syncSend(ServiceTransactionHistoryRead::SPtr serviceTransactionHistoryRead)
+	AttributeService::syncSend(const ServiceTransactionHistoryRead::SPtr& serviceTransactionHistoryRead)
 	{
-		serviceTransactionHistoryRead->sync(true);
-		auto future = serviceTransactionHistoryRead->promise().get_future();
-		asyncSend(serviceTransactionHistoryRead);
-		future.wait();
+		ClientServiceBase::syncSend(sessionMember_, serviceTransactionHistoryRead);
 	}
 
 	void 
-	AttributeService::asyncSend(ServiceTransactionHistoryRead::SPtr serviceTransactionHistoryRead)
+	AttributeService::asyncSend(const ServiceTransactionHistoryRead::SPtr& serviceTransactionHistoryRead)
 	{
-		messageBus_->messageSend(
-			messageBusMember_,
-			sessionMember_,
-			serviceTransactionHistoryRead
-		);
+		ClientServiceBase::asyncSend(sessionMember_, serviceTransactionHistoryRead);
 	}
 
 	void 
-	AttributeService::syncSend(ServiceTransactionHistoryUpdate::SPtr serviceTransactionHistoryUpdate)
+	AttributeService::syncSend(const ServiceTransactionHistoryUpdate::SPtr& serviceTransactionHistoryUpdate)
 	{
-		serviceTransactionHistoryUpdate->sync(true);
-		auto future = serviceTransactionHistoryUpdate->promise().get_future();
-		asyncSend(serviceTransactionHistoryUpdate);
-		future.wait();
+		ClientServiceBase::syncSend(sessionMember_, serviceTransactionHistoryUpdate);
 	}
 
 	void 
-	AttributeService::asyncSend(ServiceTransactionHistoryUpdate::SPtr serviceTransactionHistoryUpdate)
+	AttributeService::asyncSend(const ServiceTransactionHistoryUpdate::SPtr& serviceTransactionHistoryUpdate)
 	{
-		messageBus_->messageSend(
-			messageBusMember_,
-			sessionMember_,
-			serviceTransactionHistoryUpdate
-		);
+		ClientServiceBase::asyncSend(sessionMember_, serviceTransactionHistoryUpdate);
 	}
 
 	void 
@@ -145,14 +117,12 @@ namespace OpcUaStackClient
 		Message::SPtr message
 	)
 	{
-		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
-		
-		// check if transaction is synchron
+		auto serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 		if (serviceTransaction->sync()) {
 			serviceTransaction->promise().set_value(true);
 			return;
 		}
-		
+
 		switch (serviceTransaction->nodeTypeResponse().nodeId<uint32_t>())
 		{
 			case OpcUaId_ReadResponse_Encoding_DefaultBinary:

@@ -64,41 +64,27 @@ namespace OpcUaStackClient
 	}
 
 	void 
-	QueryService::syncSend(ServiceTransactionQueryFirst::SPtr serviceTransactionQueryFirst)
+	QueryService::syncSend(const ServiceTransactionQueryFirst::SPtr& serviceTransactionQueryFirst)
 	{
-		serviceTransactionQueryFirst->sync(true);
-		auto future = serviceTransactionQueryFirst->promise().get_future();
-		asyncSend(serviceTransactionQueryFirst);
-		future.wait();
+		ClientServiceBase::syncSend(sessionMember_, serviceTransactionQueryFirst);
 	}
 
 	void 
-	QueryService::asyncSend(ServiceTransactionQueryFirst::SPtr serviceTransactionQueryFirst)
+	QueryService::asyncSend(const ServiceTransactionQueryFirst::SPtr& serviceTransactionQueryFirst)
 	{
-		messageBus_->messageSend(
-			messageBusMember_,
-			sessionMember_,
-			serviceTransactionQueryFirst
-		);
+		ClientServiceBase::asyncSend(sessionMember_, serviceTransactionQueryFirst);
 	}
 
 	void
-	QueryService::syncSend(ServiceTransactionQueryNext::SPtr serviceTransactionQueryNext)
+	QueryService::syncSend(const ServiceTransactionQueryNext::SPtr& serviceTransactionQueryNext)
 	{
-		serviceTransactionQueryNext->sync(true);
-		auto future = serviceTransactionQueryNext->promise().get_future();
-		asyncSend(serviceTransactionQueryNext);
-		future.wait();
+		ClientServiceBase::syncSend(sessionMember_, serviceTransactionQueryNext);
 	}
 
 	void
-	QueryService::asyncSend(ServiceTransactionQueryNext::SPtr serviceTransactionQueryNext)
+	QueryService::asyncSend(const ServiceTransactionQueryNext::SPtr& serviceTransactionQueryNext)
 	{
-		messageBus_->messageSend(
-			messageBusMember_,
-			sessionMember_,
-			serviceTransactionQueryNext
-		);
+		ClientServiceBase::asyncSend(sessionMember_, serviceTransactionQueryNext);
 	}
 
 

@@ -42,8 +42,8 @@ namespace OpcUaStackClient
 			OpcUaStackCore::MessageBusMember::WPtr& sessionMember
 		);
 
-		void syncSend(OpcUaStackCore::ServiceTransactionCall::SPtr serviceTransactionRead);
-		void asyncSend(OpcUaStackCore::ServiceTransactionCall::SPtr serviceTransactionRead);
+		void syncSend(const OpcUaStackCore::ServiceTransactionCall::SPtr& serviceTransactionRead);
+		void asyncSend(const OpcUaStackCore::ServiceTransactionCall::SPtr& serviceTransactionRead);
 
 	  private:
 		void receive(

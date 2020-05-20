@@ -21,6 +21,7 @@
 #include <functional>
 #include "OpcUaStackCore/MessageBus/MessageBus.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
+#include "OpcUaStackCore/ServiceSet/ServiceTransaction.h"
 
 namespace OpcUaStackClient 
 {
@@ -43,6 +44,16 @@ namespace OpcUaStackClient
 
 		void activateReceiver(const ReceiverCallback& receiverCallback);
 		void deactivateReceiver(void);
+
+		void syncSend(
+			const OpcUaStackCore::MessageBusMember::WPtr&,
+			const OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction
+		);
+		void asyncSend(
+			const OpcUaStackCore::MessageBusMember::WPtr&,
+			const OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction
+		);
+
 
 	  protected:
 		void receiveCallback(void);

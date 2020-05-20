@@ -41,16 +41,16 @@ namespace OpcUaStackClient
 			OpcUaStackCore::MessageBusMember::WPtr& sessionMember
 		);
 
-		void syncSend(OpcUaStackCore::ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems);
-		void asyncSend(OpcUaStackCore::ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems);
-		void syncSend(OpcUaStackCore::ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems);
-		void asyncSend(OpcUaStackCore::ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems);
-		void syncSend(OpcUaStackCore::ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems);
-		void asyncSend(OpcUaStackCore::ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems);
-		void syncSend(OpcUaStackCore::ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode);
-		void asyncSend(OpcUaStackCore::ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode);
-		void syncSend(OpcUaStackCore::ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering);
-		void asyncSend(OpcUaStackCore::ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering);
+		void syncSend(const OpcUaStackCore::ServiceTransactionCreateMonitoredItems::SPtr& serviceTransactionCreateMonitoredItems);
+		void asyncSend(const OpcUaStackCore::ServiceTransactionCreateMonitoredItems::SPtr& serviceTransactionCreateMonitoredItems);
+		void syncSend(const OpcUaStackCore::ServiceTransactionDeleteMonitoredItems::SPtr& serviceTransactionDeleteMonitoredItems);
+		void asyncSend(const OpcUaStackCore::ServiceTransactionDeleteMonitoredItems::SPtr& serviceTransactionDeleteMonitoredItems);
+		void syncSend(const OpcUaStackCore::ServiceTransactionModifyMonitoredItems::SPtr& serviceTransactionModifyMonitoredItems);
+		void asyncSend(const OpcUaStackCore::ServiceTransactionModifyMonitoredItems::SPtr& serviceTransactionModifyMonitoredItems);
+		void syncSend(const OpcUaStackCore::ServiceTransactionSetMonitoringMode::SPtr& serviceTransactionSetMonitoringMode);
+		void asyncSend(const OpcUaStackCore::ServiceTransactionSetMonitoringMode::SPtr& serviceTransactionSetMonitoringMode);
+		void syncSend(const OpcUaStackCore::ServiceTransactionSetTriggering::SPtr& serviceTransactionSetTriggering);
+		void asyncSend(const OpcUaStackCore::ServiceTransactionSetTriggering::SPtr& serviceTransactionSetTriggering);
 
 	  private:
 		void receive(

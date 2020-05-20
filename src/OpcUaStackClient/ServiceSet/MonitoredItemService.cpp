@@ -63,98 +63,63 @@ namespace OpcUaStackClient
 	}
 
 	void
-	MonitoredItemService::syncSend(ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems)
+	MonitoredItemService::syncSend(const ServiceTransactionCreateMonitoredItems::SPtr& serviceTransactionCreateMonitoredItems)
 	{
-		serviceTransactionCreateMonitoredItems->sync(true);
-		auto future = serviceTransactionCreateMonitoredItems->promise().get_future();
-		asyncSend(serviceTransactionCreateMonitoredItems);
-		future.wait();
+		ClientServiceBase::syncSend(sessionMember_, serviceTransactionCreateMonitoredItems);
 	}
 
 	void
-	MonitoredItemService::asyncSend(ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems)
+	MonitoredItemService::asyncSend(const ServiceTransactionCreateMonitoredItems::SPtr& serviceTransactionCreateMonitoredItems)
 	{
-		messageBus_->messageSend(
-			messageBusMember_,
-			sessionMember_,
-			serviceTransactionCreateMonitoredItems
-		);
+		ClientServiceBase::asyncSend(sessionMember_, serviceTransactionCreateMonitoredItems);
 	}
 
 	void
-	MonitoredItemService::syncSend(ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems)
+	MonitoredItemService::syncSend(const ServiceTransactionDeleteMonitoredItems::SPtr& serviceTransactionDeleteMonitoredItems)
 	{
-		serviceTransactionDeleteMonitoredItems->sync(true);
-		auto future = serviceTransactionDeleteMonitoredItems->promise().get_future();
-		asyncSend(serviceTransactionDeleteMonitoredItems);
-		future.wait();
+		ClientServiceBase::syncSend(sessionMember_, serviceTransactionDeleteMonitoredItems);
 	}
 
 	void
-	MonitoredItemService::asyncSend(ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems)
+	MonitoredItemService::asyncSend(const ServiceTransactionDeleteMonitoredItems::SPtr& serviceTransactionDeleteMonitoredItems)
 	{
-		messageBus_->messageSend(
-			messageBusMember_,
-			sessionMember_,
-			serviceTransactionDeleteMonitoredItems
-		);
+		ClientServiceBase::asyncSend(sessionMember_, serviceTransactionDeleteMonitoredItems);
 	}
 
 	void
-	MonitoredItemService::syncSend(ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems)
+	MonitoredItemService::syncSend(const ServiceTransactionModifyMonitoredItems::SPtr& serviceTransactionModifyMonitoredItems)
 	{
-		serviceTransactionModifyMonitoredItems->sync(true);
-		auto future = serviceTransactionModifyMonitoredItems->promise().get_future();
-		asyncSend(serviceTransactionModifyMonitoredItems);
-		future.wait();
+		ClientServiceBase::syncSend(sessionMember_, serviceTransactionModifyMonitoredItems);
 	}
 
 	void
-	MonitoredItemService::asyncSend(ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems)
+	MonitoredItemService::asyncSend(const ServiceTransactionModifyMonitoredItems::SPtr& serviceTransactionModifyMonitoredItems)
 	{
-		messageBus_->messageSend(
-			messageBusMember_,
-			sessionMember_,
-			serviceTransactionModifyMonitoredItems
-		);
+		ClientServiceBase::asyncSend(sessionMember_, serviceTransactionModifyMonitoredItems);
 	}
 
 	void
-	MonitoredItemService::syncSend(ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode)
+	MonitoredItemService::syncSend(const ServiceTransactionSetMonitoringMode::SPtr& serviceTransactionSetMonitoringMode)
 	{
-		serviceTransactionSetMonitoringMode->sync(true);
-		auto future = serviceTransactionSetMonitoringMode->promise().get_future();
-		asyncSend(serviceTransactionSetMonitoringMode);
-		future.wait();
+		ClientServiceBase::syncSend(sessionMember_, serviceTransactionSetMonitoringMode);
 	}
 
 	void
-	MonitoredItemService::asyncSend(ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode)
+	MonitoredItemService::asyncSend(const ServiceTransactionSetMonitoringMode::SPtr& serviceTransactionSetMonitoringMode)
 	{
-		messageBus_->messageSend(
-			messageBusMember_,
-			sessionMember_,
-			serviceTransactionSetMonitoringMode
-		);
+		ClientServiceBase::asyncSend(sessionMember_, serviceTransactionSetMonitoringMode);
 	}
 
 	void
-	MonitoredItemService::syncSend(ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering)
+	MonitoredItemService::syncSend(const ServiceTransactionSetTriggering::SPtr& serviceTransactionSetTriggering)
 	{
-		serviceTransactionSetTriggering->sync(true);
-		auto future = serviceTransactionSetTriggering->promise().get_future();
-		asyncSend(serviceTransactionSetTriggering);
-		future.wait();
+		ClientServiceBase::syncSend(sessionMember_, serviceTransactionSetTriggering);
 	}
 
 	void
-	MonitoredItemService::asyncSend(ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering)
+	MonitoredItemService::asyncSend(const ServiceTransactionSetTriggering::SPtr& serviceTransactionSetTriggering)
 	{
-		messageBus_->messageSend(
-			messageBusMember_,
-			sessionMember_,
-			serviceTransactionSetTriggering
-		);
+		ClientServiceBase::asyncSend(sessionMember_, serviceTransactionSetTriggering);
 	}
 
 	void

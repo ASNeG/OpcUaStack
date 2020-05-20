@@ -108,86 +108,86 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	void
-	SubscriptionService::syncSend(ServiceTransactionCreateSubscription::SPtr& serviceTransactionCreateSubscription)
+	SubscriptionService::syncSend(const ServiceTransactionCreateSubscription::SPtr& serviceTransactionCreateSubscription)
 	{
 		SubscriptionServiceBase::syncSend(serviceTransactionCreateSubscription);
 	}
 	void
-	SubscriptionService::asyncSend(ServiceTransactionCreateSubscription::SPtr& serviceTransactionCreateSubscription)
+	SubscriptionService::asyncSend(const ServiceTransactionCreateSubscription::SPtr& serviceTransactionCreateSubscription)
 	{
 		SubscriptionServiceBase::asyncSend(serviceTransactionCreateSubscription);
 	}
 
 	void
-	SubscriptionService::syncSend(ServiceTransactionModifySubscription::SPtr& serviceTransactionModifySubscription)
+	SubscriptionService::syncSend(const ServiceTransactionModifySubscription::SPtr& serviceTransactionModifySubscription)
 	{
 		SubscriptionServiceBase::syncSend(serviceTransactionModifySubscription);
 	}
 
 	void
-	SubscriptionService::asyncSend(ServiceTransactionModifySubscription::SPtr& serviceTransactionModifySubscription)
+	SubscriptionService::asyncSend(const ServiceTransactionModifySubscription::SPtr& serviceTransactionModifySubscription)
 	{
 		SubscriptionServiceBase::asyncSend(serviceTransactionModifySubscription);
 	}
 
 	void
-	SubscriptionService::syncSend(ServiceTransactionTransferSubscriptions::SPtr& serviceTransactionTransferSubscriptions)
+	SubscriptionService::syncSend(const ServiceTransactionTransferSubscriptions::SPtr& serviceTransactionTransferSubscriptions)
 	{
 		SubscriptionServiceBase::syncSend(serviceTransactionTransferSubscriptions);
 	}
 
 	void
-	SubscriptionService::asyncSend(ServiceTransactionTransferSubscriptions::SPtr& serviceTransactionTransferSubscriptions)
+	SubscriptionService::asyncSend(const ServiceTransactionTransferSubscriptions::SPtr& serviceTransactionTransferSubscriptions)
 	{
 		SubscriptionServiceBase::asyncSend(serviceTransactionTransferSubscriptions);
 	}
 
 	void
-	SubscriptionService::syncSend(ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions)
+	SubscriptionService::syncSend(const ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions)
 	{
 		sendDeleteSubscriptions(serviceTransactionDeleteSubscriptions);
 		SubscriptionServiceBase::syncSend(serviceTransactionDeleteSubscriptions);
 	}
 
 	void
-	SubscriptionService::asyncSend(ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions)
+	SubscriptionService::asyncSend(const ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions)
 	{
 		sendDeleteSubscriptions(serviceTransactionDeleteSubscriptions);
 		SubscriptionServiceBase::asyncSend(serviceTransactionDeleteSubscriptions);
 	}
 
 	void
-	SubscriptionService::syncSend(ServiceTransactionSetPublishingMode::SPtr& serviceTransactionSetPublishingMode)
+	SubscriptionService::syncSend(const ServiceTransactionSetPublishingMode::SPtr& serviceTransactionSetPublishingMode)
 	{
 		SubscriptionServiceBase::syncSend(serviceTransactionSetPublishingMode);
 	}
 
 	void
-	SubscriptionService::asyncSend(ServiceTransactionSetPublishingMode::SPtr& serviceTransactionSetPublishingMode)
+	SubscriptionService::asyncSend(const ServiceTransactionSetPublishingMode::SPtr& serviceTransactionSetPublishingMode)
 	{
 		SubscriptionServiceBase::asyncSend(serviceTransactionSetPublishingMode);
 	}
 
 	void
-	SubscriptionService::syncSend(ServiceTransactionPublish::SPtr& serviceTransactionPublish)
+	SubscriptionService::syncSend(const ServiceTransactionPublish::SPtr& serviceTransactionPublish)
 	{
 		SubscriptionServiceBase::syncSend(serviceTransactionPublish);
 	}
 
 	void
-	SubscriptionService::asyncSend(ServiceTransactionPublish::SPtr& serviceTransactionPublish)
+	SubscriptionService::asyncSend(const ServiceTransactionPublish::SPtr& serviceTransactionPublish)
 	{
 		SubscriptionServiceBase::asyncSend(serviceTransactionPublish);
 	}
 
 	void
-	SubscriptionService::syncSend(ServiceTransactionRepublish::SPtr& serviceTransactionRepublish)
+	SubscriptionService::syncSend(const ServiceTransactionRepublish::SPtr& serviceTransactionRepublish)
 	{
 		SubscriptionServiceBase::syncSend(serviceTransactionRepublish);
 	}
 
 	void
-	SubscriptionService::asyncSend(ServiceTransactionRepublish::SPtr& serviceTransactionRepublish)
+	SubscriptionService::asyncSend(const ServiceTransactionRepublish::SPtr& serviceTransactionRepublish)
 	{
 		SubscriptionServiceBase::asyncSend(serviceTransactionRepublish);
 	}
@@ -247,7 +247,7 @@ namespace OpcUaStackClient
     }
 
     void
-    SubscriptionService::sendDeleteSubscriptions(ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions)
+    SubscriptionService::sendDeleteSubscriptions(const ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions)
     {
     	DeleteSubscriptionsRequest::SPtr req = serviceTransactionDeleteSubscriptions->request();
     	for (uint32_t pos=0; pos<req->subscriptionIds()->size(); pos++) {
