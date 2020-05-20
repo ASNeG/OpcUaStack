@@ -18,8 +18,8 @@
 #ifndef __OpcUaStackClient_ClientServiceBase_h__
 #define __OpcUaStackClient_ClientServiceBase_h__
 
-#include <OpcUaStackCore/MessageBus/MessageBus.h>
 #include <functional>
+#include "OpcUaStackCore/MessageBus/MessageBus.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
 
 namespace OpcUaStackClient 
@@ -30,7 +30,10 @@ namespace OpcUaStackClient
 	{
 	  public:
 		using SPtr = boost::shared_ptr<ClientServiceBase>;
-		using ReceiverCallback = std::function<void (OpcUaStackCore::Message::SPtr&)>;
+		using ReceiverCallback = std::function<
+			void
+			(const OpcUaStackCore::MessageBusMember::WPtr&, OpcUaStackCore::Message::SPtr&)
+		>;
 
 		ClientServiceBase(void);
 		virtual ~ClientServiceBase(void);

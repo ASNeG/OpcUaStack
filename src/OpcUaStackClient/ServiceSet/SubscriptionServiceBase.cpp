@@ -51,7 +51,6 @@ namespace OpcUaStackClient
 	void
 	SubscriptionServiceBase::asyncSend(ServiceTransactionCreateSubscription::SPtr& serviceTransactionCreateSubscription)
 	{
-		serviceTransactionCreateSubscription->memberService(messageBusMember_);
 		messageBus_->messageSend(
 			messageBusMember_,
 			sessionMember_,
@@ -62,7 +61,6 @@ namespace OpcUaStackClient
 	void
 	SubscriptionServiceBase::syncSend(ServiceTransactionModifySubscription::SPtr& serviceTransactionModifySubscription)
 	{
-		serviceTransactionModifySubscription->sync(true);
 		auto future = serviceTransactionModifySubscription->promise().get_future();
 		asyncSend(serviceTransactionModifySubscription);
 		future.wait();
@@ -91,7 +89,6 @@ namespace OpcUaStackClient
 	void
 	SubscriptionServiceBase::asyncSend(ServiceTransactionTransferSubscriptions::SPtr& serviceTransactionTransferSubscriptions)
 	{
-		serviceTransactionTransferSubscriptions->memberService(messageBusMember_);
 		messageBus_->messageSend(
 			messageBusMember_,
 			sessionMember_,
@@ -111,7 +108,6 @@ namespace OpcUaStackClient
 	void
 	SubscriptionServiceBase::asyncSend(ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions)
 	{
-		serviceTransactionDeleteSubscriptions->memberService(messageBusMember_);
 		messageBus_->messageSend(
 			messageBusMember_,
 			sessionMember_,
@@ -131,7 +127,6 @@ namespace OpcUaStackClient
 	void
 	SubscriptionServiceBase::asyncSend(ServiceTransactionSetPublishingMode::SPtr& serviceTransactionSetPublishingMode)
 	{
-		serviceTransactionSetPublishingMode->memberService(messageBusMember_);
 		messageBus_->messageSend(
 			messageBusMember_,
 			sessionMember_,
@@ -151,7 +146,6 @@ namespace OpcUaStackClient
 	void
 	SubscriptionServiceBase::asyncSend(ServiceTransactionPublish::SPtr& serviceTransactionPublish)
 	{
-		serviceTransactionPublish->memberService(messageBusMember_);
 		messageBus_->messageSend(
 			messageBusMember_,
 			sessionMember_,
@@ -171,7 +165,6 @@ namespace OpcUaStackClient
 	void
 	SubscriptionServiceBase::asyncSend(ServiceTransactionRepublish::SPtr& serviceTransactionRepublish)
 	{
-		serviceTransactionRepublish->memberService(messageBusMember_);
 		messageBus_->messageSend(
 			messageBusMember_,
 			sessionMember_,
@@ -180,7 +173,10 @@ namespace OpcUaStackClient
 	}
 
 	void
-	SubscriptionServiceBase::receive(Message::SPtr message)
+	SubscriptionServiceBase::receive(
+		const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
+		Message::SPtr message
+	)
 	{
 		auto serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 

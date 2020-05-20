@@ -57,8 +57,8 @@ namespace OpcUaStackClient
 
 		// activate receiver
 		activateReceiver(
-			[this](Message::SPtr& message){
-				receive(message);
+			[this](const OpcUaStackCore::MessageBusMember::WPtr& handleFrom, Message::SPtr& message){
+				receive(handleFrom, message);
 			}
 		);
 	}
@@ -75,7 +75,6 @@ namespace OpcUaStackClient
 	void 
 	ViewService::asyncSend(ServiceTransactionBrowse::SPtr serviceTransactionBrowse)
 	{
-		serviceTransactionBrowse->memberService(messageBusMember_);
 		messageBus_->messageSend(
 			messageBusMember_,
 			sessionMember_,
@@ -95,7 +94,6 @@ namespace OpcUaStackClient
 	void
 	ViewService::asyncSend(ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext)
 	{
-		serviceTransactionBrowseNext->memberService(messageBusMember_);
 		messageBus_->messageSend(
 			messageBusMember_,
 			sessionMember_,
@@ -115,7 +113,6 @@ namespace OpcUaStackClient
 	void
 	ViewService::asyncSend(ServiceTransactionTranslateBrowsePathsToNodeIds::SPtr serviceTransactionTranslateBrowsePathsToNodeIds)
 	{
-		serviceTransactionTranslateBrowsePathsToNodeIds->memberService(messageBusMember_);
 		messageBus_->messageSend(
 			messageBusMember_,
 			sessionMember_,
@@ -124,7 +121,10 @@ namespace OpcUaStackClient
 	}
 
 	void 
-	ViewService::receive(Message::SPtr message)
+	ViewService::receive(
+		const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
+		Message::SPtr message
+	)
 	{
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 

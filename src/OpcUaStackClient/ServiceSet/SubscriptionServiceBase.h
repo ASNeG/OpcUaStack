@@ -60,7 +60,10 @@ namespace OpcUaStackClient
 		void asyncSend(OpcUaStackCore::ServiceTransactionRepublish::SPtr& serviceTransactionRepublish);
 
 	  protected:
-		void receive(OpcUaStackCore::Message::SPtr message);
+		void receive(
+			const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
+			OpcUaStackCore::Message::SPtr message
+		);
 		OpcUaStackCore::MessageBusMember::WPtr sessionMember_;
 
 	  private:

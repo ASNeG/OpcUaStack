@@ -82,8 +82,8 @@ namespace OpcUaStackClient
 
 		// activate receiver
 		activateReceiver(
-			[this](Message::SPtr& message){
-				receive(message);
+			[this](const OpcUaStackCore::MessageBusMember::WPtr& handleFrom, Message::SPtr& message){
+				receive(handleFrom, message);
 			}
 		);
 	}
@@ -201,7 +201,10 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	void
-	SubscriptionService::receive(Message::SPtr message)
+	SubscriptionService::receive(
+		const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
+		Message::SPtr message
+	)
 	{
 		auto serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 		switch (serviceTransaction->nodeTypeResponse().nodeId<uint32_t>())
@@ -231,7 +234,7 @@ namespace OpcUaStackClient
 			}
 		}
 
-		SubscriptionServiceBase::receive(message);
+		SubscriptionServiceBase::receive(handleFrom, message);
 	}
 
     void

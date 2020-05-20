@@ -77,7 +77,10 @@ namespace OpcUaStackClient
 		//- SubscriptionServicePublishIf --------------------------------------
 
 	  private:
-	    void receive(OpcUaStackCore::Message::SPtr message);
+	    void receive(
+	    	const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
+	    	OpcUaStackCore::Message::SPtr message
+		);
 
 	    void subscriptionServiceCreateSubscriptionResponse(OpcUaStackCore::ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription);
 	    void subscriptionServiceDeleteSubscriptionsResponse(OpcUaStackCore::ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions);

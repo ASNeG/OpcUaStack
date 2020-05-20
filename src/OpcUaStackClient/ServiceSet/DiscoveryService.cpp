@@ -57,8 +57,8 @@ namespace OpcUaStackClient
 
 		// activate receiver
 		activateReceiver(
-			[this](Message::SPtr& message){
-				receive(message);
+			[this](const OpcUaStackCore::MessageBusMember::WPtr& handleFrom, Message::SPtr& message){
+				receive(handleFrom, message);
 			}
 		);
 	}
@@ -75,7 +75,6 @@ namespace OpcUaStackClient
 	void 
 	DiscoveryService::asyncSend(ServiceTransactionFindServers::SPtr serviceTransactionFindServers)
 	{
-		serviceTransactionFindServers->memberService(messageBusMember_);
 		messageBus_->messageSend(
 			messageBusMember_,
 			sessionMember_,
@@ -95,7 +94,6 @@ namespace OpcUaStackClient
 	void
 	DiscoveryService::asyncSend(ServiceTransactionGetEndpoints::SPtr serviceTransactionGetEndpoints)
 	{
-		serviceTransactionGetEndpoints->memberService(messageBusMember_);
 		messageBus_->messageSend(
 			messageBusMember_,
 			sessionMember_,
@@ -115,7 +113,6 @@ namespace OpcUaStackClient
 	void
 	DiscoveryService::asyncSend(ServiceTransactionRegisterServer::SPtr serviceTransactionRegisterServer)
 	{
-		serviceTransactionRegisterServer->memberService(messageBusMember_);
 		messageBus_->messageSend(
 			messageBusMember_,
 			sessionMember_,
@@ -124,7 +121,10 @@ namespace OpcUaStackClient
 	}
 
 	void 
-	DiscoveryService::receive(Message::SPtr message)
+	DiscoveryService::receive(
+		const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
+		Message::SPtr message
+	)
 	{
 		auto serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 		

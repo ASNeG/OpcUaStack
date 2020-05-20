@@ -57,8 +57,8 @@ namespace OpcUaStackClient
 
 		// activate receiver
 		activateReceiver(
-			[this](Message::SPtr& message){
-				receive(message);
+			[this](const OpcUaStackCore::MessageBusMember::WPtr& handleFrom, Message::SPtr& message) {
+				receive(handleFrom, message);
 			}
 		);
 	}
@@ -75,7 +75,6 @@ namespace OpcUaStackClient
 	void 
 	AttributeService::asyncSend(ServiceTransactionRead::SPtr serviceTransactionRead)
 	{
-		serviceTransactionRead->memberService(messageBusMember_);
 		messageBus_->messageSend(
 			messageBusMember_,
 			sessionMember_,
@@ -95,7 +94,6 @@ namespace OpcUaStackClient
 	void 
 	AttributeService::asyncSend(ServiceTransactionWrite::SPtr serviceTransactionWrite)
 	{
-		serviceTransactionWrite->memberService(messageBusMember_);
 		messageBus_->messageSend(
 			messageBusMember_,
 			sessionMember_,
@@ -115,7 +113,6 @@ namespace OpcUaStackClient
 	void 
 	AttributeService::asyncSend(ServiceTransactionHistoryRead::SPtr serviceTransactionHistoryRead)
 	{
-		serviceTransactionHistoryRead->memberService(messageBusMember_);
 		messageBus_->messageSend(
 			messageBusMember_,
 			sessionMember_,
@@ -135,7 +132,6 @@ namespace OpcUaStackClient
 	void 
 	AttributeService::asyncSend(ServiceTransactionHistoryUpdate::SPtr serviceTransactionHistoryUpdate)
 	{
-		serviceTransactionHistoryUpdate->memberService(messageBusMember_);
 		messageBus_->messageSend(
 			messageBusMember_,
 			sessionMember_,
@@ -144,7 +140,10 @@ namespace OpcUaStackClient
 	}
 
 	void 
-	AttributeService::receive(Message::SPtr message)
+	AttributeService::receive(
+		const MessageBusMember::WPtr& handleFrom,
+		Message::SPtr message
+	)
 	{
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 		

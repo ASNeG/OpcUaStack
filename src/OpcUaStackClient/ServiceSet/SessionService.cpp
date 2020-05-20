@@ -19,6 +19,7 @@
 #include <future>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
+#include "OpcUaStackCore/ServiceSet/ServiceTransaction.h"
 #include "OpcUaStackCore/ServiceSet/ActivateSessionRequest.h"
 #include "OpcUaStackCore/ServiceSet/ActivateSessionResponse.h"
 #include "OpcUaStackCore/ServiceSet/CloseSessionRequest.h"
@@ -138,8 +139,8 @@ namespace OpcUaStackClient
 
 		// activate receiver
 		activateReceiver(
-			[this](Message::SPtr& message){
-				receive(message);
+			[this](const OpcUaStackCore::MessageBusMember::WPtr& handleFrom, Message::SPtr& message) {
+				receive(handleFrom, message);
 			}
 		);
 	}
@@ -411,8 +412,16 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	void
-	SessionService::receive(Message::SPtr message)
+	SessionService::receive(
+		const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
+		Message::SPtr message
+	)
 	{
+		// We have to remeber the sender of the message. This enables us to
+		// send a reply for the received message later
+		auto serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
+		serviceTransaction->memberService(handleFrom);
+
 		sm_.event(
 			[this, message](SessionServiceStateIf* sssif) {
 				return sssif->sendMessageRequest(message);

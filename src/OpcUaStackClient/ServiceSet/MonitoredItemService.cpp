@@ -56,8 +56,8 @@ namespace OpcUaStackClient
 
 		// activate receiver
 		activateReceiver(
-			[this](Message::SPtr& message){
-				receive(message);
+			[this](const OpcUaStackCore::MessageBusMember::WPtr& handleFrom, Message::SPtr& message){
+				receive(handleFrom, message);
 			}
 		);
 	}
@@ -74,7 +74,6 @@ namespace OpcUaStackClient
 	void
 	MonitoredItemService::asyncSend(ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems)
 	{
-		serviceTransactionCreateMonitoredItems->memberService(messageBusMember_);
 		messageBus_->messageSend(
 			messageBusMember_,
 			sessionMember_,
@@ -94,7 +93,6 @@ namespace OpcUaStackClient
 	void
 	MonitoredItemService::asyncSend(ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems)
 	{
-		serviceTransactionDeleteMonitoredItems->memberService(messageBusMember_);
 		messageBus_->messageSend(
 			messageBusMember_,
 			sessionMember_,
@@ -114,7 +112,6 @@ namespace OpcUaStackClient
 	void
 	MonitoredItemService::asyncSend(ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems)
 	{
-		serviceTransactionModifyMonitoredItems->memberService(messageBusMember_);
 		messageBus_->messageSend(
 			messageBusMember_,
 			sessionMember_,
@@ -134,7 +131,6 @@ namespace OpcUaStackClient
 	void
 	MonitoredItemService::asyncSend(ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode)
 	{
-		serviceTransactionSetMonitoringMode->memberService(messageBusMember_);
 		messageBus_->messageSend(
 			messageBusMember_,
 			sessionMember_,
@@ -154,7 +150,6 @@ namespace OpcUaStackClient
 	void
 	MonitoredItemService::asyncSend(ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering)
 	{
-		serviceTransactionSetTriggering->memberService(messageBusMember_);
 		messageBus_->messageSend(
 			messageBusMember_,
 			sessionMember_,
@@ -163,7 +158,10 @@ namespace OpcUaStackClient
 	}
 
 	void
-	MonitoredItemService::receive(Message::SPtr message)
+	MonitoredItemService::receive(
+		const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
+		Message::SPtr message
+	)
 	{
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 

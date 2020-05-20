@@ -133,7 +133,7 @@ namespace OpcUaStackClient
 				ReceiverContext::SPtr receiverContext = receiverContext_;
 				if (receiverContext->receiverCallback_) {
 					receiverContext->receiverCallbackRunning_ = true;
-					receiverContext->receiverCallback_(message);
+					receiverContext->receiverCallback_(handleFrom, message);
 					receiverContext->receiverCallbackRunning_ = false;
 
 					if (receiverContext->shutdown_) {

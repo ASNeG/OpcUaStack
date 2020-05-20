@@ -57,8 +57,8 @@ namespace OpcUaStackClient
 
 		// activate receiver
 		activateReceiver(
-			[this](Message::SPtr& message){
-				receive(message);
+			[this](const OpcUaStackCore::MessageBusMember::WPtr& handleFrom, Message::SPtr& message){
+				receive(handleFrom, message);
 			}
 		);
 	}
@@ -75,7 +75,6 @@ namespace OpcUaStackClient
 	void 
 	NodeManagementService::asyncSend(ServiceTransactionAddNodes::SPtr serviceTransactionAddNodes)
 	{
-		serviceTransactionAddNodes->memberService(messageBusMember_);
 		messageBus_->messageSend(
 			messageBusMember_,
 			sessionMember_,
@@ -95,7 +94,6 @@ namespace OpcUaStackClient
 	void 
 	NodeManagementService::asyncSend(ServiceTransactionAddReferences::SPtr serviceTransactionAddReferences)
 	{
-		serviceTransactionAddReferences->memberService(messageBusMember_);
 		messageBus_->messageSend(
 			messageBusMember_,
 			sessionMember_,
@@ -115,7 +113,6 @@ namespace OpcUaStackClient
 	void 
 	NodeManagementService::asyncSend(ServiceTransactionDeleteNodes::SPtr serviceTransactionDeleteNodes)
 	{
-		serviceTransactionDeleteNodes->memberService(messageBusMember_);
 		messageBus_->messageSend(
 			messageBusMember_,
 			sessionMember_,
@@ -123,7 +120,7 @@ namespace OpcUaStackClient
 		);
 	}
 
-	void 
+	void
 	NodeManagementService::syncSend(ServiceTransactionDeleteReferences::SPtr serviceTransactionDeleteReferences)
 	{
 		serviceTransactionDeleteReferences->sync(true);
@@ -135,7 +132,6 @@ namespace OpcUaStackClient
 	void 
 	NodeManagementService::asyncSend(ServiceTransactionDeleteReferences::SPtr serviceTransactionDeleteReferences)
 	{
-		serviceTransactionDeleteReferences->memberService(messageBusMember_);
 		messageBus_->messageSend(
 			messageBusMember_,
 			sessionMember_,
@@ -144,7 +140,10 @@ namespace OpcUaStackClient
 	}
 
 	void 
-	NodeManagementService::receive(Message::SPtr message)
+	NodeManagementService::receive(
+		const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
+		Message::SPtr message
+	)
 	{
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 		

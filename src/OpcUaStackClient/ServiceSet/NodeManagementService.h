@@ -53,7 +53,10 @@ namespace OpcUaStackClient
 		void asyncSend(OpcUaStackCore::ServiceTransactionDeleteReferences::SPtr serviceTransactionDeleteReferences);
 
 	  private:
-		void receive(OpcUaStackCore::Message::SPtr message);
+		void receive(
+			const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
+			OpcUaStackCore::Message::SPtr message
+		);
 		OpcUaStackCore::MessageBusMember::WPtr sessionMember_;
 	};
 
