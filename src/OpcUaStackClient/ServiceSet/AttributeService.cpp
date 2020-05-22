@@ -118,10 +118,12 @@ namespace OpcUaStackClient
 	)
 	{
 		auto serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
+#if 1
 		if (serviceTransaction->sync()) {
 			serviceTransaction->promise().set_value(true);
 			return;
 		}
+#endif
 
 		switch (serviceTransaction->nodeTypeResponse().nodeId<uint32_t>())
 		{

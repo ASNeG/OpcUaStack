@@ -92,7 +92,10 @@ namespace OpcUaStackServer
 		void endpointDescriptionArray(OpcUaStackCore::EndpointDescriptionArray::SPtr& endpointDescriptionArray);
 
 	  private:
-		void receive(OpcUaStackCore::Message::SPtr message);
+		void receive(
+			const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
+			OpcUaStackCore::Message::SPtr& message
+		);
 		void createServerNonce(void);
 
 		OpcUaStackCore::OpcUaStatusCode authentication(OpcUaStackCore::ActivateSessionRequest& activateSessionRequest);

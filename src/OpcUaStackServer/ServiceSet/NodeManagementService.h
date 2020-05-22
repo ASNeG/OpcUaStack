@@ -43,7 +43,10 @@ namespace OpcUaStackServer
 		~NodeManagementService(void);
 
 	  private:
-		void receive(OpcUaStackCore::Message::SPtr message);
+		void receive(
+			const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
+			OpcUaStackCore::Message::SPtr& message
+		);
 		void sendAnswer(OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction);
 		void receiveAddNodesRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 		void receiveAddReferencesRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);

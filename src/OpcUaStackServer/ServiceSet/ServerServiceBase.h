@@ -30,7 +30,10 @@ namespace OpcUaStackServer
 	{
 	  public:
 		using SPtr = boost::shared_ptr<ServerServiceBase>;
-		using ReceiverCallback = std::function<void (OpcUaStackCore::Message::SPtr&)>;
+		using ReceiverCallback = std::function<
+			void
+			(const OpcUaStackCore::MessageBusMember::WPtr&, OpcUaStackCore::Message::SPtr&)
+		>;
 
 		ServerServiceBase(void);
 		virtual ~ServerServiceBase(void);

@@ -21,6 +21,7 @@
 #include <boost/thread/tss.hpp>
 #include <string>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/ThreadStorage.h"
 
 namespace OpcUaStackCore
 {

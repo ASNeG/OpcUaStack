@@ -63,7 +63,7 @@ namespace OpcUaStackCore
 
 		void memberService(const MessageBusMember::WPtr& memberService);
 		MessageBusMember::WPtr& memberService(void);
-		void memberServiceSession(MessageBusMember::WPtr& memberServiceSession);
+		void memberServiceSession(const MessageBusMember::WPtr& memberServiceSession);
 		MessageBusMember::WPtr& memberServiceSession(void);
 
 		void userContext(UserContext::SPtr& userContext);

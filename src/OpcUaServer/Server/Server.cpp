@@ -17,6 +17,7 @@
 
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaServer/Server/Server.h"
+#include "OpcUaStackCore/Base/ThreadStorage.h"
 #include "OpcUaStackCore/Utility/Environment.h"
 #include "OpcUaStackCore/Logging/Logging.h"
 #include "BuildConfig.h"
@@ -69,6 +70,11 @@ namespace OpcUaServer
 			Log(Error, "shutdown server, because init log error");
 			return false;
 		}
+
+		// init thread name for init
+		ThreadStorage::getInstance()->name("Init");
+
+		// log server information
 		logServerInfo();
 
 		// initial application library manager and load configured libraries.

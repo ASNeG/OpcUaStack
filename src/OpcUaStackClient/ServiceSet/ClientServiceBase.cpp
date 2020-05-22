@@ -144,15 +144,6 @@ namespace OpcUaStackClient
 					return;
 				}
 
-				// check if transaction is synchron
-#if 0
-				auto serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
-				if (serviceTransaction->sync()) {
-					serviceTransaction->promise().set_value(true);
-					return;
-				}
-#endif
-
 			    // check error
 				if (error != MessageBusError::Ok) {
 					if (error != MessageBusError::Cancel) {
@@ -162,6 +153,17 @@ namespace OpcUaStackClient
 					}
 					return;
 				}
+
+				// check if transaction is synchronously called
+#if 0
+				auto serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
+				if (serviceTransaction->sync()) {
+					serviceTransaction->promise().set_value(true);
+
+					receiveCallback();
+					return;
+				}
+#endif
 
 				// execute callback
 				auto receiverContext = receiverContext_;
