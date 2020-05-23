@@ -76,6 +76,9 @@ namespace OpcUaStackServer
 	{
 		bool rc = true;
 
+		Log(Info, "init thread pool");
+		rc = rc && initOpcUaServer();
+
 		Log(Info, "init opc ua core stack");
 		rc = rc && Core::init();
 
@@ -251,6 +254,30 @@ namespace OpcUaStackServer
 		if (!InformationModelNodeSet::checkForwardReferences(informationModel_)) {
 			Log(Error, "node set forward references error");
 			return false;
+		}
+
+		return true;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// opc ua server
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaServer::initOpcUaServer(void)
+	{
+		// read optional thread pool information for server thread pool
+		std::string threadPoolName;
+		if (config().getConfigParameter("OpcUaServer.Server.ServerThreadPool.Name", threadPoolName)) {
+			ioThread_->name(threadPoolName);
+		}
+
+		uint32_t numberThreads;
+		if (config().getConfigParameter("OpcUaServer.Server.ServerThreadPool.NumberThreads", numberThreads)) {
+			ioThread_->numberThreads(numberThreads);
 		}
 
 		return true;
