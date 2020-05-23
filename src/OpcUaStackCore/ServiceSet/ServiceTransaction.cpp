@@ -155,7 +155,7 @@ namespace OpcUaStackCore
 	}
 
 	void
-	ServiceTransaction::memberService(MessageBusMember::WPtr& memberService)
+	ServiceTransaction::memberService(const MessageBusMember::WPtr& memberService)
 	{
 		memberService_ = memberService;
 	}
@@ -167,7 +167,7 @@ namespace OpcUaStackCore
 	}
 
 	void
-	ServiceTransaction::memberServiceSession(MessageBusMember::WPtr& memberServiceSession) {
+	ServiceTransaction::memberServiceSession(const MessageBusMember::WPtr& memberServiceSession) {
 		memberServiceSession_ = memberServiceSession;
 	}
 

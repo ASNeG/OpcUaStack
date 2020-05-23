@@ -43,17 +43,20 @@ namespace OpcUaStackClient
 			OpcUaStackCore::MessageBusMember::WPtr& sessionMember
 		);
 
-		void syncSend(OpcUaStackCore::ServiceTransactionAddNodes::SPtr serviceTransactionAddNodes);
-		void asyncSend(OpcUaStackCore::ServiceTransactionAddNodes::SPtr serviceTransactionAddNodes);
-		void syncSend(OpcUaStackCore::ServiceTransactionAddReferences::SPtr serviceTransactionAddReferences);
-		void asyncSend(OpcUaStackCore::ServiceTransactionAddReferences::SPtr serviceTransactionAddReferences);
-		void syncSend(OpcUaStackCore::ServiceTransactionDeleteNodes::SPtr serviceTransactionDeleteNodes);
-		void asyncSend(OpcUaStackCore::ServiceTransactionDeleteNodes::SPtr serviceTransactionDeleteNodes);
-		void syncSend(OpcUaStackCore::ServiceTransactionDeleteReferences::SPtr serviceTransactionDeleteReferences);
-		void asyncSend(OpcUaStackCore::ServiceTransactionDeleteReferences::SPtr serviceTransactionDeleteReferences);
+		void syncSend(const OpcUaStackCore::ServiceTransactionAddNodes::SPtr& serviceTransactionAddNodes);
+		void asyncSend(const OpcUaStackCore::ServiceTransactionAddNodes::SPtr& serviceTransactionAddNodes);
+		void syncSend(const OpcUaStackCore::ServiceTransactionAddReferences::SPtr& serviceTransactionAddReferences);
+		void asyncSend(const OpcUaStackCore::ServiceTransactionAddReferences::SPtr& serviceTransactionAddReferences);
+		void syncSend(const OpcUaStackCore::ServiceTransactionDeleteNodes::SPtr& serviceTransactionDeleteNodes);
+		void asyncSend(const OpcUaStackCore::ServiceTransactionDeleteNodes::SPtr& serviceTransactionDeleteNodes);
+		void syncSend(const OpcUaStackCore::ServiceTransactionDeleteReferences::SPtr& serviceTransactionDeleteReferences);
+		void asyncSend(const OpcUaStackCore::ServiceTransactionDeleteReferences::SPtr& serviceTransactionDeleteReferences);
 
 	  private:
-		void receive(OpcUaStackCore::Message::SPtr message);
+		void receive(
+			const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
+			OpcUaStackCore::Message::SPtr message
+		);
 		OpcUaStackCore::MessageBusMember::WPtr sessionMember_;
 	};
 

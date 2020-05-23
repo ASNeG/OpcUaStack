@@ -57,74 +57,53 @@ namespace OpcUaStackClient
 
 		// activate receiver
 		activateReceiver(
-			[this](Message::SPtr& message){
-				receive(message);
+			[this](const OpcUaStackCore::MessageBusMember::WPtr& handleFrom, Message::SPtr& message){
+				receive(handleFrom, message);
 			}
 		);
 	}
 
 	void 
-	ViewService::syncSend(ServiceTransactionBrowse::SPtr serviceTransactionBrowse)
+	ViewService::syncSend(const ServiceTransactionBrowse::SPtr& serviceTransactionBrowse)
 	{
-		serviceTransactionBrowse->sync(true);
-		auto future = serviceTransactionBrowse->promise().get_future();
-		asyncSend(serviceTransactionBrowse);
-		future.wait();
+		ClientServiceBase::syncSend(sessionMember_, serviceTransactionBrowse);
 	}
 
 	void 
-	ViewService::asyncSend(ServiceTransactionBrowse::SPtr serviceTransactionBrowse)
+	ViewService::asyncSend(const ServiceTransactionBrowse::SPtr& serviceTransactionBrowse)
 	{
-		serviceTransactionBrowse->memberService(messageBusMember_);
-		messageBus_->messageSend(
-			messageBusMember_,
-			sessionMember_,
-			serviceTransactionBrowse
-		);
+		ClientServiceBase::asyncSend(sessionMember_, serviceTransactionBrowse);
 	}
 
 	void
-	ViewService::syncSend(ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext)
+	ViewService::syncSend(const ServiceTransactionBrowseNext::SPtr& serviceTransactionBrowseNext)
 	{
-		serviceTransactionBrowseNext->sync(true);
-		auto future = serviceTransactionBrowseNext->promise().get_future();
-		asyncSend(serviceTransactionBrowseNext);
-		future.wait();
+		ClientServiceBase::syncSend(sessionMember_, serviceTransactionBrowseNext);
 	}
 
 	void
-	ViewService::asyncSend(ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext)
+	ViewService::asyncSend(const ServiceTransactionBrowseNext::SPtr& serviceTransactionBrowseNext)
 	{
-		serviceTransactionBrowseNext->memberService(messageBusMember_);
-		messageBus_->messageSend(
-			messageBusMember_,
-			sessionMember_,
-			serviceTransactionBrowseNext
-		);
+		ClientServiceBase::asyncSend(sessionMember_, serviceTransactionBrowseNext);
 	}
 
 	void
-	ViewService::syncSend(ServiceTransactionTranslateBrowsePathsToNodeIds::SPtr serviceTransactionTranslateBrowsePathsToNodeIds)
+	ViewService::syncSend(const ServiceTransactionTranslateBrowsePathsToNodeIds::SPtr& serviceTransactionTranslateBrowsePathsToNodeIds)
 	{
-		serviceTransactionTranslateBrowsePathsToNodeIds->sync(true);
-		auto future = serviceTransactionTranslateBrowsePathsToNodeIds->promise().get_future();
-		asyncSend(serviceTransactionTranslateBrowsePathsToNodeIds);
-		future.wait();
+		ClientServiceBase::syncSend(sessionMember_, serviceTransactionTranslateBrowsePathsToNodeIds);
 	}
 
 	void
-	ViewService::asyncSend(ServiceTransactionTranslateBrowsePathsToNodeIds::SPtr serviceTransactionTranslateBrowsePathsToNodeIds)
+	ViewService::asyncSend(const ServiceTransactionTranslateBrowsePathsToNodeIds::SPtr& serviceTransactionTranslateBrowsePathsToNodeIds)
 	{
-		serviceTransactionTranslateBrowsePathsToNodeIds->memberService(messageBusMember_);
-		messageBus_->messageSend(
-			messageBusMember_,
-			sessionMember_,
-			serviceTransactionTranslateBrowsePathsToNodeIds
-		);
+		ClientServiceBase::asyncSend(sessionMember_, serviceTransactionTranslateBrowsePathsToNodeIds);
 	}
 
 	void 
-	ViewService::receive(Message::SPtr message)
+	ViewService::receive(
+		const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
+		Message::SPtr message
+	)
 	{
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 

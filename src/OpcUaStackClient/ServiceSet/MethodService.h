@@ -42,11 +42,14 @@ namespace OpcUaStackClient
 			OpcUaStackCore::MessageBusMember::WPtr& sessionMember
 		);
 
-		void syncSend(OpcUaStackCore::ServiceTransactionCall::SPtr serviceTransactionRead);
-		void asyncSend(OpcUaStackCore::ServiceTransactionCall::SPtr serviceTransactionRead);
+		void syncSend(const OpcUaStackCore::ServiceTransactionCall::SPtr& serviceTransactionRead);
+		void asyncSend(const OpcUaStackCore::ServiceTransactionCall::SPtr& serviceTransactionRead);
 
 	  private:
-		void receive(OpcUaStackCore::Message::SPtr message);
+		void receive(
+			const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
+			OpcUaStackCore::Message::SPtr message
+		);
 		OpcUaStackCore::MessageBusMember::WPtr sessionMember_;
 	};
 

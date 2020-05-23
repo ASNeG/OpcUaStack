@@ -82,7 +82,10 @@ namespace OpcUaStackClient
 		void reconnectTimeout(void);
 
 	  private:
-		void receive(OpcUaStackCore::Message::SPtr message);
+		void receive(
+			const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
+			OpcUaStackCore::Message::SPtr message
+		);
 		SessionService(void);
 
 		void pendingQueueTimeoutLoop(void);

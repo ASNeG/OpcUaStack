@@ -301,7 +301,7 @@ namespace OpcUaStackCore
 
 	void
 	MessageBusMember::messageSend(
-		WPtr& sender,
+		const WPtr& sender,
 		const Message::SPtr& message
 	)
 	{
@@ -330,7 +330,7 @@ namespace OpcUaStackCore
 
 	void
 	MessageBusMember::messageSend(
-		WPtr& sender,
+		const WPtr& sender,
 		const Message::SPtr& message,
 		const IOThread::SPtr& ioThreadSender,
 		const SendCompleteCallback& sendCompleteCallback
@@ -374,7 +374,7 @@ namespace OpcUaStackCore
 
 	void
 	MessageBusMember::messageSend(
-		WPtr& sender,
+		const WPtr& sender,
 		const Message::SPtr& message,
 		const boost::shared_ptr<boost::asio::io_service::strand>& strandSender,
 		const SendCompleteCallback& sendCompleteCallback

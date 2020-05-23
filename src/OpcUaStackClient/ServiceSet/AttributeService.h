@@ -42,17 +42,20 @@ namespace OpcUaStackClient
 			OpcUaStackCore::MessageBusMember::WPtr& sessionMember
 		);
 
-		void syncSend(OpcUaStackCore::ServiceTransactionRead::SPtr serviceTransactionRead);
-		void asyncSend(OpcUaStackCore::ServiceTransactionRead::SPtr serviceTransactionRead);
-		void syncSend(OpcUaStackCore::ServiceTransactionWrite::SPtr serviceTransactionWrite);
-		void asyncSend(OpcUaStackCore::ServiceTransactionWrite::SPtr serviceTransactionWrite);
-		void syncSend(OpcUaStackCore::ServiceTransactionHistoryRead::SPtr serviceTransactionHistoryRead);
-		void asyncSend(OpcUaStackCore::ServiceTransactionHistoryRead::SPtr serviceTransactionHistoryRead);
-		void syncSend(OpcUaStackCore::ServiceTransactionHistoryUpdate::SPtr serviceTransactionHistoryUpdate);
-		void asyncSend(OpcUaStackCore::ServiceTransactionHistoryUpdate::SPtr serviceTransactionHistoryUpdate);
+		void syncSend(const OpcUaStackCore::ServiceTransactionRead::SPtr& serviceTransactionRead);
+		void asyncSend(const OpcUaStackCore::ServiceTransactionRead::SPtr& serviceTransactionRead);
+		void syncSend(const OpcUaStackCore::ServiceTransactionWrite::SPtr& serviceTransactionWrite);
+		void asyncSend(const OpcUaStackCore::ServiceTransactionWrite::SPtr& serviceTransactionWrite);
+		void syncSend(const OpcUaStackCore::ServiceTransactionHistoryRead::SPtr& serviceTransactionHistoryRead);
+		void asyncSend(const OpcUaStackCore::ServiceTransactionHistoryRead::SPtr& serviceTransactionHistoryRead);
+		void syncSend(const OpcUaStackCore::ServiceTransactionHistoryUpdate::SPtr& serviceTransactionHistoryUpdate);
+		void asyncSend(const OpcUaStackCore::ServiceTransactionHistoryUpdate::SPtr& serviceTransactionHistoryUpdate);
 
 	  private:
-		void receive(OpcUaStackCore::Message::SPtr message);
+		void receive(
+			const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
+			OpcUaStackCore::Message::SPtr message
+		);
 		OpcUaStackCore::MessageBusMember::WPtr sessionMember_;
 	};
 

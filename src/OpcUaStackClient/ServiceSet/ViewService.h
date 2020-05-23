@@ -42,15 +42,18 @@ namespace OpcUaStackClient
 			OpcUaStackCore::MessageBusMember::WPtr& sessionMember
 		);
 
-		void syncSend(OpcUaStackCore::ServiceTransactionBrowse::SPtr serviceTransactionBrowse);
-		void asyncSend(OpcUaStackCore::ServiceTransactionBrowse::SPtr serviceTransactionBrowse);
-		void syncSend(OpcUaStackCore::ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext);
-		void asyncSend(OpcUaStackCore::ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext);
-		void syncSend(OpcUaStackCore::ServiceTransactionTranslateBrowsePathsToNodeIds::SPtr serviceTransactionTranslateBrowsePathsToNodeIds);
-		void asyncSend(OpcUaStackCore::ServiceTransactionTranslateBrowsePathsToNodeIds::SPtr serviceTransactionTranslateBrowsePathsToNodeIds);
+		void syncSend(const OpcUaStackCore::ServiceTransactionBrowse::SPtr& serviceTransactionBrowse);
+		void asyncSend(const OpcUaStackCore::ServiceTransactionBrowse::SPtr& serviceTransactionBrowse);
+		void syncSend(const OpcUaStackCore::ServiceTransactionBrowseNext::SPtr& serviceTransactionBrowseNext);
+		void asyncSend(const OpcUaStackCore::ServiceTransactionBrowseNext::SPtr& serviceTransactionBrowseNext);
+		void syncSend(const OpcUaStackCore::ServiceTransactionTranslateBrowsePathsToNodeIds::SPtr& serviceTransactionTranslateBrowsePathsToNodeIds);
+		void asyncSend(const OpcUaStackCore::ServiceTransactionTranslateBrowsePathsToNodeIds::SPtr& serviceTransactionTranslateBrowsePathsToNodeIds);
 
 	  private:
-		void receive(OpcUaStackCore::Message::SPtr message);
+		void receive(
+			const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
+			OpcUaStackCore::Message::SPtr message
+		);
 		OpcUaStackCore::MessageBusMember::WPtr sessionMember_;
 	};
 

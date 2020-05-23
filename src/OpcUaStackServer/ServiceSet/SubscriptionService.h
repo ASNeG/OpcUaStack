@@ -47,7 +47,10 @@ namespace OpcUaStackServer
 		bool init(void);
 
 	  private:
-		void receive(OpcUaStackCore::Message::SPtr message);
+		void receive(
+			const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
+			OpcUaStackCore::Message::SPtr& message
+		);
 		void sendAnswer(OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction);
 
 		 // subscription

@@ -99,8 +99,8 @@ namespace OpcUaStackServer
 
 		// activate receiver
 		activateReceiver(
-			[this](Message::SPtr& message){
-				receive(message);
+			[this](const MessageBusMember::WPtr& handleFrom, Message::SPtr& message){
+				receive(handleFrom, message);
 			}
 		);
 	}
@@ -1093,7 +1093,6 @@ namespace OpcUaStackServer
 			.parameter("RequestId", serviceTransactionSPtr->requestId_);
 
 		// send message request to service component
-		serviceTransactionSPtr->memberServiceSession(messageBusMember_);
 		messageBus_->messageSend(
 			messageBusMember_,
 			serviceTransactionSPtr->memberService(),
@@ -1111,9 +1110,13 @@ namespace OpcUaStackServer
 	}
 
 	void
-	Session::receive(Message::SPtr message)
+	Session::receive(
+		const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
+		Message::SPtr& message
+	)
 	{
 		ServiceTransaction::SPtr serviceTransactionSPtr = boost::static_pointer_cast<ServiceTransaction>(message);
+
 		Log(Debug, "receive response in session")
 			.parameter("TrxId", serviceTransactionSPtr->transactionId())
 			.parameter("TypeId", serviceTransactionSPtr->responseName())

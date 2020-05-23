@@ -52,7 +52,7 @@ namespace OpcUaStackServer
 
 		// activate receiver
 		activateReceiver(
-			[this](Message::SPtr& message){
+			[this](const OpcUaStackCore::MessageBusMember::WPtr& handleFrom, Message::SPtr& message){
 				// nothing to do
 			}
 		);

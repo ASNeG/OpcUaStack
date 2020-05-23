@@ -41,7 +41,10 @@ namespace OpcUaStackServer
 		~MethodService(void);
 
 	  private:
-		void receive(OpcUaStackCore::Message::SPtr message);
+		void receive(
+			const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
+			OpcUaStackCore::Message::SPtr message
+		);
 
 		void sendAnswer(OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction);
 		void receiveCallRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);

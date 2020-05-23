@@ -42,7 +42,7 @@ namespace OpcUaStackServer
 		// create thread pool
 		ioThread_ = boost::make_shared<IOThread>();
 		ioThread_->numberThreads(2);
-		ioThread_->name("ThrSrv");
+		ioThread_->name("Srv");
 
 		// create message bus
 		messageBus_ = boost::make_shared<MessageBus>();

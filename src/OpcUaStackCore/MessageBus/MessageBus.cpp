@@ -257,8 +257,8 @@ namespace OpcUaStackCore
 
 	void
 	MessageBus::messageSend(
-		MessageBusMember::WPtr& sender,
-		MessageBusMember::WPtr& receiver,
+		const MessageBusMember::WPtr& sender,
+		const MessageBusMember::WPtr& receiver,
 		const Message::SPtr& message
 	)
 	{
@@ -286,8 +286,8 @@ namespace OpcUaStackCore
 
 	void
 	MessageBus::messageSend(
-		MessageBusMember::WPtr& sender,
-		MessageBusMember::WPtr& receiver,
+		const MessageBusMember::WPtr& sender,
+		const MessageBusMember::WPtr& receiver,
 		const Message::SPtr& message,
 		const MessageBusMember::SendCompleteCallback& sendCompleteCallback
 	)
@@ -365,8 +365,8 @@ namespace OpcUaStackCore
 
 	void
 	MessageBus::messageSend(
-		MessageBusMember::WPtr& sender,
-		MessageBusMember::WPtr& receiver,
+		const MessageBusMember::WPtr& sender,
+		const MessageBusMember::WPtr& receiver,
 		const Message::SPtr& message,
 		const IOThread::SPtr& ioThreadSender,
 		const MessageBusMember::SendCompleteCallback& sendCompleteCallback
@@ -409,8 +409,8 @@ namespace OpcUaStackCore
 
 	void
 	MessageBus::messageSend(
-		MessageBusMember::WPtr& sender,
-		MessageBusMember::WPtr& receiver,
+		const MessageBusMember::WPtr& sender,
+		const MessageBusMember::WPtr& receiver,
 		const Message::SPtr& message,
 		const boost::shared_ptr<boost::asio::io_service::strand>& strandSender,
 		const MessageBusMember::SendCompleteCallback& sendCompleteCallback

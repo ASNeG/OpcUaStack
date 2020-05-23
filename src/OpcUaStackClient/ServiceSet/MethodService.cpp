@@ -57,35 +57,30 @@ namespace OpcUaStackClient
 
 		// activate receiver
 		activateReceiver(
-			[this](Message::SPtr& message){
-				receive(message);
+			[this](const OpcUaStackCore::MessageBusMember::WPtr& handleFrom, Message::SPtr& message){
+				receive(handleFrom, message);
 			}
 		);
 	}
 
 	void 
-	MethodService::syncSend(ServiceTransactionCall::SPtr serviceTransactionCall)
+	MethodService::syncSend(const ServiceTransactionCall::SPtr& serviceTransactionCall)
 	{
-		serviceTransactionCall->sync(true);
-		auto future = serviceTransactionCall->promise().get_future();
-		asyncSend(serviceTransactionCall);
-		future.wait();
+		ClientServiceBase::syncSend(sessionMember_, serviceTransactionCall);
 	}
 
 	void 
-	MethodService::asyncSend(ServiceTransactionCall::SPtr serviceTransactionCall)
+	MethodService::asyncSend(const ServiceTransactionCall::SPtr& serviceTransactionCall)
 	{
-		serviceTransactionCall->memberService(messageBusMember_);
-		messageBus_->messageSend(
-			messageBusMember_,
-			sessionMember_,
-			serviceTransactionCall
-		);
+		ClientServiceBase::asyncSend(sessionMember_, serviceTransactionCall);
 	}
 
 
 	void 
-	MethodService::receive(Message::SPtr message)
+	MethodService::receive(
+		const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
+		Message::SPtr message
+	)
 	{
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 		

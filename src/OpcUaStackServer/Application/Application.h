@@ -66,7 +66,10 @@ namespace OpcUaStackServer
 		//- ApplicationServiceIf ------------------------------------------------------
 
 	  private:
-		void receive(OpcUaStackCore::Message::SPtr message);
+		void receive(
+			const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
+			OpcUaStackCore::Message::SPtr message
+		);
 		void updateServiceTransactionRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 
 		State state_;

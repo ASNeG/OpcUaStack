@@ -16,8 +16,8 @@
  */
 
 #include <boost/lexical_cast.hpp>
-#include <OpcUaStackCore/Base/ThreadStorage.h>
 #include <string>
+#include "OpcUaStackCore/Base/ThreadStorage.h""
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Utility/UniqueId.h"

@@ -46,8 +46,8 @@ namespace OpcUaStackServer
 
 		// activate receiver
 		activateReceiver(
-			[this](Message::SPtr& message){
-				receive(message);
+			[this](const OpcUaStackCore::MessageBusMember::WPtr& handleFrom, Message::SPtr& message){
+				receive(handleFrom, message);
 			}
 		);
 	}
@@ -60,9 +60,16 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	NodeManagementService::receive(Message::SPtr message)
+	NodeManagementService::receive(
+		const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
+		Message::SPtr& message
+	)
 	{
-		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
+		// We have to remember the sender of the message. This enables us to
+		// send a reply for the received message later
+		auto serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
+		serviceTransaction->memberServiceSession(handleFrom);
+
 		switch (serviceTransaction->nodeTypeRequest().nodeId<uint32_t>()) 
 		{
 			case OpcUaId_AddNodesRequest_Encoding_DefaultBinary:
