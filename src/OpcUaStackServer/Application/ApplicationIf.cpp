@@ -88,6 +88,18 @@ namespace OpcUaStackServer
 		return cryptoManager_;
 	}
 
+	void
+	ApplicationData::applicationThreadPool(const IOThread::SPtr& applicationThreadPool)
+	{
+		applicationThreadPool_ = applicationThreadPool;
+	}
+
+	IOThread::SPtr&
+	ApplicationData::applicationThreadPool(void)
+	{
+		return applicationThreadPool_;
+	}
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
@@ -161,6 +173,18 @@ namespace OpcUaStackServer
 	ApplicationIf::cryptoManager(void)
 	{
 		return applicationData_->cryptoManager();
+	}
+
+	void
+	ApplicationIf::applicationThreadPool(const IOThread::SPtr& applicationThreadPool)
+	{
+		applicationData_->applicationThreadPool(applicationThreadPool);
+	}
+
+	IOThread::SPtr&
+	ApplicationIf::applicationThreadPool(void)
+	{
+		return applicationData_->applicationThreadPool();
 	}
 
 	void

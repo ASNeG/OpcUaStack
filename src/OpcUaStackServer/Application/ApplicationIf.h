@@ -43,12 +43,15 @@ namespace OpcUaStackServer
 		ApplicationInfo* applicationInfo(void);
 		void cryptoManager(const OpcUaStackCore::CryptoManager::SPtr& cryptoManager);
 		OpcUaStackCore::CryptoManager::SPtr& cryptoManager(void);
+		void applicationThreadPool(const OpcUaStackCore::IOThread::SPtr& applicationThreadPool);
+		OpcUaStackCore::IOThread::SPtr& applicationThreadPool(void);
 
 	  private:
 		ApplicationServiceIf* applicationServiceIf_;
 		OpcUaStackCore::Config* config_;
 		ApplicationInfo* applicationInfo_;
 		OpcUaStackCore::CryptoManager::SPtr cryptoManager_;
+		OpcUaStackCore::IOThread::SPtr applicationThreadPool_;
 	};
 
 
@@ -71,6 +74,8 @@ namespace OpcUaStackServer
 		ApplicationInfo* applicationInfo(void);
 		void cryptoManager(OpcUaStackCore::CryptoManager::SPtr cryptoManager);
 		OpcUaStackCore::CryptoManager::SPtr& cryptoManager(void);
+		void applicationThreadPool(const OpcUaStackCore::IOThread::SPtr& applicationThreadPool);
+		OpcUaStackCore::IOThread::SPtr& applicationThreadPool(void);
 		void applicationData(ApplicationData::SPtr& applicationData);
 		ApplicationData::SPtr& applicationData(void);
 
