@@ -118,7 +118,7 @@ REM ---------------------------------------------------------------------------
 	REM install OpcUaStack
 	REM
     
-	set DESTDIR=%INSTALL_PREFIX%
+	set DESTDIR=%INSTALL_PREFIX:"=%
 	%CMAKE% --build build_local_%BUILD_DIR_SUFFIX% --target install --config %BUILD_TYPE%
 goto:eof
 
