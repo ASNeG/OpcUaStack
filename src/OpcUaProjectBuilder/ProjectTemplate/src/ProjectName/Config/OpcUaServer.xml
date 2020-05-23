@@ -1,5 +1,5 @@
 ﻿<!--
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -32,10 +32,12 @@
     
   </Logging>
   
+  
 <!--  <DiscoveryServer>-->
 <!--    <DiscoveryUrl>opc.tcp://127.0.0.1:4840</DiscoveryUrl>-->
 <!--    <RegisterInterval>40000</RegisterInterval>-->
 <!--  </DiscoveryServer>-->
+   
    
   <Endpoints>
     <EndpointDescription>
@@ -89,6 +91,7 @@
 	</EndpointDescription>
   </Endpoints>
    
+   
   <ServerInfo>
     <ServerUri>urn:@HOSTNAME@:ASNeG:ProjectName</ServerUri>
     <ServerName>ProjectName@@HOSTNAME@</ServerName>
@@ -136,11 +139,18 @@
       
   </ApplicationCertificate>
    
+   
   <Applications>
     <Application>
       <Name>ProjectName</Name>  
       <Library>ProjectName</Library>
       <Config></Config>
+      
+      <ApplThreadPool>
+        <Name>ThrAppl</Name>
+        <NumberThreads>2</NumberThreads>
+      </ApplThreadPool>
+      
     </Application>
   </Applications>
  
