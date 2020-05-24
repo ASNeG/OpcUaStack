@@ -54,6 +54,12 @@ namespace OpcUaStackServer
 		messageBusMember_ = messageBusMember;
 	}
 
+	void
+	SubscriptionManager::strand(boost::shared_ptr<boost::asio::io_service::strand>& strand)
+	{
+		strand_ = strand;
+	}
+
 	void 
 	SubscriptionManager::informationModel(InformationModel::SPtr informationModel)
 	{

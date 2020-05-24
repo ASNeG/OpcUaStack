@@ -48,6 +48,7 @@ namespace OpcUaStackServer
 		void ioThread(OpcUaStackCore::IOThread* ioThread);
 		void messageBus(OpcUaStackCore::MessageBus::SPtr& messageBus);
 		void messageBusMember(OpcUaStackCore::MessageBusMember::WPtr& messageBusMember);
+		void strand(boost::shared_ptr<boost::asio::io_service::strand>& strand);
 		void informationModel(InformationModel::SPtr informationModel);
 		void forwardGlobalSync(OpcUaStackCore::ForwardGlobalSync::SPtr& forwardGlobalSync);
 		void sessionId(uint32_t sessionId);
@@ -71,6 +72,7 @@ namespace OpcUaStackServer
 
 		OpcUaStackCore::IOThread* ioThread_;
 		OpcUaStackCore::MessageBus::SPtr messageBus_ = nullptr;
+		boost::shared_ptr<boost::asio::io_service::strand> strand_ = nullptr;
 		OpcUaStackCore::MessageBusMember::WPtr messageBusMember_;
 		InformationModel::SPtr informationModel_;
 		OpcUaStackCore::ForwardGlobalSync::SPtr forwardGlobalSync_;

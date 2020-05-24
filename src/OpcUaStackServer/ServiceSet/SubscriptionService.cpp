@@ -158,6 +158,7 @@ namespace OpcUaStackServer
 			subscriptionManager = boost::make_shared<SubscriptionManager>();
 			subscriptionManager->ioThread(ioThread_);
 			subscriptionManager->messageBus(messageBus_);
+			subscriptionManager->strand(strand_);
 			subscriptionManager->messageBusMember(messageBusMember_);
 			subscriptionManager->informationModel(informationModel_);
 			subscriptionManager->forwardGlobalSync(forwardGlobalSync_);
