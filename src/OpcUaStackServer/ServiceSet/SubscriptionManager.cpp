@@ -114,7 +114,12 @@ namespace OpcUaStackServer
 		// start subscription timer
 		SlotTimerElement::SPtr slotTimerElement = subscription->slotTimerElement();
 		slotTimerElement->interval((uint32_t)publishingInterval);
-		slotTimerElement->timeoutCallback(boost::bind(&SubscriptionManager::subscriptionPublishTimeout, this, subscription));
+		slotTimerElement->timeoutCallback(
+			strand_,
+			[this, subscription](void) {
+				subscriptionPublishTimeout(subscription);
+			}
+		);
 		ioThread_->slotTimer()->start(slotTimerElement);
 
 		// send create subscription response
