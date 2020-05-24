@@ -30,6 +30,7 @@
 #include "OpcUaStackServer/ServiceSet/SubscriptionService.h"
 #include "OpcUaStackServer/ServiceSet/ViewService.h"
 #include "OpcUaStackServer/ServiceSet/DiscoveryService.h"
+#include "OpcUaStackServer/ServiceSet/ServerInfoService.h"
 #include "OpcUaStackServer/ServiceSetApplication/ApplicationService.h"
 
 namespace OpcUaStackServer
@@ -58,6 +59,7 @@ namespace OpcUaStackServer
 		DiscoveryService::SPtr discoveryService(void);
 
 	  private:
+		void initServerInfoService(void);
 		void initAttributeService(void);
 		void initMethodService(void);
 		void initNodeManagementService(void);
@@ -76,6 +78,7 @@ namespace OpcUaStackServer
 		OpcUaStackCore::ForwardGlobalSync::SPtr forwardGlobalSync_ = nullptr;
 
 		TransactionManager::SPtr transactionManager_ = nullptr;
+		ServerInfoService::SPtr serverInfoService_ = nullptr;
 		AttributeService::SPtr attributeService_ = nullptr;
 		MethodService::SPtr methodService_ = nullptr;
 		MonitoredItemService::SPtr monitoredItemService_ = nullptr;
