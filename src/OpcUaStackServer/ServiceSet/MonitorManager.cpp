@@ -240,7 +240,10 @@ namespace OpcUaStackServer
 		auto slotTimerElement = monitorItem->slotTimerElement();
 		slotTimerElement->interval(monitorItem->samplingInterval());
 		slotTimerElement->timeoutCallback(
-			boost::bind(&MonitorManager::sampleTimeout, this, monitorItem)
+			strand_,
+			[this, monitorItem](void) {
+				sampleTimeout(monitorItem);
+		    }
 		);
 		ioThread_->slotTimer()->start(slotTimerElement);
 
