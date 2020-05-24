@@ -89,6 +89,18 @@ namespace OpcUaServer
 			}
 			applicationInfo.configFileName(*configFileName);
 
+			// parse thread pool name
+			boost::optional<std::string> threadPoolName = it->getValue("ApplThreadPool.Name");
+			if (threadPoolName) {
+				applicationInfo.threadPoolName(*threadPoolName);
+			}
+
+			// parse number threads
+			uint32_t numberThreads;
+			if (it->getConfigParameter("ApplThreadPool.NumberThreads", numberThreads)) {
+				applicationInfo.numberThreads(numberThreads);
+			}
+
 			// log out application infos
 			std::stringstream name;
 			std::stringstream library;

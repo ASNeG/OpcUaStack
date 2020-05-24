@@ -21,10 +21,6 @@ namespace OpcUaStackServer
 {
 
 	ApplicationInfo::ApplicationInfo(void)
-	: applicationName_("")
-	, libraryName_("")
-	, configFileName_("")
-	, confDir_("")
 	{
 	}
 
@@ -66,6 +62,30 @@ namespace OpcUaStackServer
 	ApplicationInfo::configFileName(void)
 	{
 		return configFileName_;
+	}
+
+	void
+	ApplicationInfo::threadPoolName(const std::string& threadPoolName)
+	{
+		threadPoolName_ = threadPoolName;
+	}
+
+	std::string
+	ApplicationInfo::threadPoolName(void)
+	{
+		return threadPoolName_;
+	}
+
+	void
+	ApplicationInfo::numberThreads(uint32_t numberThreads)
+	{
+		numberThreads_ = numberThreads;
+	}
+
+	uint32_t
+	ApplicationInfo::numberThreads(void)
+	{
+		return numberThreads_;
 	}
 
 	void

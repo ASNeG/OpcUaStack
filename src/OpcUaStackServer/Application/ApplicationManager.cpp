@@ -96,7 +96,20 @@ namespace OpcUaStackServer
 	{
 		for (auto it = applicationMap_.begin(); it !=  applicationMap_.end(); it++) {
 			auto application = it->second;
-			if (!application->startup()) return false;
+
+			// start application thread pool
+			if (application->applicationIf()->applicationInfo()->numberThreads() > 0) {
+				auto ioThread = boost::make_shared<IOThread>();
+				ioThread->name(application->applicationIf()->applicationInfo()->threadPoolName());
+				ioThread->numberThreads(application->applicationIf()->applicationInfo()->numberThreads());
+				ioThread->startup();
+				application->applicationIf()->applicationThreadPool(ioThread);
+			}
+
+			// startup application
+			if (!application->startup()) {
+				return false;
+			}
 		}
 		return true;
 	}
@@ -106,7 +119,16 @@ namespace OpcUaStackServer
 	{
 		for (auto it = applicationMap_.begin(); it !=  applicationMap_.end(); it++) {
 			auto application = it->second;
+
+			// shutdown application
 			application->shutdown();
+
+			// stop application thread pool
+			auto ioThread = application->applicationIf()->applicationThreadPool();
+			if (ioThread) {
+				ioThread->shutdown();
+				ioThread.reset();
+			}
 		}
 		return true;
 	}
