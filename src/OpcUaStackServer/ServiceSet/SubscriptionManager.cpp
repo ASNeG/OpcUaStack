@@ -92,6 +92,7 @@ namespace OpcUaStackServer
 
 		Subscription::SPtr subscription = boost::make_shared<Subscription>();
 		subscription->ioThread(ioThread_);
+		subscription->strand(strand_);
 		subscription->informationModel(informationModel_);
 		subscription->forwardGlobalSync(forwardGlobalSync_);
 		subscriptionMap_.insert(std::make_pair(subscription->subscriptionId(), subscription));

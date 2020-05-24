@@ -140,9 +140,9 @@ namespace OpcUaStackServer
 	void 
 	SubscriptionService::receiveCreateSubscriptionRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
-		ServiceTransactionCreateSubscription::SPtr trx = boost::static_pointer_cast<ServiceTransactionCreateSubscription>(serviceTransaction);
-		CreateSubscriptionRequest::SPtr createSubscriptionRequest = trx->request();
-		CreateSubscriptionResponse::SPtr createSubscriptionResponse = trx->response();
+		auto trx = boost::static_pointer_cast<ServiceTransactionCreateSubscription>(serviceTransaction);
+		auto createSubscriptionRequest = trx->request();
+		auto createSubscriptionResponse = trx->response();
 
 		Log(Debug, "create subscription")
 			.parameter("Trx", serviceTransaction->transactionId())
@@ -157,6 +157,7 @@ namespace OpcUaStackServer
 		if (it == subscriptionManagerMap_.end()) {
 			subscriptionManager = boost::make_shared<SubscriptionManager>();
 			subscriptionManager->ioThread(ioThread_);
+			subscriptionManager->strand(strand_);
 			subscriptionManager->messageBus(messageBus_);
 			subscriptionManager->strand(strand_);
 			subscriptionManager->messageBusMember(messageBusMember_);
@@ -286,11 +287,11 @@ namespace OpcUaStackServer
 	void 
 	SubscriptionService::receiveCreateMonitoredItemsRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
-		ServiceTransactionCreateMonitoredItems::SPtr trx = boost::static_pointer_cast<ServiceTransactionCreateMonitoredItems>(serviceTransaction);
+		auto trx = boost::static_pointer_cast<ServiceTransactionCreateMonitoredItems>(serviceTransaction);
 
 		// find subscription manager
 		SubscriptionManager::SPtr subscriptionManager;
-		SubscriptionManagerMap::iterator it = subscriptionManagerMap_.find(trx->sessionId());
+		auto it = subscriptionManagerMap_.find(trx->sessionId());
 		if (it == subscriptionManagerMap_.end()) {
 			serviceTransaction->statusCode(BadSubscriptionIdInvalid);
 			sendAnswer(serviceTransaction);

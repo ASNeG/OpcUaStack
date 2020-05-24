@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -56,6 +56,7 @@ namespace OpcUaStackServer
 		void lifetimeCount(uint32_t lifetimeCount);
 		void maxKeepAliveCount(uint32_t maxKeepAliveCount);
 		void ioThread(OpcUaStackCore::IOThread* ioThread);
+		void strand(boost::shared_ptr<boost::asio::io_service::strand>& strand);
 		void informationModel(InformationModel::SPtr informationModel);
 		void forwardGlobalSync(OpcUaStackCore::ForwardGlobalSync::SPtr& forwardGlobalSync);
 		OpcUaStackCore::OpcUaStatusCode receiveAcknowledgement(uint32_t acknowledgmentNumber);
@@ -93,6 +94,7 @@ namespace OpcUaStackServer
 		RetransmissionQueue retransmissionQueue_;
 
 		OpcUaStackCore::IOThread* ioThread_;
+		boost::shared_ptr<boost::asio::io_service::strand> strand_ = nullptr;
 		MonitorManager monitorManager_;
 	};
 
