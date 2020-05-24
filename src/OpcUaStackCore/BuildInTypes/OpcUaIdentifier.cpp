@@ -2100,7 +2100,7 @@ namespace OpcUaStackCore
         insert("ConditionVariableType", 9002);
         insert("ProgramDiagnosticType", 2380);
 //
-// private identifier
+// private identifier (application service)
 //
         insert("RegisterForwardRequest", 1000000);
         insert("RegisterForwardResponse", 1000001);
@@ -2108,5 +2108,32 @@ namespace OpcUaStackCore
         insert("GetNodeReferenceResponse", 1000003);
         insert("NamespaceInfoRequest", 1000004);
         insert("NamespaceInfoResponse", 1000005);
+        insert("RegisterForwardGlobalRequest", 1000006);
+        insert("RegisterForwardGlobalResponse", 1000007);
+        insert("RegisterForwardMethodRequest", 1000008);
+        insert("RegisterForwardMethodResponse", 1000009);
+        insert("CreateNodeInstanceRequest", 1000010);
+        insert("OpcUaId_CreateNodeInstanceResponse", 1000011);
+        insert("OpcUaId_DelNodeInstanceRequest", 1000012);
+        insert("OpcUaId_DelNodeInstanceResponse", 1000013);
+        insert("FireEventRequest", 1000014);
+        insert("FireEventResponse", 1000015);
+        insert("BrowsePathToNodeIdRequest", 1000016);
+        insert("BrowsePathToNodeIdResponse", 1000017);
+        insert("CreateVariableRequest", 1000018);
+        insert("CreateVariableResponse", 1000019);
+        insert("CreateObjectRequest", 1000020);
+        insert("CreateObjectResponse", 1000021);
+
+//
+// private identifier (server info service)
+//
+        insert("AddSessionRequest", 1001000);
+        insert("AddSessionResponse", 1001001);
+        insert("DelSessionRequest", 1001002);
+        insert("DelSessionResponse", 1001003);
+        insert("UpdSessionRequest", 1001004);
+        insert("UpdSessionResponse", 1001005);
+
 	}
 };

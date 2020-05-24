@@ -30,7 +30,7 @@
 #include "OpcUaStackServer/ServiceSet/SubscriptionService.h"
 #include "OpcUaStackServer/ServiceSet/ViewService.h"
 #include "OpcUaStackServer/ServiceSet/DiscoveryService.h"
-#include "OpcUaStackServer/ServiceSet/ServerInfoService.h"
+#include "OpcUaStackServer/ServiceSetServerInfo/ServerInfoService.h"
 #include "OpcUaStackServer/ServiceSetApplication/ApplicationService.h"
 
 namespace OpcUaStackServer

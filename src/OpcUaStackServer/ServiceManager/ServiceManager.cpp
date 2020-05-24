@@ -40,6 +40,22 @@ namespace OpcUaStackServer
 			ioThread_,
 			messageBus_
 		);
+
+		ServiceTransactionAddSession::name("AddSession");
+		ServiceTransactionDelSession::name("DelSession");
+		ServiceTransactionUpdSession::name("UpdSession");
+
+		auto serviceTransactionAddSession = boost::make_shared<ServiceTransactionAddSession>();
+		auto serviceTransactionDelSession = boost::make_shared<ServiceTransactionDelSession>();
+		auto serviceTransactionUpdSession = boost::make_shared<ServiceTransactionUpdSession>();
+
+		serviceTransactionAddSession->memberService(serverInfoService_->messageBusMember());
+		serviceTransactionDelSession->memberService(serverInfoService_->messageBusMember());
+		serviceTransactionUpdSession->memberService(serverInfoService_->messageBusMember());
+
+		transactionManager_->registerTransaction(serviceTransactionAddSession);
+		transactionManager_->registerTransaction(serviceTransactionDelSession);
+		transactionManager_->registerTransaction(serviceTransactionUpdSession);
 	}
 
 	void

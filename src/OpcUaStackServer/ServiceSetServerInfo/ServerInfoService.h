@@ -20,6 +20,7 @@
 
 #include "OpcUaStackServer/ServiceSet/ServiceSetBase.h"
 #include "OpcUaStackServer/ServiceSet/ServerServiceBase.h"
+#include "OpcUaStackCore/ServiceSetServerInfo/ServerInfoServiceTransaction.h"
 
 namespace OpcUaStackServer
 {

@@ -17,7 +17,8 @@
 
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
-#include "OpcUaStackServer/ServiceSet/ServerInfoService.h"
+#include "OpcUaStackCore/ServiceSetServerInfo/ServerInfoServiceTransaction.h"
+#include "OpcUaStackServer/ServiceSetServerInfo/ServerInfoService.h"
 
 using namespace OpcUaStackCore;
 
@@ -65,14 +66,21 @@ namespace OpcUaStackServer
 	{
 		// We have to remember the sender of the message. This enables us to
 		// send a reply for the received message later
-#if 0
 		auto serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 		serviceTransaction->memberServiceSession(handleFrom);
 
 		switch (serviceTransaction->nodeTypeRequest().nodeId<uint32_t>()) 
 		{
+			case OpcUaId_AddSessionRequest_Encoding_DefaultBinary:
+				break;
+			case OpcUaId_DelSessionRequest_Encoding_DefaultBinary:
+				break;
+			case OpcUaId_UpdSessionRequest_Encoding_DefaultBinary:
+				break;
+			default:
+				Log(Error, "server info service received unknown message type")
+					.parameter("TypeId", serviceTransaction->nodeTypeRequest());
 		}
-#endif
 	}
 
 }
