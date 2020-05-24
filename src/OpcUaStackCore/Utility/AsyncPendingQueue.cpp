@@ -180,7 +180,7 @@ namespace OpcUaStackCore
 		pendingQueueMap_.insert(std::make_pair(key, pendingQueueElement));
 
 		// start timer
-		if (timeoutMSec == 0) {
+		if (timeoutMSec != 0) {
 		    timerElement->expireFromNow(timeoutMSec);
 		    timerElement->timeoutCallback(
 			    asyncPendingQueueConfig_.strand(),
