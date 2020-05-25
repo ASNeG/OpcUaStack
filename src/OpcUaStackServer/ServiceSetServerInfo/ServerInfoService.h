@@ -45,6 +45,9 @@ namespace OpcUaStackServer
 			const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
 			OpcUaStackCore::Message::SPtr& message
 		);
+		void addSessionRequest(OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction);
+		void delSessionRequest(OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction);
+		void updSessionRequest(OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction);
 	};
 
 }

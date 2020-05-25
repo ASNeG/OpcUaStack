@@ -37,7 +37,14 @@ namespace OpcUaStackCore
 		bool opcUaBinaryEncode(std::ostream& os) const;
 		bool opcUaBinaryDecode(std::istream& is);
 
+		void sessionId(uint32_t sessionId);
+		uint32_t sessionId(void);
+		void sessionName(const std::string& sessionName);
+		const std::string& sessionName(void);
+
 	  private:
+		uint32_t sessionId_ = 0;
+		std::string sessionName_ = "";
 	};
 
 }

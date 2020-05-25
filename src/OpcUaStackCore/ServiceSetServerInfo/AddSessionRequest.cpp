@@ -28,6 +28,30 @@ namespace OpcUaStackCore
 	{
 	}
 
+	void
+	AddSessionRequest::sessionId(uint32_t sessionId)
+	{
+		sessionId_ = sessionId;
+	}
+
+	uint32_t
+	AddSessionRequest::sessionId(void)
+	{
+		return sessionId_;
+	}
+
+	void
+	AddSessionRequest::sessionName(const std::string& sessionName)
+	{
+		sessionName_ = sessionName;
+	}
+
+	const std::string&
+	AddSessionRequest::sessionName(void)
+	{
+		return sessionName_;
+	}
+
 
 	bool
 	AddSessionRequest::opcUaBinaryEncode(std::ostream& os) const

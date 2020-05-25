@@ -34,10 +34,14 @@ namespace OpcUaStackCore
 		UpdSessionRequest(void);
 		virtual ~UpdSessionRequest(void);
 
+		void sessionId(uint32_t sessionId);
+		uint32_t sessionId(void);
+
 		bool opcUaBinaryEncode(std::ostream& os) const;
 		bool opcUaBinaryDecode(std::istream& is);
 
 	  private:
+		uint32_t sessionId_ = 0;
 	};
 
 }

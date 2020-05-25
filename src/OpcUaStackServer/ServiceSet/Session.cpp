@@ -28,6 +28,7 @@
 #include "OpcUaStackCore/ServiceSet/CancelRequest.h"
 #include "OpcUaStackCore/ServiceSet/CancelResponse.h"
 #include "OpcUaStackCore/ServiceSet/ActivateSessionResponse.h"
+#include "OpcUaStackCore/ServiceSetServerInfo/ServerInfoServiceTransaction.h"
 #include "OpcUaStackCore/Application/ApplicationAuthenticationContext.h"
 #include "OpcUaStackCore/Application/ApplicationCloseSessionContext.h"
 #include "OpcUaStackCore/StandardDataTypes/AnonymousIdentityToken.h"
@@ -754,8 +755,20 @@ namespace OpcUaStackServer
 		auto responseHeader = createSessionResponse.responseHeader();
 		responseMessageCallback_(responseHeader, secureChannelTransaction);
 
-		// send info to server info service
-		// FIXME: todo
+		// send session info to server info service
+		auto addSessTrx = boost::static_pointer_cast<ServiceTransactionAddSession>(
+			transactionManagerSPtr_->getTransaction(OpcUaId_AddSessionRequest_Encoding_DefaultBinary)
+		);
+		auto req = addSessTrx->request();
+		req->sessionId(sessionId_);
+		req->sessionName(createSessionRequest.sessionName());
+
+		messageBus_->messageSend(
+			messageBusMember_,
+			addSessTrx->memberService(),
+			addSessTrx
+		);
+
 	}
 
 	void
@@ -892,8 +905,18 @@ namespace OpcUaStackServer
 		auto responseHeader = activateSessionResponse.responseHeader();
 		responseMessageCallback_(responseHeader, secureChannelTransaction);
 
-		// send info to server info service
-		// FIXME: todo
+		// send session info to server info service
+		auto updSessTrx = boost::static_pointer_cast<ServiceTransactionUpdSession>(
+			transactionManagerSPtr_->getTransaction(OpcUaId_UpdSessionRequest_Encoding_DefaultBinary)
+		);
+		auto req = updSessTrx->request();
+		req->sessionId(sessionId_);
+
+		messageBus_->messageSend(
+			messageBusMember_,
+			updSessTrx->memberService(),
+			updSessTrx
+		);
 	}
 
 	void
@@ -981,8 +1004,18 @@ namespace OpcUaStackServer
 		Log(Debug, "authentication close session");
 		authenticationCloseSession();
 
-		// send info to server info service
-		// FIXME: todo
+		// send session info to server info service
+		auto delSessTrx = boost::static_pointer_cast<ServiceTransactionDelSession>(
+			transactionManagerSPtr_->getTransaction(OpcUaId_DelSessionRequest_Encoding_DefaultBinary)
+		);
+		auto req = delSessTrx->request();
+		req->sessionId(sessionId_);
+
+		messageBus_->messageSend(
+			messageBusMember_,
+			delSessTrx->memberService(),
+			delSessTrx
+		);
 
 		// delete session - That must be the last action in the session
 		deleteSessionCallback_(authenticationToken_);

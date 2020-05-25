@@ -28,6 +28,17 @@ namespace OpcUaStackCore
 	{
 	}
 
+	void
+	UpdSessionRequest::sessionId(uint32_t sessionId)
+	{
+		sessionId_ = sessionId;
+	}
+
+	uint32_t
+	UpdSessionRequest::sessionId(void)
+	{
+		return sessionId_;
+	}
 
 	bool
 	UpdSessionRequest::opcUaBinaryEncode(std::ostream& os) const

@@ -28,6 +28,17 @@ namespace OpcUaStackCore
 	{
 	}
 
+	void
+	DelSessionRequest::sessionId(uint32_t sessionId)
+	{
+		sessionId_ = sessionId;
+	}
+
+	uint32_t
+	DelSessionRequest::sessionId(void)
+	{
+		return sessionId_;
+	}
 
 	bool
 	DelSessionRequest::opcUaBinaryEncode(std::ostream& os) const

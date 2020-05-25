@@ -19,6 +19,7 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/ServiceSetServerInfo/ServerInfoServiceTransaction.h"
 #include "OpcUaStackServer/ServiceSetServerInfo/ServerInfoService.h"
+#include "OpcUaStackServer/InformationModel/ObjectInstanceBuilder.h"
 
 using namespace OpcUaStackCore;
 
@@ -72,15 +73,44 @@ namespace OpcUaStackServer
 		switch (serviceTransaction->nodeTypeRequest().nodeId<uint32_t>()) 
 		{
 			case OpcUaId_AddSessionRequest_Encoding_DefaultBinary:
+				addSessionRequest(serviceTransaction);
 				break;
 			case OpcUaId_DelSessionRequest_Encoding_DefaultBinary:
+				delSessionRequest(serviceTransaction);
 				break;
 			case OpcUaId_UpdSessionRequest_Encoding_DefaultBinary:
+				updSessionRequest(serviceTransaction);
 				break;
 			default:
 				Log(Error, "server info service received unknown message type")
 					.parameter("TypeId", serviceTransaction->nodeTypeRequest());
 		}
+	}
+
+	void
+	ServerInfoService::addSessionRequest(ServiceTransaction::SPtr& serviceTransaction)
+	{
+		auto trx = boost::static_pointer_cast<ServiceTransactionAddSession>(serviceTransaction);
+		auto req = trx->request();
+
+	}
+
+	void
+	ServerInfoService::delSessionRequest(ServiceTransaction::SPtr& serviceTransaction)
+	{
+		auto trx = boost::static_pointer_cast<ServiceTransactionDelSession>(serviceTransaction);
+		auto req = trx->request();
+
+
+	}
+
+	void
+	ServerInfoService::updSessionRequest(ServiceTransaction::SPtr& serviceTransaction)
+	{
+		auto trx = boost::static_pointer_cast<ServiceTransactionUpdSession>(serviceTransaction);
+		auto req = trx->request();
+
+
 	}
 
 }

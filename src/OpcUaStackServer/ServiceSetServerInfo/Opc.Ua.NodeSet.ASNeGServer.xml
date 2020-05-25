@@ -17,7 +17,7 @@
             <ua:ModelInfo Tool="UaModeler" Hash="zitVgY35zhjvgQuun7XyDg==" Version="1.5.2"/>
         </Extension>
     </Extensions>
-    <UAObjectType NodeId="ns=1;i=1002" BrowseName="1:SessionIjnfo">
+    <UAObjectType NodeId="ns=1;i=1002" BrowseName="1:SessionInfo">
         <DisplayName>SessionInfo</DisplayName>
         <Description>Session Info</Description>
         <References>

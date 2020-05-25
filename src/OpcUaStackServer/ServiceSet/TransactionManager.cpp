@@ -52,9 +52,15 @@ namespace OpcUaStackServer
 		serviceTransactionMap_.insert(std::make_pair(typeIdResponse, serviceTransactionSPtr));
 		return false;
 	}
+
+	OpcUaStackCore::ServiceTransaction::SPtr
+	TransactionManager::getTransaction(uint32_t typeId)
+	{
+		return getTransaction(OpcUaNodeId(typeId));
+	}
 		
 	ServiceTransaction::SPtr 
-	TransactionManager::getTransaction(OpcUaNodeId& typeId)
+	TransactionManager::getTransaction(const OpcUaNodeId& typeId)
 	{
 		ServiceTransaction::SPtr serviceTransactionSPtr;
 
