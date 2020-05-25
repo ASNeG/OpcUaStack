@@ -38,7 +38,7 @@ namespace OpcUaStackServer
 		SecureChannel* secureChannel)
 	{
 		// create new channel session handle
-		ChannelSessionHandle::SPtr channelSessionHandle = boost::make_shared<ChannelSessionHandle>();
+		auto channelSessionHandle = boost::make_shared<ChannelSessionHandle>();
 		channelSessionHandle->secureChannel(secureChannel);
 		channelSessionHandle->secureChannelServer(secureChannelServer);
 
@@ -88,7 +88,7 @@ namespace OpcUaStackServer
 		// find secure channel
 		auto it = channelIdMap_.find(secureChannel->channelId_);
 		if (it == channelIdMap_.end()) {
-			return channelSessionHandle;
+			return nullptr;
 		}
 		channelSessionHandle = it->second;
 
