@@ -95,6 +95,16 @@ namespace OpcUaObjectTypeGenerator
 				boost::program_options::value< std::vector<std::string> >(),
 			    "ignore object type name"
 			)
+			(
+				"fileNamespace",
+				boost::program_options::value<std::string>(),
+				"namespace name in source and header file"
+			)
+			(
+				"headerFilePath",
+				boost::program_options::value<std::string>(),
+				"file path of the header include in the source file"
+			)
 		;
 
 		boost::program_options::variables_map vm;
@@ -126,10 +136,13 @@ namespace OpcUaObjectTypeGenerator
 		}
 
 		objectTypeName_ = vm["objecttype"].as<std::string>();
+
 		if (vm.count("namespaces") != 0) {
 			namespaces_ = vm["namespaces"].as< std::vector<std::string> >();
 		}
+
 		buildSubTypes_ = vm["buildSubTypes"].as<bool>();
+
 		if (vm.count("ignoreEventTypeName") != 0) {
 			ignoreObjectTypeNameVec_ = vm["ignoreObjectTypeName"].as< std::vector<std::string> >();
 		}
@@ -209,11 +222,7 @@ namespace OpcUaObjectTypeGenerator
 		// create a new information model
 		informationModel_ = boost::make_shared<InformationModel>();
 
-		std::vector<std::string>::iterator it;
-		for (it = fileNames_.begin(); it != fileNames_.end(); it++) {
-
-			std::string fileName = *it;
-
+		for (auto fileName : fileNames_) {
 			// read opc ua nodeset
 			ConfigXml configXml;
 			if (!configXml.parse(fileName)) {
@@ -245,9 +254,8 @@ namespace OpcUaObjectTypeGenerator
 	OpcUaObjectTypeGenerator::generateObjectTypeSource(void)
 	{
 		// check object type name
-		std::vector<std::string>::iterator it;
-		for (it=ignoreObjectTypeNameVec_.begin(); it!=ignoreObjectTypeNameVec_.end(); it++) {
-			if (*it == objectTypeName_) {
+		for (auto objectTypeName : ignoreObjectTypeNameVec_) {
+			if (objectTypeName == objectTypeName_) {
 				return 0;
 			}
 		}
@@ -261,8 +269,8 @@ namespace OpcUaObjectTypeGenerator
 
 		// generate object type source code
 		ObjectTypeGenerator objectTypeGenerator;
-		for (it = namespaces_.begin(); it != namespaces_.end(); it++) {
-			objectTypeGenerator.setNamespaceEntry(*it);
+		for (auto namespaceName : namespaces_) {
+			objectTypeGenerator.setNamespaceEntry(namespaceName);
 		}
 		objectTypeGenerator.informationModel(informationModel_);
 		if (!objectTypeGenerator.generate(objectTypeNodeId_)) {
