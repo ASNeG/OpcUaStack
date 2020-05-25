@@ -108,6 +108,7 @@ namespace OpcUaStackServer
 		void endpointDescriptionArray(OpcUaStackCore::EndpointDescriptionArray::SPtr& endpointDescriptionArray);
 
 	  private:
+		void closeAndDeleteSession(void);
 		void receive(
 			const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
 			OpcUaStackCore::Message::SPtr& message
@@ -130,8 +131,7 @@ namespace OpcUaStackServer
 		void activateSessionRequestError(
 			OpcUaStackCore::RequestHeader::SPtr& requestHeader,
 			OpcUaStackCore::SecureChannelTransaction::SPtr secureChannelTransaction,
-			OpcUaStackCore::OpcUaStatusCode statusCode,
-			bool deleteSession = true
+			OpcUaStackCore::OpcUaStatusCode statusCode
 		);
 		void cancelRequestError(
 			OpcUaStackCore::RequestHeader::SPtr& requestHeader,
