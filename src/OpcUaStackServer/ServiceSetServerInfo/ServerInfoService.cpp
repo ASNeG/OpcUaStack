@@ -20,6 +20,7 @@
 #include "OpcUaStackCore/ServiceSetServerInfo/ServerInfoServiceTransaction.h"
 #include "OpcUaStackServer/ServiceSetServerInfo/ServerInfoService.h"
 #include "OpcUaStackServer/InformationModel/ObjectInstanceBuilder.h"
+#include "OpcUaStackServer/InformationModel/InformationModelManager.h"
 
 using namespace OpcUaStackCore;
 
@@ -93,6 +94,40 @@ namespace OpcUaStackServer
 		auto trx = boost::static_pointer_cast<ServiceTransactionAddSession>(serviceTransaction);
 		auto req = trx->request();
 
+		// check parameter
+		if (req->sessionName().empty()) {
+			req->sessionName("Unknown");
+		}
+
+		// check if session already exist in object map
+		if (sessionInfoMap_.find(req->sessionId()) != sessionInfoMap_.end()) {
+			return;
+		}
+
+		// create session info object
+		auto sessionInfo = boost::make_shared<SessionInfo>();
+
+		// create new object in the information model
+		ObjectInstanceBuilder objectInstanceBuilder;
+		OpcUaStatusCode result = objectInstanceBuilder.createObjectInstance(
+			informationModel_,
+			sessionInfo->objectTypeNamespaceName(),
+			OpcUaLocalizedText("de", req->sessionName()),
+			OpcUaNodeId("Sessions", 1),
+			OpcUaNodeId(OpcUaId_Organizes),
+			sessionInfo
+		);
+
+		// set object variables
+		sessionInfo->sessionId_Variable()->setDataValue(OpcUaDataValue(req->sessionId()));
+		sessionInfo->sessionTimeout_Variable()->setDataValue(OpcUaDataValue(req->sessionTimeout()));
+		sessionInfo->startTime_Variable()->setDataValue(OpcUaDataValue(OpcUaDateTime(req->startTime())));
+		sessionInfo->sessionState_Variable()->setDataValue((OpcUaUInt32)0);
+		sessionInfo->endpointUrl_Variable()->setDataValue(OpcUaDataValue(OpcUaString(req->endpointUrl())));
+		sessionInfo->clientAddress_Variable()->setDataValue(OpcUaDataValue(OpcUaString(req->partnerAddress())));
+
+		// add new object to map
+		sessionInfoMap_.insert(std::make_pair(req->sessionId(), sessionInfo));
 	}
 
 	void
@@ -101,7 +136,19 @@ namespace OpcUaStackServer
 		auto trx = boost::static_pointer_cast<ServiceTransactionDelSession>(serviceTransaction);
 		auto req = trx->request();
 
+		// get session info from session info map
+		auto it = sessionInfoMap_.find(req->sessionId());
+		if (it == sessionInfoMap_.end()) {
+			return;
+		}
+		auto sessionInfo = it->second;
 
+		// delete session info object from information model
+		InformationModelManager imm(informationModel_);
+		imm.delNode(sessionInfo->nodeId());
+
+		// delete session info from session info map
+		sessionInfoMap_.erase(it);
 	}
 
 	void
@@ -110,7 +157,15 @@ namespace OpcUaStackServer
 		auto trx = boost::static_pointer_cast<ServiceTransactionUpdSession>(serviceTransaction);
 		auto req = trx->request();
 
+		// get session info from session info map
+		auto it = sessionInfoMap_.find(req->sessionId());
+		if (it == sessionInfoMap_.end()) {
+			return;
+		}
+		auto sessionInfo = it->second;
 
+		// set object variables
+		sessionInfo->sessionState_Variable()->setDataValue((OpcUaUInt32)1);
 	}
 
 }

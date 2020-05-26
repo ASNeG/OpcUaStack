@@ -18,9 +18,11 @@
 #ifndef __OpcUaStackServer_ServerInfoService_h__
 #define __OpcUaStackServer_ServerInfoService_h__
 
+#include <map>
+#include "OpcUaStackCore/ServiceSetServerInfo/ServerInfoServiceTransaction.h"
 #include "OpcUaStackServer/ServiceSet/ServiceSetBase.h"
 #include "OpcUaStackServer/ServiceSet/ServerServiceBase.h"
-#include "OpcUaStackCore/ServiceSetServerInfo/ServerInfoServiceTransaction.h"
+#include "OpcUaStackServer/CustomerObjectType/SessionInfo.h"
 
 namespace OpcUaStackServer
 {
@@ -31,7 +33,8 @@ namespace OpcUaStackServer
 	, public OpcUaStackServer::ServerServiceBase
 	{
 	  public:
-		typedef boost::shared_ptr<ServerInfoService> SPtr;
+		using SPtr = boost::shared_ptr<ServerInfoService>;
+		using SessionInfoMap = std::map<uint32_t, SessionInfo::SPtr>;
 
 		ServerInfoService(
 			const std::string& serviceName,
@@ -41,6 +44,8 @@ namespace OpcUaStackServer
 		~ServerInfoService(void);
 
 	  private:
+		SessionInfoMap sessionInfoMap_;
+
 		void receive(
 			const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
 			OpcUaStackCore::Message::SPtr& message

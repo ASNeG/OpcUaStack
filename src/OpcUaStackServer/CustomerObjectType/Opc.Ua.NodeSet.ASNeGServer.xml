@@ -5,49 +5,190 @@
     </NamespaceUris>
     <Aliases>
         <Alias Alias="UInt32">i=7</Alias>
+        <Alias Alias="String">i=12</Alias>
         <Alias Alias="DateTime">i=13</Alias>
-        <Alias Alias="Organizes">i=35</Alias>
+        <Alias Alias="ByteString">i=15</Alias>
+        <Alias Alias="LocalizedText">i=21</Alias>
         <Alias Alias="HasModellingRule">i=37</Alias>
         <Alias Alias="HasTypeDefinition">i=40</Alias>
         <Alias Alias="HasSubtype">i=45</Alias>
+        <Alias Alias="HasProperty">i=46</Alias>
         <Alias Alias="HasComponent">i=47</Alias>
+        <Alias Alias="SessionState">ns=1;i=3002</Alias>
     </Aliases>
     <Extensions>
         <Extension>
-            <ua:ModelInfo Tool="UaModeler" Hash="zitVgY35zhjvgQuun7XyDg==" Version="1.5.2"/>
+            <ua:ModelInfo Tool="UaModeler" Hash="kE1/tvEFJMvxSpJMuNT2lg==" Version="1.5.2"/>
         </Extension>
     </Extensions>
+    <UADataType NodeId="ns=1;i=3002" BrowseName="1:SessionState">
+        <DisplayName>SessionState</DisplayName>
+        <References>
+            <Reference ReferenceType="HasProperty">ns=1;i=6005</Reference>
+            <Reference ReferenceType="HasSubtype" IsForward="false">i=29</Reference>
+        </References>
+        <Definition Name="1:SessionState">
+            <Field Name="Create" Value="0"/>
+            <Field Name="Active" Value="1"/>
+            <Field Name="Close" Value="2"/>
+        </Definition>
+    </UADataType>
+    <UAVariable DataType="LocalizedText" ParentNodeId="ns=1;i=3002" ValueRank="1" NodeId="ns=1;i=6005" ArrayDimensions="3" BrowseName="EnumStrings">
+        <DisplayName>EnumStrings</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+            <Reference ReferenceType="HasProperty" IsForward="false">ns=1;i=3002</Reference>
+            <Reference ReferenceType="HasModellingRule">i=78</Reference>
+        </References>
+        <Value>
+            <uax:ListOfLocalizedText>
+                <uax:LocalizedText>
+                    <uax:Text>Create</uax:Text>
+                </uax:LocalizedText>
+                <uax:LocalizedText>
+                    <uax:Text>Active</uax:Text>
+                </uax:LocalizedText>
+                <uax:LocalizedText>
+                    <uax:Text>Close</uax:Text>
+                </uax:LocalizedText>
+            </uax:ListOfLocalizedText>
+        </Value>
+    </UAVariable>
+    <UAVariable SymbolicName="TypeDictionary_BinarySchema" DataType="ByteString" NodeId="ns=1;i=6006" BrowseName="1:TypeDictionary">
+        <DisplayName>TypeDictionary</DisplayName>
+        <Description>Collects the data type descriptions of http://ASNeG-Server/</Description>
+        <References>
+            <Reference ReferenceType="HasProperty">ns=1;i=6007</Reference>
+            <Reference ReferenceType="HasTypeDefinition">i=72</Reference>
+            <Reference ReferenceType="HasComponent" IsForward="false">i=93</Reference>
+        </References>
+        <Value>
+            <uax:ByteString>PG9wYzpUeXBlRGljdGlvbmFyeSB4bWxuczp4c2k9Imh0dHA6Ly93d3cudzMub3JnLzIwMDEvWE1MU2NoZ
+        W1hLWluc3RhbmNlIiB4bWxuczp0bnM9Imh0dHA6Ly9BU05lRy1TZXJ2ZXIvIiBEZWZhdWx0Q
+        nl0ZU9yZGVyPSJMaXR0bGVFbmRpYW4iIHhtbG5zOm9wYz0iaHR0cDovL29wY2ZvdW5kYXRpb
+        24ub3JnL0JpbmFyeVNjaGVtYS8iIHhtbG5zOnVhPSJodHRwOi8vb3BjZm91bmRhdGlvbi5vc
+        mcvVUEvIiBUYXJnZXROYW1lc3BhY2U9Imh0dHA6Ly9BU05lRy1TZXJ2ZXIvIj4KIDxvcGM6S
+        W1wb3J0IE5hbWVzcGFjZT0iaHR0cDovL29wY2ZvdW5kYXRpb24ub3JnL1VBLyIvPgogPG9wY
+        zpFbnVtZXJhdGVkVHlwZSBMZW5ndGhJbkJpdHM9IjMyIiBOYW1lPSJTZXNzaW9uU3RhdGUiP
+        gogIDxvcGM6RW51bWVyYXRlZFZhbHVlIE5hbWU9IkNyZWF0ZSIgVmFsdWU9IjAiLz4KICA8b
+        3BjOkVudW1lcmF0ZWRWYWx1ZSBOYW1lPSJBY3RpdmUiIFZhbHVlPSIxIi8+CiAgPG9wYzpFb
+        nVtZXJhdGVkVmFsdWUgTmFtZT0iQ2xvc2UiIFZhbHVlPSIyIi8+CiA8L29wYzpFbnVtZXJhd
+        GVkVHlwZT4KPC9vcGM6VHlwZURpY3Rpb25hcnk+Cg==</uax:ByteString>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="String" ParentNodeId="ns=1;i=6006" NodeId="ns=1;i=6007" BrowseName="NamespaceUri">
+        <DisplayName>NamespaceUri</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+            <Reference ReferenceType="HasProperty" IsForward="false">ns=1;i=6006</Reference>
+        </References>
+        <Value>
+            <uax:String>http://ASNeG-Server/</uax:String>
+        </Value>
+    </UAVariable>
+    <UAVariable SymbolicName="TypeDictionary_XmlSchema" DataType="ByteString" NodeId="ns=1;i=6008" BrowseName="1:TypeDictionary">
+        <DisplayName>TypeDictionary</DisplayName>
+        <Description>Collects the data type descriptions of http://ASNeG-Server/</Description>
+        <References>
+            <Reference ReferenceType="HasProperty">ns=1;i=6009</Reference>
+            <Reference ReferenceType="HasTypeDefinition">i=72</Reference>
+            <Reference ReferenceType="HasComponent" IsForward="false">i=92</Reference>
+        </References>
+        <Value>
+            <uax:ByteString>PHhzOnNjaGVtYSBlbGVtZW50Rm9ybURlZmF1bHQ9InF1YWxpZmllZCIgdGFyZ2V0TmFtZXNwYWNlPSJod
+        HRwOi8vQVNOZUctU2VydmVyL1R5cGVzLnhzZCIgeG1sbnM6dG5zPSJodHRwOi8vQVNOZUctU
+        2VydmVyL1R5cGVzLnhzZCIgeG1sbnM6dWE9Imh0dHA6Ly9vcGNmb3VuZGF0aW9uLm9yZy9VQ
+        S8yMDA4LzAyL1R5cGVzLnhzZCIgeG1sbnM6eHM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDEvW
+        E1MU2NoZW1hIj4KIDx4czppbXBvcnQgbmFtZXNwYWNlPSJodHRwOi8vb3BjZm91bmRhdGlvb
+        i5vcmcvVUEvMjAwOC8wMi9UeXBlcy54c2QiLz4KIDx4czpzaW1wbGVUeXBlIG5hbWU9IlNlc
+        3Npb25TdGF0ZSI+CiAgPHhzOnJlc3RyaWN0aW9uIGJhc2U9InhzOnN0cmluZyI+CiAgIDx4c
+        zplbnVtZXJhdGlvbiB2YWx1ZT0iQ3JlYXRlXzAiLz4KICAgPHhzOmVudW1lcmF0aW9uIHZhb
+        HVlPSJBY3RpdmVfMSIvPgogICA8eHM6ZW51bWVyYXRpb24gdmFsdWU9IkNsb3NlXzIiLz4KI
+        CA8L3hzOnJlc3RyaWN0aW9uPgogPC94czpzaW1wbGVUeXBlPgogPHhzOmVsZW1lbnQgdHlwZ
+        T0idG5zOlNlc3Npb25TdGF0ZSIgbmFtZT0iU2Vzc2lvblN0YXRlIi8+CiA8eHM6Y29tcGxle
+        FR5cGUgbmFtZT0iTGlzdE9mU2Vzc2lvblN0YXRlIj4KICA8eHM6c2VxdWVuY2U+CiAgIDx4c
+        zplbGVtZW50IG1pbk9jY3Vycz0iMCIgbWF4T2NjdXJzPSJ1bmJvdW5kZWQiIHR5cGU9InRuc
+        zpTZXNzaW9uU3RhdGUiIG5hbWU9IlNlc3Npb25TdGF0ZSIgbmlsbGFibGU9InRydWUiLz4KI
+        CA8L3hzOnNlcXVlbmNlPgogPC94czpjb21wbGV4VHlwZT4KIDx4czplbGVtZW50IHR5cGU9I
+        nRuczpMaXN0T2ZTZXNzaW9uU3RhdGUiIG5hbWU9Ikxpc3RPZlNlc3Npb25TdGF0ZSIgbmlsb
+        GFibGU9InRydWUiLz4KPC94czpzY2hlbWE+Cg==</uax:ByteString>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="String" ParentNodeId="ns=1;i=6008" NodeId="ns=1;i=6009" BrowseName="NamespaceUri">
+        <DisplayName>NamespaceUri</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+            <Reference ReferenceType="HasProperty" IsForward="false">ns=1;i=6008</Reference>
+        </References>
+        <Value>
+            <uax:String>http://ASNeG-Server/Types.xsd</uax:String>
+        </Value>
+    </UAVariable>
     <UAObjectType NodeId="ns=1;i=1002" BrowseName="1:SessionInfo">
         <DisplayName>SessionInfo</DisplayName>
         <Description>Session Info</Description>
         <References>
+            <Reference ReferenceType="HasComponent">ns=1;i=6011</Reference>
+            <Reference ReferenceType="HasComponent">ns=1;i=6010</Reference>
             <Reference ReferenceType="HasComponent">ns=1;i=6001</Reference>
             <Reference ReferenceType="HasSubtype" IsForward="false">i=58</Reference>
+            <Reference ReferenceType="HasComponent">ns=1;i=6003</Reference>
             <Reference ReferenceType="HasComponent">ns=1;i=6002</Reference>
+            <Reference ReferenceType="HasComponent">ns=1;i=6004</Reference>
         </References>
     </UAObjectType>
-    <UAVariable DataType="UInt32" ParentNodeId="ns=1;i=1002" NodeId="ns=1;i=6001" BrowseName="1:Id" UserAccessLevel="3" AccessLevel="3">
-        <DisplayName>Id</DisplayName>
+    <UAVariable DataType="String" ParentNodeId="ns=1;i=1002" NodeId="ns=1;i=6011" BrowseName="1:ClientAddress" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>ClientAddress</DisplayName>
         <References>
             <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
             <Reference ReferenceType="HasModellingRule">i=78</Reference>
             <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=1002</Reference>
         </References>
     </UAVariable>
-    <UAVariable DataType="DateTime" ParentNodeId="ns=1;i=1002" NodeId="ns=1;i=6002" BrowseName="1:Timeout" UserAccessLevel="3" AccessLevel="3">
-        <DisplayName>Timeout</DisplayName>
+    <UAVariable DataType="String" ParentNodeId="ns=1;i=1002" NodeId="ns=1;i=6010" BrowseName="1:EndpointUrl" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>EndpointUrl</DisplayName>
         <References>
             <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
             <Reference ReferenceType="HasModellingRule">i=78</Reference>
             <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=1002</Reference>
         </References>
     </UAVariable>
-    <UAObject NodeId="ns=1;s=Sessions" BrowseName="1:Sessions">
-        <DisplayName>Sessions</DisplayName>
-        <Description>List of all active Sessions</Description>
+    <UAVariable DataType="UInt32" ParentNodeId="ns=1;i=1002" NodeId="ns=1;i=6001" BrowseName="1:SessionId" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>SessionId</DisplayName>
         <References>
-            <Reference ReferenceType="HasTypeDefinition">i=61</Reference>
-            <Reference ReferenceType="Organizes" IsForward="false">i=2295</Reference>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=1002</Reference>
+            <Reference ReferenceType="HasModellingRule">i=78</Reference>
         </References>
-    </UAObject>
+        <Value>
+            <uax:UInt32>0</uax:UInt32>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="SessionState" ParentNodeId="ns=1;i=1002" NodeId="ns=1;i=6003" BrowseName="1:SessionState" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>SessionState</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="HasModellingRule">i=78</Reference>
+            <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=1002</Reference>
+        </References>
+    </UAVariable>
+    <UAVariable DataType="UInt32" ParentNodeId="ns=1;i=1002" NodeId="ns=1;i=6002" BrowseName="1:SessionTimeout" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>SessionTimeout</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="HasModellingRule">i=78</Reference>
+            <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=1002</Reference>
+        </References>
+        <Value>
+            <uax:UInt32>0</uax:UInt32>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="DateTime" ParentNodeId="ns=1;i=1002" NodeId="ns=1;i=6004" BrowseName="1:StartTime" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>StartTime</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="HasModellingRule">i=78</Reference>
+            <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=1002</Reference>
+        </References>
+    </UAVariable>
 </UANodeSet>

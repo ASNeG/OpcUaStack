@@ -762,6 +762,10 @@ namespace OpcUaStackServer
 		auto req = addSessTrx->request();
 		req->sessionId(sessionId_);
 		req->sessionName(createSessionRequest.sessionName());
+		req->sessionTimeout(120);
+		req->startTime(boost::posix_time::microsec_clock::universal_time());
+		req->partnerAddress(secureChannel->partner_.address().to_string());
+		req->endpointUrl(secureChannel->endpointUrl_);
 
 		messageBus_->messageSend(
 			messageBusMember_,

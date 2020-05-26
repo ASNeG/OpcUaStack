@@ -19,6 +19,7 @@
 #define __OpcUaStackCore_AddSessionRequest_h__
 
 #include <boost/shared_ptr.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
 #include <stdint.h>
 #include <iostream>
 #include "OpcUaStackCore/Base/os.h"
@@ -41,10 +42,23 @@ namespace OpcUaStackCore
 		uint32_t sessionId(void);
 		void sessionName(const std::string& sessionName);
 		const std::string& sessionName(void);
+		void sessionTimeout(uint32_t sessionTimeout);
+		uint32_t sessionTimeout(void);
+		void endpointUrl(const std::string& endpointUrl);
+		const std::string& endpointUrl(void);
+		void partnerAddress(const std::string& partnerAddress);
+		const std::string& partnerAddress(void);
+		void startTime(const boost::posix_time::ptime& startTime);
+		const boost::posix_time::ptime& startTime(void);
 
 	  private:
 		uint32_t sessionId_ = 0;
 		std::string sessionName_ = "";
+		uint32_t sessionTimeout_ = 0;
+		std::string endpointUrl_ = "";
+		std::string partnerAddress_ = "";
+		boost::posix_time::ptime startTime_;
+
 	};
 
 }

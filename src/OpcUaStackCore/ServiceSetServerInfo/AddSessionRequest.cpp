@@ -52,6 +52,53 @@ namespace OpcUaStackCore
 		return sessionName_;
 	}
 
+	void
+	AddSessionRequest::sessionTimeout(uint32_t sessionTimeout)
+	{
+		sessionTimeout_ = sessionTimeout;
+	}
+
+	uint32_t
+	AddSessionRequest::sessionTimeout(void)
+	{
+		return sessionTimeout_;
+	}
+
+	void
+	AddSessionRequest::endpointUrl(const std::string& endpointUrl)
+	{
+		endpointUrl_ = endpointUrl;
+	}
+
+	const std::string&
+	AddSessionRequest::endpointUrl(void)
+	{
+		return endpointUrl_;
+	}
+
+	void
+	AddSessionRequest::partnerAddress(const std::string& partnerAddress)
+	{
+		partnerAddress_ = partnerAddress;
+	}
+
+	const std::string&
+	AddSessionRequest::partnerAddress(void)
+	{
+		return partnerAddress_;
+	}
+
+	void
+	AddSessionRequest::startTime(const boost::posix_time::ptime& startTime)
+	{
+		startTime_ = startTime;
+	}
+
+	const boost::posix_time::ptime&
+	AddSessionRequest::startTime(void)
+	{
+		return startTime_;
+	}
 
 	bool
 	AddSessionRequest::opcUaBinaryEncode(std::ostream& os) const
