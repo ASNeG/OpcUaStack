@@ -213,8 +213,8 @@ namespace OpcUaStackServer
 		//
 		// added base classes
 		//
-		ss << prefix << ": public Object" << std::endl;
-		ss << prefix << ", public ExtensionObjectBase" << std::endl;
+		ss << prefix << ": public OpcUaStackCore::Object" << std::endl;
+		ss << prefix << ", public OpcUaStackCore::ExtensionObjectBase" << std::endl;
 
 
 		ss << prefix << "{" << std::endl;
@@ -271,21 +271,21 @@ namespace OpcUaStackServer
 		//
 		ss << prefix << std::endl;
 		ss << prefix << "//- ExtensionObjectBase -----------------------------------------------" << std::endl;
-		ss << prefix << "virtual ExtensionObjectBase::SPtr factory(void) override;" << std::endl;
+		ss << prefix << "virtual OpcUaStackCore::ExtensionObjectBase::SPtr factory(void) override;" << std::endl;
 		ss << prefix << "virtual std::string namespaceName(void) override;" << std::endl;
 		ss << prefix << "virtual std::string typeName(void) override;" << std::endl;
-		ss << prefix << "virtual OpcUaNodeId typeId(void) override;" << std::endl;
-		ss << prefix << "virtual OpcUaNodeId binaryTypeId(void) override;" << std::endl;
-		ss << prefix << "virtual OpcUaNodeId xmlTypeId(void) override;" << std::endl;
-		ss << prefix << "virtual OpcUaNodeId jsonTypeId(void) override;" << std::endl;
+		ss << prefix << "virtual OpcUaStackCore::OpcUaNodeId typeId(void) override;" << std::endl;
+		ss << prefix << "virtual OpcUaStackCore::OpcUaNodeId binaryTypeId(void) override;" << std::endl;
+		ss << prefix << "virtual OpcUaStackCore::OpcUaNodeId xmlTypeId(void) override;" << std::endl;
+		ss << prefix << "virtual OpcUaStackCore::OpcUaNodeId jsonTypeId(void) override;" << std::endl;
 		ss << prefix << "virtual bool opcUaBinaryEncode(std::ostream& os) const override;" << std::endl;
 		ss << prefix << "virtual bool opcUaBinaryDecode(std::istream& is) override;" << std::endl;
-		ss << prefix << "virtual bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) override;" << std::endl;
-		ss << prefix << "virtual bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) override;" << std::endl;
-		ss << prefix << "virtual bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) override;" << std::endl;
-		ss << prefix << "virtual bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) override;" << std::endl;
-		ss << prefix << "virtual void copyTo(ExtensionObjectBase& extensionObjectBase) override;" << std::endl;
-		ss << prefix << "virtual bool equal(ExtensionObjectBase& extensionObjectBase) const override;" << std::endl;
+		ss << prefix << "virtual bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, OpcUaStackCore::Xmlns& xmlns) override;" << std::endl;
+		ss << prefix << "virtual bool xmlEncode(boost::property_tree::ptree& pt, OpcUaStackCore::Xmlns& xmlns) override;" << std::endl;
+		ss << prefix << "virtual bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, OpcUaStackCore::Xmlns& xmlns) override;" << std::endl;
+		ss << prefix << "virtual bool xmlDecode(boost::property_tree::ptree& pt, OpcUaStackCore::Xmlns& xmlns) override;" << std::endl;
+		ss << prefix << "virtual void copyTo(OpcUaStackCore::ExtensionObjectBase& extensionObjectBase) override;" << std::endl;
+		ss << prefix << "virtual bool equal(OpcUaStackCore::ExtensionObjectBase& extensionObjectBase) const override;" << std::endl;
 		ss << prefix << "virtual void out(std::ostream& os) override;" << std::endl;
 		ss << prefix << "//- ExtensionObjectBase -----------------------------------------------" << std::endl;
 
@@ -383,8 +383,8 @@ namespace OpcUaStackServer
 
 		ss << prefix << std::endl;
 		ss << prefix << "class DLLEXPORT " << nodeInfo_.className() << "Array" << std::endl;
-		ss << prefix << ": public OpcUaArray<" << nodeInfo_.className() << "::SPtr, SPtrTypeCoder<" << nodeInfo_.className() << "> >" << std::endl;
-		ss << prefix << ", public Object" << std::endl;
+		ss << prefix << ": public OpcUaStackCore::OpcUaArray<" << nodeInfo_.className() << "::SPtr, OpcUaStackCore::SPtrTypeCoder<" << nodeInfo_.className() << "> >" << std::endl;
+		ss << prefix << ", public OpcUaStackCore::Object" << std::endl;
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "  public:" << std::endl;
 		ss << prefix << "	   typedef boost::shared_ptr<" << nodeInfo_.className() << "Array> SPtr;" << std::endl;
@@ -475,6 +475,8 @@ namespace OpcUaStackServer
 		//
 		// namespace
 		//
+		ss << std::endl;
+		ss << "using namespace OpcUaStackCore;" << std::endl;
 		ss << std::endl;
 		ss << "namespace " <<  nodeInfo_.namespaceName() << std::endl;
 		ss << "{" << std::endl;

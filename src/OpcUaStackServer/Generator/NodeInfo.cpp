@@ -31,7 +31,7 @@ namespace OpcUaStackServer
 	: numberNamespaceMap_()
 	, informationModel_()
 
-	, dataTypeNamespaceName_("")
+	, dataTypeNamespaceName_("OpcUaStackServer")
 	, dataTypeNodeId_()
 	, parentDataTypeNodeId_()
 	, baseNode_()
@@ -84,7 +84,8 @@ namespace OpcUaStackServer
 	std::string
 	NodeInfo::dataTypeNamespaceName(void)
 	{
-		return dataTypeNamespaceName_;
+		//return dataTypeNamespaceName_;
+		return numberNamespaceMap_.getNamespaceName(dataTypeNodeId_.namespaceIndex());
 	}
 
 	OpcUaNodeId

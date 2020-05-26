@@ -2,5 +2,5 @@
 
 NODESETS="--nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet.ASNeGServer.xml"
 
-OpcUaObjectTypeGenerator4 ${NODESETS} --objecttype SessionInfo --namespaces 1:OpcUaStackServer 
+OpcUaEnumTypeGenerator4 ${NODESETS} --enumtype SessionState --namespaces 1:OpcUaStackServer
 

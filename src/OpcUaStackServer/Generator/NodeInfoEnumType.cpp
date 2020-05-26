@@ -50,7 +50,6 @@ namespace OpcUaStackServer
 			return false;
 		}
 
-
 		// cast base node class to enum type node class
 		if (dynamic_cast<DataTypeNodeClass*>(baseNode().get()) == nullptr) {
 			Log(Error, "node is not from type enum type node")
