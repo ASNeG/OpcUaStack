@@ -43,7 +43,10 @@ namespace OpcUaStackServer
 		);
 		~ServerInfoService(void);
 
+		bool init(void) override;
+
 	  private:
+		bool activate_ = true;
 		SessionInfoMap sessionInfoMap_;
 
 		void receive(

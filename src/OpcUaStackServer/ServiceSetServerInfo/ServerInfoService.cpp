@@ -60,12 +60,26 @@ namespace OpcUaStackServer
 		messageBus_->deregisterMember(messageBusMember_);
 	}
 
+	bool
+	ServerInfoService::init(void)
+	{
+		activate_ = true;
+		if (!informationModel_->exist(OpcUaNodeId("Sessions", 1))) {
+			activate_ = false;
+		}
+		return true;
+	}
+
 	void 
 	ServerInfoService::receive(
 		const MessageBusMember::WPtr& handleFrom,
 		Message::SPtr& message
 	)
 	{
+		if (!activate_) {
+			return;
+		}
+
 		// We have to remember the sender of the message. This enables us to
 		// send a reply for the received message later
 		auto serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
