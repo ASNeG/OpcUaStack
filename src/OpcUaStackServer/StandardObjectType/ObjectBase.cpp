@@ -1,5 +1,5 @@
 /*
-   Copyright 2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2019-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -68,6 +68,18 @@ namespace OpcUaStackServer
 	ObjectBase::setServerVariable(ServerVariable::SPtr& serverVariable)
 	{
 		return serverVariables_.registerServerVariable(serverVariable);
+	}
+
+	void
+	ObjectBase::nodeId(const OpcUaNodeId& nodeId)
+	{
+		nodeId_ = nodeId;
+	}
+
+	const OpcUaNodeId&
+	ObjectBase::nodeId(void)
+	{
+		return nodeId_;
 	}
 
 	void
