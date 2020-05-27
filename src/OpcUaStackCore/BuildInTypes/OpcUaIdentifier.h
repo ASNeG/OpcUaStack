@@ -2060,7 +2060,7 @@
 #define OpcUaId_ProgramDiagnosticType 2380
 
 //
-// private identifier
+// private identifier (Application Service)
 //
 #define OpcUaId_RegisterForwardNodeRequest_Encoding_DefaultBinary 		1000000
 #define OpcUaId_RegisterForwardNodeResponse_Encoding_DefaultBinary 		1000001
@@ -2084,6 +2084,16 @@
 #define OpcUaId_CreateVariableResponse_Encoding_DefaultBinary 			1000019
 #define OpcUaId_CreateObjectRequest_Encoding_DefaultBinary 				1000020
 #define OpcUaId_CreateObjectResponse_Encoding_DefaultBinary 			1000021
+
+//
+// private identifier (Server Info Service)
+//
+#define OpcUaId_AddSessionRequest_Encoding_DefaultBinary 				1001000
+#define OpcUaId_AddSessionResponse_Encoding_DefaultBinary 				1001001
+#define OpcUaId_DelSessionRequest_Encoding_DefaultBinary 				1001002
+#define OpcUaId_DelSessionResponse_Encoding_DefaultBinary 				1001003
+#define OpcUaId_UpdSessionRequest_Encoding_DefaultBinary 				1001004
+#define OpcUaId_UpdSessionResponse_Encoding_DefaultBinary 				1001005
 
 #include <map>
 #include <stdint.h>

@@ -28,7 +28,6 @@
 #include "OpcUaStackCore/ServiceSetApplication/ForwardGlobalSync.h"
 #include "OpcUaStackCore/Certificate/ApplicationCertificate.h"
 #include "OpcUaStackCore/Certificate/CryptoManager.h"
-#include "OpcUaStackServer/ServiceSet/SessionIf.h"
 #include "OpcUaStackServer/ServiceSet/TransactionManager.h"
 #include "OpcUaStackServer/ServiceSet/ServerServiceBase.h"
 
@@ -49,6 +48,22 @@ namespace OpcUaStackServer
 	, public OpcUaStackServer::ServerServiceBase
 	{
 	  public:
+
+		using ResponseMessageCallback = std::function<
+			void
+			(
+				OpcUaStackCore::ResponseHeader::SPtr& responseHeader,
+			    OpcUaStackCore::SecureChannelTransaction::SPtr& secureChannelTransaction
+			)
+		>;
+
+		using DeleteSessionCallback = std::function<
+			void
+			(
+				uint32_t authenticationToken
+			)
+		>;
+
 		Session(
             const std::string& serviceName,
 			OpcUaStackCore::IOThread* ioThread,
@@ -63,7 +78,8 @@ namespace OpcUaStackServer
 		void transactionManager(TransactionManager::SPtr transactionManager);
 		void forwardGlobalSync(OpcUaStackCore::ForwardGlobalSync::SPtr& forwardGlobalSync);
 
-		void sessionIf(SessionIf* sessionIf);
+		void responseMessageCallback(const ResponseMessageCallback& responseMessageCallback);
+		void deleteSessionCallback(const DeleteSessionCallback& deleteSessionCallback);
 		OpcUaStackCore::OpcUaUInt32 sessionId(void);
 		OpcUaStackCore::OpcUaUInt32 authenticationToken(void);
 
@@ -92,6 +108,7 @@ namespace OpcUaStackServer
 		void endpointDescriptionArray(OpcUaStackCore::EndpointDescriptionArray::SPtr& endpointDescriptionArray);
 
 	  private:
+		void closeAndDeleteSession(void);
 		void receive(
 			const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
 			OpcUaStackCore::Message::SPtr& message
@@ -114,8 +131,7 @@ namespace OpcUaStackServer
 		void activateSessionRequestError(
 			OpcUaStackCore::RequestHeader::SPtr& requestHeader,
 			OpcUaStackCore::SecureChannelTransaction::SPtr secureChannelTransaction,
-			OpcUaStackCore::OpcUaStatusCode statusCode,
-			bool deleteSession = true
+			OpcUaStackCore::OpcUaStatusCode statusCode
 		);
 		void cancelRequestError(
 			OpcUaStackCore::RequestHeader::SPtr& requestHeader,
@@ -133,10 +149,12 @@ namespace OpcUaStackServer
 		static OpcUaStackCore::OpcUaUInt32 getUniqueSessionId(void);
 		static OpcUaStackCore::OpcUaUInt32 getUniqueAuthenticationToken(void);
 
+		ResponseMessageCallback responseMessageCallback_ = nullptr;
+		DeleteSessionCallback deleteSessionCallback_ = nullptr;
+
 		OpcUaStackCore::OpcUaUInt32 sessionId_;
 		OpcUaStackCore::OpcUaUInt32 authenticationToken_;
 		SessionState sessionState_;
-		SessionIf* sessionIf_;
 		OpcUaStackCore::EndpointDescriptionArray::SPtr endpointDescriptionArray_;
 		OpcUaStackCore::EndpointDescription::SPtr endpointDescription_;
 		OpcUaStackCore::CryptoManager::SPtr cryptoManager_;

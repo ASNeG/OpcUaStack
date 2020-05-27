@@ -1,5 +1,5 @@
 /*
-   Copyright 2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2019-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -41,12 +41,15 @@ namespace OpcUaStackServer
 		ServerVariable::SPtr getServerVariable(const std::string& name);
 		bool setServerVariable(ServerVariable::SPtr& serverVariable);
 
+		void nodeId(const OpcUaStackCore::OpcUaNodeId& nodeId);
+		const OpcUaStackCore::OpcUaNodeId& nodeId(void);
 		void objectTypeNamespaceName(const std::string& objectTypeNamespaceName);
 		std::string& objectTypeNamespaceName(void);
 		void objectTypeNodeId(const OpcUaStackCore::OpcUaNodeId& objectTypeNodeId);
 		OpcUaStackCore::OpcUaNodeId& objectTypeNodeId(void);
 
 	  private:
+		OpcUaStackCore::OpcUaNodeId nodeId_;
 		std::string objectTypeNamespaceName_;
 		OpcUaStackCore::OpcUaNodeId objectTypeNodeId_;
 

@@ -31,14 +31,12 @@
 #include "OpcUaStackServer/ServiceSet/EndpointDescriptionConfig.h"
 #include "OpcUaStackServer/ServiceSet/TransactionManager.h"
 #include "OpcUaStackServer/ServiceSet/ChannelSessionHandleMap.h"
-#include "OpcUaStackServer/ServiceSet/SessionIf.h"
 
 namespace OpcUaStackServer
 {
 
 	class DLLEXPORT SessionManager
 	: public OpcUaStackCore::SecureChannelServerIf
-	, public SessionIf
 	{
 	  public:
 		using SPtr = boost::shared_ptr<SessionManager>;
@@ -77,17 +75,17 @@ namespace OpcUaStackServer
 		virtual void handleEndpointClose(const std::string& endpointUrl);
 		//- SecureChannelServerIf ---------------------------------------------
 
-		//- SessionIf ---------------------------------------------------------
-		virtual void responseMessage(
+	  private:
+		// callback function to receive response message from session
+		void responseMessage(
 			OpcUaStackCore::ResponseHeader::SPtr& responseHeader,
 			OpcUaStackCore::SecureChannelTransaction::SPtr& secureChannelTransaction
 		);
-		virtual void deleteSession(
+		// callback function to delete session
+		void deleteSession(
 			uint32_t authenticationToken
 		);
-		//- SessionIf ---------------------------------------------------------
 
-	  private:
 		bool endpointOpen(const std::string& endpointUrl);
 		void createSessionRequest(
 			OpcUaStackCore::SecureChannel* secureChannel,

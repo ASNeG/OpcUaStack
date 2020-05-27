@@ -28,6 +28,7 @@
 #include "OpcUaStackCore/ServiceSet/CancelRequest.h"
 #include "OpcUaStackCore/ServiceSet/CancelResponse.h"
 #include "OpcUaStackCore/ServiceSet/ActivateSessionResponse.h"
+#include "OpcUaStackCore/ServiceSetServerInfo/ServerInfoServiceTransaction.h"
 #include "OpcUaStackCore/Application/ApplicationAuthenticationContext.h"
 #include "OpcUaStackCore/Application/ApplicationCloseSessionContext.h"
 #include "OpcUaStackCore/StandardDataTypes/AnonymousIdentityToken.h"
@@ -69,7 +70,6 @@ namespace OpcUaStackServer
     )
 	: ServerServiceBase()
 	, forwardGlobalSync_()
-	, sessionIf_(nullptr)
 	, sessionState_(SessionState_Close)
 	, sessionId_(getUniqueSessionId())
 	, authenticationToken_(getUniqueAuthenticationToken())
@@ -84,12 +84,7 @@ namespace OpcUaStackServer
 		// set parameter in server service base
 		serviceName_ = serviceName;
 		ServerServiceBase::ioThread_ = ioThread;
-		if (!strand) {
-			strand_ = ioThread->createStrand();
-		}
-		else {
-		    strand_ = strand;
-		}
+		strand_ = strand;
 		messageBus_ = messageBus;
 
 		// register message bus receiver
@@ -139,9 +134,15 @@ namespace OpcUaStackServer
 	}
 
 	void
-	Session::sessionIf(SessionIf* sessionIf)
+	Session::responseMessageCallback(const ResponseMessageCallback& responseMessageCallback)
 	{
-		sessionIf_ = sessionIf;
+		responseMessageCallback_ = responseMessageCallback;
+	}
+
+	void
+	Session::deleteSessionCallback(const DeleteSessionCallback& deleteSessionCallback)
+	{
+		deleteSessionCallback_ = deleteSessionCallback;
 	}
 
 	OpcUaUInt32 
@@ -656,18 +657,22 @@ namespace OpcUaStackServer
 		Log(Debug, "receive create session request");
 		secureChannelTransaction->responseTypeNodeId_ = OpcUaId_CreateSessionResponse_Encoding_DefaultBinary;
 
+		// check state of session.
 		if (sessionState_ != SessionState_Close) {
-			Log(Error, "receive create session request in invalid state")
+			Log(Error, "receive create session request in invalid state - delete session")
 				.parameter("SessionState", sessionState_);
-			// FIXME: handle error ...
+			createSessionRequestError(requestHeader, secureChannelTransaction, BadInternalError);
+			closeAndDeleteSession();
+			return;
 		}
 
 		// decode create session request
 		std::iostream ios(&secureChannelTransaction->is_);
 		CreateSessionRequest createSessionRequest;
 		if (!createSessionRequest.opcUaBinaryDecode(ios)) {
-			Log(Error, "decode create session request error");
+			Log(Error, "decode create session request error - delete session");
 			createSessionRequestError(requestHeader, secureChannelTransaction, BadInvalidArgument);
+			closeAndDeleteSession();
 			return;
 		}
 
@@ -683,15 +688,17 @@ namespace OpcUaStackServer
 			CertificateChain partnerCertificateChain;
 
 			if (!partnerCertificateChain.fromByteString(createSessionRequest.clientCertificate())) {
-				Log(Error, "received client certificate error");
+				Log(Error, "received client certificate error - delete session");
 				createSessionRequestError(requestHeader, secureChannelTransaction, BadSecurityChecksFailed);
+				closeAndDeleteSession();
 				return;
 			}
 
 			// check client certificate
 			if (partnerCertificateChain != securitySettings.partnerCertificateChain()) {
-				Log(Error, "check client certificate error");
+				Log(Error, "check client certificate error - delete session");
 				createSessionRequestError(requestHeader, secureChannelTransaction, BadSecurityChecksFailed);
+				closeAndDeleteSession();
 				return;
 			}
 		}
@@ -730,23 +737,42 @@ namespace OpcUaStackServer
 
 		// encode create session response
 		if (!createSessionResponse.responseHeader()->opcUaBinaryEncode(iosres)) {
-			Log(Error, "encode response header error");
+			Log(Error, "encode response header error - delete session");
 			createSessionRequestError(requestHeader, secureChannelTransaction, BadInternalError);
+			closeAndDeleteSession();
 			return;
 		}
 		if (!createSessionResponse.opcUaBinaryEncode(iosres)) {
-			Log(Error, "encode create session response error");
+			Log(Error, "encode create session response error - delete session");
 			createSessionRequestError(requestHeader, secureChannelTransaction, BadInternalError);
+			closeAndDeleteSession();
 			return;
 		}
 
 		sessionState_ = SessionState_CreateSessionResponse;
 
 		// send create session response
-		if (sessionIf_ != nullptr) {
-			auto responseHeader = createSessionResponse.responseHeader();
-			sessionIf_->responseMessage(responseHeader, secureChannelTransaction);
-		}
+		auto responseHeader = createSessionResponse.responseHeader();
+		responseMessageCallback_(responseHeader, secureChannelTransaction);
+
+		// send session info to server info service
+		auto addSessTrx = boost::static_pointer_cast<ServiceTransactionAddSession>(
+			transactionManagerSPtr_->getTransaction(OpcUaId_AddSessionRequest_Encoding_DefaultBinary)
+		);
+		auto req = addSessTrx->request();
+		req->sessionId(sessionId_);
+		req->sessionName(createSessionRequest.sessionName());
+		req->sessionTimeout(120);
+		req->startTime(boost::posix_time::microsec_clock::universal_time());
+		req->partnerAddress(secureChannel->partner_.address().to_string());
+		req->endpointUrl(secureChannel->endpointUrl_);
+
+		messageBus_->messageSend(
+			messageBusMember_,
+			addSessTrx->memberService(),
+			addSessTrx
+		);
+
 	}
 
 	void
@@ -774,10 +800,8 @@ namespace OpcUaStackServer
 		}
 
 		// send create session response
-		if (sessionIf_ != nullptr) {
-			auto responseHeader = createSessionResponse.responseHeader();
-			sessionIf_->responseMessage(responseHeader, secureChannelTransaction);
-		}
+		auto responseHeader = createSessionResponse.responseHeader();
+		responseMessageCallback_(responseHeader, secureChannelTransaction);
 	}
 
 	// ------------------------------------------------------------------------
@@ -809,16 +833,18 @@ namespace OpcUaStackServer
 		std::iostream ios(&secureChannelTransaction->is_);
 		ActivateSessionRequest activateSessionRequest;
 		if (!activateSessionRequest.opcUaBinaryDecode(ios)) {
-			Log(Error, "decode create session request error");
+			Log(Error, "decode create session request error - delete session");
 			activateSessionRequestError(requestHeader, secureChannelTransaction, BadInvalidArgument);
+			closeAndDeleteSession();
 			return;
 		}
 
 		// check session state
 		if (sessionState_ != SessionState_CreateSessionResponse && sessionState_ != SessionState_Ready) {
-			Log(Error, "receive activate session request in invalid state")
+			Log(Error, "receive activate session request in invalid state - delete session")
 				.parameter("SessionState", sessionState_);
 			activateSessionRequestError(requestHeader, secureChannelTransaction, BadIdentityTokenInvalid);
+			closeAndDeleteSession();
 			return;
 		}
 
@@ -842,8 +868,9 @@ namespace OpcUaStackServer
 			);
 
 			if (statusCode != Success) {
-				Log(Error, "client signature error");
+				Log(Error, "client signature error - delete session");
 				activateSessionRequestError(requestHeader, secureChannelTransaction, BadSecurityChecksFailed);
+				closeAndDeleteSession();
 				return;
 			}
 		}
@@ -862,13 +889,15 @@ namespace OpcUaStackServer
 
 		// encode activate session response
 		if (!activateSessionResponse.responseHeader()->opcUaBinaryEncode(iosres)) {
-			Log(Error, "encode response header error");
+			Log(Error, "encode response header error - delete session");
 			activateSessionRequestError(requestHeader, secureChannelTransaction, BadInternalError);
+			closeAndDeleteSession();
 			return;
 		}
 		if (!activateSessionResponse.opcUaBinaryEncode(iosres)) {
-			Log(Error, "encode activate session response error");
+			Log(Error, "encode activate session response error - delete session");
 			activateSessionRequestError(requestHeader, secureChannelTransaction, BadInternalError);
+			closeAndDeleteSession();
 			return;
 		}
 
@@ -877,18 +906,28 @@ namespace OpcUaStackServer
 		//secureChannelTransaction->authenticationToken_ = authenticationToken_;
 
 		// send activate session response
-		if (sessionIf_ != nullptr) {
-			auto responseHeader = activateSessionResponse.responseHeader();
-			sessionIf_->responseMessage(responseHeader, secureChannelTransaction);
-		}
+		auto responseHeader = activateSessionResponse.responseHeader();
+		responseMessageCallback_(responseHeader, secureChannelTransaction);
+
+		// send session info to server info service
+		auto updSessTrx = boost::static_pointer_cast<ServiceTransactionUpdSession>(
+			transactionManagerSPtr_->getTransaction(OpcUaId_UpdSessionRequest_Encoding_DefaultBinary)
+		);
+		auto req = updSessTrx->request();
+		req->sessionId(sessionId_);
+
+		messageBus_->messageSend(
+			messageBusMember_,
+			updSessTrx->memberService(),
+			updSessTrx
+		);
 	}
 
 	void
 	Session::activateSessionRequestError(
 		RequestHeader::SPtr& requestHeader,
 		SecureChannelTransaction::SPtr secureChannelTransaction,
-		OpcUaStatusCode statusCode,
-		bool deleteSession
+		OpcUaStatusCode statusCode
 	)
 	{
 		std::iostream iosres(&secureChannelTransaction->os_);
@@ -909,13 +948,8 @@ namespace OpcUaStackServer
 		}
 
 		// send activate session response
-		if (sessionIf_ != nullptr) {
-			auto responseHeader = activateSessionResponse.responseHeader();
-			sessionIf_->responseMessage(responseHeader, secureChannelTransaction);
-			if (deleteSession) {
-				sessionIf_->deleteSession(authenticationToken_);
-			}
-		}
+		auto responseHeader = activateSessionResponse.responseHeader();
+		responseMessageCallback_(responseHeader, secureChannelTransaction);
 	}
 
 	// ------------------------------------------------------------------------
@@ -951,26 +985,44 @@ namespace OpcUaStackServer
 		// encode close session response
 		if (!closeSessionResponse.responseHeader()->opcUaBinaryEncode(iosres)) {
 			Log(Error, "encode response header error - ignore close session response");
+			closeAndDeleteSession();
 			return;
 		}
 		if (!closeSessionResponse.opcUaBinaryEncode(iosres)) {
 			Log(Error, "encode close session response error - ignore close session response");
+			closeAndDeleteSession();
 			return;
 		}
 
+		// send close session response
+		Log(Debug, "send close session response");
+		ResponseHeader::SPtr responseHeader = closeSessionResponse.responseHeader();
+		responseMessageCallback_(responseHeader, secureChannelTransaction);
+		closeAndDeleteSession();
+	}
+
+	void
+	Session::closeAndDeleteSession(void)
+	{
 		// close session
 		Log(Debug, "authentication close session");
 		authenticationCloseSession();
 
-		// send close session response
-		Log(Debug, "send close session response");
-		if (sessionIf_ != nullptr) {
-			ResponseHeader::SPtr responseHeader = closeSessionResponse.responseHeader();
-			sessionIf_->responseMessage(responseHeader, secureChannelTransaction);
+		// send session info to server info service
+		auto delSessTrx = boost::static_pointer_cast<ServiceTransactionDelSession>(
+			transactionManagerSPtr_->getTransaction(OpcUaId_DelSessionRequest_Encoding_DefaultBinary)
+		);
+		auto req = delSessTrx->request();
+		req->sessionId(sessionId_);
 
-			// FIXME: BUG - After deleting the session, the monitored item will send a notification. -> CORE
-			//sessionIf_->deleteSession(authenticationToken_);
-		}
+		messageBus_->messageSend(
+			messageBusMember_,
+			delSessTrx->memberService(),
+			delSessTrx
+		);
+
+		// delete session - That must be the last action in the session
+		deleteSessionCallback_(authenticationToken_);
 	}
 
 	// ------------------------------------------------------------------------
@@ -1023,10 +1075,8 @@ namespace OpcUaStackServer
 		}
 
 		// send cancel response
-		if (sessionIf_ != nullptr) {
-			auto responseHeader = cancelResponse.responseHeader();
-			sessionIf_->responseMessage(responseHeader, secureChannelTransaction);
-		}
+		auto responseHeader = cancelResponse.responseHeader();
+		responseMessageCallback_(responseHeader, secureChannelTransaction);
 	}
 
 	// ------------------------------------------------------------------------
@@ -1049,7 +1099,7 @@ namespace OpcUaStackServer
 				.parameter("SessionState", sessionState_)
 				.parameter("TypeId", secureChannelTransaction->requestTypeNodeId_);
 
-			// FIXME: error handling
+			// ignore request - we cannot generate a response
 			return;
 		}
 
@@ -1144,9 +1194,7 @@ namespace OpcUaStackServer
 		}
 
 		// send message response
-		if (sessionIf_ != nullptr) {
-			sessionIf_->responseMessage(responseHeader, secureChannelTransaction);
-		}
+		responseMessageCallback_(responseHeader, secureChannelTransaction);
 	}
 
 }

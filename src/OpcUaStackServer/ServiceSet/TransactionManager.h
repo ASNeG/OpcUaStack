@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -33,7 +33,8 @@ namespace OpcUaStackServer
 		~TransactionManager(void);
 
 		bool registerTransaction(OpcUaStackCore::ServiceTransaction::SPtr serviceTransactionSPtr);
-		OpcUaStackCore::ServiceTransaction::SPtr getTransaction(OpcUaStackCore::OpcUaNodeId& typeId);
+		OpcUaStackCore::ServiceTransaction::SPtr getTransaction(uint32_t typeId);
+		OpcUaStackCore::ServiceTransaction::SPtr getTransaction(const OpcUaStackCore::OpcUaNodeId& typeId);
 
 	  private:
 		typedef std::map<OpcUaStackCore::OpcUaNodeId, OpcUaStackCore::ServiceTransaction::SPtr> ServiceTransactionMap;

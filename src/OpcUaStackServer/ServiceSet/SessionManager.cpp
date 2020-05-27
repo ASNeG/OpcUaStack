@@ -321,7 +321,16 @@ namespace OpcUaStackServer
 			messageBus_,
 			strand_
 		);
-		session->sessionIf(this);
+		session->responseMessageCallback(
+			[this](ResponseHeader::SPtr& header, SecureChannelTransaction::SPtr& trx) {
+			    responseMessage(header, trx);
+		    }
+		);
+		session->deleteSessionCallback(
+			[this](uint32_t authenticationToken) {
+				deleteSession(authenticationToken);
+			}
+		);
 		session->cryptoManager(cryptoManager_);
 		session->endpointDescriptionArray(endpointDescriptionArray);
 		session->endpointDescription(secureChannel->securitySettings_.endpointDescription());

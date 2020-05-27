@@ -47,7 +47,7 @@ namespace OpcUaStackServer
 		uint32_t sessionSize(void);
 
 	  private:
-		ChannelSessionHandle::Map channelIdMap_;
+		ChannelSessionHandle::Map channelIdMap_;	// All secure channels identified by the channel id
 		ChannelSessionHandle::Map sessionMap_;
 	};
 

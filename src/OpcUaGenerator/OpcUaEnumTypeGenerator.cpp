@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -81,7 +81,7 @@ namespace OpcUaEnumTypeGenerator
 				"set enum type name (mandatory)"
 			)
 			(
-				"namespaces_",
+				"namespaces",
 				boost::program_options::value< std::vector<std::string> >(),
 			    "set project namespaces"
 			)
@@ -299,20 +299,20 @@ namespace OpcUaEnumTypeGenerator
 		//std::cout << "NodeId=" << enumTypeNodeId_.toString() << std::endl;
 
 		// generate data type source code
-		EnumTypeGenerator dataTypeGenerator;
+		EnumTypeGenerator enumTypeGenerator;
 		for (it = namespaces_.begin(); it != namespaces_.end(); it++) {
-			dataTypeGenerator.setNamespaceEntry(*it);
+			enumTypeGenerator.setNamespaceEntry(*it);
 		}
-		dataTypeGenerator.informationModel(informationModel_);
-		if (!dataTypeGenerator.generate(enumTypeNodeId_)) {
+		enumTypeGenerator.informationModel(informationModel_);
+		if (!enumTypeGenerator.generate(enumTypeNodeId_)) {
 			std::cout << "source code generator error - " << enumTypeName_ << std::endl;
 			return -4;
 		}
 
 		// save header and source file
 		boost::filesystem::ofstream ofStream;
-		std::string sourceContent = dataTypeGenerator.sourceContent();
-		std::string headerContent = dataTypeGenerator.headerContent();
+		std::string sourceContent = enumTypeGenerator.sourceContent();
+		std::string headerContent = enumTypeGenerator.headerContent();
 
 		std::string headerFileName = enumTypeName_ + ".h";
 		boost::filesystem::remove(headerFileName);

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,30 +15,29 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackServer_SessionIf_h__
-#define __OpcUaStackServer_SessionIf_h__
+#ifndef __OpcUaStackCore_DelSessionResponse_h__
+#define __OpcUaStackCore_DelSessionResponse_h__
 
-#include "OpcUaStackCore/SecureChannel/ResponseHeader.h"
-#include "OpcUaStackCore/SecureChannel/SecureChannelTransaction.h"
+#include <boost/shared_ptr.hpp>
+#include <stdint.h>
+#include <iostream>
+#include "OpcUaStackCore/Base/os.h"
 
-namespace OpcUaStackServer
+namespace OpcUaStackCore
 {
 
-	class DLLEXPORT SessionIf
+	class DLLEXPORT DelSessionResponse
 	{
 	  public:
+		using SPtr = boost::shared_ptr<DelSessionResponse>;
 
-		SessionIf(void) {}
-		virtual ~SessionIf(void) {}
+		DelSessionResponse(void);
+		virtual ~DelSessionResponse(void);
 
-		virtual void responseMessage(
-			OpcUaStackCore::ResponseHeader::SPtr& responseHeader,
-			OpcUaStackCore::SecureChannelTransaction::SPtr& secureChannelTransaction
-		) = 0;
-		virtual void deleteSession(
-			uint32_t authenticationToken
-		) = 0;
+		bool opcUaBinaryEncode(std::ostream& os) const;
+		bool opcUaBinaryDecode(std::istream& is);
 
+	  private:
 	};
 
 }
