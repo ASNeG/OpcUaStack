@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -31,8 +31,7 @@ namespace OpcUaStackServer
 {
 
 	MonitorManager::MonitorManager(void)
-	: ioThread_(nullptr)
-	, monitorItemMap_()
+	: monitorItemMap_()
 	, eventItemMap_()
 	, monitoredItemIds_()
 	, subscriptionId_(0)
@@ -91,6 +90,12 @@ namespace OpcUaStackServer
 		ioThread_ = ioThread;
 	}
 
+	void
+	MonitorManager::strand(boost::shared_ptr<boost::asio::io_service::strand>& strand)
+	{
+		strand_ = strand;
+	}
+
 	void 
 	MonitorManager::subscriptionId(uint32_t subscriptionId)
 	{
@@ -119,8 +124,7 @@ namespace OpcUaStackServer
 	MonitorManager::noticicationNumber(void)
 	{
 		uint32_t notificationNumber = 0;
-		MonitorItemMap::iterator it;
-		for (it = monitorItemMap_.begin(); it != monitorItemMap_.end(); it++) {
+		for (auto it = monitorItemMap_.begin(); it != monitorItemMap_.end(); it++) {
 			notificationNumber += it->second->size();
 		}
 		return notificationNumber;
@@ -129,8 +133,7 @@ namespace OpcUaStackServer
 	bool 
 	MonitorManager::notificationAvailable(void)
 	{
-		MonitorItemMap::iterator it;
-		for (it = monitorItemMap_.begin(); it != monitorItemMap_.end(); it++) {
+		for (auto it = monitorItemMap_.begin(); it != monitorItemMap_.end(); it++) {
 			if (it->second->size() > 0) return true;
 		}
 		return false;
@@ -139,8 +142,8 @@ namespace OpcUaStackServer
 	OpcUaStatusCode 
 	MonitorManager::receive(ServiceTransactionCreateMonitoredItems::SPtr trx)
 	{
-		CreateMonitoredItemsRequest::SPtr createMonitorItemRequest = trx->request();
-		CreateMonitoredItemsResponse::SPtr createMonitorItemResponse = trx->response();
+		auto createMonitorItemRequest = trx->request();
+		auto createMonitorItemResponse = trx->response();
 
 		auto size = createMonitorItemRequest->itemsToCreate()->size();
 		createMonitorItemResponse->results()->resize(size);
@@ -174,8 +177,7 @@ namespace OpcUaStackServer
 	{
 		OpcUaStatusCode statusCode;
 
-		MonitoredItemCreateResult::SPtr monitoredItemCreateResult;
-		monitoredItemCreateResult = boost::make_shared<MonitoredItemCreateResult>();
+		auto monitoredItemCreateResult = boost::make_shared<MonitoredItemCreateResult>();
 		createMonitorItemResponse->results()->set(idx, monitoredItemCreateResult);
 
 		// get request parameter
@@ -211,7 +213,7 @@ namespace OpcUaStackServer
 		}
 
 		// create new monitor item
-		MonitorItem::SPtr monitorItem = boost::make_shared<MonitorItem>();
+		auto monitorItem = boost::make_shared<MonitorItem>();
 		monitorItem->userContext(serviceTransaction->userContext());
 		statusCode = monitorItem->receive(baseNodeClass, monitoredItemCreateRequest);
 
@@ -235,9 +237,14 @@ namespace OpcUaStackServer
 		);
 
 		// start sample timer
-		SlotTimerElement::SPtr slotTimerElement = monitorItem->slotTimerElement();
+		auto slotTimerElement = monitorItem->slotTimerElement();
 		slotTimerElement->interval(monitorItem->samplingInterval());
-		slotTimerElement->timeoutCallback(boost::bind(&MonitorManager::sampleTimeout, this, monitorItem));
+		slotTimerElement->timeoutCallback(
+			strand_,
+			[this, monitorItem](void) {
+				sampleTimeout(monitorItem);
+		    }
+		);
 		ioThread_->slotTimer()->start(slotTimerElement);
 
 		Log(Debug, "monitor item create")

@@ -54,6 +54,12 @@ namespace OpcUaStackServer
 		messageBusMember_ = messageBusMember;
 	}
 
+	void
+	SubscriptionManager::strand(boost::shared_ptr<boost::asio::io_service::strand>& strand)
+	{
+		strand_ = strand;
+	}
+
 	void 
 	SubscriptionManager::informationModel(InformationModel::SPtr informationModel)
 	{
@@ -86,6 +92,7 @@ namespace OpcUaStackServer
 
 		Subscription::SPtr subscription = boost::make_shared<Subscription>();
 		subscription->ioThread(ioThread_);
+		subscription->strand(strand_);
 		subscription->informationModel(informationModel_);
 		subscription->forwardGlobalSync(forwardGlobalSync_);
 		subscriptionMap_.insert(std::make_pair(subscription->subscriptionId(), subscription));
@@ -108,7 +115,12 @@ namespace OpcUaStackServer
 		// start subscription timer
 		SlotTimerElement::SPtr slotTimerElement = subscription->slotTimerElement();
 		slotTimerElement->interval((uint32_t)publishingInterval);
-		slotTimerElement->timeoutCallback(boost::bind(&SubscriptionManager::subscriptionPublishTimeout, this, subscription));
+		slotTimerElement->timeoutCallback(
+			strand_,
+			[this, subscription](void) {
+				subscriptionPublishTimeout(subscription);
+			}
+		);
 		ioThread_->slotTimer()->start(slotTimerElement);
 
 		// send create subscription response

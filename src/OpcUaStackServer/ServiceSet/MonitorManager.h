@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -42,6 +42,7 @@ namespace OpcUaStackServer
 		~MonitorManager(void);
 
 		void ioThread(OpcUaStackCore::IOThread* ioThread);
+		void strand(boost::shared_ptr<boost::asio::io_service::strand>& strand);
 		void subscriptionId(uint32_t subscriptionId);
 		uint32_t subscriptionId(void);
 		void informationModel(InformationModel::SPtr informationModel);
@@ -88,7 +89,8 @@ namespace OpcUaStackServer
 		);
 		void sampleTimeout(MonitorItem::SPtr monitorItem);
 
-		OpcUaStackCore::IOThread* ioThread_;
+		OpcUaStackCore::IOThread* ioThread_ = nullptr;
+		boost::shared_ptr<boost::asio::io_service::strand> strand_ = nullptr;
 		uint32_t subscriptionId_;
 		MonitorItemMap monitorItemMap_;
 		EventItem::Map eventItemMap_;

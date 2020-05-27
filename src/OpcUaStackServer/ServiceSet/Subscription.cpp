@@ -90,6 +90,13 @@ namespace OpcUaStackServer
 		monitorManager_.ioThread(ioThread);
 	}
 
+	void
+	Subscription::strand(boost::shared_ptr<boost::asio::io_service::strand>& strand)
+	{
+		strand_ = strand;
+		monitorManager_.strand(strand);
+	}
+
 	void 
 	Subscription::informationModel(InformationModel::SPtr informationModel)
 	{

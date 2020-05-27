@@ -107,9 +107,9 @@ namespace OpcUaStackServer
 	{
 		// FIXME: dummy implementation
 
-		ServiceTransactionCreateMonitoredItems::SPtr trx = boost::static_pointer_cast<ServiceTransactionCreateMonitoredItems>(serviceTransaction);
-		CreateMonitoredItemsRequest::SPtr createMonitoredItemsRequest = trx->request();
-		CreateMonitoredItemsResponse::SPtr createMonitoredItemsResponse = trx->response();
+		auto trx = boost::static_pointer_cast<ServiceTransactionCreateMonitoredItems>(serviceTransaction);
+		auto createMonitoredItemsRequest = trx->request();
+		auto createMonitoredItemsResponse = trx->response();
 
 		uint32_t items = createMonitoredItemsRequest->itemsToCreate()->size();
 		Log(Debug, "create monitored items")
