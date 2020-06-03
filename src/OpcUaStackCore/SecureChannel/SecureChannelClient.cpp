@@ -98,11 +98,13 @@ namespace OpcUaStackCore
 		}
 		securitySettings.cryptoBase(cryptoBase);
 		securitySettings.ownSecurityPolicyUri() = cryptoManager()->securityPolicy(secureChannelClientConfig->securityPolicy());
+		// FIXME: todo - we must check the own security policy uri.
 
 		// get own certificate chain
 		if (secureChannelClientConfig->securityMode() == MessageSecurityMode::EnumSign ||
 			secureChannelClientConfig->securityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
 			securitySettings.ownCertificateChain() = cryptoManager()->applicationCertificate()->certificateChain();
+			// FIXME: todo - we must check the own certificate chain
 		}
 
 		if (secureChannelClientConfig->securityMode() == MessageSecurityMode::EnumSignAndEncrypt) {

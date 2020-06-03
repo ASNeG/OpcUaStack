@@ -1,5 +1,5 @@
 /*
-   Copyright 2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2019-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -338,7 +338,7 @@ namespace OpcUaStackCore
 		// The current time shall be after the start of the validity period and before
 		// the end. This error may be suppressed.
 		//
-		auto now = boost::posix_time::microsec_clock::local_time();
+		auto now = boost::posix_time::microsec_clock::universal_time();
 		for (auto certificate : certificateChain_.certificateVec()) {
 			CertificateInfo info;
 			if (!certificate->getInfo(info)) {
