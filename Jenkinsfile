@@ -16,6 +16,9 @@ pipeline {
         }
 
         stage('build_windows') {
+          when {
+               branch 'master'
+          }
           steps {
             script {
               sh('basename $PWD > DIRNAME.txt')
