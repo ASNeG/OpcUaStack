@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -152,7 +152,7 @@ namespace OpcUaStackCore
 			boost::posix_time::seconds(3600*24*365*certificateSettings.yearsValidFor())
 		);
 		info.serialNumber(time(0));
-		info.validFrom(boost::posix_time::microsec_clock::local_time());
+		info.validFrom(boost::posix_time::microsec_clock::universal_time());
 
 		SignatureAlgorithm signatureAlgorithm;
 		if (certificateSettings.certificateType() == "RsaMin") {
