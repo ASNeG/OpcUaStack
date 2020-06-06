@@ -62,7 +62,12 @@ namespace OpcUaCtrl
 	OpcUaCtrl::usage(void)
 	{
 		std::cout << "usage: " << name_ << " <Type> <Command> [<Parameter>, ...]" << std::endl;
-		std::cout << std::endl;
+
+		for ( auto ctrlCommand : ctrlCommandMap_ ) {
+			std::cout << std::endl;
+			std::cout << "Type: "   << ctrlCommand.first << std::endl;
+			ctrlCommand.second->usage();
+		}
 	}
 
 	void

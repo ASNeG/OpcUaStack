@@ -15,33 +15,28 @@
    Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
-#ifndef __OpcUaCtrl_OpcUaCtrl_h__
-#define __OpcUaCtrl_OpcUaCtrl_h__
+#ifndef __OpcUaCtrl_CtrlCommand_h__
+#define __OpcUaCtrl_CtrlCommand_h__
 
-#include <boost/filesystem.hpp>
-#include <set>
+#include <boost/shared_ptr.hpp>
 #include <stdint.h>
+#include <map>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaCtrl/CtrlCommand.h"
 
 namespace OpcUaCtrl
 {
 
-	class DLLEXPORT OpcUaCtrl
+	class DLLEXPORT CtrlCommand
 	{
 	  public:
-		OpcUaCtrl(void);
-		~OpcUaCtrl(void);
+		using SPtr = boost::shared_ptr<CtrlCommand>;
+		using Map = std::map<std::string, SPtr>;
 
-		uint32_t start(int argc, char** argv);
+		CtrlCommand(void);
+		virtual ~CtrlCommand(void);
 
-	  private:
-		void usage(void);
-		void initInstallPathList(void);
-
-		std::string name_ = "";
-		std::vector<std::string> installPathList_;
-		CtrlCommand::Map ctrlCommandMap_;
+		virtual uint32_t start(int argc, char** argv) = 0;
+		virtual void usage(void) = 0;
 	};
 
 }
