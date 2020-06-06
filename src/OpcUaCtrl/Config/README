@@ -1,0 +1,7 @@
+
+ASNeG CA certificate
+====================
+
+To create a new ASNeG CA certificate for testing purposes execute the following command.
+
+$ sh asneg_ca_cert.sh
