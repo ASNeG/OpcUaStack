@@ -15,56 +15,42 @@
    Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
+#include <boost/make_shared.hpp>
 #include <boost/filesystem.hpp>
-#include <iostream>
-#include "OpcUaCtrl/ApplCtrlCommand.h"
 #include "OpcUaCtrl/Application.h"
 
 namespace OpcUaCtrl
 {
 
-
-	ApplCtrlCommand::ApplCtrlCommand(void)
-	: CtrlCommand()
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// ApplicationInfo
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	ApplicationInfo::ApplicationInfo(void)
 	{
 	}
 
-	ApplCtrlCommand::~ApplCtrlCommand(void)
+	ApplicationInfo::~ApplicationInfo(void)
 	{
 	}
 
-	uint32_t
-	ApplCtrlCommand::start(int argc, char** argv)
-	{
-		// check command parameter
-		if (std::string(argv[2]) != "show") {
-			usageCommand(std::string(argv[2]));
-			return 1;
-		}
-
-		return show(argc, argv);
-	}
-
-	void
-	ApplCtrlCommand::usage(void)
-	{
-		std::cout << "    show: show the names of all applications found" << std::endl;
-	}
-
-	void
-	ApplCtrlCommand::usageCommand(const std::string& command)
-	{
-		std::cout << "usage: " << name_ << " appl <Command> [<Parameter>, ...]" << std::endl;
-		std::cout << std::endl;
-		std::cout << "ERROR: command " << command << " unknown" << std::endl;
-		usage();
-	}
-
-	uint32_t
-	ApplCtrlCommand::show(int argc, char** argv)
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// Application
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	Application::Application(
+	    std::set<std::string>& applBlackList,
+		std::vector<std::string>& installPathList
+	)
 	{
 		// We search for applications in all installation locations
-		for ( auto installPath : installPathList_ ) {
+		for ( auto installPath : installPathList ) {
 			boost::filesystem::path applPath(installPath + std::string("/etc/OpcUaStack"));
 
 			for ( auto applName : boost::filesystem::directory_iterator(applPath)) {
@@ -74,7 +60,7 @@ namespace OpcUaCtrl
 				}
 
 				// ignore applications from black list
-				if (applBlackList_.find(applName.path().filename().string()) != applBlackList_.end()) {
+				if (applBlackList.find(applName.path().filename().string()) != applBlackList.end()) {
 					continue;
 				}
 
@@ -89,11 +75,29 @@ namespace OpcUaCtrl
 					continue;
 				}
 
-				// display application name
-				std::cout << applName.path().filename().string() << std::endl;
+				// add new entry to application info map
+				auto applicationInfo = boost::make_shared<ApplicationInfo>();
+				applicationInfo->applName_ = applName.path().filename().string();
+				applicationInfo->installPath_ = installPath;
+				applicationInfoMap_.insert(std::make_pair(applicationInfo->applName_, applicationInfo));
 			}
 		}
-		return 0;
+	}
+
+	Application::~Application(void)
+	{
+	}
+
+	const Application::iterator
+	Application::begin(void)
+	{
+		return applicationInfoMap_.begin();
+	}
+
+	const Application::iterator
+	Application::end(void)
+	{
+		return applicationInfoMap_.end();
 	}
 
 }
