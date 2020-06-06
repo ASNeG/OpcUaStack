@@ -15,11 +15,13 @@
    Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
+#include <boost/make_shared.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/filesystem.hpp>
 #include <iostream>
 #include "OpcUaStackCore/Utility/Environment.h"
 #include "OpcUaCtrl/OpcUaCtrl.h"
+#include "OpcUaCtrl/ApplCtrlCommand.h"
 
 using namespace OpcUaStackCore;
 
@@ -44,17 +46,37 @@ namespace OpcUaCtrl
 	uint32_t
 	OpcUaCtrl::start(int argc, char** argv)
 	{
+		// init application black list
+		applBlackList_.insert("ssl");
+
 		// init
 		boost::filesystem::path p = argv[0];
 		std::string name_ = p.stem().string();
 		initInstallPathList();
 
-		// check command line
+		// add commands
+		addCtrlCommand("appl", boost::make_shared<ApplCtrlCommand>());
+
+
+		// check number of parameter command line
 		if (argc < 3) {
 			usage();
 			return 1;
 		}
 
+		// check type parameter of command line
+		auto ctrlCommandIt = ctrlCommandMap_.find(std::string(argv[1]));
+		if (ctrlCommandIt == ctrlCommandMap_.end()) {
+			usageType(std::string(argv[1]));
+			return 1;
+		}
+		auto ctrlCommand = ctrlCommandIt->second;
+
+		// call command
+		ctrlCommand->applBlackList_ = applBlackList_;
+		ctrlCommand->name_ = name_;
+		ctrlCommand->installPathList_ = installPathList_;
+		ctrlCommand->start(argc, argv);
 		return 0;
 	}
 
@@ -67,6 +89,19 @@ namespace OpcUaCtrl
 			std::cout << std::endl;
 			std::cout << "Type: "   << ctrlCommand.first << std::endl;
 			ctrlCommand.second->usage();
+		}
+	}
+
+	void
+	OpcUaCtrl::usageType(const std::string& type)
+	{
+		std::cout << "usage: " << name_ << " <Type> <Command> [<Parameter>, ...]" << std::endl;
+		std::cout << std::endl;
+		std::cout << "ERROR: type " << type << " unknown" << std::endl;
+		std::cout << "    KnownTypes:" << std::endl;
+
+		for ( auto ctrlCommandIt : ctrlCommandMap_ ) {
+			std::cout << "        " << ctrlCommandIt.first << std::endl;
 		}
 	}
 
@@ -96,8 +131,21 @@ namespace OpcUaCtrl
 
 		// add installation paths to installation path list
 		for ( auto installPath : installPathSet ) {
+			// check if path exist
+			boost::filesystem::path tmpInstallPath(installPath);
+			if (!boost::filesystem::is_directory(tmpInstallPath)) {
+				continue;
+			}
+
+			// add installtion path to installation list
 			installPathList_.push_back(installPath);
 		}
+	}
+
+	void
+	OpcUaCtrl::addCtrlCommand(const std::string& name, const CtrlCommand::SPtr& ctrlCommand)
+	{
+		ctrlCommandMap_.insert(std::make_pair(name, ctrlCommand));
 	}
 
 }

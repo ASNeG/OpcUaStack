@@ -21,6 +21,8 @@
 #include <boost/shared_ptr.hpp>
 #include <stdint.h>
 #include <map>
+#include <set>
+#include <vector>
 #include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaCtrl
@@ -37,6 +39,10 @@ namespace OpcUaCtrl
 
 		virtual uint32_t start(int argc, char** argv) = 0;
 		virtual void usage(void) = 0;
+
+		std::set<std::string> applBlackList_;
+		std::string name_ = "";
+		std::vector<std::string> installPathList_;
 	};
 
 }

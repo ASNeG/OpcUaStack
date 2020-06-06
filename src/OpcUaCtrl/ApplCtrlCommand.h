@@ -15,36 +15,34 @@
    Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
-#ifndef __OpcUaCtrl_OpcUaCtrl_h__
-#define __OpcUaCtrl_OpcUaCtrl_h__
+#ifndef __OpcUaCtrl_ApplCtrlCommand_h__
+#define __OpcUaCtrl_ApplCtrlCommand_h__
 
-#include <boost/filesystem.hpp>
-#include <set>
+#include <boost/shared_ptr.hpp>
 #include <stdint.h>
+#include <map>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaCtrl/CtrlCommand.h"
 
 namespace OpcUaCtrl
 {
 
-	class DLLEXPORT OpcUaCtrl
+	class DLLEXPORT ApplCtrlCommand
+	: public CtrlCommand
 	{
 	  public:
-		OpcUaCtrl(void);
-		~OpcUaCtrl(void);
+		using SPtr = boost::shared_ptr<ApplCtrlCommand>;
 
-		uint32_t start(int argc, char** argv);
+		ApplCtrlCommand(void);
+		virtual ~ApplCtrlCommand(void);
+
+		uint32_t start(int argc, char** argv) override;
+		void usage(void) override;
 
 	  private:
-		void usage(void);
-		void usageType(const std::string& type);
-		void initInstallPathList(void);
-		void addCtrlCommand(const std::string& name, const CtrlCommand::SPtr& ctrlCommand);
+		void usageCommand(const std::string& command);
+		uint32_t show(int argc, char** argv);
 
-		std::set<std::string> applBlackList_;
-		std::string name_ = "";
-		std::vector<std::string> installPathList_;
-		CtrlCommand::Map ctrlCommandMap_;
 	};
 
 }
