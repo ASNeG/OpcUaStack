@@ -47,11 +47,12 @@ namespace OpcUaCtrl
 		using iterator = ApplicationInfo::Map::iterator;
 
 		Application(
-		    std::set<std::string>& applBlackList,
-			std::vector<std::string>& installPathList
+		    const std::set<std::string>& applBlackList,
+			const std::vector<std::string>& installPathList
 		);
 		virtual ~Application(void);
 
+		ApplicationInfo::Map& map(void);
 		const iterator begin(void);
 		const iterator end(void);
 

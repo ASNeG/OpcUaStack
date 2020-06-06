@@ -45,8 +45,8 @@ namespace OpcUaCtrl
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	Application::Application(
-	    std::set<std::string>& applBlackList,
-		std::vector<std::string>& installPathList
+	    const std::set<std::string>& applBlackList,
+		const std::vector<std::string>& installPathList
 	)
 	{
 		// We search for applications in all installation locations
@@ -86,6 +86,12 @@ namespace OpcUaCtrl
 
 	Application::~Application(void)
 	{
+	}
+
+	ApplicationInfo::Map&
+	Application::map(void)
+	{
+		return applicationInfoMap_;
 	}
 
 	const Application::iterator

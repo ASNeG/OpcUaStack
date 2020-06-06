@@ -63,35 +63,10 @@ namespace OpcUaCtrl
 	uint32_t
 	ApplCtrlCommand::show(int argc, char** argv)
 	{
-		// We search for applications in all installation locations
-		for ( auto installPath : installPathList_ ) {
-			boost::filesystem::path applPath(installPath + std::string("/etc/OpcUaStack"));
-
-			for ( auto applName : boost::filesystem::directory_iterator(applPath)) {
-				// appl name must be a direcory
-				if (!boost::filesystem::is_directory(applName.path())) {
-					continue;
-				}
-
-				// ignore applications from black list
-				if (applBlackList_.find(applName.path().filename().string()) != applBlackList_.end()) {
-					continue;
-				}
-
-				// the configuration file OpcUaServer.xml must be exist
-				boost::filesystem::path serverConfigFileName(
-					installPath +
-					std::string("/etc/OpcUaStack/") +
-					applName.path().filename().string() +
-					"/OpcUaServer.xml"
-				);
-				if (!boost::filesystem::exists(serverConfigFileName)) {
-					continue;
-				}
-
-				// display application name
-				std::cout << applName.path().filename().string() << std::endl;
-			}
+		Application application(applBlackList_, installPathList_);
+		for ( auto& applicationInfoIt : application.map() ) {
+			// display application name
+			std::cout << applicationInfoIt.first << std::endl;
 		}
 		return 0;
 	}
