@@ -42,7 +42,6 @@ default_ca	= CA_default		# The default ca section
 ####################################################################
 [ CA_default ]
 
-# FIXME
 #dir		= ./demoCA		# Where everything is kept
 dir             = .
 certs		= $dir/certs		# Where the issued certs are kept
@@ -50,7 +49,6 @@ crl_dir		= $dir/crl		# Where the issued crl are kept
 database	= $dir/index.txt	# database index file.
 #unique_subject	= no			# Set to 'no' to allow creation of
 					# several certs with same subject.
-# FIXME
 #new_certs_dir	= $dir/newcerts		# default place for new certs.
 new_certs_dir  = $dir
 
@@ -352,3 +350,10 @@ ess_cert_id_chain	= no	# Must the ESS cert id chain be included?
 				# (optional, default: no)
 ess_cert_id_alg		= sha1	# algorithm to compute certificate
 				# identifier (optional, default: sha1)
+				
+
+[ demo-extension ]
+subjectAltName = "URI:urn:127.0.0.1:ASNeG:ASNeG Product, IP:127.0.0.1, DNS:devel, email:kai@huebl-sgh.de"
+keyUsage = "digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment, keyCertSign"
+extendedKeyUsage = "serverAuth, clientAuth"
+
