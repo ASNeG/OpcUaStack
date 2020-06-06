@@ -35,6 +35,11 @@ namespace OpcUaCtrl
 		uint32_t start(int argc, char** argv);
 
 	  private:
+		void usage(void);
+		void initInstallPathList(void);
+
+		std::string name_ = "";
+		std::vector<std::string> installPathList_;
 	};
 
 }
