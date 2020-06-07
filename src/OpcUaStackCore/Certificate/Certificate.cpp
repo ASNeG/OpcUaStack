@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -716,7 +716,8 @@ namespace OpcUaStackCore
 		}
 
 		*bufLen = length;
-		i2d_X509(cert_, (unsigned char**)&buf);
+		char* ptr = buf;
+		i2d_X509(cert_, (unsigned char**)&ptr);
 		return true;
 	}
 
@@ -727,7 +728,8 @@ namespace OpcUaStackCore
 			addError("certificate is not empty");
 			return false;
 		}
-        cert_= d2i_X509(0, (const unsigned char**)&buf, bufLen);
+		char* ptr = buf;
+        cert_= d2i_X509(0, (const unsigned char**)&ptr, bufLen);
         if (cert_ == nullptr) {
         	addOpenSSLError();
         	return false;
