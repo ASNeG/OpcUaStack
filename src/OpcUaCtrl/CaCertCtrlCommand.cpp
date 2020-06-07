@@ -15,12 +15,12 @@
    Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
-#include <boost/filesystem.hpp>
-#include <boost/regex.hpp>
-#include <boost/algorithm/string.hpp>
 #include <iostream>
 #include <fstream>
+#include "OpcUaStackCore/Certificate/Certificate.h"
 #include "OpcUaCtrl/CaCertCtrlCommand.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaCtrl
 {
@@ -48,6 +48,12 @@ namespace OpcUaCtrl
 		else if (commandLine[2] == "del") {
 			return del(commandLine);
 		}
+		else if (commandLine[2] == "acivate") {
+			return activate(commandLine);
+		}
+		else if (commandLine[2] == "deactivate") {
+			return deactivate(commandLine);
+		}
 		else {
 			usageMessage(std::string("command ") + commandLine[2] + " unknown");
 			return 1;
@@ -62,8 +68,12 @@ namespace OpcUaCtrl
 		std::cout << "        shows all ca certificates" << std::endl;
 		std::cout << "    add <Application-Name> <Ca-Cert-File>:" << std::endl;
 		std::cout << "        add a new ca certificate" << std::endl;
-		std::cout << "    del <Application-Name> <xx>:" << std::endl;
+		std::cout << "    del <Application-Name>:" << std::endl;
 		std::cout << "        delete a ca certificate" << std::endl;
+		std::cout << "    activate <Application-Name>:" << std::endl;
+		std::cout << "        activate a ca certificate" << std::endl;
+		std::cout << "    deactivate <Application-Name>:" << std::endl;
+		std::cout << "        deactivate a ca certificate" << std::endl;
 	}
 
 	void
@@ -108,7 +118,48 @@ namespace OpcUaCtrl
 		}
 		auto applicationInfo = it->second;
 
+		// read all files from ca trust directory
+		boost::filesystem::path caDirectoryTrust(applicationInfo->caDirectoryTrust_);
+		for ( auto filename : caDirectoryTrust ) {
+			showCertificateInfo(filename.string(), "Active");
+		}
+
+		// read all files from ca revocation directory
+		boost::filesystem::path caDirectoryRevocation(applicationInfo->caDirectoryRevocation_);
+		for ( auto filename : caDirectoryRevocation ) {
+			showCertificateInfo(filename.string(), "Deactive");
+		}
+
 		return 0;
+	}
+
+	void
+	CaCertCtrlCommand::showCertificateInfo(
+		const std::string& filename,
+		const std::string& status
+	)
+	{
+		// read certificate from file
+		Certificate certificate;
+		if (!certificate.fromDERFile(filename)) {
+			return;
+		}
+
+		// check whether it is a ca certificate
+		CertificateExtension certificateExtension;
+		if (!certificate.getExtension(certificateExtension)) {
+			return;
+		}
+		if (certificateExtension.basicConstraints().find("CA:TRUE") == std::string::npos) {
+			return;
+		}
+
+		// get subject information
+		Identity subject;
+		if (!certificate.getSubject(subject)) {
+			return;
+		}
+		std::cout << "    " << subject.commonName() << " " << status << std::endl;
 	}
 
 	uint32_t
@@ -119,6 +170,19 @@ namespace OpcUaCtrl
 
 	uint32_t
 	CaCertCtrlCommand::del(const std::vector<std::string>& commandLine)
+	{
+		return 0;
+	}
+
+	uint32_t
+	CaCertCtrlCommand::activate(const std::vector<std::string>& commandLine)
+	{
+		return 0;
+	}
+
+
+	uint32_t
+	CaCertCtrlCommand::deactivate(const std::vector<std::string>& commandLine)
 	{
 		return 0;
 	}

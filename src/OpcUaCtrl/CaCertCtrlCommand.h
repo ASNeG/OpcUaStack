@@ -19,6 +19,7 @@
 #define __OpcUaCtrl_CaCertCtrlCommand_h__
 
 #include <boost/shared_ptr.hpp>
+#include <boost/filesystem.hpp>
 #include <stdint.h>
 #include <map>
 #include "OpcUaStackCore/Base/os.h"
@@ -42,9 +43,17 @@ namespace OpcUaCtrl
 
 	  private:
 		void usageMessage(const std::string& command);
-		uint32_t show(const std::vector<std::string>& commandLine);
+		uint32_t show(
+			const std::vector<std::string>& commandLine
+		);
+		void showCertificateInfo(
+			const std::string& filename,
+			const std::string& status
+		);
 		uint32_t add(const std::vector<std::string>& commandLine);
 		uint32_t del(const std::vector<std::string>& commandLine);
+		uint32_t activate(const std::vector<std::string>& commandLine);
+		uint32_t deactivate(const std::vector<std::string>& commandLine);
 	};
 
 }
