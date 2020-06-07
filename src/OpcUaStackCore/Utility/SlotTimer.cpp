@@ -561,6 +561,8 @@ namespace OpcUaStackCore
 	void 
 	SlotTimer::stopSlotTimerLoop(void)
 	{
+		if (!running_) return;
+
 		Log(Debug, "slot timer stopping");
 
 		running_ = false;
@@ -574,6 +576,8 @@ namespace OpcUaStackCore
 	void
 	SlotTimer::stopSlotTimerLoopSync(void)
 	{
+		if (!running_) return;
+
 		Log(Debug, "slot timer stopping");
 
 		mutex_.lock();
