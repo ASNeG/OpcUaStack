@@ -37,14 +37,14 @@ namespace OpcUaCtrl
 		SelfSignedCertCtrlCommand(void);
 		virtual ~SelfSignedCertCtrlCommand(void);
 
-		uint32_t start(int argc, char** argv) override;
+		uint32_t start(const std::vector<std::string>& commandLine) override;
 		void usage(void) override;
 
 	  private:
 		void usageMessage(const std::string& command);
-		uint32_t status(int argc, char** argv);
-		uint32_t activate(int argc, char** argv);
-		uint32_t deactivate(int argc, char** argv);
+		uint32_t status(const std::vector<std::string>& commandLine);
+		uint32_t activate(const std::vector<std::string>& commandLine);
+		uint32_t deactivate(const std::vector<std::string>& commandLine);
 		bool readApplicationConfiguration(
 			const ApplicationInfo::SPtr& applicationInfo,
 			std::string& applicationConfiguration

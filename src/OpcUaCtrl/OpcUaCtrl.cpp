@@ -45,13 +45,13 @@ namespace OpcUaCtrl
 	}
 
 	uint32_t
-	OpcUaCtrl::start(int argc, char** argv)
+	OpcUaCtrl::start(const std::vector<std::string>& commandLine)
 	{
 		// init application black list
 		applBlackList_.insert("ssl");
 
 		// init
-		boost::filesystem::path p = argv[0];
+		boost::filesystem::path p = commandLine[0];
 		name_ = p.stem().string();
 		initInstallPathList();
 
@@ -61,15 +61,15 @@ namespace OpcUaCtrl
 
 
 		// check number of parameter command line
-		if (argc < 3) {
+		if (commandLine.size() < 3) {
 			usage();
 			return 1;
 		}
 
 		// check type parameter of command line
-		auto ctrlCommandIt = ctrlCommandMap_.find(std::string(argv[1]));
+		auto ctrlCommandIt = ctrlCommandMap_.find(commandLine[1]);
 		if (ctrlCommandIt == ctrlCommandMap_.end()) {
-			usageType(std::string(argv[1]));
+			usageType(std::string(commandLine[1]));
 			return 1;
 		}
 		auto ctrlCommand = ctrlCommandIt->second;
@@ -78,7 +78,7 @@ namespace OpcUaCtrl
 		ctrlCommand->applBlackList_ = applBlackList_;
 		ctrlCommand->name_ = name_;
 		ctrlCommand->installPathList_ = installPathList_;
-		ctrlCommand->start(argc, argv);
+		ctrlCommand->start(commandLine);
 		return 0;
 	}
 
@@ -162,8 +162,13 @@ namespace OpcUaCtrl
 // ----------------------------------------------------------------------------
 int main(int argc, char** argv)
 {
+	std::vector<std::string> commandLine;
+	for (uint32_t idx = 0; idx < argc; idx++) {
+		commandLine.push_back(argv[idx]);
+	}
+
 	OpcUaCtrl::OpcUaCtrl opcuaCtrl;
-	return opcuaCtrl.start(argc, argv);
+	return opcuaCtrl.start(commandLine);
 }
 
 

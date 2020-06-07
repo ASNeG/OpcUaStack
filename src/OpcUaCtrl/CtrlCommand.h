@@ -37,7 +37,7 @@ namespace OpcUaCtrl
 		CtrlCommand(void);
 		virtual ~CtrlCommand(void);
 
-		virtual uint32_t start(int argc, char** argv) = 0;
+		virtual uint32_t start(const std::vector<std::string>& commandLine) = 0;
 		virtual void usage(void) = 0;
 
 		std::set<std::string> applBlackList_;

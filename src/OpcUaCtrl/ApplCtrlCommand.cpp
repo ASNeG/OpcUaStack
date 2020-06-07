@@ -34,15 +34,15 @@ namespace OpcUaCtrl
 	}
 
 	uint32_t
-	ApplCtrlCommand::start(int argc, char** argv)
+	ApplCtrlCommand::start(const std::vector<std::string>& commandLine)
 	{
 		// check command parameter
-		if (std::string(argv[2]) != "show") {
-			usageCommand(std::string(argv[2]));
+		if (commandLine[2] != "show") {
+			usageCommand(commandLine[2]);
 			return 1;
 		}
 
-		return show(argc, argv);
+		return show(commandLine);
 	}
 
 	void
@@ -62,7 +62,7 @@ namespace OpcUaCtrl
 	}
 
 	uint32_t
-	ApplCtrlCommand::show(int argc, char** argv)
+	ApplCtrlCommand::show(const std::vector<std::string>& commandLine)
 	{
 		Application application(applBlackList_, installPathList_);
 		for ( auto& applicationInfoIt : application.map() ) {

@@ -33,7 +33,7 @@ namespace OpcUaCtrl
 		OpcUaCtrl(void);
 		~OpcUaCtrl(void);
 
-		uint32_t start(int argc, char** argv);
+		uint32_t start(const std::vector<std::string>& commandLine);
 
 	  private:
 		void usage(void);

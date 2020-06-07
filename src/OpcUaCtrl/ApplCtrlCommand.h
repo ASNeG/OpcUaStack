@@ -36,12 +36,12 @@ namespace OpcUaCtrl
 		ApplCtrlCommand(void);
 		virtual ~ApplCtrlCommand(void);
 
-		uint32_t start(int argc, char** argv) override;
+		uint32_t start(const std::vector<std::string>& commandLine) override;
 		void usage(void) override;
 
 	  private:
 		void usageCommand(const std::string& command);
-		uint32_t show(int argc, char** argv);
+		uint32_t show(const std::vector<std::string>& commandLine);
 
 	};
 

@@ -35,20 +35,20 @@ namespace OpcUaCtrl
 	}
 
 	uint32_t
-	SelfSignedCertCtrlCommand::start(int argc, char** argv)
+	SelfSignedCertCtrlCommand::start(const std::vector<std::string>& commandLine)
 	{
 		// check command parameter
-		if (std::string(argv[2]) == "status") {
-			return status(argc, argv);
+		if (commandLine[2] == "status") {
+			return status(commandLine);
 		}
-		else if (std::string(argv[2]) == "activate") {
-			return activate(argc, argv);
+		else if (commandLine[2] == "activate") {
+			return activate(commandLine);
 		}
-		else if (std::string(argv[2]) == "deactivate") {
-			return deactivate(argc, argv);
+		else if (commandLine[2] == "deactivate") {
+			return deactivate(commandLine);
 		}
 		else {
-			usageMessage(std::string("command ") + std::string(argv[2]) + " unknown");
+			usageMessage(std::string("command ") + commandLine[2] + " unknown");
 			return 1;
 		}
 	}
@@ -75,14 +75,28 @@ namespace OpcUaCtrl
 	}
 
 	uint32_t
-	SelfSignedCertCtrlCommand::status(int argc, char** argv)
+	SelfSignedCertCtrlCommand::status(const std::vector<std::string>& commandLine)
 	{
+		// Should be provided information about all existing applications
+		if (commandLine.size() == 3) {
+			Application application(applBlackList_, installPathList_);
+
+			for (auto applicationInfo : application) {
+				std::vector<std::string> tmpCommandLine(commandLine);
+				tmpCommandLine.push_back(applicationInfo.second->applName_);
+				auto result = status(tmpCommandLine);
+				if (result != 0) return result;
+			}
+
+			return 0;
+		}
+
 		// check command line parameter
-		if (argc < 4) {
+		if (commandLine.size() < 4) {
 			usageMessage("parameter invalid");
 			return 1;
 		}
-		std::string applicationName = std::string(argv[3]);
+		std::string applicationName = commandLine[3];
 
 		// get application info
 		Application application(applBlackList_, installPathList_);
@@ -118,14 +132,14 @@ namespace OpcUaCtrl
 	}
 
 	uint32_t
-	SelfSignedCertCtrlCommand::activate(int argc, char** argv)
+	SelfSignedCertCtrlCommand::activate(const std::vector<std::string>& commandLine)
 	{
 		// check command line parameter
-		if (argc < 4) {
+		if (commandLine.size() < 4) {
 			usageMessage("parameter invalid");
 			return 1;
 		}
-		std::string applicationName = std::string(argv[3]);
+		std::string applicationName = commandLine[3];
 
 		// get application info
 		Application application(applBlackList_, installPathList_);
@@ -169,14 +183,14 @@ namespace OpcUaCtrl
 	}
 
 	uint32_t
-	SelfSignedCertCtrlCommand::deactivate(int argc, char** argv)
+	SelfSignedCertCtrlCommand::deactivate(const std::vector<std::string>& commandLine)
 	{
 		// check command line parameter
-		if (argc < 4) {
+		if (commandLine.size() < 4) {
 			usageMessage("parameter invalid");
 			return 1;
 		}
-		std::string applicationName = std::string(argv[3]);
+		std::string applicationName = commandLine[3];
 
 		// get application info
 		Application application(applBlackList_, installPathList_);
