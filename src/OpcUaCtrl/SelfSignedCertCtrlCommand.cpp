@@ -240,7 +240,7 @@ namespace OpcUaCtrl
 	)
 	{
 		// open file stream
-		std::ifstream file(applicationInfo->serverConfigFile_, std::ifstream::binary);
+		std::ifstream file(applicationInfo->serverConfigFile_.c_str(), std::ifstream::binary);
 		if (!file) {
 			std::cout << "ERROR: cannot read configuration file " << applicationInfo->serverConfigFile_ << std::endl;
 			return false;
@@ -263,7 +263,7 @@ namespace OpcUaCtrl
 	)
 	{
 		// open file stream
-		std::ofstream file(applicationInfo->serverConfigFile_, std::ofstream::binary | std::ofstream::trunc);
+		std::ofstream file(applicationInfo->serverConfigFile_.c_str(), std::ofstream::binary | std::ofstream::trunc);
 		if (!file) {
 			std::cout << "ERROR: cannot write configuration file " << applicationInfo->serverConfigFile_ << std::endl;
 			return false;
