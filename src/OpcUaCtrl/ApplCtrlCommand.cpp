@@ -48,6 +48,7 @@ namespace OpcUaCtrl
 	void
 	ApplCtrlCommand::usage(void)
 	{
+		std::cout << "    Commands:" << std::endl;
 		std::cout << "    show: show the names of all applications found" << std::endl;
 	}
 

@@ -39,6 +39,7 @@ namespace OpcUaCtrl
 
 		std::string installPath_ = "";
 		std::string applName_ = "";
+		std::string serverConfigFile_ = "";
 	};
 
 	class DLLEXPORT Application
@@ -55,6 +56,7 @@ namespace OpcUaCtrl
 		ApplicationInfo::Map& map(void);
 		const iterator begin(void);
 		const iterator end(void);
+		const iterator find(const std::string& applName);
 
 	  private:
 		ApplicationInfo::Map applicationInfoMap_;

@@ -22,6 +22,7 @@
 #include "OpcUaStackCore/Utility/Environment.h"
 #include "OpcUaCtrl/OpcUaCtrl.h"
 #include "OpcUaCtrl/ApplCtrlCommand.h"
+#include "OpcUaCtrl/SelfSignedCertCtrlCommand.h"
 
 using namespace OpcUaStackCore;
 
@@ -51,11 +52,12 @@ namespace OpcUaCtrl
 
 		// init
 		boost::filesystem::path p = argv[0];
-		std::string name_ = p.stem().string();
+		name_ = p.stem().string();
 		initInstallPathList();
 
 		// add commands
 		addCtrlCommand("appl", boost::make_shared<ApplCtrlCommand>());
+		addCtrlCommand("self_signed_cert", boost::make_shared<SelfSignedCertCtrlCommand>());
 
 
 		// check number of parameter command line

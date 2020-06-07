@@ -79,6 +79,7 @@ namespace OpcUaCtrl
 				auto applicationInfo = boost::make_shared<ApplicationInfo>();
 				applicationInfo->applName_ = applName.path().filename().string();
 				applicationInfo->installPath_ = installPath;
+				applicationInfo->serverConfigFile_ = serverConfigFileName.string();
 				applicationInfoMap_.insert(std::make_pair(applicationInfo->applName_, applicationInfo));
 			}
 		}
@@ -104,6 +105,12 @@ namespace OpcUaCtrl
 	Application::end(void)
 	{
 		return applicationInfoMap_.end();
+	}
+
+	const Application::iterator
+	Application::find(const std::string& applName)
+	{
+		return applicationInfoMap_.find(applName);
 	}
 
 }
