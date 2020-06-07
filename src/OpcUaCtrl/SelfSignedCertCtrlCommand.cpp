@@ -19,6 +19,7 @@
 #include <boost/regex.hpp>
 #include <boost/algorithm/string.hpp>
 #include <iostream>
+#include <fstream>
 #include "OpcUaCtrl/SelfSignedCertCtrlCommand.h"
 
 namespace OpcUaCtrl
