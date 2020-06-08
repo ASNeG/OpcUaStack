@@ -159,7 +159,8 @@ namespace OpcUaStackCore
         }
 
         bufLen = length;
-        i2d_PrivateKey(pKey_, (unsigned char**)&buf);
+        char* ptr = buf;
+        i2d_PrivateKey(pKey_, (unsigned char**)&ptr);
     	return true;
     }
 

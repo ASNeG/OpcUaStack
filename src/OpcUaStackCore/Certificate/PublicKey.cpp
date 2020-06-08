@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -173,7 +173,8 @@ namespace OpcUaStackCore
 	bool
 	PublicKey::fromDER(const char* buf, uint32_t bufLen)
 	{
-	    publicKey_ = d2i_X509_PUBKEY(0, (const unsigned char**)&buf, bufLen);
+		const char* ptr = buf;
+	    publicKey_ = d2i_X509_PUBKEY(0, (const unsigned char**)&ptr, bufLen);
 	    if (publicKey_  == nullptr) {
 	        addOpenSSLError();
 	    	return false;
@@ -197,7 +198,8 @@ namespace OpcUaStackCore
 	    }
 
 	    bufLen = length;
-	    i2d_X509_PUBKEY(publicKey_, (unsigned char**)&buf);
+	    char* ptr = buf;
+	    i2d_X509_PUBKEY(publicKey_, (unsigned char**)&ptr);
 
 	    return true;
 	}

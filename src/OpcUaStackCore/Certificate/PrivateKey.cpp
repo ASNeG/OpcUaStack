@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -158,7 +158,8 @@ namespace OpcUaStackCore
 	    }
 
 	    bufLen = length;
-		i2d_PrivateKey(privateKey_, (unsigned char**)&buf);
+	    char* ptr = buf;
+		i2d_PrivateKey(privateKey_, (unsigned char**)&ptr);
 		return true;
 	}
 
@@ -170,7 +171,8 @@ namespace OpcUaStackCore
 			privateKey_ = nullptr;
 		}
 
-	    privateKey_ = d2i_PrivateKey(keyType, 0, (const unsigned char**)&buf, bufLen);
+		char* ptr = buf;
+	    privateKey_ = d2i_PrivateKey(keyType, 0, (const unsigned char**)&ptr, bufLen);
 	    if (privateKey_ == nullptr) {
 	    	const_cast<PrivateKey*>(this)->addOpenSSLError();
 	    	return false;
