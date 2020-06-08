@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/asio.hpp>
 #include <boost/algorithm/string.hpp>
 #include <OpcUaStackCore/Certificate/ApplicationCertificateConfig.h>
 #include <iostream>
@@ -340,7 +341,6 @@ namespace OpcUaStackCore
 		certificateSettings.certificateType(certificateType);
 
 		// get ip address
-		std::vector<std::string>::iterator itIpAddress;
 		std::vector<std::string> ipAddresses;
 		child->getValues("CertificateSettings.IPAddress", ipAddresses);
 		if (ipAddresses.size() == 0) {
@@ -349,8 +349,19 @@ namespace OpcUaStackCore
 				.parameter("ParameterPath", configPrefixApplicationCertificate + std::string(".CertificateSettings.IPAddress"));
 			return false;
 		}
-		for (itIpAddress = ipAddresses.begin(); itIpAddress != ipAddresses.end(); itIpAddress++) {
-			certificateSettings.ipAddress().push_back(*itIpAddress);
+		for ( auto ipAddress : ipAddresses ) {
+			// check the format of the ip address
+			boost::system::error_code ec;
+			boost::asio::ip::address::from_string(ipAddress, ec);
+			if (!ec) {
+				Log(Error, "invalid address format fount in configuration")
+					.parameter("ParameterName", configPrefixApplicationCertificate + std::string(".CertificateSettings.IPAddress"))
+					.parameter("ParameterValue", ipAddress);
+				return false;
+			}
+
+			// add the ip address to the address list
+			certificateSettings.ipAddress().push_back(ipAddress);
 		}
 
 		// get dns name

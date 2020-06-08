@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -154,8 +154,7 @@ namespace OpcUaStackCore
 		boost::split(strVec, subjectAltName, boost::is_any_of(","));
 
 		// read parameter
-		std::vector<std::string>::iterator it;
-		for (it = strVec.begin(); it != strVec.end(); it++) {
+		for (auto it = strVec.begin(); it != strVec.end(); it++) {
 			std::string str = *it;
 			boost::algorithm::trim(str);
 
