@@ -27,10 +27,12 @@ openssl req -new \
 # create ca certificate
 echo "create ca certificate"
 openssl ca -create_serial \
-        -out ./asneg_ca_cert.pem -days 3650 -batch \
+	-out ./asneg_ca_cert.pem \
+	-days 3650 -batch \
         -keyfile asneg_ca_key.pem -selfsign \
         -extensions v3_ca \
         -infiles asneg_ca_req.pem
+openssl x509 -outform der -in ./asneg_ca_cert.pem -out ./asneg_ca_cert.der
 
 # show ca
 echo "show ca certificate"
