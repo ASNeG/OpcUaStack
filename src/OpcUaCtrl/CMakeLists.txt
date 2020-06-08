@@ -48,23 +48,23 @@ install(
 
 install(
     FILES ${PROJECT_SOURCE_DIR}/OpcUaCtrl/Config/openssl.cnf 
-    DESTINATION /etc/OpcUaStack4/ssl
+    DESTINATION /etc/OpcUaStack/ssl
 )
 
 install(
 	FILES ${PROJECT_SOURCE_DIR}/OpcUaCtrl/Config/asneg_ca_cert.sh 
-	DESTINATION /etc/OpcUaStack4/script
+	DESTINATION /etc/OpcUaStack/script
 )
 install(
 	FILES ${PROJECT_SOURCE_DIR}/OpcUaCtrl/Config/asneg_im_cert.sh 
-	DESTINATION /etc/OpcUaStack4/script
+	DESTINATION /etc/OpcUaStack/script
 )
 
 install(
 	FILES ${PROJECT_SOURCE_DIR}/OpcUaCtrl/Config/asneg_ca_cert.pem 
-	DESTINATION /etc/OpcUaStack4/pki
+	DESTINATION /etc/OpcUaStack/pki
 )
 install(
 	FILES ${PROJECT_SOURCE_DIR}/OpcUaCtrl/Config/asneg_ca_key.pem 
-	DESTINATION /etc/OpcUaStack4/pki
+	DESTINATION /etc/OpcUaStack/pki
 )
