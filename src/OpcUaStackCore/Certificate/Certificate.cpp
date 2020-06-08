@@ -529,6 +529,7 @@ namespace OpcUaStackCore
 		}
 
 		if (!certificateExtension.decodeX509(cert_)) {
+			addError(certificateExtension.errorList());
 			return false;
 		}
 
