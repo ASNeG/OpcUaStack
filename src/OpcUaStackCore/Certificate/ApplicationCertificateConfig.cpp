@@ -353,8 +353,8 @@ namespace OpcUaStackCore
 			// check the format of the ip address
 			boost::system::error_code ec;
 			boost::asio::ip::address::from_string(ipAddress, ec);
-			if (!ec) {
-				Log(Error, "invalid address format fount in configuration")
+			if (ec != boost::system::errc::success) {
+				Log(Error, "invalid address format found in configuration")
 					.parameter("ParameterName", configPrefixApplicationCertificate + std::string(".CertificateSettings.IPAddress"))
 					.parameter("ParameterValue", ipAddress);
 				return false;
