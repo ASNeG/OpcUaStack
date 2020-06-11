@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -57,8 +57,18 @@ namespace OpcUaStackCore
 	    bool decodeX509(X509_NAME* name);
 
 	  private:
-	    int32_t encodeX509(X509_NAME* name, const std::string& key, const std::string& value);
-	    bool decodeX509(X509_NAME* name, int32_t id, std::string& value);
+	    int32_t encodeX509(
+	    	X509_NAME* name,
+			const std::string& key,
+			const std::string& value,
+			bool optional = false
+		);
+	    bool decodeX509(
+	    	X509_NAME* name,
+			int32_t id,
+			std::string& value,
+			bool optional = false
+		);
 
 	    std::string organization_;
 	    std::string organizationUnit_;

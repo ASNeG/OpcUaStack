@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -32,8 +32,6 @@ namespace OpcUaStackCore
 		CertificateExtension(bool useCACert = false);
 		~CertificateExtension(void);
 
-		static bool isCACert(X509 *cert);
-
 		void clear(void);
 		void basicConstraints(const std::string& basicConstraints);
 		std::string& basicConstraints(void);
@@ -57,7 +55,7 @@ namespace OpcUaStackCore
 
 	  private:
 		bool encodeX509Extension(X509 *cert, X509V3_CTX& ctx, const std::string& key, const std::string& value);
-		bool decodeX509Extension(X509 *cert, int32_t key, std::string& value);
+		bool decodeX509Extension(X509 *cert, int32_t key, std::string& value, bool mandatory = true);
 
 		bool useCACert_;
 		std::string basicConstraints_;
