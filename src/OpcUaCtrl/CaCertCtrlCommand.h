@@ -46,14 +46,15 @@ namespace OpcUaCtrl
 		uint32_t show(
 			const std::vector<std::string>& commandLine
 		);
-		void showCertificateInfo(
+		bool showCertificateInfo(
+			std::stringstream& ss,
 			const std::string& filename,
 			const std::string& status
 		);
 		uint32_t add(const std::vector<std::string>& commandLine);
 		uint32_t del(const std::vector<std::string>& commandLine);
-		uint32_t activate(const std::vector<std::string>& commandLine);
-		uint32_t deactivate(const std::vector<std::string>& commandLine);
+		uint32_t trust(const std::vector<std::string>& commandLine);
+		uint32_t untrust(const std::vector<std::string>& commandLine);
 	};
 
 }

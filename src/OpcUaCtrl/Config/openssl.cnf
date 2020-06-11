@@ -233,6 +233,10 @@ keyUsage = nonRepudiation, digitalSignature, keyEncipherment
 
 # PKIX recommendation.
 
+nsComment = "CA certificate generated with ASNeG OpcUaStack using OpenSSL"
+
+keyUsage = "critical, nonRepudiation, digitalSignature, keyEncipherment, keyCertSign, cRLSign"
+
 subjectKeyIdentifier=hash
 
 authorityKeyIdentifier=keyid:always,issuer
@@ -353,6 +357,8 @@ ess_cert_id_alg		= sha1	# algorithm to compute certificate
 				
 
 [ demo-extension ]
+nsComment = "Generated with ASNeG OpcUaStack using OpenSSL"
+keyUsage = "critical, nonRepudiation, digitalSignature, keyEncipherment, dataEncipherment, keyCertSign"
 subjectAltName = "URI:urn:127.0.0.1:ASNeG:ASNeG Product, IP:127.0.0.1, DNS:devel, email:kai@huebl-sgh.de"
 keyUsage = "digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment, keyCertSign"
 extendedKeyUsage = "serverAuth, clientAuth"

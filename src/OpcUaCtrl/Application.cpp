@@ -93,24 +93,24 @@ namespace OpcUaCtrl
 
 				// ontain ca/issuer/cert directory
 				std::string caDirectoryTrust = config->getValue(
-					"OpcUaServer.ApplicationCertificate.CertificateTrustListLocation", ""
+					"OpcUaServer.ApplicationCertificate.Folder.CertificateTrustListLocation", ""
 				);
 				std::string caDirectoryRevocation = config->getValue(
-					"OpcUaServer.ApplicationCertificate.CertificateRevocationListLocation", ""
+					"OpcUaServer.ApplicationCertificate.Folder.CertificateRevocationListLocation", ""
 				);
 
 				std::string issuerDirectoryTrust = config->getValue(
-					"OpcUaServer.ApplicationCertificate.IssuersCertificatesLocation", ""
+					"OpcUaServer.ApplicationCertificate.Folder.IssuersCertificatesLocation", ""
 				);
 				std::string issuerDirectoryRevocation = config->getValue(
-					"OpcUaServer.ApplicationCertificate.IssuersRevocationListLocation", ""
+					"OpcUaServer.ApplicationCertificate.Folder.IssuersRevocationListLocation", ""
 				);
 
 				std::string certDirectoryTrust = config->getValue(
-					"OpcUaServer.ApplicationCertificate.CertificateTrustListLocation", ""
+					"OpcUaServer.ApplicationCertificate.Folder.CertificateTrustListLocation", ""
 				);
 				std::string certDirectoryRevocation = config->getValue(
-					"OpcUaServer.ApplicationCertificate.CertificateRejectListLocation", ""
+					"OpcUaServer.ApplicationCertificate.Folder.CertificateRejectListLocation", ""
 				);
 
 				// add new entry to application info map
