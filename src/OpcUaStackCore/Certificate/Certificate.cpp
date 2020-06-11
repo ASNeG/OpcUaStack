@@ -523,7 +523,7 @@ namespace OpcUaStackCore
 		}
 
 		// get extensions
-		auto isCACert = isCaCertificate();
+		auto isCACert = isCaCertificate() || isIntermediateCertificate();
 		CertificateExtension ext(isCACert);
 		if (!ext.decodeX509(cert_)) {
 			addError(ext.errorList());
