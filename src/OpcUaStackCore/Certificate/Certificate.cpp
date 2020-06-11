@@ -430,6 +430,37 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool
+	Certificate::isIntermediateCertificate(void)
+	{
+		// 1. The CA attribute must be set to true
+		CertificateExtension certificateExtension(true);
+		if (!getExtension(certificateExtension)) {
+			addError("read certificate extension error");
+			return false;
+		}
+		if (certificateExtension.basicConstraints().find("CA:TRUE") == std::string::npos) {
+			return false;
+		}
+
+		// 2. The subject name and the issuer name must be different
+		Identity subject;
+		if (!getSubject(subject)) {
+			addError("read certificate subject error");
+			return false;
+		}
+		Identity issuer;
+		if (!getIssuer(issuer)) {
+			addError("read certificate issuer error");
+			return false;
+		}
+		if (subject.commonName() == issuer.commonName()) {
+			return false;
+		}
+
+		return true;
+	}
+
 	X509*
 	Certificate::getX509(void)
 	{
