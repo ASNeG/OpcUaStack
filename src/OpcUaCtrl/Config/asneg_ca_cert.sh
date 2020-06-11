@@ -14,7 +14,7 @@ rm -rf asneg_ca_cert.pem
 rm -rf index.txt
 
 touch index.txt
-export OPENSSL_CONF=${HOME}/.ASNeG/etc/OpcUaStack4/ssl/openssl.cnf
+export OPENSSL_CONF=${HOME}/.ASNeG/etc/OpcUaStack/ssl/openssl.cnf
 
 # create a csr
 echo "create csr request"
@@ -36,4 +36,4 @@ openssl x509 -outform der -in ./asneg_ca_cert.pem -out ./asneg_ca_cert.der
 
 # show ca
 echo "show ca certificate"
-openssl x509 -in ./asneg_ca_cert.pem -text
+openssl x509 -inform der -inform der  -in ./asneg_ca_cert.der -text

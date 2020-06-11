@@ -35,7 +35,9 @@ openssl ca \
         -cert asneg_ca_cert.pem \
         -out asneg_im_cert.pem \
         -infiles asneg_im_req.pem
+openssl x509 -outform der -in ./asneg_im_cert.pem -out ./asneg_im_cert.der
+
 
 # show intermediate certificate
 echo "show intermediate certificate"
-openssl x509 -in ./asneg_im_cert.pem -text
+openssl x509 -inform der -in ./asneg_im_cert.der -text
