@@ -11,6 +11,7 @@
 rm -rf asneg_product_key.pem
 rm -rf asneg_product_req.pem
 rm -rf asneg_product_cert.pem
+rm -rf asneg_product_cert.der
 rm -rf index.txt
 
 touch index.txt
@@ -25,8 +26,8 @@ openssl req -new \
         -keyout asneg_product_key.pem \
         -out asneg_product_req.pem
 
-# create intermediate certificate
-echo "create intermediate certificate"
+# create product certificate
+echo "create product certificate"
 openssl ca \
         -policy policy_anything \
         -days 3650 \
@@ -35,7 +36,9 @@ openssl ca \
         -cert asneg_im_cert.pem \
         -out asneg_product_cert.pem \
         -infiles asneg_product_req.pem
+openssl x509 -outform der -in ./asneg_product_cert.pem -out ./asneg_product_cert.der
 
-# show intermediate certificate
-echo "show intermediate certificate"
-openssl x509 -in ./asneg_product_cert.pem -text
+# show product certificate
+echo "show product certificate"
+openssl x509 -inform der -inform der  -in ./asneg_product_cert.der -text
+
