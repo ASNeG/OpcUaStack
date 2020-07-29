@@ -47,6 +47,8 @@ namespace OpcUaStackCore
 		OpcUaStatusCode validateCertificate(void);
 		OpcUaStatusCode verifyCertificateStructure(OpcUaByteString& certificateChain);
 		OpcUaStatusCode buildCertificateChain(void);
+		OpcUaStatusCode validateSelfSigned(void);
+		OpcUaStatusCode validateCA(void);
 		OpcUaStatusCode validateSignature(void);
 		OpcUaStatusCode securityPolicyCheck(void);
 		OpcUaStatusCode trustListCheck(void);

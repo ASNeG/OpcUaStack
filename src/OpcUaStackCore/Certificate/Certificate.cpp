@@ -401,6 +401,17 @@ namespace OpcUaStackCore
 			return false;
 		}
 
+		return true;
+	}
+
+	bool
+	Certificate::isCaRoot(void)
+	{
+		// 1. The CA attribute must be set to true
+		if (!isCaCertificate()) {
+			return false;
+		}
+
 		// 2. The subject name and the issuer name must be the same
 		Identity subject;
 		if (!getSubject(subject)) {

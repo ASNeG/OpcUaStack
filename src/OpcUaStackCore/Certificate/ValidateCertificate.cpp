@@ -90,6 +90,20 @@ namespace OpcUaStackCore
 			return statusCode;
 		}
 
+		// check self signed certificate
+		statusCode = validateSelfSigned();
+		if (statusCode != Success) {
+			Log(Error, "validate self signed error");
+			return statusCode;
+		}
+
+		// check CA information in certificates
+		statusCode = validateCA();
+		if (statusCode != Success) {
+			Log(Error, "validate ca error");
+			return statusCode;
+		}
+
 		// validate signature
 		statusCode = validateSignature();
 		if (statusCode != Success) {
@@ -185,13 +199,14 @@ namespace OpcUaStackCore
 		// the error Bad_SecurityChecksFailed shall be reported back to the Client.
 		//
 
-		// check number of certificates in cetificate chain
+		// check number of certificates in certificate chain
 		if (certificateChain_.certificateVec().empty()) {
 			Log(Error, "certificate chain empty");
 			return BadSecurityChecksFailed;
 		}
 
-		// check certificates in chain
+		// Check certificates in chain. A subject in certificate n must be equal to
+		// an issuer in certificate n+1.
 		auto size = certificateChain_.certificateVec().size();
 		for (auto idx = 1; idx < size; idx++) {
 
@@ -249,6 +264,125 @@ namespace OpcUaStackCore
 			issuer.log("Last issuer");
 			return Success;
 		} while (true);
+
+		return Success;
+	}
+
+	OpcUaStatusCode
+	ValidateCertificate::validateSelfSigned(void)
+	{
+		//
+		// Check if the certificate is a self signed certificate. If yes, do
+		// no further checks.
+		//
+		auto selfSigned0 = certificateChain_.certificateVec()[0]->isSelfSigned();
+		auto caFlag0 = certificateChain_.certificateVec()[0]->isCaCertificate();
+		auto size = certificateChain_.certificateVec().size();
+		if (size == 1) {
+
+			// There is only one certificate in certificate chain.
+
+			if (selfSigned0) {
+
+				// The certificate in the certificate chain is a self signed certificate.
+
+				if (caFlag0) {
+					// The self signed certificate contains a CA flag. That is not correct.
+
+					Log(Error, "found self signed certificate with ca flag");
+
+					// get subject from first certificate
+					Identity subject;
+					if (certificateChain_.certificateVec()[0]->getSubject(subject)) {
+						subject.log("Subject");
+					}
+
+					return BadSecurityChecksFailed;
+				}
+
+				// The self signed certificate is correct.
+				return Success;
+			}
+			else {
+				// The certificate chain contains only one certificate. The certificate
+				// is not a self signed certificate. That is not correct.
+
+				Log(Error, "the only certificate in certificate chain is not a self signed certificate");
+
+				// get subject from first certificate
+				Identity subject;
+				if (certificateChain_.certificateVec()[0]->getSubject(subject)) {
+					subject.log("Subject");
+				}
+
+				return BadSecurityChecksFailed;
+			}
+		}
+
+		return Success;
+	}
+
+	OpcUaStatusCode
+	ValidateCertificate::validateCA(void)
+	{
+		auto caFlag0 = certificateChain_.certificateVec()[0]->isCaCertificate();
+		auto size = certificateChain_.certificateVec().size();
+		if (size == 1) {
+			// This check is done in function validateSelfSigned
+			return Success;
+		}
+
+		//
+		// The first certificate in the certificate chain must not contain the
+		// CA flag.
+		//
+		if (caFlag0) {
+			Log(Error, "first certificate in certificate chain contains CA flag");
+
+			// get subject from first certificate
+			Identity subject;
+			if (certificateChain_.certificateVec()[0]->getSubject(subject)) {
+				subject.log("Subject");
+			}
+
+			return BadSecurityChecksFailed;
+		}
+
+		//
+		// With the exception of the first certificate, all certificates in
+		// the certificate chain must contain the CA flag.
+		//
+		for (auto idx = 1; idx < size; idx++) {
+			auto caFlag = certificateChain_.certificateVec()[idx]->isCaCertificate();
+
+			if (!caFlag) {
+				Log(Error, "certificate in certificate chain do not contain CA flag");
+
+				// get subject from certificate
+				Identity subject;
+				if (certificateChain_.certificateVec()[idx]->getSubject(subject)) {
+					subject.log("Subject");
+				}
+
+				return BadSecurityChecksFailed;
+			}
+		}
+
+		//
+		// The last certificate in the certificate must be a root ca certificate
+		//
+		auto caRoot = certificateChain_.certificateVec()[size-1]->isCaRoot();
+		if (!caRoot) {
+			Log(Error, "last certificate in certificate chain is not a root ca certificate");
+
+			// get subject from certificate
+			Identity subject;
+			if (certificateChain_.certificateVec()[size-1]->getSubject(subject)) {
+				subject.log("Subject");
+			}
+
+			return BadSecurityChecksFailed;
+		}
 
 		return Success;
 	}

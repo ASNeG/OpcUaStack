@@ -289,7 +289,7 @@ BOOST_AUTO_TEST_CASE(ValidateCertificate_Validate_DEP)
 	// validate certificate
 	ValidateCertificate vc;
 	vc.certificateManager(gf->certificateManager_);
-	BOOST_REQUIRE(vc.validateCertificate(byteString) == BadCertificateUseNotAllowed);
+	BOOST_REQUIRE(vc.validateCertificate(byteString) == BadSecurityChecksFailed);
 }
 
 BOOST_AUTO_TEST_CASE(ValidateCertificate_Validate_SRV)
