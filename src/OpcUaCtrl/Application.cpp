@@ -91,7 +91,7 @@ namespace OpcUaCtrl
 					continue;
 				}
 
-				// ontain ca/issuer/cert directory
+				// obtain ca/issuer/cert directory
 				std::string caDirectoryTrust = config->getValue(
 					"OpcUaServer.ApplicationCertificate.Folder.CertificateTrustListLocation", ""
 				);
@@ -113,6 +113,13 @@ namespace OpcUaCtrl
 					"OpcUaServer.ApplicationCertificate.Folder.CertificateRejectListLocation", ""
 				);
 
+				std::string applicationCertFile = config->getValue(
+					"OpcUaServer.ApplicationCertificate.Files.ApplicationCertificateFile", ""
+				);
+				std::string privateKeyFile = config->getValue(
+					"OpcUaServer.ApplicationCertificate.Files.PrivateKeyFile", ""
+				);
+
 				// add new entry to application info map
 				auto applicationInfo = boost::make_shared<ApplicationInfo>();
 				applicationInfo->applName_ = applName.path().filename().string();
@@ -124,6 +131,9 @@ namespace OpcUaCtrl
 				applicationInfo->issuerDirectoryRevocation_ = issuerDirectoryRevocation;
 				applicationInfo->certDirectoryTrust_ = certDirectoryTrust;
 				applicationInfo->certDirectoryRevocation_ = certDirectoryRevocation;
+				applicationInfo->applicationCertFile_ = applicationCertFile;
+				applicationInfo->privateKeyFile_ = privateKeyFile;
+
 				applicationInfoMap_.insert(std::make_pair(applicationInfo->applName_, applicationInfo));
 			}
 		}

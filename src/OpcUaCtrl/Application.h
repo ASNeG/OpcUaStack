@@ -47,6 +47,8 @@ namespace OpcUaCtrl
 		std::string issuerDirectoryRevocation_ = "";
 		std::string certDirectoryTrust_ = "";
 		std::string certDirectoryRevocation_ = "";
+		std::string applicationCertFile_ = "";
+		std::string privateKeyFile_ = "";
 	};
 
 	class DLLEXPORT Application
