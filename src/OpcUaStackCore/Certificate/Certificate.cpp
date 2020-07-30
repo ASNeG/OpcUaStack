@@ -388,6 +388,48 @@ namespace OpcUaStackCore
 		return !error;
 	}
 
+	bool
+	Certificate::isCaCertificate(void)
+	{
+		// 1. The CA attribute must be set to true
+		CertificateExtension certificateExtension(true);
+		if (!getExtension(certificateExtension)) {
+			addError("read certificate extension error");
+			return false;
+		}
+		if (certificateExtension.basicConstraints().find("CA:TRUE") == std::string::npos) {
+			return false;
+		}
+
+		return true;
+	}
+
+	bool
+	Certificate::isCaRoot(void)
+	{
+		// 1. The CA attribute must be set to true
+		if (!isCaCertificate()) {
+			return false;
+		}
+
+		// 2. The subject name and the issuer name must be the same
+		Identity subject;
+		if (!getSubject(subject)) {
+			addError("read certificate subject error");
+			return false;
+		}
+		Identity issuer;
+		if (!getIssuer(issuer)) {
+			addError("read certificate issuer error");
+			return false;
+		}
+		if (subject.commonName() != issuer.commonName()) {
+			return false;
+		}
+
+		return true;
+	}
+
 	X509*
 	Certificate::getX509(void)
 	{
@@ -408,7 +450,12 @@ namespace OpcUaStackCore
 			return false;
 		}
 
-		return subject.decodeX509(name);
+		if (!subject.decodeX509(name)) {
+			addError(subject.errorList());
+			return false;
+		}
+
+		return true;
 	}
 
 	bool
@@ -425,7 +472,12 @@ namespace OpcUaStackCore
 			return false;
 		}
 
-		return issuer.decodeX509(name);
+		if (!issuer.decodeX509(name)) {
+			addError(issuer.errorList());
+			return false;
+		}
+
+		return true;
 	}
 
 	bool
@@ -440,7 +492,7 @@ namespace OpcUaStackCore
 		}
 
 		// get extensions
-		auto isCACert = CertificateExtension::isCACert(cert_);
+		auto isCACert = isCaCertificate();
 		CertificateExtension ext(isCACert);
 		if (!ext.decodeX509(cert_)) {
 			addError(ext.errorList());
@@ -529,6 +581,7 @@ namespace OpcUaStackCore
 		}
 
 		if (!certificateExtension.decodeX509(cert_)) {
+			addError(certificateExtension.errorList());
 			return false;
 		}
 

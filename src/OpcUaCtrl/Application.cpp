@@ -17,7 +17,11 @@
 
 #include <boost/make_shared.hpp>
 #include <boost/filesystem.hpp>
+#include "OpcUaStackCore/Base/Config.h"
+#include "OpcUaStackCore/Base/ConfigXml.h"
 #include "OpcUaCtrl/Application.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaCtrl
 {
@@ -75,11 +79,51 @@ namespace OpcUaCtrl
 					continue;
 				}
 
+				// read server configuration file
+				auto config = Config::instance();
+				config->alias(
+					"@CONF_DIR@", installPath +
+					std::string("/etc/OpcUaStack/") +
+					applName.path().filename().string()
+				);
+				ConfigXml configXml;
+				if (!configXml.parse(serverConfigFileName.string(), true)) {
+					continue;
+				}
+
+				// ontain ca/issuer/cert directory
+				std::string caDirectoryTrust = config->getValue(
+					"OpcUaServer.ApplicationCertificate.Folder.CertificateTrustListLocation", ""
+				);
+				std::string caDirectoryRevocation = config->getValue(
+					"OpcUaServer.ApplicationCertificate.Folder.CertificateRevocationListLocation", ""
+				);
+
+				std::string issuerDirectoryTrust = config->getValue(
+					"OpcUaServer.ApplicationCertificate.Folder.IssuersCertificatesLocation", ""
+				);
+				std::string issuerDirectoryRevocation = config->getValue(
+					"OpcUaServer.ApplicationCertificate.Folder.IssuersRevocationListLocation", ""
+				);
+
+				std::string certDirectoryTrust = config->getValue(
+					"OpcUaServer.ApplicationCertificate.Folder.CertificateTrustListLocation", ""
+				);
+				std::string certDirectoryRevocation = config->getValue(
+					"OpcUaServer.ApplicationCertificate.Folder.CertificateRejectListLocation", ""
+				);
+
 				// add new entry to application info map
 				auto applicationInfo = boost::make_shared<ApplicationInfo>();
 				applicationInfo->applName_ = applName.path().filename().string();
 				applicationInfo->installPath_ = installPath;
 				applicationInfo->serverConfigFile_ = serverConfigFileName.string();
+				applicationInfo->caDirectoryTrust_ = caDirectoryTrust;
+				applicationInfo->caDirectoryRevocation_ = caDirectoryRevocation;
+				applicationInfo->issuerDirectoryTrust_ = issuerDirectoryTrust;
+				applicationInfo->issuerDirectoryRevocation_ = issuerDirectoryRevocation;
+				applicationInfo->certDirectoryTrust_ = certDirectoryTrust;
+				applicationInfo->certDirectoryRevocation_ = certDirectoryRevocation;
 				applicationInfoMap_.insert(std::make_pair(applicationInfo->applName_, applicationInfo));
 			}
 		}

@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -51,16 +51,6 @@ namespace OpcUaStackCore
 
 	CertificateExtension::~CertificateExtension(void)
 	{
-	}
-
-	bool
-	CertificateExtension::isCACert(X509 *cert)
-	{
-		if ((X509_get_ext_by_NID(cert, NID_authority_key_identifier, -1) < 0) &&
-		    (X509_get_ext_by_NID(cert, NID_subject_alt_name, -1) < 0)) {
-			return true;
-		}
-		return false;
 	}
 
 	void
@@ -174,16 +164,16 @@ namespace OpcUaStackCore
 			addError("encode NID_key_usage error");
 			return false;
 		}
-		if (!encodeX509Extension(cert, ctx, "extendedKeyUsage", extendedKeyUsage_)) {
-			addError("encode NID_ext_key_usage error");
-			return false;
-		}
 		if (!encodeX509Extension(cert, ctx, "subjectKeyIdentifier", subjectKeyIdentifier_)) {
 			addError("encode NID_subject_key_identifier error");
 			return false;
 		}
 
 		if (!useCACert_) {
+			if (!encodeX509Extension(cert, ctx, "extendedKeyUsage", extendedKeyUsage_)) {
+				addError("encode NID_ext_key_usage error");
+				return false;
+			}
 			if (!encodeX509Extension(cert, ctx, "authorityKeyIdentifier", authorityKeyIdentifier_)) {
 				addError("encode NID_authority_key_identifier error");
 				return false;
@@ -206,16 +196,12 @@ namespace OpcUaStackCore
 			addError("decode NID_basic_constraints error");
 			return false;
 		}
-		if (!decodeX509Extension(cert, NID_netscape_comment, nsComment_)) {
+		if (!decodeX509Extension(cert, NID_netscape_comment, nsComment_, false)) {
 			addError("decode NID_netscape_comment error");
 			return false;
 		}
 		if (!decodeX509Extension(cert, NID_key_usage, keyUsage_)) {
 			addError("decode NID_key_usage error");
-			return false;
-		}
-		if (!decodeX509Extension(cert, NID_ext_key_usage, extendedKeyUsage_)) {
-			addError("decode NID_ext_key_usage error");
 			return false;
 		}
 		if (!decodeX509Extension(cert, NID_subject_key_identifier, subjectKeyIdentifier_)) {
@@ -224,6 +210,10 @@ namespace OpcUaStackCore
 		}
 
 		if (!useCACert_) {
+			if (!decodeX509Extension(cert, NID_ext_key_usage, extendedKeyUsage_)) {
+				addError("decode NID_ext_key_usage error");
+				return false;
+			}
 			if (!decodeX509Extension(cert, NID_authority_key_identifier, authorityKeyIdentifier_)) {
 				addError("decode NID_authority_key_identifier error");
 				return false;
@@ -261,10 +251,14 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	CertificateExtension::decodeX509Extension(X509 *cert, int32_t key, std::string& value)
+	CertificateExtension::decodeX509Extension(X509 *cert, int32_t key, std::string& value, bool mandatory)
 	{
 	    int32_t pos = X509_get_ext_by_NID(cert, key, -1);
 		if (pos < 0) {
+			if (!mandatory) {
+				value = "";
+				return true;
+			}
 			addOpenSSLError();
 			return false;
 		}

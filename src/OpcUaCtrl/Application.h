@@ -40,6 +40,13 @@ namespace OpcUaCtrl
 		std::string installPath_ = "";
 		std::string applName_ = "";
 		std::string serverConfigFile_ = "";
+
+		std::string caDirectoryTrust_ = "";
+		std::string caDirectoryRevocation_ = "";
+		std::string issuerDirectoryTrust_ = "";
+		std::string issuerDirectoryRevocation_ = "";
+		std::string certDirectoryTrust_ = "";
+		std::string certDirectoryRevocation_ = "";
 	};
 
 	class DLLEXPORT Application
