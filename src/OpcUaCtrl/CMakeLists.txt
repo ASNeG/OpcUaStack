@@ -59,6 +59,10 @@ install(
 	FILES ${PROJECT_SOURCE_DIR}/OpcUaCtrl/Config/asneg_im_cert.sh 
 	DESTINATION /etc/OpcUaStack/script
 )
+install(
+	FILES ${PROJECT_SOURCE_DIR}/OpcUaCtrl/Config/asneg_product_cert.sh 
+	DESTINATION /etc/OpcUaStack/script
+)
 
 install(
 	FILES ${PROJECT_SOURCE_DIR}/OpcUaCtrl/Config/asneg_ca_cert.pem 

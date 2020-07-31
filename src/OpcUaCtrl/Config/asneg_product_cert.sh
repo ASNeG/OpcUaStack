@@ -7,6 +7,13 @@
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 
+# handle command line parameter
+PRODUCT_NAME="ASNeG Product"
+if [ $# -eq 1 ] 
+then
+    PRODUCT_NAME=$1
+fi
+
 # cleanup
 rm -rf asneg_product_key.pem
 rm -rf asneg_product_req.pem
@@ -22,7 +29,7 @@ echo "create csr request"
 openssl req -new \
         -nodes \
         -days 3650 \
-        -subj '/DC=127.0.0.1/CN=ASNeG Product/O=ASNeG/C=DE/ST=Neukirchen/L=Hessen/OU=ASNeG Product' \
+        -subj "/DC=127.0.0.1/CN=${PRODUCT_NAME}/O=ASNeG/C=DE/ST=Neukirchen/L=Hessen/OU=ASNeG Product" \
         -keyout asneg_product_key.pem \
         -out asneg_product_req.pem
 
