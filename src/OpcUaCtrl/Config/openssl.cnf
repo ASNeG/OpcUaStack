@@ -227,20 +227,10 @@ keyUsage = nonRepudiation, digitalSignature, keyEncipherment
 
 [ v3_ca ]
 
-
-# Extensions for a typical CA
-
-
-# PKIX recommendation.
-
 nsComment = "CA certificate generated with ASNeG OpcUaStack using OpenSSL"
-
 keyUsage = "critical, nonRepudiation, digitalSignature, keyEncipherment, keyCertSign, cRLSign"
-
 subjectKeyIdentifier=hash
-
 authorityKeyIdentifier=keyid:always,issuer
-
 basicConstraints = critical,CA:true
 
 # Key usage: this is typical for a CA certificate. However since it will

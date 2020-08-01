@@ -11,10 +11,11 @@
 rm -rf asneg_im_key.pem
 rm -rf asneg_im_req.pem
 rm -rf asneg_im_cert.pem
+rm -rf asneg_im_cert.der
 rm -rf index.txt
 
 touch index.txt
-export OPENSSL_CONF=${HOME}/.ASNeG/etc/OpcUaStack4/ssl/openssl.cnf
+export OPENSSL_CONF=${HOME}/.ASNeG/etc/OpcUaStack/ssl/openssl.cnf
 
 # create csr
 echo "create csr request"
@@ -35,7 +36,9 @@ openssl ca \
         -cert asneg_ca_cert.pem \
         -out asneg_im_cert.pem \
         -infiles asneg_im_req.pem
+openssl x509 -outform der -in ./asneg_im_cert.pem -out ./asneg_im_cert.der
+
 
 # show intermediate certificate
 echo "show intermediate certificate"
-openssl x509 -in ./asneg_im_cert.pem -text
+openssl x509 -inform der -in ./asneg_im_cert.der -text

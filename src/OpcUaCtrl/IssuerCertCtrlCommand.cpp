@@ -18,7 +18,7 @@
 #include <iostream>
 #include <fstream>
 #include "OpcUaStackCore/Certificate/Certificate.h"
-#include "OpcUaCtrl/CaCertCtrlCommand.h"
+#include "OpcUaCtrl/IssuerCertCtrlCommand.h"
 
 using namespace OpcUaStackCore;
 
@@ -26,17 +26,17 @@ namespace OpcUaCtrl
 {
 
 
-	CaCertCtrlCommand::CaCertCtrlCommand(void)
+	IssuerCertCtrlCommand::IssuerCertCtrlCommand(void)
 	: CtrlCommand()
 	{
 	}
 
-	CaCertCtrlCommand::~CaCertCtrlCommand(void)
+	IssuerCertCtrlCommand::~IssuerCertCtrlCommand(void)
 	{
 	}
 
 	uint32_t
-	CaCertCtrlCommand::start(const std::vector<std::string>& commandLine)
+	IssuerCertCtrlCommand::start(const std::vector<std::string>& commandLine)
 	{
 		// check command parameter
 		if (commandLine[2] == "show") {
@@ -61,32 +61,32 @@ namespace OpcUaCtrl
 	}
 
 	void
-	CaCertCtrlCommand::usage(void)
+	IssuerCertCtrlCommand::usage(void)
 	{
 		std::cout << "    Commands:" << std::endl;
 		std::cout << "    show <Application-Name>:" << std::endl;
-		std::cout << "        shows all ca certificates" << std::endl;
-		std::cout << "    add <Application-Name> <Ca-Cert-File>:" << std::endl;
-		std::cout << "        add a new ca certificate" << std::endl;
+		std::cout << "        shows all issuer certificates" << std::endl;
+		std::cout << "    add <Application-Name> <issuer-Cert-File>:" << std::endl;
+		std::cout << "        add a new issuer certificate" << std::endl;
 		std::cout << "    del <Application-Name> <Cert-Id>:" << std::endl;
-		std::cout << "        delete a ca certificate" << std::endl;
+		std::cout << "        delete a issuer certificate" << std::endl;
 		std::cout << "    trust <Application-Name> <Cert-Id>:" << std::endl;
-		std::cout << "        activate a ca certificate" << std::endl;
+		std::cout << "        activate a issuer certificate" << std::endl;
 		std::cout << "    untrust <Application-Name> <CertId>:" << std::endl;
-		std::cout << "        deactivate a ca certificate" << std::endl;
+		std::cout << "        deactivate a issuer certificate" << std::endl;
 	}
 
 	void
-	CaCertCtrlCommand::usageMessage(const std::string& message)
+	IssuerCertCtrlCommand::usageMessage(const std::string& message)
 	{
-		std::cout << "usage: " << name_ << " ca_cert <Command> [<Parameter>, ...]" << std::endl;
+		std::cout << "usage: " << name_ << " issuer_cert <Command> [<Parameter>, ...]" << std::endl;
 		std::cout << std::endl;
 		std::cout << "ERROR: " << message << std::endl;
 		usage();
 	}
 
 	uint32_t
-	CaCertCtrlCommand::show(const std::vector<std::string>& commandLine)
+	IssuerCertCtrlCommand::show(const std::vector<std::string>& commandLine)
 	{
 		// Should be provided information about all existing applications
 		if (commandLine.size() == 3) {
@@ -121,15 +121,15 @@ namespace OpcUaCtrl
 
 		std::stringstream ss;
 
-		// read all files from ca trust directory
-		boost::filesystem::path caDirectoryTrust(applicationInfo->caDirectoryTrust_);
-		for ( auto filenameIt : boost::filesystem::directory_iterator(caDirectoryTrust) ) {
+		// read all files from issuer trust directory
+		boost::filesystem::path issuerDirectoryTrust(applicationInfo->issuerDirectoryTrust_);
+		for ( auto filenameIt : boost::filesystem::directory_iterator(issuerDirectoryTrust) ) {
 			showCertificateInfo(ss, filenameIt.path().string(), "Trusted");
 		}
 
-		// read all files from ca revocation directory
-		boost::filesystem::path caDirectoryRevocation(applicationInfo->caDirectoryRevocation_);
-		for ( auto filenameIt : boost::filesystem::directory_iterator(caDirectoryRevocation) ) {
+		// read all files from issuer revocation directory
+		boost::filesystem::path issuerDirectoryRevocation(applicationInfo->issuerDirectoryRevocation_);
+		for ( auto filenameIt : boost::filesystem::directory_iterator(issuerDirectoryRevocation) ) {
 			showCertificateInfo(ss, filenameIt.path().string(), "Untrusted");
 		}
 
@@ -142,7 +142,7 @@ namespace OpcUaCtrl
 	}
 
 	bool
-	CaCertCtrlCommand::showCertificateInfo(
+	IssuerCertCtrlCommand::showCertificateInfo(
 		std::stringstream& ss,
 		const std::string& filename,
 		const std::string& status
@@ -155,8 +155,8 @@ namespace OpcUaCtrl
 			return false;
 		}
 
-		// check whether it is a ca certificate
-		if (!certificate.isCaCertificate()) {
+		// check whether it is a issuer certificate
+		if (!certificate.isIntermediateCertificate()) {
 			return false;
 		}
 
@@ -190,7 +190,7 @@ namespace OpcUaCtrl
 	}
 
 	uint32_t
-	CaCertCtrlCommand::add(const std::vector<std::string>& commandLine)
+	IssuerCertCtrlCommand::add(const std::vector<std::string>& commandLine)
 	{
 		// check command line parameter
 		if (commandLine.size() < 5) {
@@ -217,35 +217,35 @@ namespace OpcUaCtrl
 			return 1;
 		}
 
-		// check whether it is a ca certificate
-		if (!certificate.isCaCertificate()) {
-			certificate.log(Error, "ca certificate error");
+		// check whether it is a issuer certificate
+		if (!certificate.isIntermediateCertificate()) {
+			certificate.log(Error, "issuer certificate error");
 			return 1;
 		}
 
-		// generate path and name for trusted and revocation ca certificate
-		auto targetTrustCertificateFile = applicationInfo->caDirectoryTrust_ +
+		// generate path and name for trusted and revocation issuer certificate
+		auto targetTrustCertificateFile = applicationInfo->issuerDirectoryTrust_ +
 			std::string("/") +
 			certificate.thumbPrint().toHexString() +
 			std::string(".der");
-		auto targetRelocationCertificateFile = applicationInfo->caDirectoryRevocation_ +
+		auto targetRelocationCertificateFile = applicationInfo->issuerDirectoryRevocation_ +
 			std::string("/") +
 			certificate.thumbPrint().toHexString() +
 			std::string(".der");
 
 		// check if certificate file already exist in revocation path
 		if (boost::filesystem::exists(boost::filesystem::path(targetRelocationCertificateFile))) {
-			Log(Error, "ca certificate file already exist - status is untrusted");
+			Log(Error, "issuer certificate file already exist - status is untrusted");
 			return 1;
 		}
 
 		// check if certificate file already exist in trusted path
 		if (boost::filesystem::exists(boost::filesystem::path(targetTrustCertificateFile))) {
-			Log(Error, "ca certificate file already exist - status is trusted");
+			Log(Error, "issuer certificate file already exist - status is trusted");
 			return 1;
 		}
 
-		// save certificate in ca trusted folder
+		// save certificate in issuer trusted folder
 		if (!certificate.toDERFile(targetTrustCertificateFile)) {
 			certificate.log(Error, "write certificate in der format error");
 			Log(Error, "certificate file error")
@@ -257,7 +257,7 @@ namespace OpcUaCtrl
 	}
 
 	uint32_t
-	CaCertCtrlCommand::del(const std::vector<std::string>& commandLine)
+	IssuerCertCtrlCommand::del(const std::vector<std::string>& commandLine)
 	{
 		// check command line parameter
 		if (commandLine.size() < 5) {
@@ -277,15 +277,15 @@ namespace OpcUaCtrl
 		}
 		auto applicationInfo = it->second;
 
-		// generate path and name for trusted and revocation ca certificate file
+		// generate path and name for trusted and revocation issuer certificate file
 		boost::filesystem::path targetTrustCertificateFile(
-			applicationInfo->caDirectoryTrust_ +
+			applicationInfo->issuerDirectoryTrust_ +
 			std::string("/") +
 			certificateId +
 			std::string(".der")
 		);
 		boost::filesystem::path targetRelocationCertificateFile(
-			applicationInfo->caDirectoryRevocation_ +
+			applicationInfo->issuerDirectoryRevocation_ +
 			std::string("/") +
 			certificateId +
 			std::string(".der")
@@ -322,7 +322,7 @@ namespace OpcUaCtrl
 	}
 
 	uint32_t
-	CaCertCtrlCommand::trust(const std::vector<std::string>& commandLine)
+	IssuerCertCtrlCommand::trust(const std::vector<std::string>& commandLine)
 	{
 		// check command line parameter
 		if (commandLine.size() < 5) {
@@ -342,26 +342,26 @@ namespace OpcUaCtrl
 		}
 		auto applicationInfo = it->second;
 
-		// generate path and name for trusted and revocation ca certificate file
+		// generate path and name for trusted and revocation issuer certificate file
 		boost::filesystem::path targetTrustCertificateFile(
-			applicationInfo->caDirectoryTrust_ +
+			applicationInfo->issuerDirectoryTrust_ +
 			std::string("/") +
 			certificateId +
 			std::string(".der")
 		);
 		boost::filesystem::path targetRelocationCertificateFile(
-			applicationInfo->caDirectoryRevocation_ +
+			applicationInfo->issuerDirectoryRevocation_ +
 			std::string("/") +
 			certificateId +
 			std::string(".der")
 		);
 
-		// check if ca certificate already trusted
+		// check if issuer certificate already trusted
 		if (boost::filesystem::exists(targetTrustCertificateFile)) {
 			return 0;
 		}
 
-		// check if ca certificate exist in relocation folder
+		// check if issuer certificate exist in relocation folder
 		if (!boost::filesystem::exists(targetRelocationCertificateFile)) {
 			Log(Error, "certificate identifier unknown")
 				.parameter("ApplicationName", applicationName)
@@ -382,7 +382,7 @@ namespace OpcUaCtrl
 
 
 	uint32_t
-	CaCertCtrlCommand::untrust(const std::vector<std::string>& commandLine)
+	IssuerCertCtrlCommand::untrust(const std::vector<std::string>& commandLine)
 	{
 		// check command line parameter
 		if (commandLine.size() < 5) {
@@ -402,33 +402,33 @@ namespace OpcUaCtrl
 		}
 		auto applicationInfo = it->second;
 
-		// generate path and name for trusted and revocation ca certificate file
+		// generate path and name for trusted and revocation issuer certificate file
 		boost::filesystem::path targetTrustCertificateFile(
-			applicationInfo->caDirectoryTrust_ +
+			applicationInfo->issuerDirectoryTrust_ +
 			std::string("/") +
 			certificateId +
 			std::string(".der")
 		);
 		boost::filesystem::path targetRelocationCertificateFile(
-			applicationInfo->caDirectoryRevocation_ +
+			applicationInfo->issuerDirectoryRevocation_ +
 			std::string("/") +
 			certificateId +
 			std::string(".der")
 		);
 
-		// check if ca certificate already untrusted
+		// check if issuer certificate already untrusted
 		if (boost::filesystem::exists(targetRelocationCertificateFile)) {
 			return 0;
 		}
 
-		// check if ca certificate exist in trusted folder
+		// check if issuer certificate exist in trusted folder
 		if (!boost::filesystem::exists(targetTrustCertificateFile)) {
 			Log(Error, "certificate identifier unknown")
 				.parameter("ApplicationName", applicationName)
 				.parameter("CertId", certificateId);
 		}
 
-		// untrust ca certificate
+		// untrust issuer certificate
 		boost::system::error_code ec;
 		boost::filesystem::rename(targetTrustCertificateFile, targetRelocationCertificateFile, ec);
 		if (ec != boost::system::errc::success) {
