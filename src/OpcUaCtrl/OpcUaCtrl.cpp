@@ -25,6 +25,7 @@
 #include "OpcUaCtrl/SelfSignedCertCtrlCommand.h"
 #include "OpcUaCtrl/CaCertCtrlCommand.h"
 #include "OpcUaCtrl/IssuerCertCtrlCommand.h"
+#include "OpcUaCtrl/CertCtrlCommand.h"
 
 
 using namespace OpcUaStackCore;
@@ -63,6 +64,7 @@ namespace OpcUaCtrl
 		addCtrlCommand("self_signed_cert", boost::make_shared<SelfSignedCertCtrlCommand>());
 		addCtrlCommand("ca_cert", boost::make_shared<CaCertCtrlCommand>());
 		addCtrlCommand("im_cert", boost::make_shared<IssuerCertCtrlCommand>());
+		addCtrlCommand("cert", boost::make_shared<CertCtrlCommand>());
 
 
 		// check number of parameter command line
