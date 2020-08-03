@@ -461,6 +461,12 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool
+	Certificate::isApplCertificate(void)
+	{
+		return !isCaCertificate();
+	}
+
 	X509*
 	Certificate::getX509(void)
 	{

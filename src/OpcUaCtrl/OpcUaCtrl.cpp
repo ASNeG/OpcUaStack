@@ -25,6 +25,7 @@
 #include "OpcUaCtrl/SelfSignedCertCtrlCommand.h"
 #include "OpcUaCtrl/CaCertCtrlCommand.h"
 #include "OpcUaCtrl/IssuerCertCtrlCommand.h"
+#include "OpcUaCtrl/ApplCertCtrlCommand.h"
 #include "OpcUaCtrl/CertCtrlCommand.h"
 
 
@@ -64,6 +65,7 @@ namespace OpcUaCtrl
 		addCtrlCommand("self_signed_cert", boost::make_shared<SelfSignedCertCtrlCommand>());
 		addCtrlCommand("ca_cert", boost::make_shared<CaCertCtrlCommand>());
 		addCtrlCommand("im_cert", boost::make_shared<IssuerCertCtrlCommand>());
+		addCtrlCommand("appl_cert", boost::make_shared<ApplCertCtrlCommand>());
 		addCtrlCommand("cert", boost::make_shared<CertCtrlCommand>());
 
 
