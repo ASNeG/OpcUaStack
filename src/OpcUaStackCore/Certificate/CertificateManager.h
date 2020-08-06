@@ -91,7 +91,7 @@ namespace OpcUaStackCore
 		std::string certificateRejectListLocation_;		//!< The folder where certificates of rejected applications
 														//!< should be stored
 		std::string certificateRevocationListLocation_;	//!< The folder where revocation lists for trusted CAs
-														//! should be stored
+														//!< should be stored
 		std::string issuersCertificatesLocation_;		//!< The folder where issuer certificates are stored. Issuer
 														//!< certificates are CA certificates necessary for the
 														//!< verification of the full trust chain of CA certificates
