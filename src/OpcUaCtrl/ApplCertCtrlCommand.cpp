@@ -85,7 +85,7 @@ namespace OpcUaCtrl
 	{
 		// Should be provided information about all existing applications
 		if (commandLine.size() == 3) {
-			Application application(applBlackList_, installPathList_);
+			Application application(applBlackList_, installPathList_, installPkiList_);
 
 			for (auto applicationInfo : application) {
 				std::vector<std::string> tmpCommandLine(commandLine);
@@ -105,7 +105,7 @@ namespace OpcUaCtrl
 		std::string applicationName = commandLine[3];
 
 		// get application info
-		Application application(applBlackList_, installPathList_);
+		Application application(applBlackList_, installPathList_, installPkiList_);
 		auto it = application.find(applicationName);
 		if (it == application.end()) {
 			Log(Error, "application name not exist")
@@ -191,7 +191,7 @@ namespace OpcUaCtrl
 		std::string privateKeyFile = commandLine[5];
 
 		// get application info
-		Application application(applBlackList_, installPathList_);
+		Application application(applBlackList_, installPathList_, installPkiList_);
 		auto it = application.find(applicationName);
 		if (it == application.end()) {
 			Log(Error, "application name unknown")
@@ -258,7 +258,7 @@ namespace OpcUaCtrl
 		std::string privateKeyFile = commandLine[5];
 
 		// get application info
-		Application application(applBlackList_, installPathList_);
+		Application application(applBlackList_, installPathList_, installPkiList_);
 		auto it = application.find(applicationName);
 		if (it == application.end()) {
 			Log(Error, "application name unknown")
@@ -329,7 +329,7 @@ namespace OpcUaCtrl
 		std::string applicationName = commandLine[3];
 
 		// get application info
-		Application application(applBlackList_, installPathList_);
+		Application application(applBlackList_, installPathList_, installPkiList_);
 		auto it = application.find(applicationName);
 		if (it == application.end()) {
 			Log(Error, "application name unknown")

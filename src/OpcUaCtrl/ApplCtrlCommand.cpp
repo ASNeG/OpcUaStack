@@ -64,7 +64,7 @@ namespace OpcUaCtrl
 	uint32_t
 	ApplCtrlCommand::show(const std::vector<std::string>& commandLine)
 	{
-		Application application(applBlackList_, installPathList_);
+		Application application(applBlackList_, installPathList_, installPkiList_);
 		for ( auto& applicationInfoIt : application.map() ) {
 			// display application name
 			std::cout << applicationInfoIt.first << std::endl;
