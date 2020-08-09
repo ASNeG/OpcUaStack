@@ -70,7 +70,7 @@ namespace OpcUaCtrl
 		std::cout << "        add a new issuer certificate" << std::endl;
 		std::cout << "    del <Application-Name> <Cert-Id>:" << std::endl;
 		std::cout << "        delete a issuer certificate" << std::endl;
-		std::cout << "        use *all* as certId to delete all ca certs" << std::endl;
+		std::cout << "        use *all* as certId to delete all issuer certs" << std::endl;
 		std::cout << "    trust <Application-Name> <Cert-Id>:" << std::endl;
 		std::cout << "        activate a issuer certificate" << std::endl;
 		std::cout << "    untrust <Application-Name> <CertId>:" << std::endl;
