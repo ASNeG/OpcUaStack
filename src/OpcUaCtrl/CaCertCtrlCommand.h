@@ -55,6 +55,8 @@ namespace OpcUaCtrl
 		uint32_t del(const std::vector<std::string>& commandLine);
 		uint32_t trust(const std::vector<std::string>& commandLine);
 		uint32_t untrust(const std::vector<std::string>& commandLine);
+
+		bool isCaRootCertificate(const std::string& certFileName);
 	};
 
 }

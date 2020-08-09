@@ -22,7 +22,7 @@ rm -rf asneg_product_cert.der
 rm -rf index.txt
 
 touch index.txt
-export OPENSSL_CONF=${HOME}/.ASNeG/etc/OpcUaStack4/ssl/openssl.cnf
+export OPENSSL_CONF=${HOME}/.ASNeG/etc/OpcUaStack/ssl/openssl.cnf
 
 # create csr
 echo "create csr request"

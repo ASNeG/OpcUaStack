@@ -70,6 +70,7 @@ namespace OpcUaCtrl
 		std::cout << "        add a new certificate" << std::endl;
 		std::cout << "    del <Application-Name> <Cert-Id>:" << std::endl;
 		std::cout << "        delete a certificate" << std::endl;
+		std::cout << "        use *all* as certId to delete all issuer certs" << std::endl;
 		std::cout << "    trust <Application-Name> <Cert-Id>:" << std::endl;
 		std::cout << "        activate a certificate" << std::endl;
 		std::cout << "    untrust <Application-Name> <CertId>:" << std::endl;
@@ -124,12 +125,24 @@ namespace OpcUaCtrl
 		// read all files from certificate trust directory
 		boost::filesystem::path certDirectoryTrust(applicationInfo->certDirectoryTrust_);
 		for ( auto filenameIt : boost::filesystem::directory_iterator(certDirectoryTrust) ) {
+			// show only application certificates
+			if (!isApplCertificate(filenameIt.path().string())) {
+				continue;
+			}
+
+			// show certificate
 			showCertificateInfo(ss, filenameIt.path().string(), "Trusted");
 		}
 
 		// read all files from certificate revocation directory
 		boost::filesystem::path certDirectoryRevocation(applicationInfo->certDirectoryRevocation_);
 		for ( auto filenameIt : boost::filesystem::directory_iterator(certDirectoryRevocation) ) {
+			// show only issuer certificates
+			if (!isApplCertificate(filenameIt.path().string())) {
+				continue;
+			}
+
+			// show certificate
 			showCertificateInfo(ss, filenameIt.path().string(), "Untrusted");
 		}
 
@@ -152,11 +165,6 @@ namespace OpcUaCtrl
 		Certificate certificate;
 		if (!certificate.fromDERFile(filename)) {
 			certificate.log(Error, "read certificate in der format error");
-			return false;
-		}
-
-		// check whether it is a issuer certificate
-		if (certificate.isIntermediateCertificate() || certificate.isCaCertificate()) {
 			return false;
 		}
 
@@ -217,6 +225,12 @@ namespace OpcUaCtrl
 			return 1;
 		}
 
+		// check whether it is a application certificate
+		if (!certificate.isApplCertificate()) {
+			certificate.log(Error, "application certificate error");
+			return 1;
+		}
+
 		// generate path and name for trusted and revocation certificate
 		auto targetTrustCertificateFile = applicationInfo->certDirectoryTrust_ +
 			std::string("/") +
@@ -271,6 +285,32 @@ namespace OpcUaCtrl
 		}
 		auto applicationInfo = it->second;
 
+		// check whether all certificates should be deleted
+		if (certificateId == "all") {
+
+			// find and delete all application certificates in trusted directory
+			for (auto& entry : boost::filesystem::directory_iterator(applicationInfo->certDirectoryTrust_)) {
+				std::vector<std::string> cmdLine = commandLine;
+				cmdLine[4] = entry.path().stem().string();
+				auto rc = del(cmdLine);
+				if (rc != 0) {
+					return rc;
+				}
+			}
+
+			// find and delete all issuer certificates in revocation list directory
+			for (auto& entry : boost::filesystem::directory_iterator(applicationInfo->certDirectoryRevocation_)) {
+				std::vector<std::string> cmdLine = commandLine;
+				cmdLine[4] = entry.path().stem().string();
+				auto rc = del(cmdLine);
+				if (rc != 0) {
+					return rc;
+				}
+			}
+
+			return 0;
+		}
+
 		// generate path and name for trusted and revocation certificate file
 		boost::filesystem::path targetTrustCertificateFile(
 			applicationInfo->certDirectoryTrust_ +
@@ -298,6 +338,14 @@ namespace OpcUaCtrl
 
 		// remove certificate
 		if (boost::filesystem::exists(targetTrustCertificateFile)) {
+			// remove only application certificates
+			if (!isApplCertificate(targetTrustCertificateFile.string())) {
+				Log(Error, "certificate is not a application certificate")
+					.parameter("ApplicationName", applicationName)
+					.parameter("CertId", certificateId);
+				return 1;
+			}
+
 			if (!boost::filesystem::remove(targetTrustCertificateFile)) {
 				Log(Error, "remove certificate error")
 					.parameter("ApplicationName", applicationName)
@@ -305,6 +353,14 @@ namespace OpcUaCtrl
 			}
 		}
 		if (boost::filesystem::exists(targetRelocationCertificateFile)) {
+			// remove only application certificates
+			if (!isApplCertificate(targetTrustCertificateFile.string())) {
+				Log(Error, "certificate is not a application certificate")
+					.parameter("ApplicationName", applicationName)
+					.parameter("CertId", certificateId);
+				return 1;
+			}
+
 			if (!boost::filesystem::remove(targetRelocationCertificateFile)) {
 				Log(Error, "remove certificate error")
 					.parameter("ApplicationName", applicationName)
@@ -360,6 +416,14 @@ namespace OpcUaCtrl
 			Log(Error, "certificate identifier unknown")
 				.parameter("ApplicationName", applicationName)
 				.parameter("CertId", certificateId);
+		}
+
+		// certificate must be a application certificate
+		if (!isApplCertificate(targetRelocationCertificateFile.string())) {
+			Log(Error, "certificate is not a application certificate")
+				.parameter("ApplicationName", applicationName)
+				.parameter("CertId", certificateId);
+			return 1;
 		}
 
 		// trust certificate
@@ -422,6 +486,14 @@ namespace OpcUaCtrl
 				.parameter("CertId", certificateId);
 		}
 
+		// certificate must be a application certificate
+		if (!isApplCertificate(targetTrustCertificateFile.string())) {
+			Log(Error, "certificate is not a application certificate")
+				.parameter("ApplicationName", applicationName)
+				.parameter("CertId", certificateId);
+			return 1;
+		}
+
 		// untrust certificate
 		boost::system::error_code ec;
 		boost::filesystem::rename(targetTrustCertificateFile, targetRelocationCertificateFile, ec);
@@ -432,6 +504,24 @@ namespace OpcUaCtrl
 		}
 
 		return 0;
+	}
+
+	bool
+	CertCtrlCommand::isApplCertificate(const std::string& certFileName)
+	{
+		// read certificate from file
+		Certificate certificate;
+		if (!certificate.fromDERFile(certFileName)) {
+			certificate.log(Error, "read certificate in der format error");
+			return false;
+		}
+
+		// check whether it is a application certificate
+		if (!certificate.isApplCertificate()) {
+			return false;
+		}
+
+		return true;
 	}
 
 }
