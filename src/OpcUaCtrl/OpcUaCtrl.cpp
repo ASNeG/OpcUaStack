@@ -58,7 +58,12 @@ namespace OpcUaCtrl
 		// init
 		boost::filesystem::path p = commandLine[0];
 		name_ = p.stem().string();
+
+		// init install path list
 		initInstallPathList();
+
+		// init pki path list
+		initPkiDirectoryList();
 
 		// add commands
 		addCtrlCommand("appl", boost::make_shared<ApplCtrlCommand>());
@@ -87,6 +92,7 @@ namespace OpcUaCtrl
 		ctrlCommand->applBlackList_ = applBlackList_;
 		ctrlCommand->name_ = name_;
 		ctrlCommand->installPathList_ = installPathList_;
+		ctrlCommand->installPkiList_ = installPkiList_;
 		ctrlCommand->start(commandLine);
 		return 0;
 	}
@@ -150,6 +156,21 @@ namespace OpcUaCtrl
 
 			// add installtion path to installation list
 			installPathList_.push_back(installPath);
+		}
+	}
+
+	void
+	OpcUaCtrl::initPkiDirectoryList(void)
+	{
+		// get pki directory list
+		std::vector<std::string> opcUaPkiDirVec;
+		auto env = getenv("OPC_UA_PKI_DIR");
+		if (env) {
+			std::string opcUaPkiDirString(env);
+			boost::split(opcUaPkiDirVec, opcUaPkiDirString, boost::is_any_of(":;"));
+			for ( auto opcUaPkiDir : opcUaPkiDirVec ) {
+				installPkiList_.push_back(opcUaPkiDir);
+			}
 		}
 	}
 

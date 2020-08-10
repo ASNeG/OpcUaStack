@@ -39,11 +39,13 @@ namespace OpcUaCtrl
 		void usage(void);
 		void usageType(const std::string& type);
 		void initInstallPathList(void);
+		void initPkiDirectoryList(void);
 		void addCtrlCommand(const std::string& name, const CtrlCommand::SPtr& ctrlCommand);
 
 		std::set<std::string> applBlackList_;
 		std::string name_ = "";
 		std::vector<std::string> installPathList_;
+		std::vector<std::string> installPkiList_;
 		CtrlCommand::Map ctrlCommandMap_;
 	};
 

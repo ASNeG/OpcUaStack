@@ -43,6 +43,7 @@ namespace OpcUaCtrl
 		std::set<std::string> applBlackList_;
 		std::string name_ = "";
 		std::vector<std::string> installPathList_;
+		std::vector<std::string> installPkiList_;
 	};
 
 }

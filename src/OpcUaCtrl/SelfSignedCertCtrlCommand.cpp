@@ -80,7 +80,7 @@ namespace OpcUaCtrl
 	{
 		// Should be provided information about all existing applications
 		if (commandLine.size() == 3) {
-			Application application(applBlackList_, installPathList_);
+			Application application(applBlackList_, installPathList_, installPkiList_);
 
 			for (auto applicationInfo : application) {
 				std::vector<std::string> tmpCommandLine(commandLine);
@@ -100,7 +100,7 @@ namespace OpcUaCtrl
 		std::string applicationName = commandLine[3];
 
 		// get application info
-		Application application(applBlackList_, installPathList_);
+		Application application(applBlackList_, installPathList_, installPkiList_);
 		auto it = application.find(applicationName);
 		if (it == application.end()) {
 			std::cout << "ERROR: application " << applicationName << " not exist" << std::endl;
@@ -143,7 +143,7 @@ namespace OpcUaCtrl
 		std::string applicationName = commandLine[3];
 
 		// get application info
-		Application application(applBlackList_, installPathList_);
+		Application application(applBlackList_, installPathList_, installPkiList_);
 		auto it = application.find(applicationName);
 		if (it == application.end()) {
 			std::cout << "ERROR: application " << applicationName << " not exist" << std::endl;
@@ -194,7 +194,7 @@ namespace OpcUaCtrl
 		std::string applicationName = commandLine[3];
 
 		// get application info
-		Application application(applBlackList_, installPathList_);
+		Application application(applBlackList_, installPathList_, installPkiList_);
 		auto it = application.find(applicationName);
 		if (it == application.end()) {
 			std::cout << "ERROR: application " << applicationName << " not exist" << std::endl;

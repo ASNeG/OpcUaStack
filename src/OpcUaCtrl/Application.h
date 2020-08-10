@@ -58,7 +58,8 @@ namespace OpcUaCtrl
 
 		Application(
 		    const std::set<std::string>& applBlackList,
-			const std::vector<std::string>& installPathList
+			const std::vector<std::string>& installPathList,
+			const std::vector<std::string>& installPkiList
 		);
 		virtual ~Application(void);
 
@@ -69,6 +70,15 @@ namespace OpcUaCtrl
 
 	  private:
 		ApplicationInfo::Map applicationInfoMap_;
+
+		void addInstallPath(
+		    const std::set<std::string>& applBlackList,
+			const std::vector<std::string>& installPathList
+		);
+		void addPkiPath(
+			const std::set<std::string>& applBlackList,
+		    const std::vector<std::string>& installPkiList
+		);
 	};
 
 }
