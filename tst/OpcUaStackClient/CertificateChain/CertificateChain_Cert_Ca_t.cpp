@@ -71,6 +71,7 @@ connectToServer(
 	else if (certState == Untrust) {
 		BOOST_REQUIRE(boost::process::system("OpcUaCtrl4 cert add ASNeG-Demo ../tst/data/test_app1_cert.der untrust") == 0);
 	}
+	boost::process::system("OpcUaCtrl4 cert show ASNeG-Demo all");
 
 	//
 	// add ca certificate to asneg demo
@@ -81,6 +82,23 @@ connectToServer(
 	else if (caState == Untrust) {
 		BOOST_REQUIRE(boost::process::system("OpcUaCtrl4 ca_cert add ASNeG-Demo ../tst/data/test_ca_cert.der untrust") == 0);
 	}
+	boost::process::system("OpcUaCtrl4 ca_cert show ASNeG-Demo all");
+
+	//
+	// add cert certificate and key to TestApp
+	//
+	if (certInChain) {
+		BOOST_REQUIRE(boost::process::system("OpcUaCtrl4 appl_cert add TestApp ../tst/data/test_app1_cert.der ../tst/data/test_app1_key.pem") == 0);
+	}
+	boost::process::system("OpcUaCtrl4 appl_cert show TestApp all");
+
+	//
+	// add ca certificate to TestApp
+	//
+	if (caInChain) {
+		BOOST_REQUIRE(boost::process::system("OpcUaCtrl4 ca_cert add TestApp ../tst/data/test_ca_cert.der") == 0);
+	}
+	boost::process::system("OpcUaCtrl4 ca_cert show TestApp all");
 
 	return Success;
 }
