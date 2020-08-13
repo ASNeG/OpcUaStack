@@ -66,7 +66,7 @@ namespace OpcUaCtrl
 		std::cout << "    Commands:" << std::endl;
 		std::cout << "    show <Application-Name>:" << std::endl;
 		std::cout << "        shows all ca certificates" << std::endl;
-		std::cout << "    add <Application-Name> <Ca-Cert-File>:" << std::endl;
+		std::cout << "    add <Application-Name> <Ca-Cert-File> [untrust]:" << std::endl;
 		std::cout << "        add a new ca certificate" << std::endl;
 		std::cout << "    del <Application-Name> <Cert-Id>:" << std::endl;
 		std::cout << "        delete a ca certificate" << std::endl;
@@ -208,6 +208,12 @@ namespace OpcUaCtrl
 		std::string applicationName = commandLine[3];
 		std::string certificateFile = commandLine[4];
 
+		// check if the certificate will be untrusted
+		bool untrusted = false;
+		if (commandLine.size() == 6 && commandLine[5] == "untrust") {
+			untrusted = true;
+		}
+
 		// get application info
 		Application application(applBlackList_, installPathList_, installPkiList_);
 		auto it = application.find(applicationName);
@@ -259,6 +265,14 @@ namespace OpcUaCtrl
 			Log(Error, "certificate file error")
 				.parameter("CertificateFile", targetTrustCertificateFile);
 			return 1;
+		}
+
+		// check if the certificate will be untrusted
+		if (untrusted) {
+			auto certId = certificate.thumbPrint().toHexString();
+			std::vector<std::string> commandLine1 = commandLine;
+			commandLine1[4] = certId;
+			return untrust(commandLine1);
 		}
 
 		return 0;
