@@ -1,3 +1,5 @@
+#include <boost/process/environment.hpp>
+#include <boost/process/system.hpp>
 #include "unittest.h"
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
 
@@ -7,7 +9,7 @@ using namespace OpcUaStackClient;
 //
 // Certificate configuration (Cert -> Ca)
 //
-// 		Client Config		Server Config						Result
+// 		Client Config		Server Config							Test Result
 // ----------------------------------------------------------------------------
 // 	001	Cert	Ca			Cert Trust		Ca Trust				OK
 //	002	Cert				Cert Trust		Ca Trust				OK
@@ -43,27 +45,41 @@ connectToServer(
 )
 {
 	//
-	// delete asneg demo certificate and ca certificate
+	// set PKI environment
 	//
+	auto e = boost::this_process::environment();
+	e["OPC_UA_PKI_DIR"] = "TestApp:./pki1";
+	boost::process::system("mkdir -p ./pki1");
 
 	//
-	// add certificates to asneg demo
+	// delete all test certificates
 	//
+	BOOST_REQUIRE(boost::process::system("OpcUaCtrl4 cert del TestApp all") == 0);
+	BOOST_REQUIRE(boost::process::system("OpcUaCtrl4 im_cert del TestApp all") == 0);
+	BOOST_REQUIRE(boost::process::system("OpcUaCtrl4 ca_cert del TestApp all") == 0);
 
-	// add asneg demo certificate
+	BOOST_REQUIRE(boost::process::system("OpcUaCtrl4 cert del ASNeG-Demo all") == 0);
+	BOOST_REQUIRE(boost::process::system("OpcUaCtrl4 im_cert del ASNeG-Demo all") == 0);
+	BOOST_REQUIRE(boost::process::system("OpcUaCtrl4 ca_cert del ASNeG-Demo all") == 0);
+
+	//
+	// add certificate to asneg demo
+	//
 	if (certState == Trust) {
-
+		BOOST_REQUIRE(boost::process::system("OpcUaCtrl4 cert add ASNeG-Demo ../tst/data/test_app1_cert.der") == 0);
 	}
 	else if (certState == Untrust) {
-
+		BOOST_REQUIRE(boost::process::system("OpcUaCtrl4 cert add ASNeG-Demo ../tst/data/test_app1_cert.der untrust") == 0);
 	}
 
-	// add ca certificate
+	//
+	// add ca certificate to asneg demo
+	//
 	if (caState == Trust) {
-
+		BOOST_REQUIRE(boost::process::system("OpcUaCtrl4 ca_cert add ASNeG-Demo ../tst/data/test_ca_cert.der") == 0);
 	}
 	else if (caState == Untrust) {
-
+		BOOST_REQUIRE(boost::process::system("OpcUaCtrl4 ca_cert add ASNeG-Demo ../tst/data/test_ca_cert.der untrust") == 0);
 	}
 
 	return Success;
@@ -82,6 +98,7 @@ BOOST_AUTO_TEST_CASE(CertificateChain_CertCa_001)
 	BOOST_REQUIRE(statusCode == Success);
 }
 
+#if 0
 BOOST_AUTO_TEST_CASE(CertificateChain_CertCa_002)
 {
 	auto statusCode = connectToServer(true, false, Trust, Trust);
@@ -159,6 +176,7 @@ BOOST_AUTO_TEST_CASE(CertificateChain_CertCa_014)
 	auto statusCode = connectToServer(true, false, Reject, Trust);
 	BOOST_REQUIRE(statusCode != Success);
 }
+#endif
 
 BOOST_AUTO_TEST_SUITE_END()
 
