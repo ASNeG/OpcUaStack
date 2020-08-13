@@ -290,6 +290,12 @@ namespace OpcUaCtrl
 
 			// find and delete all application certificates in trusted directory
 			for (auto& entry : boost::filesystem::directory_iterator(applicationInfo->certDirectoryTrust_)) {
+				// remove only application certificates
+				if (!isApplCertificate(entry.path().string())) {
+					continue;
+				}
+
+				// delete application certificate
 				std::vector<std::string> cmdLine = commandLine;
 				cmdLine[4] = entry.path().stem().string();
 				auto rc = del(cmdLine);
@@ -300,6 +306,12 @@ namespace OpcUaCtrl
 
 			// find and delete all issuer certificates in revocation list directory
 			for (auto& entry : boost::filesystem::directory_iterator(applicationInfo->certDirectoryRevocation_)) {
+				// remove only application certificates
+				if (!isApplCertificate(entry.path().string())) {
+					continue;
+				}
+
+				// delete application certificate
 				std::vector<std::string> cmdLine = commandLine;
 				cmdLine[4] = entry.path().stem().string();
 				auto rc = del(cmdLine);

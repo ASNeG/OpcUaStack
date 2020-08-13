@@ -290,6 +290,12 @@ namespace OpcUaCtrl
 
 			// find and delete all ca certificates in trusted directory
 			for (auto& entry : boost::filesystem::directory_iterator(applicationInfo->caDirectoryTrust_)) {
+				// remove only ca root certificates
+				if (!isCaRootCertificate(entry.path().string())) {
+					continue;
+				}
+
+				// delete ca root certificate
 				std::vector<std::string> cmdLine = commandLine;
 				cmdLine[4] = entry.path().stem().string();
 				auto rc = del(cmdLine);
@@ -300,6 +306,12 @@ namespace OpcUaCtrl
 
 			// find and delete all ca certificates in revocation list directory
 			for (auto& entry : boost::filesystem::directory_iterator(applicationInfo->caDirectoryRevocation_)) {
+				// remove only ca root certificates
+				if (!isCaRootCertificate(entry.path().string())) {
+					continue;
+				}
+
+				// delete ca root certificate
 				std::vector<std::string> cmdLine = commandLine;
 				cmdLine[4] = entry.path().stem().string();
 				auto rc = del(cmdLine);
