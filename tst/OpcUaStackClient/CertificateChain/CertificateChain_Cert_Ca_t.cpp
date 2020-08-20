@@ -1,4 +1,3 @@
-#include <boost/process/environment.hpp>
 #include <boost/process/system.hpp>
 #include "unittest.h"
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
@@ -55,8 +54,7 @@ connectToServer(
 	//
 	// set PKI environment
 	//
-	auto e = boost::this_process::environment();
-	e["OPC_UA_PKI_DIR"] = "TestApp:./pki1";
+	setenv("OPC_UA_PKI_DIR", "TestApp:./pki1", 1);
 	boost::process::system("mkdir -p ./pki1");
 
 	//
@@ -80,8 +78,6 @@ connectToServer(
 	else if (certState == Untrust || certState == Reject) {
 		BOOST_REQUIRE(boost::process::system("OpcUaCtrl4 cert add ASNeG-Demo ../tst/data/test_app1_cert.der untrust") == 0);
 	}
-	std::cout << "OpcUaCtrl4 cert show ASNeG-Demo all" << std::endl;
-	boost::process::system("OpcUaCtrl4 cert show ASNeG-Demo all");
 
 	//
 	// add ca certificate to asneg demo
@@ -92,8 +88,6 @@ connectToServer(
 	else if (caState == Untrust) {
 		BOOST_REQUIRE(boost::process::system("OpcUaCtrl4 ca_cert add ASNeG-Demo ../tst/data/test_ca_cert.der untrust") == 0);
 	}
-	std::cout << "OpcUaCtrl4 ca_cert show ASNeG-Demo all" << std::endl;
-	boost::process::system("OpcUaCtrl4 ca_cert show ASNeG-Demo all");
 
 	//
 	// add cert certificate and key to TestApp
@@ -101,8 +95,6 @@ connectToServer(
 	if (certInChain) {
 		BOOST_REQUIRE(boost::process::system("OpcUaCtrl4 appl_cert add TestApp ../tst/data/test_app1_cert.der ../tst/data/test_app1_key.pem") == 0);
 	}
-	std::cout << "OpcUaCtrl4 appl_cert show TestApp all" << std::endl;
-	boost::process::system("OpcUaCtrl4 appl_cert show TestApp all");
 
 	//
 	// add ca certificate to TestApp
@@ -110,17 +102,34 @@ connectToServer(
 	if (caInChain) {
 		BOOST_REQUIRE(boost::process::system("OpcUaCtrl4 ca_cert add TestApp ../tst/data/test_ca_cert.der") == 0);
 	}
-	std::cout << "OpcUaCtrl4 ca_cert show TestApp all" << std::endl;
-	boost::process::system("OpcUaCtrl4 ca_cert show TestApp all");
 
 	//
 	// get certificate from ASNeG-Demo server and save it in local trusted folder
 	//
 	BOOST_REQUIRE(boost::process::system("OpcUaCtrl4 appl_cert get ASNeG-Demo ./asneg_demo_cert.der ./asneg_demo_key.pem") == 0);
 	BOOST_REQUIRE(boost::process::system("OpcUaCtrl4 cert add TestApp ./asneg_demo_cert.der") == 0);
+
+
+	//
+	// display some infos about the certificates
+	//
+	std::cout << "OpcUaCtrl4 appl_cert show ASNeG-Demo all" << std::endl;
+	boost::process::system("OpcUaCtrl4 appl_cert show ASNeG-Demo all");
+
+	std::cout << "OpcUaCtrl4 cert show ASNeG-Demo all" << std::endl;
+	boost::process::system("OpcUaCtrl4 cert show ASNeG-Demo all");
+
+	std::cout << "OpcUaCtrl4 ca_cert show ASNeG-Demo all" << std::endl;
+	boost::process::system("OpcUaCtrl4 ca_cert show ASNeG-Demo all");
+
+	std::cout << "OpcUaCtrl4 appl_cert show TestApp all" << std::endl;
+	boost::process::system("OpcUaCtrl4 appl_cert show TestApp all");
+
 	std::cout << "OpcUaCtrl4 cert show TestApp all" << std::endl;
 	boost::process::system("OpcUaCtrl4 cert show TestApp all");
 
+	std::cout << "OpcUaCtrl4 ca_cert show TestApp all" << std::endl;
+	boost::process::system("OpcUaCtrl4 ca_cert show TestApp all");
 
 	//
 	// create certificate manager for opc ua client (TestApp)
