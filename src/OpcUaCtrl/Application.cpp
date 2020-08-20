@@ -296,7 +296,7 @@ namespace OpcUaCtrl
 
 			// set cert trust directory. If the cert trust directory do
 			// not exist create it.
-			boost::filesystem::path certTrustPath(installPkiDir + "trusted/certs");
+			boost::filesystem::path certTrustPath(installPkiDir + "/trusted/certs");
 			if (!boost::filesystem::exists(certTrustPath)) {
 				if (!boost::filesystem::create_directories(certTrustPath)) {
 					Log(Warning, "create cert trust directory error")
@@ -309,7 +309,7 @@ namespace OpcUaCtrl
 
 			// set cert revocation directory. If the cert revocation directory do
 			// not exist create it.
-			boost::filesystem::path certRevocationPath(installPkiDir + "reject/certs");
+			boost::filesystem::path certRevocationPath(installPkiDir + "/reject/certs");
 			if (!boost::filesystem::exists(certRevocationPath)) {
 				if (!boost::filesystem::create_directories(certRevocationPath)) {
 					Log(Warning, "create cert revocation directory error")

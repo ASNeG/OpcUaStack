@@ -416,7 +416,7 @@ namespace OpcUaStackCore
 
 		SecureChannelSecuritySettings& secureSettings = secureChannel->securitySettings();
 
-		// error occurred
+		// error occurred - we must close the opc ua secure channel
 		if (error) {
 			Log(Error, "opc ua secure channel read OpenSecureChannelRequest message error; close channel")
 				.parameter("ChannelId", *secureChannel)
@@ -426,7 +426,7 @@ namespace OpcUaStackCore
 			return;
 		}
 
-		// partner has closed the connection
+		// partner has closed the connection - We also close the connection
 		if (bytes_transfered == 0) {
 			Log(Debug, "opc ua secure channel is closed by partner")
 				.parameter("ChannelId", *secureChannel);

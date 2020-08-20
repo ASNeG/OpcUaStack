@@ -238,6 +238,16 @@ namespace OpcUaStackCore
 		auto actCertificate = certificateChain_.certificateVec()[size-1];
 		do {
 			if (actCertificate->isSelfSigned()) {
+
+				// Do several certificates exist?. The last certificate must be a
+				// root ca certificate.
+				if (certificateChain_.size() > 1) {
+					if (!actCertificate->isCaRoot()) {
+						return BadSecurityChecksFailed;
+					}
+
+				}
+
 				return Success;
 			}
 
@@ -262,7 +272,7 @@ namespace OpcUaStackCore
 			}
 
 			// no further certificate found
-			Log(Debug, "no further certificate found");
+			Log(Debug, "no further issuer certificate found");
 			issuer.log("Last issuer");
 			return Success;
 		} while (BadSecurityChecksFailed);
@@ -455,6 +465,9 @@ namespace OpcUaStackCore
 	OpcUaStatusCode
 	ValidateCertificate::trustListCheck(void)
 	{
+		bool trust = false;
+		bool untrust = false;
+
 		//
 		// Trust List Check:
 		// If the Application Instance Certificate is not trusted and none of the CA
@@ -463,18 +476,36 @@ namespace OpcUaStackCore
 		// Server side, the error Bad_SecurityChecksFailed shall be reported back to
 		// the Client.
 		//
+		// No certificate in the certificate chain may be in a untrust folder.
+		//
 
 		for (auto certificate : certificateChain_.certificateVec()) {
+
+			// check certificate trust list location
 			if (certificateManager_->isCertificateInTrustedList(certificate)) {
-				return Success;
+				trust = true;
+				continue;
 			}
 
+			// check certificate issuer list location
 			if (certificateManager_->isCertificateInIssuerList(certificate)) {
-				return Success;
+				trust = true;
+				continue;
 			}
+
+			// check certificate reject location and certificate revocation
+			// list locations
+			if (certificateManager_->isCertificateInRevocationList(certificate)) {
+				untrust = true;
+				continue;
+			}
+
 		}
 
-		return Success;
+		if (trust && !untrust) {
+			return Success;
+		}
+		return BadCertificateInvalid;
 	}
 
 	OpcUaStatusCode

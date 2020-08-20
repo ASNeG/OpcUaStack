@@ -257,7 +257,9 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	CertificateManager::isPartnerCertificateTrusted(CertificateChain& partnerCertificateChain)
+	CertificateManager::isPartnerCertificateTrusted(
+		CertificateChain& partnerCertificateChain
+	)
 	{
 		auto certificate = partnerCertificateChain.getCertificate();
 		std::string certFileName = certificate->thumbPrint().toHexString() + ".der";
@@ -285,70 +287,199 @@ namespace OpcUaStackCore
 		return false;
 	}
 
+	Certificate::SPtr
+	CertificateManager::readCertificateFromDirectory(
+		const std::string& applicationUri,
+		const std::string& directory,
+		bool logApplicationUris
+	)
+	{
+		//
+		// Is function is not able to load ca certificates
+		//
+
+		std::vector<std::string> uris;
+
+		boost::filesystem::path filePath(directory);
+		for (auto file : boost::filesystem::directory_iterator(filePath)) {
+			if (boost::filesystem::is_directory(file)) {
+				continue;
+			}
+			if (file.path().extension().string() != ".der") {
+				continue;
+			}
+
+			auto certificate = boost::make_shared<Certificate>();
+			if (!certificate->fromDERFile(file.path().string())) {
+				certificate->log(Error, "read certificate from file error: " + file.path().string());
+				continue;
+			}
+
+			// we can continue in case of ca certificate
+			if (certificate->isCaCertificate()) {
+				continue;
+			}
+
+			// read info
+			CertificateInfo info;
+			certificate->getInfo(info);
+			if (info.uri() == applicationUri) {
+				return certificate;
+			}
+
+			if (logApplicationUris) {
+				uris.push_back(info.uri());
+			}
+		}
+
+		if (logApplicationUris) {
+			Log log(Debug, "Uris:");
+			for (auto uri : uris) {
+				log.parameter("Uri", uri);
+			}
+		}
+
+		return nullptr;
+	}
+
+	Certificate::SPtr
+	CertificateManager::readCertificateFromDirectory(
+		Identity& identity,
+		const std::string& directory
+	)
+	{
+		boost::filesystem::path filePath(directory);
+		for (auto file : boost::filesystem::directory_iterator(filePath)) {
+			if (boost::filesystem::is_directory(file)) {
+				continue;
+			}
+			if (file.path().extension().string() != ".der") {
+				continue;
+			}
+
+			auto certificate = boost::make_shared<Certificate>();
+			if (!certificate->fromDERFile(file.path().string())) {
+				certificate->log(Error, "read certificate from file error: " + file.path().string());
+				continue;
+			}
+
+			Identity subject;
+			if (!certificate->getSubject(subject)) {
+				certificate->log(Error, "read subject from certificate error: " + file.path().string());
+				continue;
+			}
+
+			if (identity.commonName() == subject.commonName()) {
+				return certificate;
+			}
+		}
+		return nullptr;
+	}
+
 	bool
 	CertificateManager::isPartnerCertificateTrusted(
 		const std::string& applicationUri,
 		CertificateChain& partnerCertificateChain
 	)
 	{
-		// check if certificate is in reject list location
-		boost::filesystem::path rejectFilePath(certificateRejectListLocation_);
-		for (auto file : boost::filesystem::directory_iterator(rejectFilePath)) {
-			if (boost::filesystem::is_directory(file)) {
-				continue;
-			}
-			if (file.path().extension().string() != ".der") {
-				continue;
-			}
+		Identity issuer;
+		Certificate::SPtr certificate;
 
-			auto certificate = boost::make_shared<Certificate>();
-			if (!certificate->fromDERFile(file.path().string())) {
-				certificate->log(Error, "read certificate from file error: " + file.path().string());
-				continue;
-			}
+		//
+		// check if application certificate is in reject list location, In this
+		// case we are not allowed to use the certificate.
+		//
+		certificate = readCertificateFromDirectory(applicationUri, certificateRejectListLocation_);
+		if (certificate) {
+			Log(Debug, "found certificate in reject folder")
+			    .parameter("Uri", applicationUri)
+				.parameter("Directory", certificateRejectListLocation_);
+			return false;
+		}
 
-			CertificateInfo info;
-			certificate->getInfo(info);
-			if (info.uri() == applicationUri) {
-				partnerCertificateChain.addCertificate(certificate);
-				Log(Debug, "found certificate in reject folder")
-				    .parameter("Uri", applicationUri);
+		//
+		// check if application certificate is in revocation list location. In this
+		// case we are not allowed to use the certificate.
+		//
+		certificate = readCertificateFromDirectory(applicationUri, certificateRevocationListLocation_);
+		if (certificate) {
+			Log(Debug, "found certificate in revocation folder")
+			    .parameter("Uri", applicationUri)
+				.parameter("Directory", certificateRevocationListLocation_);
+			return false;
+		}
+
+		//
+		// check if application certificate is in trust list location and the certificate
+		// is a self signed certificate. If not we are not allowed to use the certificate
+		//
+		certificate = readCertificateFromDirectory(applicationUri, certificateTrustListLocation_, true);
+		if (!certificate) {
+			Log(Debug, "certificate not found in trusted folder")
+			    .parameter("Uri", applicationUri)
+				.parameter("Directory", certificateTrustListLocation_);
+			return false;
+		}
+		partnerCertificateChain.addCertificate(certificate);
+		if (certificate->isSelfSigned()) {
+			return true;
+		}
+		if (!certificate->getIssuer(issuer)) {
+			certificate->log(Error, "read issuer from certificate error: Uri=" + applicationUri);
+			return false;
+		}
+
+		//
+		// This step is optional. We check whether one or more  intermediate certificates
+		// exist in associated intermediate folder. We will add these certificates to the
+		// certificate chain.
+		//
+		do {
+			// check revocation directory
+			certificate = readCertificateFromDirectory(issuer, issuersRevocationListLocation_);
+			if (certificate) {
+				Log(Debug, "issuer certificate exist in revocation list")
+					.parameter("CommonName", issuer.commonName());
 				return false;
 			}
+
+			// check trusted directory
+			certificate = readCertificateFromDirectory(issuer, issuersCertificatesLocation_);
+			if (!certificate) {
+				break;
+			}
+			partnerCertificateChain.addCertificate(certificate);
+
+			if (!certificate->getIssuer(issuer)) {
+				certificate->log(Error, "read issuer from certificate error: Uri=" + applicationUri);
+				return false;
+			}
+		} while (true);
+
+		//
+		// This step is optional. We check whether one CA root certificate exist in
+		// associated folder. We will add these certificates to the certificate chain.
+		//
+
+		// check if root ca certificate is in revocation list location. In this
+		// case we are not allowed to use the certificate.
+		certificate = readCertificateFromDirectory(issuer, certificateRevocationListLocation_);
+		if (certificate) {
+			Log(Debug, "root ca certificate exist in revocation list")
+				.parameter("CommonName", issuer.commonName());
+			return false;
 		}
 
-		// check if certificate is in trust list location
-		std::vector<std::string> uris;
-		boost::filesystem::path trustFilePath(certificateTrustListLocation_);
-		for (auto file : boost::filesystem::directory_iterator(trustFilePath)) {
-			if (boost::filesystem::is_directory(file)) {
-				continue;
-			}
-			if (file.path().extension().string() != ".der") {
-				continue;
-			}
-
-			auto certificate = boost::make_shared<Certificate>();
-			if (!certificate->fromDERFile(file.path().string())) {
-				certificate->log(Error, "read certificate from file error: " + file.path().string());
-				continue;
-			}
-
-			CertificateInfo info;
-			certificate->getInfo(info);
-			uris.push_back(info.uri());
-			if (info.uri() == applicationUri) {
-				partnerCertificateChain.addCertificate(certificate);
-				return true;
-			}
+		// check if root ca certificate is in trust list location.
+		certificate = readCertificateFromDirectory(issuer, certificateTrustListLocation_);
+		if (!certificate) {
+			Log(Debug, "root ca certificate not exist in trusted list")
+				.parameter("CommonName", issuer.commonName());
+			return true;
 		}
+		partnerCertificateChain.addCertificate(certificate);
 
-		Log log(Debug, "certificate not found in trusted folder");
-		log.parameter("Uri", applicationUri);
-		for (auto uri : uris) {
-			log.parameter("TrustedUri", uri);
-		}
-		return false;
+		return true;
 	}
 
 	bool
@@ -429,6 +560,11 @@ namespace OpcUaStackCore
 	CertificateManager::isCertificateInRevocationList(Certificate::SPtr& certificate)
 	{
 		std::string certFileName = certificate->thumbPrint().toHexString() + ".der";
+
+		boost::filesystem::path certificateRejectPath(certificateRejectListLocation_ + "/" + certFileName);
+		if (boost::filesystem::exists(certificateRejectPath)) {
+			return true;
+		}
 
 		boost::filesystem::path certificateRevocationPath(certificateRevocationListLocation_ + "/" + certFileName);
 		if (boost::filesystem::exists(certificateRevocationPath)) {

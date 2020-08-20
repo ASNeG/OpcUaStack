@@ -210,13 +210,17 @@ namespace OpcUaStackCore
 			return false;
 		}
 
+		Log(Debug, "read own certificate and private key")
+			.parameter("CertsInChain", certificateChain_.size());
+
 		return true;
 	}
 
 	bool
 	ApplicationCertificate::readCertificateChain(
 		Certificate::SPtr& certificate,
-		CertificateManager::SPtr& certificateManager)
+		CertificateManager::SPtr& certificateManager
+	)
 	{
 		// added certificate to certificate chain
 		certificateChain_.addCertificate(certificate);
@@ -234,18 +238,16 @@ namespace OpcUaStackCore
 		// search next issuer certificate in trusted folder
 		certificate = certificateManager->getTrustedCertificate(issuer);
 		if (certificate.get() != nullptr) {
-			certificateChain_.certificateVec().push_back(certificate);
 			return readCertificateChain(certificate, certificateManager);
 		}
 
 		// search next issuer certificate in CA folder
 		certificate = certificateManager->getCACertificate(issuer);
 		if (certificate.get() != nullptr) {
-			certificateChain_.certificateVec().push_back(certificate);
 			return readCertificateChain(certificate, certificateManager);
 		}
 
-		return false;
+		return true;
 	}
 
 }

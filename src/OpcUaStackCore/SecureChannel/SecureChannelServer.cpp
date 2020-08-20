@@ -491,6 +491,8 @@ namespace OpcUaStackCore
 
 		// validate client certificate chain
 		if (securitySettings.isPartnerEncryptionEnabled()) {
+			Log(Debug, "validate partner certificate chain")
+				.parameter("NumberCerts", securitySettings.partnerCertificateChain().size());
 
 			ValidateCertificate validateCertificate;
 			validateCertificate.certificateManager(cryptoManager()->certificateManager());

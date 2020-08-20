@@ -850,7 +850,9 @@ namespace OpcUaStackServer
 
 		// check client signature
 		if (secureChannelTransaction->cryptoBase_.get() != nullptr) {
-			// create certificate
+			// Create buffer with all server certificates from server certificate chain.
+			// We need this buffer to validate the signature in the activate session
+			// request.
 			OpcUaByteString certByteString;
 			cryptoManager_->applicationCertificate()->certificateChain().toByteString(certByteString);
 			MemoryBuffer certificate(certByteString);
@@ -861,9 +863,9 @@ namespace OpcUaStackServer
 			// verify signature
 			auto publicKey = securitySettings.partnerCertificateChain().getCertificate()->publicKey();
 			statusCode = activateSessionRequest.clientSignature()->verifySignature(
-				certificate,
-				serverNonce,
-				publicKey,
+				certificate,				// base to calculate signature
+				serverNonce,				// base to calculate signature
+				publicKey,					// public client key
 				*secureChannelTransaction->cryptoBase_
 			);
 
