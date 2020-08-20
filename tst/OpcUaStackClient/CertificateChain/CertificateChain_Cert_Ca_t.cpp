@@ -54,7 +54,15 @@ connectToServer(
 	//
 	// set PKI environment
 	//
-	setenv("OPC_UA_PKI_DIR", "TestApp:./pki1", 1);
+	// Path: /tmp/etc/OpcUaStack/ASNeG-Demo/pki
+	//       If this directory exist we assume that we run the test with docker
+	//
+	if (boost::filesystem::exists(boost::filesystem::path("/tmp/etc/OpcUaStack/ASNeG-Demo/pki"))) {
+		setenv("OPC_UA_PKI_DIR", "TestApp:./pki1:ASNeG-Demo:/tmp/etc/OpcUaStack/ASNeG-Demo/pki", 1); // FIXME: todo
+	}
+	else {
+		setenv("OPC_UA_PKI_DIR", "TestApp:./pki1", 1);
+	}
 	boost::process::system("mkdir -p ./pki1");
 
 	//
@@ -216,6 +224,7 @@ BOOST_AUTO_TEST_CASE(CertificateChain_CertCa_)
 	std::cout << "CertificateChain_CertCa_t" << std::endl;
 }
 
+#if 0
 BOOST_AUTO_TEST_CASE(CertificateChain_CertCa_001)
 {
 	auto statusCode = connectToServer(true, true, Trust, Trust, "CertificateChain_CertCa_001");
@@ -299,6 +308,7 @@ BOOST_AUTO_TEST_CASE(CertificateChain_CertCa_014)
 	auto statusCode = connectToServer(true, false, Reject, Trust, "CertificateChain_CertCa_014");
 	BOOST_REQUIRE(statusCode != Success);
 }
+#endif
 
 BOOST_AUTO_TEST_SUITE_END()
 
