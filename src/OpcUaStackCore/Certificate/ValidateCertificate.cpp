@@ -255,7 +255,7 @@ namespace OpcUaStackCore
 			Identity issuer;
 			actCertificate->getIssuer(issuer);
 
-			// search next issuer certificate in trusted folder
+			// search ca certificate from trusted folder
 			auto certificate = certificateManager_->getTrustedCertificate(issuer);
 			if (certificate.get() != nullptr) {
 				certificateChain_.certificateVec().push_back(certificate);
@@ -263,8 +263,8 @@ namespace OpcUaStackCore
 				continue;
 			}
 
-			// search next issuer certificate in CA folder
-			certificate = certificateManager_->getCACertificate(issuer);
+			// search issuer certificate in issuer certificate folder
+			certificate = certificateManager_->getImCertificate(issuer);
 			if (certificate.get() != nullptr) {
 				certificateChain_.certificateVec().push_back(certificate);
 				actCertificate = certificate;
