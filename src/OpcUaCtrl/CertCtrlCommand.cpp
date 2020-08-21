@@ -358,7 +358,9 @@ namespace OpcUaCtrl
 		) {
 			Log(Error, "certificate identifier unknown")
 				.parameter("ApplicationName", applicationName)
-				.parameter("CertId", certificateId);
+				.parameter("CertId", certificateId)
+				.parameter("TrustDir", applicationInfo->certDirectoryTrust_)
+				.parameter("UntrustDir", applicationInfo->certDirectoryRevocation_);
 			return 1;
 		}
 

@@ -1,4 +1,4 @@
-FROM ubuntu:xenial
+FROM ubuntu:bionic
 
 MAINTAINER Aleksey Timin <atimin@gmail.com>
 
@@ -12,7 +12,7 @@ ADD / /OpcUaStack
 WORKDIR /OpcUaStack
 
 # Build
-RUN sh build.sh -t local -i / -j 2 -B Release
+RUN sh build.sh -t local --debug-output -i / -j 2 -B Release
 
 # Clean build files
 RUN sh build.sh -t clean

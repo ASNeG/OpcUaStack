@@ -344,6 +344,7 @@ namespace OpcUaStackCore
 		OpenSecureChannelRequest& openSecureChannelRequest
 	)
 	{
+		// create open secure channel response
 		auto openSecureChannelResponse = boost::make_shared<OpenSecureChannelResponse>();
 		openSecureChannelResponse->responseHeader()->requestHandle(openSecureChannelRequest.requestHeader()->requestHandle());
 		openSecureChannelResponse->responseHeader()->time().dateTime(boost::posix_time::microsec_clock::local_time());
@@ -355,10 +356,7 @@ namespace OpcUaStackCore
 
 		// find endpoint description in server configuration
 		securitySettings.endpointDescription().reset();
-		EndpointDescription::SPtr endpointDescription;
-		for (uint32_t idx = 0; idx < secureChannelServerConfig->endpointDescriptionArray()->size(); idx++) {
-			secureChannelServerConfig->endpointDescriptionArray()->get(idx, endpointDescription);
-
+		for (auto endpointDescription : *secureChannelServerConfig->endpointDescriptionArray().get()) {
 			if (securitySettings.partnerSecurityPolicyUri().toString() == endpointDescription->securityPolicyUri().toStdString()) {
 				securitySettings.endpointDescription() = endpointDescription;
 				break;
@@ -376,9 +374,9 @@ namespace OpcUaStackCore
 		}
 
 		// set security policy uri
-		securitySettings.ownSecurityPolicyUri() = endpointDescription->securityPolicyUri();
+		securitySettings.ownSecurityPolicyUri() = securitySettings.endpointDescription()->securityPolicyUri();
 
-		// set certificate
+		// check if partner certificate exist - get own certificate
 		if (securitySettings.isPartnerSignatureEnabled()) {
 			securitySettings.ownCertificateChain() = cryptoManager()->applicationCertificate()->certificateChain();
 		}
@@ -387,7 +385,7 @@ namespace OpcUaStackCore
 		if (securitySettings.isPartnerEncryptionEnabled()) {
 			assert(securitySettings.partnerCertificateChain().getCertificate().get() != nullptr);
 
-			OpcUaByteString thumbPrint = securitySettings.partnerCertificateChain().getCertificate()->thumbPrint();
+			auto thumbPrint = securitySettings.partnerCertificateChain().getCertificate()->thumbPrint();
 			securitySettings.partnerCertificateThumbprint() = thumbPrint;
 		}
 
@@ -493,6 +491,8 @@ namespace OpcUaStackCore
 
 		// validate client certificate chain
 		if (securitySettings.isPartnerEncryptionEnabled()) {
+			Log(Debug, "validate partner certificate chain")
+				.parameter("NumberCerts", securitySettings.partnerCertificateChain().size());
 
 			ValidateCertificate validateCertificate;
 			validateCertificate.certificateManager(cryptoManager()->certificateManager());

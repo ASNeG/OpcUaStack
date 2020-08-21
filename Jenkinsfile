@@ -11,7 +11,7 @@ pipeline {
         stage('build_linux') {
           steps {
             sh 'docker-compose build --pull'
-            sh 'docker-compose run stack sh build.sh -t tst -j 2 -B Release --test-with-server opc.tcp://asneg-demo:8889 --server-pki-path /tmp/'
+            sh 'docker-compose run stack sh build.sh -t tst --debug-output -j 2 -B Release --test-with-server opc.tcp://asneg-demo:8889 --server-pki-path /tmp/'
           }
         }
 

@@ -1,5 +1,5 @@
 /*
-   Copyright 2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2019-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -138,9 +138,11 @@ namespace OpcUaStackClient
 		ctx_->authenticationToken_ = createSessionResponse.authenticationToken();
 		securitySettings.partnerNonce().set(createSessionResponse.serverNonce());
 
+		//
 		// check server signature
-		auto certificate = securitySettings.ownCertificateChain().getCertificate();
-		if (certificate.get() != nullptr) {
+		//
+		auto clientCertificate = securitySettings.ownCertificateChain().getCertificate();
+		if (clientCertificate.get() != nullptr) {
 			ctx_->serverNonce_ = createSessionResponse.serverNonce();
 
 			// get server certificate from create session response
@@ -166,17 +168,20 @@ namespace OpcUaStackClient
 				return SessionServiceStateId::Error;
 			}
 
-			// get client certificate
-			MemoryBuffer clientCertificate;
-			certificate->toDERBuf(clientCertificate);
+			// Create buffer with all client certificates from client certificate chain.
+			// We need this buffer to validate the signature in the create session
+			// response.
+			OpcUaByteString clientCertificateStrBuf;
+			securitySettings.ownCertificateChain().toByteString(clientCertificateStrBuf);
+			MemoryBuffer clientCertificateBuf(clientCertificateStrBuf);
 
-			// verify signature
+			// Verify signature in the create session response.
 			MemoryBuffer clientNonce(ctx_->clientNonce_, 32);
 			PublicKey publicKey = serverCertificateChain.getCertificate()->publicKey();
 			OpcUaStatusCode statusCode = createSessionResponse.signatureData()->verifySignature(
-				clientCertificate,
-				clientNonce,
-				publicKey,
+				clientCertificateBuf,				// base to calculate signature
+				clientNonce,						// base to calculate signature
+				publicKey,							// public server key
 				*securitySettings.cryptoBase()
 			);
 

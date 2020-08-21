@@ -70,6 +70,7 @@ namespace OpcUaStackCore
 		// create crypto manager
 		cryptoManager(secureChannelClientConfig->cryptoManager());
 
+		// check interface
 		if (secureChannelClientIf_ == nullptr) {
 			Log(Error, "secure channel client interface invalid")
 				.parameter("EndpointUrl", secureChannelClientConfig->endpointUrl());
@@ -108,10 +109,15 @@ namespace OpcUaStackCore
 		}
 
 		if (secureChannelClientConfig->securityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
+
+			// get partner certificate chain and calculate thumbprint
+
 			if (secureChannelClientConfig->certificateChain().empty()) {
 
-				// no certificate in certificate chain available. Therefore, we are looking for a
-				// certificate in the certificate store
+				// no certificate for the partner in certificate chain available. Therefore, we
+				// are looking for a certificate in the certificate store for the communication
+				// partner. This case occurs if no Endpoint Request was previously sent from the
+				// client to the server.
 
 				bool result = cryptoManager()->certificateManager()->isPartnerCertificateTrusted(
 					secureChannelClientConfig->applicationUri(),
@@ -133,7 +139,13 @@ namespace OpcUaStackCore
 			}
 			securitySettings.partnerCertificateThumbprint() = securitySettings.partnerCertificateChain().getCertificate()->thumbPrint();
 
-			// check certificate
+			Log(Debug, "cert chain info")
+				.parameter("OwnNumberCerts", securitySettings.ownCertificateChain().size())
+				.parameter("PartnerNumberCerts", securitySettings.partnerCertificateChain().size());
+
+			//
+			// check partner certificate chain
+			//
 			auto statusCode = validateCertificateChain(secureChannel, secureChannelClientConfig);
 			if (statusCode != Success) {
 				Log(Error, "partner certificate check error")
@@ -170,7 +182,9 @@ namespace OpcUaStackCore
 
 		if (statusCode != Success) {
 
-			// on error we save the certificate in the reject folder.
+			// on error we save the partner certificate in the reject folder. In
+			// this case the partner certificate or a CA certificate in the certificate
+			// chain is invalid.
 
 			auto certificate = securitySettings.partnerCertificateChain().getCertificate();
 			std::string certFileName = certificate->thumbPrint().toHexString() + ".der";
@@ -179,6 +193,10 @@ namespace OpcUaStackCore
 				rejectFilePath.string(),
 				*certificate.get()
 			);
+
+			Log(Debug, "save partner certificate in reject folder")
+			    .parameter("Uri", secureChannelClientConfig->applicationUri())
+				.parameter("CertId", certificate->thumbPrint().toHexString());
 
 		}
 
@@ -264,6 +282,11 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
+		//
+		// A TCP connection is established from the opc ua client to the opc ua
+		// server. The opc ua client sends a Hello request to the opc ua server.
+		//
+
 		if (error) {
 			Log(Info, "cannot connect secure channel to server")
 				.parameter("ChannelId", *secureChannel)
@@ -297,7 +320,7 @@ namespace OpcUaStackCore
 			.parameter("Address", secureChannel->partner_.address().to_string())
 			.parameter("Port", secureChannel->partner_.port());
 
-		// send hellp message
+		// send hello message
 		secureChannel->state_ = SecureChannel::S_Hello;
 		asyncWriteHello(secureChannel, helloMessage);
 	}
@@ -305,6 +328,11 @@ namespace OpcUaStackCore
 	void
 	SecureChannelClient::handleRecvAcknowledge(SecureChannel* secureChannel, AcknowledgeMessage& acknowledge)
 	{
+		//
+		// The opc ua client receives a Acknowledge request from the opc ua server.
+		// The opc ua client sends a open secure channel request to the server.
+		//
+
 		Log(Info, "receive acknowledge")
 			.parameter("ChannelId", *secureChannel)
 			.parameter("Address", secureChannel->partner_.address().to_string())
@@ -352,6 +380,11 @@ namespace OpcUaStackCore
 	void
 	SecureChannelClient::handleRecvOpenSecureChannelResponse(SecureChannel* secureChannel, OpenSecureChannelResponse& openSecureChannelResponse)
 	{
+		//
+		// The opc ua client receives a open secure channel response from the server.
+		// We inform the application about the establishment of the connection.
+		//
+
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
 
 		// handle partner nonce

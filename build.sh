@@ -45,6 +45,7 @@ usage()
    echo ""
    echo "--build-type, -B BUILD_TYPE:  set the build types (Debug | Release). By default, it is Debug type"
    echo "--test-with-server URI:  build client test for real OPC UA server. By default, empty "
+   echo "--debug-output: activate debug output"
 
 }
 
@@ -101,7 +102,8 @@ build_local()
     if [ ${BUILD_FIRST} -eq 1 ] ;
     then
         set -x
-        cmake ../src \
+        cmake ${DEBUG_OUTPUT} \
+	      ../src \
               "${CMAKE_GENERATOR_LOCAL}" \
               -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" 
         RESULT=$?
@@ -113,7 +115,7 @@ build_local()
         fi
     else
         set -x
-        cmake .
+        cmake . ${DEBUG_OUTPUT}
         RESULT=$?
         set +x
         if [ ${RESULT} -ne 0 ] ;
@@ -181,6 +183,7 @@ build_deb()
     then
  
         cmake ../src \
+	    ${DEBUG_OUTPUT} \
             "${CMAKE_GENERATOR_LOCAL}" \
             -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
             "-DCPACK_BINARY_DEB=1" \
@@ -195,7 +198,7 @@ build_deb()
             return ${RESULT}
         fi
     else
-        cmake .
+        cmake . ${DEBUG_OUTPUT}
         RESULT=$?
         if [ ${RESULT} -ne 0 ] ;
         then
@@ -257,6 +260,7 @@ build_rpm()
     if [ ${BUILD_FIRST} -eq 1 ] ;
     then
         cmake ../src \
+	    ${DEBUG_OUTPUT} \
             "${CMAKE_GENERATOR_LOCAL}" \
             -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
             "-DCPACK_BINARY_DEB=0" \
@@ -271,7 +275,7 @@ build_rpm()
             return ${RESULT}
         fi
     else
-        cmake .
+        cmake . ${DEBUG_OUTPUT}
         RESULT=$?
         if [ ${RESULT} -ne 0 ] ;
         then
@@ -324,6 +328,7 @@ build_tst()
     if [ ${BUILD_FIRST} -eq 1 ] ;
     then
         cmake ../tst \
+	     ${DEBUG_OUTPUT} \
   	     "${CMAKE_GENERATOR_LOCAL}" \
 	     -DOPCUASTACK_INSTALL_PREFIX="${STACK_PREFIX}" \
              -DTEST_SERVER_URI=${TEST_SERVER_URI} \
@@ -335,7 +340,7 @@ build_tst()
             return ${RESULT}
         fi
     else
-        cmake .
+        cmake . ${DEBUG_OUTPUT}
         RESULT=$?
         if [ ${RESULT} -ne 0 ] ;
         then
@@ -398,6 +403,7 @@ STACK_PREFIX="/"
 JOBS=1
 BUILD_TYPE="Debug"
 TEST_SERVER_URI=""
+DEBUG_OUTPUT=""
 
 while [ $# -gt 0 ];
 do
@@ -434,6 +440,11 @@ case $key in
     TEST_SERVER_URI="$2"
     shift # past flag
     shift # past value
+    ;;
+
+    --debug-output) 
+    DEBUG_OUTPUT="--debug-output"
+    shift # past argument
     ;;
 
     *)    # unknown option
