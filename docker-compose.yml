@@ -1,7 +1,7 @@
 version: '2'
 services:
   asneg-demo:
-    container_name: asne-demo${BUILD_TAG}
+    container_name: asneg-demo${BUILD_TAG}
     image: asneg/asneg-demo:release-4
     hostname: asneg-demo
     volumes:
