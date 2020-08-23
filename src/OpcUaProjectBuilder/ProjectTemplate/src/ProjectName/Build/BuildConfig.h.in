@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -24,5 +24,8 @@
 #define LIBRARY_VERSION_MAJOR			"@VERSION_MAJOR@"
 #define LIBRARY_VERSION_MINOR			"@VERSION_MINOR@"
 #define LIBRARY_VERSION_PATCH			"@VERSION_PATCH@"
+
+#define LIBRARY_GIT_COMMIT				"@GIT_COMMIT@"
+#define LIBRARY_GIT_BRANCH				"@GIT_BRANCH@"
 
 #endif
