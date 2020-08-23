@@ -204,6 +204,8 @@ namespace OpcUaServer
 		std::stringstream boostVersion;
 		std::stringstream openSSLVersion;
 		std::stringstream confDir;
+		std::stringstream gitCommit;
+		std::stringstream gitBranch;
 
 		version        << "  OpcUaServer version      : "
 			<< VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH
@@ -214,12 +216,18 @@ namespace OpcUaServer
 			<< OPENSSL_VERSION_MAJOR << "." << OPENSSL_VERSION_MINOR << "." << OPENSSL_VERSION_PATCH;
 		confDir        << "  Config Directory         : "
 			<< Environment::confDir();
+		gitCommit 	   << "  Git-Commit               : "
+			<< GIT_COMMIT;
+		gitBranch      << "  Git-Branch               : "
+			<< GIT_BRANCH;
 
 		Log(Info, "Start OpcUaServer");
 		Log(Info, version.str());
 		Log(Info, boostVersion.str());
 		Log(Info, openSSLVersion.str());
 		Log(Info, confDir.str());
+		Log(Info, gitCommit.str());
+		Log(Info, gitBranch.str());
 	}
 
 }

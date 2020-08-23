@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -44,6 +44,8 @@ namespace OpcUaServer
 		InitFunction* initFunction(void);
 		OpcUaStackServer::ApplicationIf* applicationIf(void);
 		std::string version(void);
+		std::string gitCommit(void);
+		std::string gitBranch(void);
 
 		bool startup(void);
 		bool shutdown(void);

@@ -138,8 +138,14 @@ namespace OpcUaServer
 
 			// log out library version
 			std::stringstream version;
-			version  << "  Library Version          : " << applicationLibrary->version();
+			std::stringstream gitCommit;
+			std::stringstream gitBranch;
+			version   << "  Library Version          : " << applicationLibrary->version();
+			gitCommit << "  Git Commit               : " << applicationLibrary->gitCommit();
+			gitBranch << "  Git Branch               : " << applicationLibrary->gitBranch();
 			Log(Info, version.str());
+			Log(Info, gitCommit.str());
+			Log(Info, gitBranch.str());
 
 			// call startup function
 			ApplicationIf* applicationIf;
