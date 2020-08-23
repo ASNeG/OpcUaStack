@@ -27,6 +27,8 @@
 #define VERSION_PATCH			"@VERSION_PATCH@"
 #define BUILD_TIME				"@BUILD_TIME@"
 #define BUILD_NUMBER			"@BUILD_NUMBER@"
+#define GIT_COMMIT				"@GIT_COMMIT@"
+#define GIT_BRANCH				"@GIT_BRANCH@"
 
 //
 // version of boost library

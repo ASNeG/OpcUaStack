@@ -105,7 +105,9 @@ build_local()
         cmake ${DEBUG_OUTPUT} \
 	      ../src \
               "${CMAKE_GENERATOR_LOCAL}" \
-              -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" 
+              -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
+	      -DGIT_COMMIT="${GIT_COMMIT}" \
+	      -DGIT_BRANCH="${GIT_BRANCH}" 
         RESULT=$?
         set +x
         if [ ${RESULT} -ne 0 ] ;
@@ -186,6 +188,8 @@ build_deb()
 	    ${DEBUG_OUTPUT} \
             "${CMAKE_GENERATOR_LOCAL}" \
             -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
+	    -DGIT_COMMIT="${GIT_COMMIT}" \
+	    -DGIT_BRANCH="${GIT_BRANCH}" \
             "-DCPACK_BINARY_DEB=1" \
             "-DCPACK_BINARY_RPM=0" \
 	    "-DCPACK_BINARY_STGZ=0" \
@@ -263,6 +267,8 @@ build_rpm()
 	    ${DEBUG_OUTPUT} \
             "${CMAKE_GENERATOR_LOCAL}" \
             -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
+            -DGIT_COMMIT="${GIT_COMMIT}" \
+	    -DGIT_BRANCH="${GIT_BRANCH}" \ 
             "-DCPACK_BINARY_DEB=0" \
             "-DCPACK_BINARY_RPM=1" \
   	    "-DCPACK_BINARY_STGZ=0" \
@@ -332,7 +338,9 @@ build_tst()
   	     "${CMAKE_GENERATOR_LOCAL}" \
 	     -DOPCUASTACK_INSTALL_PREFIX="${STACK_PREFIX}" \
              -DTEST_SERVER_URI=${TEST_SERVER_URI} \
-             -DCMAKE_BUILD_TYPE="${BUILD_TYPE}"
+             -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
+	     -DGIT_COMMIT="${GIT_COMMIT}" \
+	     -DGIT_BRANCH="${GIT_BRANCH}" 
         RESULT=$?
         if [ ${RESULT} -ne 0 ] ;
         then
@@ -404,6 +412,8 @@ JOBS=1
 BUILD_TYPE="Debug"
 TEST_SERVER_URI=""
 DEBUG_OUTPUT=""
+GIT_COMMIT=`git rev-parse HEAD`
+GIT_BRANCH=`git rev-parse --abbrev-ref HEAD`
 
 while [ $# -gt 0 ];
 do

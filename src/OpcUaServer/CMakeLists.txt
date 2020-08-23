@@ -12,7 +12,8 @@ configure_file(
 )
 
 set(BUILD_DATE "${CURRENT_DATE}" CACHE STRING "current build an time")
-
+set(GIT_COMMIT "${GIT_COMMIT}" CACHE STRING "git commit id")
+set(GIT_BRANCH "${GIT_BRANCH}" CACHE STRING "git branch name")
 
 
 # -----------------------------------------------------------------------------
