@@ -24,6 +24,7 @@
 
 **Bugs**:
 
+* fix compiltation for boost 1.70 and higher #428, by @flipback
 * fix reconnect timer crash in session service #302, by @huebl
 * Add isNull and setNull function to class OpcUaNodeId #278, @huebl
 * Add Generator directory to cmake file #272, @huebl
