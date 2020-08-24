@@ -13,7 +13,7 @@ the following requirements:
 
 * Compiler with C++17 support (we test only GCC, Clang and Visual Studio)
 * CMake >= 3.5
-* Boost >= 1.58
+* Boost >= 1.65
 * OpenSSL >= 1.0.0
 
 

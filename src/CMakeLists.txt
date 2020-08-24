@@ -137,9 +137,9 @@ message(STATUS "  host system: ${CMAKE_HOST_SYSTEM}")
     set(Boost_USE_RELEASE_LIBS   ON)
  endif()
 add_definitions(-DBOOST_ALL_DYN_LINK)
+set(Boost_NO_BOOST_CMAKE ON)
 find_package(
     Boost 
-    "${BOOST_VERSION_MAJOR}.${BOOST_VERSION_MINOR}" 
     COMPONENTS program_options system unit_test_framework filesystem thread date_time chrono regex 
     REQUIRED
 )
