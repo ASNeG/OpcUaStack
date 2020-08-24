@@ -93,7 +93,7 @@ namespace OpcUaStackCore
 		bool writeCertificate(const std::string& fileName, Certificate& certificate);
 
 		Certificate::SPtr getTrustedCertificate(Identity& issuer);
-		Certificate::SPtr getCACertificate(Identity& issuer);
+		Certificate::SPtr getImCertificate(Identity& issuer);
 		bool isCertificateInTrustedList(Certificate::SPtr& certificate);
 		bool isCertificateInIssuerList(Certificate::SPtr& certificate);
 		bool isCertificateInRevocationList(Certificate::SPtr& certificate);

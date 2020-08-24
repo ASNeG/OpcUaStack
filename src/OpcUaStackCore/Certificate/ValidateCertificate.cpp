@@ -213,20 +213,23 @@ namespace OpcUaStackCore
 			// get issuer from first certificate
 			Identity issuer;
 			if (!certificateChain_.certificateVec()[idx-1]->getIssuer(issuer)) {
-				Log(Error, "read issuer from certificate error");
+				Log(Error, "read issuer from certificate error")
+					.parameter("Idx", idx);
 				return BadSecurityChecksFailed;
 			}
 
 			// get subject from second certificate
 			Identity subject;
 			if (!certificateChain_.certificateVec()[idx]->getSubject(subject)) {
-				Log(Error, "read subject from certificate error");
+				Log(Error, "read subject from certificate error")
+					.parameter("Idx", idx);
 				return BadSecurityChecksFailed;
 			}
 
 			// issuer and subject must be equal
 			if (issuer != subject) {
-				Log(Error, "issuer not equal following subject in certificate chain");
+				Log(Error, "issuer not equal following subject in certificate chain")
+					.parameter("Idx", idx);
 				issuer.log("Issuer");
 				subject.log("Subject");
 				return BadSecurityChecksFailed;
@@ -255,7 +258,7 @@ namespace OpcUaStackCore
 			Identity issuer;
 			actCertificate->getIssuer(issuer);
 
-			// search next issuer certificate in trusted folder
+			// search ca certificate from trusted folder
 			auto certificate = certificateManager_->getTrustedCertificate(issuer);
 			if (certificate.get() != nullptr) {
 				certificateChain_.certificateVec().push_back(certificate);
@@ -263,8 +266,8 @@ namespace OpcUaStackCore
 				continue;
 			}
 
-			// search next issuer certificate in CA folder
-			certificate = certificateManager_->getCACertificate(issuer);
+			// search issuer certificate in issuer certificate folder
+			certificate = certificateManager_->getImCertificate(issuer);
 			if (certificate.get() != nullptr) {
 				certificateChain_.certificateVec().push_back(certificate);
 				actCertificate = certificate;

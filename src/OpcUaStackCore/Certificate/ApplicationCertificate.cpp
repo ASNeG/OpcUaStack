@@ -235,14 +235,14 @@ namespace OpcUaStackCore
 			return false;
 		}
 
-		// search next issuer certificate in trusted folder
+		// search ca certificate in trusted certificate folder
 		certificate = certificateManager->getTrustedCertificate(issuer);
 		if (certificate.get() != nullptr) {
 			return readCertificateChain(certificate, certificateManager);
 		}
 
-		// search next issuer certificate in CA folder
-		certificate = certificateManager->getCACertificate(issuer);
+		// search next issuer certificate in issuer folder
+		certificate = certificateManager->getImCertificate(issuer);
 		if (certificate.get() != nullptr) {
 			return readCertificateChain(certificate, certificateManager);
 		}

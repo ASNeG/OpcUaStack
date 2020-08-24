@@ -42,6 +42,28 @@ typedef enum {
 
 #ifdef REAL_SERVER
 
+void
+showCertInfoCertCa(void)
+{
+	std::cout << "OpcUaCtrl4 appl_cert show ASNeG-Demo all" << std::endl;
+	boost::process::system("OpcUaCtrl4 appl_cert show ASNeG-Demo all");
+
+	std::cout << "OpcUaCtrl4 cert show ASNeG-Demo all" << std::endl;
+	boost::process::system("OpcUaCtrl4 cert show ASNeG-Demo all");
+
+	std::cout << "OpcUaCtrl4 ca_cert show ASNeG-Demo all" << std::endl;
+	boost::process::system("OpcUaCtrl4 ca_cert show ASNeG-Demo all");
+
+	std::cout << "OpcUaCtrl4 appl_cert show TestApp all" << std::endl;
+	boost::process::system("OpcUaCtrl4 appl_cert show TestApp all");
+
+	std::cout << "OpcUaCtrl4 cert show TestApp all" << std::endl;
+	boost::process::system("OpcUaCtrl4 cert show TestApp all");
+
+	std::cout << "OpcUaCtrl4 ca_cert show TestApp all" << std::endl;
+	boost::process::system("OpcUaCtrl4 ca_cert show TestApp all");
+}
+
 OpcUaStatusCode
 connectToServer(
 	bool certInChain,
@@ -121,23 +143,7 @@ connectToServer(
 	//
 	// display some infos about the certificates
 	//
-	std::cout << "OpcUaCtrl4 appl_cert show ASNeG-Demo all" << std::endl;
-	boost::process::system("OpcUaCtrl4 appl_cert show ASNeG-Demo all");
-
-	std::cout << "OpcUaCtrl4 cert show ASNeG-Demo all" << std::endl;
-	boost::process::system("OpcUaCtrl4 cert show ASNeG-Demo all");
-
-	std::cout << "OpcUaCtrl4 ca_cert show ASNeG-Demo all" << std::endl;
-	boost::process::system("OpcUaCtrl4 ca_cert show ASNeG-Demo all");
-
-	std::cout << "OpcUaCtrl4 appl_cert show TestApp all" << std::endl;
-	boost::process::system("OpcUaCtrl4 appl_cert show TestApp all");
-
-	std::cout << "OpcUaCtrl4 cert show TestApp all" << std::endl;
-	boost::process::system("OpcUaCtrl4 cert show TestApp all");
-
-	std::cout << "OpcUaCtrl4 ca_cert show TestApp all" << std::endl;
-	boost::process::system("OpcUaCtrl4 ca_cert show TestApp all");
+	showCertInfoCertCa();
 
 	//
 	// create certificate manager for opc ua client (TestApp)
@@ -228,84 +234,98 @@ BOOST_AUTO_TEST_CASE(CertificateChain_CertCa_)
 BOOST_AUTO_TEST_CASE(CertificateChain_CertCa_001)
 {
 	auto statusCode = connectToServer(true, true, Trust, Trust, "CertificateChain_CertCa_001");
+	if (statusCode != Success) showCertInfoCertCa();
 	BOOST_REQUIRE(statusCode == Success);
 }
 
 BOOST_AUTO_TEST_CASE(CertificateChain_CertCa_002)
 {
 	auto statusCode = connectToServer(true, false, Trust, Trust, "CertificateChain_CertCa_002");
+	if (statusCode != Success) showCertInfoCertCa();
 	BOOST_REQUIRE(statusCode == Success);
 }
 
 BOOST_AUTO_TEST_CASE(CertificateChain_CertCa_003)
 {
 	auto statusCode = connectToServer(true, true, Trust, None, "CertificateChain_CertCa_003");
+	if (statusCode != Success) showCertInfoCertCa();
 	BOOST_REQUIRE(statusCode == Success);
 }
 
 BOOST_AUTO_TEST_CASE(CertificateChain_CertCa_004)
 {
 	auto statusCode = connectToServer(true, false, Trust, None, "CertificateChain_CertCa_004");
+	if (statusCode == Success) showCertInfoCertCa();
 	BOOST_REQUIRE(statusCode != Success);
 }
 
 BOOST_AUTO_TEST_CASE(CertificateChain_CertCa_005)
 {
 	auto statusCode = connectToServer(true, true, None, Trust, "CertificateChain_CertCa_005");
+	if (statusCode != Success) showCertInfoCertCa();
 	BOOST_REQUIRE(statusCode == Success);
 }
 
 BOOST_AUTO_TEST_CASE(CertificateChain_CertCa_006)
 {
 	auto statusCode = connectToServer(true, false, None, Trust, "CertificateChain_CertCa_006");
+	if (statusCode != Success) showCertInfoCertCa();
 	BOOST_REQUIRE(statusCode == Success);
 }
 
 BOOST_AUTO_TEST_CASE(CertificateChain_CertCa_007)
 {
 	auto statusCode = connectToServer(true, true, Untrust, Trust, "CertificateChain_CertCa_007");
+	if (statusCode == Success) showCertInfoCertCa();
 	BOOST_REQUIRE(statusCode != Success);
 }
 
 BOOST_AUTO_TEST_CASE(CertificateChain_CertCa_008)
 {
 	auto statusCode = connectToServer(true, false, Untrust, Trust, "CertificateChain_CertCa_008");
+	if (statusCode == Success) showCertInfoCertCa();
 	BOOST_REQUIRE(statusCode != Success);
 }
 
 BOOST_AUTO_TEST_CASE(CertificateChain_CertCa_009)
 {
 	auto statusCode = connectToServer(true, true, Trust, Untrust, "CertificateChain_CertCa_009");
+	if (statusCode == Success) showCertInfoCertCa();
 	BOOST_REQUIRE(statusCode != Success);
 }
 
 BOOST_AUTO_TEST_CASE(CertificateChain_CertCa_010)
 {
 	auto statusCode = connectToServer(true, false, Trust, Untrust, "CertificateChain_CertCa_010");
+	if (statusCode == Success) showCertInfoCertCa();
 	BOOST_REQUIRE(statusCode != Success);
 }
 
 BOOST_AUTO_TEST_CASE(CertificateChain_CertCa_011)
 {
 	auto statusCode = connectToServer(true, true, Untrust, Untrust, "CertificateChain_CertCa_011");
+	if (statusCode == Success) showCertInfoCertCa();
 	BOOST_REQUIRE(statusCode != Success);
 }
 
 BOOST_AUTO_TEST_CASE(CertificateChain_CertCa_012)
 {
 	auto statusCode = connectToServer(true, false, Untrust, Untrust, "CertificateChain_CertCa_012");
+	if (statusCode == Success) showCertInfoCertCa();
 	BOOST_REQUIRE(statusCode != Success);
 }
 
 BOOST_AUTO_TEST_CASE(CertificateChain_CertCa_013)
 {
 	auto statusCode = connectToServer(true, true, Reject, Trust, "CertificateChain_CertCa_013");
+	if (statusCode == Success) showCertInfoCertCa();
 	BOOST_REQUIRE(statusCode != Success);
 }
 
 BOOST_AUTO_TEST_CASE(CertificateChain_CertCa_014)
 {
 	auto statusCode = connectToServer(true, false, Reject, Trust, "CertificateChain_CertCa_014");
+	if (statusCode == Success) showCertInfoCertCa();
 	BOOST_REQUIRE(statusCode != Success);
 }
 #endif

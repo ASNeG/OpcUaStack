@@ -529,7 +529,7 @@ namespace OpcUaStackCore
 	}
 
 	Certificate::SPtr
-	CertificateManager::getCACertificate(Identity& issuer)
+	CertificateManager::getImCertificate(Identity& issuer)
 	{
 		return getCertificate(issuersCertificatesLocation_, issuer);
 	}
@@ -582,7 +582,7 @@ namespace OpcUaStackCore
 	Certificate::SPtr
 	CertificateManager::getCertificate(const std::string& directory, Identity& issuer)
 	{
-		boost::filesystem::path trustFilePath(certificateTrustListLocation_);
+		boost::filesystem::path trustFilePath(directory);
 		for (auto file : boost::filesystem::directory_iterator(trustFilePath)) {
 			if (boost::filesystem::is_directory(file)) {
 				continue;
@@ -603,7 +603,10 @@ namespace OpcUaStackCore
 				continue;
 			}
 
+			issuer.log("ISSUER");
+			subject.log("SUBJECT");
 			if (issuer == subject) {
+				Log(Debug, "FOUND");
 				return certificate;
 			}
 		}
