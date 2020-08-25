@@ -179,6 +179,7 @@ namespace OpcUaCtrl
 				applicationInfo->applicationCertFile_ = applicationCertFile;
 				applicationInfo->privateKeyFile_ = privateKeyFile;
 
+				// add application to application map
 				applicationInfoMap_.insert(std::make_pair(applicationInfo->applName_, applicationInfo));
 			}
 		}
@@ -320,6 +321,10 @@ namespace OpcUaCtrl
 			}
 			applicationInfo->certDirectoryRevocation_ =  certRevocationPath.string();
 
+			// remove existing application info
+			applicationInfoMap_.erase(applicationInfo->applName_);
+
+			// add application to application map
 			applicationInfoMap_.insert(std::make_pair(applicationInfo->applName_, applicationInfo));
 
 			idx++;
