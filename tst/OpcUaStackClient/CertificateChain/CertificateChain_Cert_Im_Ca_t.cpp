@@ -274,7 +274,6 @@ BOOST_AUTO_TEST_CASE(CertificateChain_CertImCa_)
 	std::cout << "CertificateChain_CertImCa_t" << std::endl;
 }
 
-#if 0
 BOOST_AUTO_TEST_CASE(CertificateChain_CertImCa_001)
 {
 	auto statusCode = connectToServer(true, true, true, Trust, Trust, Trust, "CertificateChain_CertImCa_001");
@@ -491,7 +490,6 @@ BOOST_AUTO_TEST_CASE(CertificateChain_CertImCa_031)
 	if (statusCode == Success) showCertInfoCertImCa();
 	BOOST_REQUIRE(statusCode != Success);
 }
-#endif
 
 BOOST_AUTO_TEST_SUITE_END()
 
