@@ -15,8 +15,8 @@ The following constellations are possible:
 - A self signed certificate 
 - A application certificate
 - A application certificate and a CA certificate 
-- A application certificate and one ore more intermediate certificates
-- A application certificate, one ore more intermediate certificates and a 
+- A application certificate and one or more intermediate certificates
+- A application certificate, one or more intermediate certificates and a 
   CA certificate
 
 If the self signed certificate or the application certificate is unknown
