@@ -23,19 +23,19 @@
 namespace ProjectName
 {
 
-	class DLLEXPORT Library
-	: public ApplicationIf
+	class Library
+	: public OpcUaStackServer::ApplicationIf
 	{
 	  public:
 		Library(void);
 		virtual ~Library(void);
 
 		//- ApplicationIf -----------------------------------------------------
-		virtual bool startup(void);
-		virtual bool shutdown(void);
-		virtual std::string version(void);
-		virtual std::string gitCommit(void);
-		virtual std::string gitBranch(void);
+		bool startup(void) override;
+		bool shutdown(void) override;
+		std::string version(void) override;
+		std::string gitCommit(void) override;
+		std::string gitBranch(void) override;
 		//- ApplicationIf -----------------------------------------------------
 
 	  private:
