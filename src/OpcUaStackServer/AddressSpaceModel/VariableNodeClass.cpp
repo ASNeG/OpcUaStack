@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -31,6 +31,7 @@ namespace OpcUaStackServer
 	, historizing_()
 	, arrayDimensions_()
 	, minimumSamplingInterval_()
+	, accessLevelEx_()
 	{
 	}
 
@@ -46,6 +47,7 @@ namespace OpcUaStackServer
 	, historizing_()
 	, arrayDimensions_()
 	, minimumSamplingInterval_()
+	, accessLevelEx_()
 	{
 		OpcUaDataValue dataValue;
 		if (variableNodeClass.getValue(dataValue)) setValue(dataValue);
@@ -84,6 +86,7 @@ namespace OpcUaStackServer
 	, historizing_()
 	, arrayDimensions_()
 	, minimumSamplingInterval_()
+	, accessLevelEx_()
 	{
 		OpcUaDataValue dataValue;
 		if (variableTypeNodeClass.getValue(dataValue)) setValue(dataValue);
@@ -162,6 +165,12 @@ namespace OpcUaStackServer
 		return minimumSamplingInterval_;
 	}
 
+	AccessLevelExAttribute&
+	VariableNodeClass::accessLevelEx()
+	{
+		return accessLevelEx_;
+	}
+
 	Attribute* 
 	VariableNodeClass::valueAttribute(void)
 	{
@@ -208,6 +217,12 @@ namespace OpcUaStackServer
 	VariableNodeClass::minimumSamplingIntervalAttribute(void)
 	{
 		return &minimumSamplingInterval_;
+	}
+
+	Attribute*
+	VariableNodeClass::accessLevelExAttribute(void)
+	{
+		return &accessLevelEx_;
 	}
 
 	void
