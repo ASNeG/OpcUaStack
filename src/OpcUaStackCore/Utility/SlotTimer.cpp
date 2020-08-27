@@ -501,14 +501,14 @@ namespace OpcUaStackCore
 				Log(Error, "slot timer error");
 			}
 			running_ = false;
-			stopCondition_.sendEvent();
+			stopCondition_.set_value();
 			mutex_.unlock();
 			ownSPtr_.reset();
 			return;
 		}
 
 		if (running_ == false) {
-			stopCondition_.sendEvent();
+			stopCondition_.set_value();
 			mutex_.unlock();
 			ownSPtr_.reset();
 			return;
@@ -527,7 +527,7 @@ namespace OpcUaStackCore
 		uint64_t nextTick = slotArray1_.run(&mutex_);
 
 		if (running_ == false) {
-			stopCondition_.sendEvent();
+			stopCondition_.set_value();
 			mutex_.unlock();
 			ownSPtr_.reset();
 			return;
@@ -581,12 +581,12 @@ namespace OpcUaStackCore
 		Log(Debug, "slot timer stopping");
 
 		mutex_.lock();
-		stopCondition_.initEvent();
+		auto future = stopCondition_.get_future();
 		running_ = false;
 		timer_->cancel();
 		mutex_.unlock();
 
-		stopCondition_.waitForEvent();
+		future.wait();
 		delete timer_;
 		timer_ = nullptr;
 
