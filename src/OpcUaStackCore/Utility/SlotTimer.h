@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackCore_SlotTimer_h__
 #define __OpcUaStackCore_SlotTimer_h__
 
+#include <future>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/asio/strand.hpp>
 #include <boost/shared_ptr.hpp>
@@ -156,7 +157,7 @@ namespace OpcUaStackCore
 		boost::posix_time::ptime startTime_;
 		uint32_t nextTick_;
 
-		Condition stopCondition_;
+		std::promise<void> stopCondition_;
 		SlotTimer::SPtr ownSPtr_;
 	};
 
