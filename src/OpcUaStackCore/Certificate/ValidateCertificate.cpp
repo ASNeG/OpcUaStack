@@ -183,6 +183,7 @@ namespace OpcUaStackCore
 		//
 
 		if (!certificateChain_.fromByteString(certificateChain)) {
+			Log(Debug, "certificate chain invalid");
 			return BadCertificateInvalid;
 		}
 

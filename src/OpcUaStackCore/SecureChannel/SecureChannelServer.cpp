@@ -349,7 +349,6 @@ namespace OpcUaStackCore
 		openSecureChannelResponse->responseHeader()->requestHandle(openSecureChannelRequest.requestHeader()->requestHandle());
 		openSecureChannelResponse->responseHeader()->time().dateTime(boost::posix_time::microsec_clock::local_time());
 
-
 		// get server configuration and security settings
 		auto secureChannelServerConfig = boost::static_pointer_cast<SecureChannelServerConfig>(secureChannel->config_);
 		auto& securitySettings = secureChannel->securitySettings();
