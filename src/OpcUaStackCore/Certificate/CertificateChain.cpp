@@ -208,7 +208,9 @@ namespace OpcUaStackCore
 	CertificateChain::opcUaBinaryEncode(std::ostream& os) const
 	{
 		OpcUaByteString byteString;
-		toByteString(byteString);
+		if (!certificateVec_.empty()) {
+			toByteString(byteString);
+		}
 		byteString.opcUaBinaryEncode(os);
 		return true;
 	}
