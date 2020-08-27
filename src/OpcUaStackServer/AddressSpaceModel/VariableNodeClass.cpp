@@ -72,6 +72,9 @@ namespace OpcUaStackServer
 
 		OpcUaDouble minimumSamplingInterval;
 		if (variableNodeClass.getMinimumSamplingInterval(minimumSamplingInterval)) setMinimumSamplingInterval(minimumSamplingInterval);
+
+		AccessLevelExType accessLevelEx;
+		if (variableNodeClass.getAccessLevelEx(accessLevelEx)) setAccessLevelEx(accessLevelEx);
 	}
 
 	VariableNodeClass::VariableNodeClass(
@@ -111,6 +114,9 @@ namespace OpcUaStackServer
 
 		OpcUaDouble minimumSamplingInterval = 0;
 		setMinimumSamplingInterval(minimumSamplingInterval);
+
+		AccessLevelExType accessLevelEx = 0;
+		setAccessLevelEx(accessLevelEx);
 	}
 
 	VariableNodeClass::~VariableNodeClass(void)
@@ -243,6 +249,7 @@ namespace OpcUaStackServer
 		historizingAttribute()->copyTo(variableNodeClass.historizingAttribute());
 		arrayDimensionsAttribute()->copyTo(variableNodeClass.arrayDimensionsAttribute());
 		minimumSamplingIntervalAttribute()->copyTo(variableNodeClass.minimumSamplingIntervalAttribute());
+		accessLevelExAttribute()->copyTo(variableNodeClass.accessLevelExAttribute());
 	}
 
 	BaseNodeClass::SPtr

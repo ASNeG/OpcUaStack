@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -331,27 +331,67 @@ namespace OpcUaStackServer
 		//
 		// data type definition
 		//
-		// FIXME: todo
+		virtual Attribute* dataTypeDefinitionAttribute(void);
+		bool unsetDataTypeDefinition(void);
+		bool setDataTypeDefinitionSync(OpcUaStackCore::DataTypeDefinition& dataTypeDefinition);
+		bool setDataTypeDefinition(OpcUaStackCore::DataTypeDefinition& dataTypeDefinition);
+		bool getDataTypeDefinitionSync(OpcUaStackCore::DataTypeDefinition& dataTypeDefinition);
+		bool getDataTypeDefinition(OpcUaStackCore::DataTypeDefinition& dataTypeDefinition);
+		bool isPartDataTypeDefinition(void);
+		bool isNullDataTypeDefinition(void);
+		boost::optional<OpcUaStackCore::DataTypeDefinition&> getDataTypeDefinition(void);
 
 		//
 		// role permissions
 		//
-		// FIXME: todo
+		virtual Attribute* rolePermissionsAttribute(void);
+		bool unsetRolePermissions(void);
+		bool setRolePermissionsSync(OpcUaStackCore::RolePermissionTypeArray& rolePermissions);
+		bool setRolePermissions(OpcUaStackCore::RolePermissionTypeArray& rolePermissions);
+		bool getRolePermissionsSync(OpcUaStackCore::RolePermissionTypeArray& rolePermissions);
+		bool getRolePermissions(OpcUaStackCore::RolePermissionTypeArray& rolePermissions);
+		bool isPartRolePermissions(void);
+		bool isNullRolePermissions(void);
+		boost::optional<OpcUaStackCore::RolePermissionTypeArray&> getRolePermissions(void);
 
 		//
 		// user role permissions
 		//
-		// FIXME: todo
+		virtual Attribute* userRolePermissionsAttribute(void);
+		bool unsetUserRolePermissions(void);
+		bool setUserRolePermissionsSync(OpcUaStackCore::RolePermissionTypeArray& userRolePermissions);
+		bool setUserRolePermissions(OpcUaStackCore::RolePermissionTypeArray& userRolePermissions);
+		bool getUserRolePermissionsSync(OpcUaStackCore::RolePermissionTypeArray& userRolePermissions);
+		bool getUserRolePermissions(OpcUaStackCore::RolePermissionTypeArray& userRolePermissions);
+		bool isPartUserRolePermissions(void);
+		bool isNullUserRolePermissions(void);
+		boost::optional<OpcUaStackCore::RolePermissionTypeArray&> getUserRolePermissions(void);
 
 		//
 		// access restrictions
 		//
-		// FIXME: todo
+		virtual Attribute* accessRestrictionsAttribute(void);
+		bool unsetAccessRestrictions(void);
+		bool setAccessRestrictionsSync(OpcUaStackCore::AccessRestrictionType& accessRestrictions);
+		bool setAccessRestrictions(OpcUaStackCore::AccessRestrictionType& accessRestrictions);
+		bool getAccessRestrictionsSync(OpcUaStackCore::AccessRestrictionType& accessRestrictions);
+		bool getAccessRestrictions(OpcUaStackCore::AccessRestrictionType& accessRestrictions);
+		bool isPartAccessRestrictions(void);
+		bool isNullAccessRestrictions(void);
+		boost::optional<OpcUaStackCore::AccessRestrictionType&> getAccessRestrictions(void);
 
 		//
 		// access level ex
 		//
-		// FIXME: todo
+		virtual Attribute* accessLevelExAttribute(void);
+		bool unsetAccessLevelEx(void);
+		bool setAccessLevelExSync(OpcUaStackCore::AccessLevelExType& accessLevelEx);
+		bool setAccessLevelEx(OpcUaStackCore::AccessLevelExType& accessLevelEx);
+		bool getAccessLevelExSync(OpcUaStackCore::AccessLevelExType& accessLevelEx);
+		bool getAccessLevelEx(OpcUaStackCore::AccessLevelExType& accessLevelEx);
+		bool isPartAccessLevelEx(void);
+		bool isNullAccessLevelEx(void);
+		boost::optional<OpcUaStackCore::AccessLevelExType&> getAccessLevelEx(void);
 
 	  private:
 		boost::shared_mutex mutex_;

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -53,7 +53,9 @@ namespace OpcUaStackServer
 	}
 
 	Attribute* 
-	AttributeBase::attribute(AttributeId attributeId)
+	AttributeBase::attribute(
+		AttributeId attributeId
+	)
 	{
 		switch (attributeId)
 		{
@@ -79,15 +81,24 @@ namespace OpcUaStackServer
 			case AttributeId_Historizing: return historizingAttribute();
 			case AttributeId_Executable: return executableAttribute();
 			case AttributeId_UserExecutable: return userExecutableAttribute();
+			case AttributeId_DataTypeDefinition: return dataTypeDefinitionAttribute();
+			case AttributeId_RolePermissions: return rolePermissionsAttribute();
+			case AttributeId_UserRolePermissions: return userRolePermissionsAttribute();
+			case AttributeId_AccessRestrictions: return accessRestrictionsAttribute();
+			case AttributeId_AccessLevelEx: return accessLevelExAttribute();
 		    default: return nullptr;
 		}
 	}
 
 	bool
-	AttributeBase::set(AttributeId attributeId, OpcUaDataValue::SPtr& dataValue)
+	AttributeBase::set(
+		AttributeId attributeId,
+		OpcUaDataValue::SPtr& dataValue
+	)
 	{
+		// check parameter
 		if (dataValue.get() == nullptr) return false;
-		OpcUaVariant::SPtr variant = dataValue->variant();
+		auto variant = dataValue->variant();
 		if (variant.get() == nullptr) return false;
 		if (variant->variantType() == 0) return false;
 
@@ -392,6 +403,112 @@ namespace OpcUaStackServer
 				if (!isPartUserExecutable()) return false;
 				OpcUaBoolean userExecutable = variant->variant<OpcUaBoolean>();
 				return setUserExecutable(userExecutable);
+			}
+			case AttributeId_DataTypeDefinition:
+			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaExtensionObject) {
+					Log(Error, "data type error")
+						.parameter("Attribute", "DataTypeDefinition")
+						.parameter("ActualType", OpcUaBuildInTypeMap::buildInType2String(variant->variantType()))
+						.parameter("ExpectedType", OpcUaBuildInTypeMap::buildInType2String(OpcUaBuildInType_OpcUaExtensionObject));
+					return false;
+				}
+
+				if (!isPartDataTypeDefinition()) return false;
+				auto extensionObject = variant->variantSPtr<OpcUaExtensionObject>();
+
+				if (extensionObject->typeId() != OpcUaNodeId(97)) {
+					Log(Error, "data type error")
+						.parameter("Attribute", "DataTypeDefinition")
+						.parameter("ActualType", extensionObject->typeId())
+						.parameter("ExpectedType", OpcUaNodeId(97));
+					return false;
+				}
+
+				auto dataTypeDefinition = extensionObject->parameter<DataTypeDefinition>();
+				return setDataTypeDefinition(*dataTypeDefinition.get());
+			}
+			case AttributeId_RolePermissions:
+			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaExtensionObject) {
+					Log(Error, "data type error")
+						.parameter("Attribute", "RolePermissions")
+						.parameter("ActualType", OpcUaBuildInTypeMap::buildInType2String(variant->variantType()))
+						.parameter("ExpectedType", OpcUaBuildInTypeMap::buildInType2String(OpcUaBuildInType_OpcUaExtensionObject));
+					return false;
+				}
+
+				if (!isPartRolePermissions()) return false;
+				auto extensionObject = variant->variantSPtr<OpcUaExtensionObject>();
+
+				if (extensionObject->typeId() != OpcUaNodeId(96)) {
+					Log(Error, "data type error")
+						.parameter("Attribute", "RolePermissions")
+						.parameter("ActualType", extensionObject->typeId())
+						.parameter("ExpectedType", OpcUaNodeId(96));
+					return false;
+				}
+
+				auto rolePermissions = boost::make_shared<RolePermissionTypeArray>();
+				for (auto rolePermission : *rolePermissions.get()) {
+					rolePermissions->push_back(rolePermission);
+				}
+				return setRolePermissions(*rolePermissions.get());
+			}
+			case AttributeId_UserRolePermissions:
+			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaExtensionObject) {
+					Log(Error, "data type error")
+						.parameter("Attribute", "UserRolePermissions")
+						.parameter("ActualType", OpcUaBuildInTypeMap::buildInType2String(variant->variantType()))
+						.parameter("ExpectedType", OpcUaBuildInTypeMap::buildInType2String(OpcUaBuildInType_OpcUaExtensionObject));
+					return false;
+				}
+
+				if (!isPartUserRolePermissions()) return false;
+				auto extensionObject = variant->variantSPtr<OpcUaExtensionObject>();
+
+				if (extensionObject->typeId() != OpcUaNodeId(96)) {
+					Log(Error, "data type error")
+						.parameter("Attribute", "UserRolePermissions")
+						.parameter("ActualType", extensionObject->typeId())
+						.parameter("ExpectedType", OpcUaNodeId(96));
+					return false;
+				}
+
+				auto userRolePermissions = boost::make_shared<RolePermissionTypeArray>();
+				for (auto userRolePermission : *userRolePermissions.get()) {
+					userRolePermissions->push_back(userRolePermission);
+				}
+				return setUserRolePermissions(*userRolePermissions.get());
+			}
+			case AttributeId_AccessRestrictions:
+			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaUInt16) {
+					Log(Error, "data type error")
+						.parameter("Attribute", "AccessRestrictions")
+						.parameter("ActualType", OpcUaBuildInTypeMap::buildInType2String(variant->variantType()))
+						.parameter("ExpectedType", OpcUaBuildInTypeMap::buildInType2String(OpcUaBuildInType_OpcUaUInt16));
+					return false;
+				}
+
+				if (!isPartAccessRestrictions()) return false;
+				auto accessRestrictions = variant->variant<OpcUaUInt16>();
+				return setAccessRestrictions(accessRestrictions);
+			}
+			case AttributeId_AccessLevelEx:
+			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaUInt32) {
+					Log(Error, "data type error")
+						.parameter("Attribute", "AccessLevelEx")
+						.parameter("ActualType", OpcUaBuildInTypeMap::buildInType2String(variant->variantType()))
+						.parameter("ExpectedType", OpcUaBuildInTypeMap::buildInType2String(OpcUaBuildInType_OpcUaUInt32));
+					return false;
+				}
+
+				if (!isPartAccessLevelEx()) return false;
+				auto accessLevelEx = variant->variant<OpcUaUInt32>();
+				return setAccessLevelEx(accessLevelEx);
 			}
 		    default: return false;
 		}
@@ -1978,7 +2095,7 @@ namespace OpcUaStackServer
 	}
 
 	//
-	// minimum sminimumSamplingIntervalal
+	// minimumSamplingIntervalal
 	//
 	Attribute* 
 	AttributeBase::minimumSamplingIntervalAttribute(void)
@@ -2049,6 +2166,382 @@ namespace OpcUaStackServer
 	{
 		if (isNullMinimumSamplingInterval()) return boost::none;
 		MinimumSamplingIntervalAttribute* attr = reinterpret_cast<MinimumSamplingIntervalAttribute*>(minimumSamplingIntervalAttribute());
+		return attr->data();
+	}
+
+	//
+	// DataType Definition
+	//
+	Attribute*
+	AttributeBase::dataTypeDefinitionAttribute(void)
+	{
+		return nullptr;
+	}
+
+	bool
+	AttributeBase::unsetDataTypeDefinition(void)
+	{
+		if (!isPartDataTypeDefinition()) return false;
+		DataTypeDefinitionAttribute* attr = reinterpret_cast<DataTypeDefinitionAttribute*>(dataTypeDefinitionAttribute());
+		attr->exist(false);
+		return true;
+	}
+
+	bool
+	AttributeBase::setDataTypeDefinitionSync(OpcUaStackCore::DataTypeDefinition& dataTypeDefinition)
+	{
+		boost::unique_lock<boost::shared_mutex> lock(mutex_);
+		return setDataTypeDefinition(dataTypeDefinition);
+	}
+
+	bool
+	AttributeBase::setDataTypeDefinition(OpcUaStackCore::DataTypeDefinition& dataTypeDefinition)
+	{
+		if (!isPartDataTypeDefinition()) return false;
+		DataTypeDefinitionAttribute* attr = reinterpret_cast<DataTypeDefinitionAttribute*>(dataTypeDefinitionAttribute());
+		attr->data(dataTypeDefinition);
+		attr->exist(true);
+		return true;
+	}
+
+	bool
+	AttributeBase::getDataTypeDefinitionSync(OpcUaStackCore::DataTypeDefinition& dataTypeDefinition)
+	{
+		boost::unique_lock<boost::shared_mutex> lock(mutex_);
+		return getDataTypeDefinition(dataTypeDefinition);
+	}
+
+	bool
+	AttributeBase::getDataTypeDefinition(OpcUaStackCore::DataTypeDefinition& dataTypeDefinition)
+	{
+		if (!isPartDataTypeDefinition()) return false;
+
+		DataTypeDefinitionAttribute* attr = reinterpret_cast<DataTypeDefinitionAttribute*>(dataTypeDefinitionAttribute());
+		if (!attr->exist()) return false;
+		dataTypeDefinition = attr->data();
+		return true;
+	}
+
+	bool
+	AttributeBase::isPartDataTypeDefinition(void)
+	{
+		return (dataTypeDefinitionAttribute() != nullptr);
+	}
+
+	bool
+	AttributeBase::isNullDataTypeDefinition(void)
+	{
+		if (!isPartDataTypeDefinition()) return false;
+		DataTypeDefinitionAttribute* attr = reinterpret_cast<DataTypeDefinitionAttribute*>(dataTypeDefinitionAttribute());
+		return !attr->exist();
+	}
+
+	boost::optional<OpcUaStackCore::DataTypeDefinition&>
+	AttributeBase::getDataTypeDefinition(void)
+	{
+		if (isNullDataTypeDefinition()) return boost::none;
+		DataTypeDefinitionAttribute* attr = reinterpret_cast<DataTypeDefinitionAttribute*>(dataTypeDefinitionAttribute());
+		return attr->data();
+	}
+
+	//
+	// RolePermissions
+	//
+	Attribute*
+	AttributeBase::rolePermissionsAttribute(void)
+	{
+		return nullptr;
+	}
+
+	bool
+	AttributeBase::unsetRolePermissions(void)
+	{
+		if (!isPartRolePermissions()) return false;
+		RolePermissionsAttribute* attr = reinterpret_cast<RolePermissionsAttribute*>(rolePermissionsAttribute());
+		attr->exist(false);
+		return true;
+	}
+
+	bool
+	AttributeBase::setRolePermissionsSync(OpcUaStackCore::RolePermissionTypeArray& rolePermissions)
+	{
+		boost::unique_lock<boost::shared_mutex> lock(mutex_);
+		return setRolePermissions(rolePermissions);
+	}
+
+	bool
+	AttributeBase::setRolePermissions(OpcUaStackCore::RolePermissionTypeArray& rolePermissions)
+	{
+		if (!isPartRolePermissions()) return false;
+		RolePermissionsAttribute* attr = reinterpret_cast<RolePermissionsAttribute*>(rolePermissionsAttribute());
+		attr->data(rolePermissions);
+		attr->exist(true);
+		return true;
+	}
+
+	bool
+	AttributeBase::getRolePermissionsSync(OpcUaStackCore::RolePermissionTypeArray& rolePermissions)
+	{
+		boost::unique_lock<boost::shared_mutex> lock(mutex_);
+		return getRolePermissions(rolePermissions);
+	}
+
+	bool
+	AttributeBase::getRolePermissions(OpcUaStackCore::RolePermissionTypeArray& rolePermissions)
+	{
+		if (!isPartRolePermissions()) return false;
+
+		RolePermissionsAttribute* attr = reinterpret_cast<RolePermissionsAttribute*>(rolePermissionsAttribute());
+		if (!attr->exist()) return false;
+		rolePermissions = attr->data();
+		return true;
+	}
+
+	bool
+	AttributeBase::isPartRolePermissions(void)
+	{
+		return (rolePermissionsAttribute() != nullptr);
+	}
+
+	bool
+	AttributeBase::isNullRolePermissions(void)
+	{
+		if (!isPartRolePermissions()) return false;
+		RolePermissionsAttribute* attr = reinterpret_cast<RolePermissionsAttribute*>(rolePermissionsAttribute());
+		return !attr->exist();
+	}
+
+	boost::optional<OpcUaStackCore::RolePermissionTypeArray&>
+	AttributeBase::getRolePermissions(void)
+	{
+		if (isNullRolePermissions()) return boost::none;
+		RolePermissionsAttribute* attr = reinterpret_cast<RolePermissionsAttribute*>(rolePermissionsAttribute());
+		return attr->data();
+	}
+
+	//
+	// UserRolePermissions
+	//
+	Attribute*
+	AttributeBase::userRolePermissionsAttribute(void)
+	{
+		return nullptr;
+	}
+
+	bool
+	AttributeBase::unsetUserRolePermissions(void)
+	{
+		if (!isPartUserRolePermissions()) return false;
+		RolePermissionsAttribute* attr = reinterpret_cast<RolePermissionsAttribute*>(userRolePermissionsAttribute());
+		attr->exist(false);
+		return true;
+	}
+
+	bool
+	AttributeBase::setUserRolePermissionsSync(OpcUaStackCore::RolePermissionTypeArray& userRolePermissions)
+	{
+		boost::unique_lock<boost::shared_mutex> lock(mutex_);
+		return setUserRolePermissions(userRolePermissions);
+	}
+
+	bool
+	AttributeBase::setUserRolePermissions(OpcUaStackCore::RolePermissionTypeArray& userRolePermissions)
+	{
+		if (!isPartUserRolePermissions()) return false;
+		RolePermissionsAttribute* attr = reinterpret_cast<RolePermissionsAttribute*>(userRolePermissionsAttribute());
+		attr->data(userRolePermissions);
+		attr->exist(true);
+		return true;
+	}
+
+	bool
+	AttributeBase::getUserRolePermissionsSync(OpcUaStackCore::RolePermissionTypeArray& userRolePermissions)
+	{
+		boost::unique_lock<boost::shared_mutex> lock(mutex_);
+		return getUserRolePermissions(userRolePermissions);
+	}
+
+	bool
+	AttributeBase::getUserRolePermissions(OpcUaStackCore::RolePermissionTypeArray& userRolePermissions)
+	{
+		if (!isPartUserRolePermissions()) return false;
+
+		RolePermissionsAttribute* attr = reinterpret_cast<RolePermissionsAttribute*>(userRolePermissionsAttribute());
+		if (!attr->exist()) return false;
+		userRolePermissions = attr->data();
+		return true;
+	}
+
+	bool
+	AttributeBase::isPartUserRolePermissions(void)
+	{
+		return (userRolePermissionsAttribute() != nullptr);
+	}
+
+	bool
+	AttributeBase::isNullUserRolePermissions(void)
+	{
+		if (!isPartUserRolePermissions()) return false;
+		RolePermissionsAttribute* attr = reinterpret_cast<RolePermissionsAttribute*>(userRolePermissionsAttribute());
+		return !attr->exist();
+	}
+
+	boost::optional<OpcUaStackCore::RolePermissionTypeArray&>
+	AttributeBase::getUserRolePermissions(void)
+	{
+		if (isNullUserRolePermissions()) return boost::none;
+		RolePermissionsAttribute* attr = reinterpret_cast<RolePermissionsAttribute*>(userRolePermissionsAttribute());
+		return attr->data();
+	}
+
+
+	//
+	// AccessRestrictions
+	//
+	Attribute*
+	AttributeBase::accessRestrictionsAttribute(void)
+	{
+		return nullptr;
+	}
+
+	bool
+	AttributeBase::unsetAccessRestrictions(void)
+	{
+		if (!isPartAccessRestrictions()) return false;
+		AccessRestrictionsAttribute* attr = reinterpret_cast<AccessRestrictionsAttribute*>(accessRestrictionsAttribute());
+		attr->exist(false);
+		return true;
+	}
+
+	bool
+	AttributeBase::setAccessRestrictionsSync(OpcUaStackCore::AccessRestrictionType& accessRestrictions)
+	{
+		boost::unique_lock<boost::shared_mutex> lock(mutex_);
+		return setAccessRestrictions(accessRestrictions);
+	}
+
+	bool
+	AttributeBase::setAccessRestrictions(OpcUaStackCore::AccessRestrictionType& accessRestrictions)
+	{
+		if (!isPartAccessRestrictions()) return false;
+		AccessRestrictionsAttribute* attr = reinterpret_cast<AccessRestrictionsAttribute*>(accessRestrictionsAttribute());
+		attr->data(accessRestrictions);
+		attr->exist(true);
+		return true;
+	}
+
+	bool
+	AttributeBase::getAccessRestrictionsSync(OpcUaStackCore::AccessRestrictionType& accessRestrictions)
+	{
+		boost::unique_lock<boost::shared_mutex> lock(mutex_);
+		return getAccessRestrictions(accessRestrictions);
+	}
+
+	bool
+	AttributeBase::getAccessRestrictions(OpcUaStackCore::AccessRestrictionType& accessRestrictions)
+	{
+		if (!isPartAccessRestrictions()) return false;
+
+		AccessRestrictionsAttribute* attr = reinterpret_cast<AccessRestrictionsAttribute*>(accessRestrictionsAttribute());
+		if (!attr->exist()) return false;
+		accessRestrictions = attr->data();
+		return true;
+	}
+
+	bool
+	AttributeBase::isPartAccessRestrictions(void)
+	{
+		return (accessRestrictionsAttribute() != nullptr);
+	}
+
+	bool
+	AttributeBase::isNullAccessRestrictions(void)
+	{
+		if (!isPartAccessRestrictions()) return false;
+		AccessRestrictionsAttribute* attr = reinterpret_cast<AccessRestrictionsAttribute*>(accessRestrictionsAttribute());
+		return !attr->exist();
+	}
+
+	boost::optional<OpcUaStackCore::AccessRestrictionType&>
+	AttributeBase::getAccessRestrictions(void)
+	{
+		if (isNullAccessRestrictions()) return boost::none;
+		AccessRestrictionsAttribute* attr = reinterpret_cast<AccessRestrictionsAttribute*>(accessRestrictionsAttribute());
+		return attr->data();
+	}
+
+	//
+	// AccessLevelEx
+	//
+	Attribute*
+	AttributeBase::accessLevelExAttribute(void)
+	{
+		return nullptr;
+	}
+
+	bool
+	AttributeBase::unsetAccessLevelEx(void)
+	{
+		if (!isPartAccessLevelEx()) return false;
+		AccessLevelExAttribute* attr = reinterpret_cast<AccessLevelExAttribute*>(accessLevelExAttribute());
+		attr->exist(false);
+		return true;
+	}
+
+	bool
+	AttributeBase::setAccessLevelExSync(OpcUaStackCore::AccessLevelExType& accessLevelEx)
+	{
+		boost::unique_lock<boost::shared_mutex> lock(mutex_);
+		return setAccessLevelEx(accessLevelEx);
+	}
+
+	bool
+	AttributeBase::setAccessLevelEx(OpcUaStackCore::AccessLevelExType& accessLevelEx)
+	{
+		if (!isPartAccessLevelEx()) return false;
+		AccessLevelExAttribute* attr = reinterpret_cast<AccessLevelExAttribute*>(accessLevelExAttribute());
+		attr->data(accessLevelEx);
+		attr->exist(true);
+		return true;
+	}
+
+	bool
+	AttributeBase::getAccessLevelExSync(OpcUaStackCore::AccessLevelExType& accessLevelEx)
+	{
+		boost::unique_lock<boost::shared_mutex> lock(mutex_);
+		return getAccessLevelEx(accessLevelEx);
+	}
+
+	bool
+	AttributeBase::getAccessLevelEx(OpcUaStackCore::AccessLevelExType& accessLevelEx)
+	{
+		if (!isPartAccessLevelEx()) return false;
+
+		AccessLevelExAttribute* attr = reinterpret_cast<AccessLevelExAttribute*>(accessLevelExAttribute());
+		if (!attr->exist()) return false;
+		accessLevelEx = attr->data();
+		return true;
+	}
+
+	bool
+	AttributeBase::isPartAccessLevelEx(void)
+	{
+		return (accessLevelExAttribute() != nullptr);
+	}
+
+	bool
+	AttributeBase::isNullAccessLevelEx(void)
+	{
+		if (!isPartAccessLevelEx()) return false;
+		AccessLevelExAttribute* attr = reinterpret_cast<AccessLevelExAttribute*>(accessLevelExAttribute());
+		return !attr->exist();
+	}
+
+	boost::optional<OpcUaStackCore::AccessLevelExType&>
+	AttributeBase::getAccessLevelEx(void)
+	{
+		if (isNullAccessLevelEx()) return boost::none;
+		AccessLevelExAttribute* attr = reinterpret_cast<AccessLevelExAttribute*>(accessLevelExAttribute());
 		return attr->data();
 	}
 

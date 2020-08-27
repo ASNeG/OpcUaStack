@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -174,6 +174,26 @@ namespace OpcUaStackServer
 			{
 				UserExecutableAttribute* userExecutableAttribute = reinterpret_cast<UserExecutableAttribute*>(&attribute);
 				variant.variant(userExecutableAttribute->data());
+				break;
+			}
+			case AttributeId_DataTypeDefinition:
+			{
+				break;
+			}
+			case AttributeId_RolePermissions:
+			{
+				break;
+			}
+			case AttributeId_UserRolePermissions:
+			{
+				break;
+			}
+			case AttributeId_AccessRestrictions:
+			{
+				break;
+			}
+			case AttributeId_AccessLevelEx:
+			{
 				break;
 			}
 			default:
@@ -357,6 +377,26 @@ namespace OpcUaStackServer
 				if (variant.variantType() != OpcUaBuildInType_OpcUaBoolean) return false;
 				UserExecutableAttribute* userExecutableAttribute = reinterpret_cast<UserExecutableAttribute*>(&attribute);
 				userExecutableAttribute->data(variant.variant<OpcUaBoolean>());
+				break;
+			}
+			case AttributeId_DataTypeDefinition:
+			{
+				break;
+			}
+			case AttributeId_RolePermissions:
+			{
+				break;
+			}
+			case AttributeId_UserRolePermissions:
+			{
+				break;
+			}
+			case AttributeId_AccessRestrictions:
+			{
+				break;
+			}
+			case AttributeId_AccessLevelEx:
+			{
 				break;
 			}
 			default:
@@ -557,6 +597,26 @@ namespace OpcUaStackServer
 				UserExecutableAttribute* userExecutableAttribute = reinterpret_cast<UserExecutableAttribute*>(&attribute);
 				OpcUaBoolean userExecutable = variant->variant<OpcUaBoolean>();
 				return userExecutable == userExecutableAttribute->data();
+			}
+			case AttributeId_DataTypeDefinition:
+			{
+				return false;
+			}
+			case AttributeId_RolePermissions:
+			{
+				return false;
+			}
+			case AttributeId_UserRolePermissions:
+			{
+				return false;
+			}
+			case AttributeId_AccessRestrictions:
+			{
+				return false;
+			}
+			case AttributeId_AccessLevelEx:
+			{
+				return false;
 			}
 			default:
 			{

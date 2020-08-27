@@ -77,10 +77,19 @@ namespace OpcUaStackServer
 		if (baseNodeClass->getDescription(description)) setDescription(description);
 
 		OpcUaUInt32 writeMask;
-		if (baseNodeClass->getWriteMask()) setWriteMask(writeMask);
+		if (baseNodeClass->getWriteMask(writeMask)) setWriteMask(writeMask);
 
 		OpcUaUInt32 userWriteMask;
-		if (baseNodeClass->getUserWriteMask()) setUserWriteMask(userWriteMask);
+		if (baseNodeClass->getUserWriteMask(userWriteMask)) setUserWriteMask(userWriteMask);
+
+		RolePermissionTypeArray rolePermissionArray;
+		if (baseNodeClass->getRolePermissions(rolePermissionArray)) setRolePermissions(rolePermissionArray);
+
+		RolePermissionTypeArray userRolePermissionArray;
+		if (baseNodeClass->getUserRolePermissions(userRolePermissionArray)) setUserRolePermissions(userRolePermissionArray);
+
+		AccessLevelExType accessLevelEx;
+		if (baseNodeClass->getAccessLevelEx(accessLevelEx)) setAccessLevelEx(accessLevelEx);
 	}
 
 	BaseNodeClass::~BaseNodeClass(void)
@@ -228,6 +237,9 @@ namespace OpcUaStackServer
 		descriptionAttribute()->copyTo(baseNodeClass.descriptionAttribute());
 		writeMaskAttribute()->copyTo(baseNodeClass.writeMaskAttribute());
 		userWriteMaskAttribute()->copyTo(baseNodeClass.userWriteMaskAttribute());
+		rolePermissionsAttribute()->copyTo(baseNodeClass.rolePermissionsAttribute());
+		userRolePermissionsAttribute()->copyTo(baseNodeClass.userRolePermissionsAttribute());
+		accessRestrictionsAttribute()->copyTo(baseNodeClass.accessRestrictionsAttribute());
 
 		referenceItemMap_.copyTo(baseNodeClass.referenceItemMap());
 	}
