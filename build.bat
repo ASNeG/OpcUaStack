@@ -64,7 +64,8 @@ set ARCH="x86"
 if %VS_GENERATOR%=="" goto :set_build_suffix
 
 if /i "%VS_GENERATOR:~-6,-1%"=="Win64" set ARCH="x64"
-if /i "%VS_GENERATOR:~-4,-1%%"=="ARM" set ARCH="arm"
+if /i "%VS_GENERATOR:~-4,-1%%"=="ARM" set ARCH="arm"	
+if /i "%VS_GENERATOR:~-5,-1%%"=="2019" set ARCH="x64"
 
 :set_build_suffix
 set BUILD_DIR_SUFFIX=%ARCH%_vs%VisualStudioVersion%_%BUILD_TYPE%

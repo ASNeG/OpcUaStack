@@ -1,9 +1,9 @@
 $script = <<-SCRIPT
 '@echo on
-set currPath=%cd%
-call "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\BuildTools\\VC\\Auxiliary\\Build\\vcvars64.bat"
+cd C:\\vagrant
+call "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Auxiliary\\Build\\vcvars64.bat"
 @echo on
-cd %currPath%
+cd C:\\vagrant
 set PreferredToolArchitecture=x64
 .\\build.bat %*' | Out-File 'C:\\build_vs.bat' -Encoding Ascii
 SCRIPT
@@ -18,7 +18,7 @@ Vagrant.configure("2") do |config|
   config.vm.guest = :windows
   config.vm.communicator = :winrm
   config.vm.box = "flipback/asneg-winbuild"
-  config.vm.box_version = "1.0.0"
+  config.vm.box_version = "1.1.0"
   config.vm.provision "shell",  inline: $script, run: "always"
 
   config.vm.provision "file", source: "~/.ssh/id_rsa.pub", destination: "~/.ssh/authorized_keys"
@@ -28,7 +28,4 @@ Vagrant.configure("2") do |config|
 
 
   config.ssh.insert_key = false
-
-
-  config.vm.synced_folder "../OpcUaWebServer", "C:\\OpcUaWebServer"
 end
