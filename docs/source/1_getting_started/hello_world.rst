@@ -275,6 +275,11 @@ Actually we've described the simplest way to connect with OPC UA server but ther
 are some other approaches too. See :ref:`discovery_process` and :ref:`security`
 sections for more information.
 
+To use sign end encrypt feature in opc ua certificates or certificate chains
+must be used. You can learn more about how to use certificates in the 
+stack in :ref:`certificates` section.
+ 
+
 Hello, World!
 ---------------------------
 
@@ -358,7 +363,7 @@ not **Success** the client can't trust the value of the variable. You can learn
 more about how to obtain data with the stack in :ref:`data_access` section.
 
 Now we can see the message with the client. Rebuild the application and connect
-with the client to it.
+with the client to it. 
 
 References
 ---------------------------
@@ -367,6 +372,7 @@ References
 * :ref:`discovery_process`
 * :ref:`data_access`
 * :ref:`security`
+* :ref:`certificates` 
 * `OPC UA Designer`_
 * `OPC UA Expert`_
 
