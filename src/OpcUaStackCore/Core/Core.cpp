@@ -76,6 +76,8 @@
 #include "OpcUaStackCore/StandardDataTypes/EnumValueType.h"
 #include "OpcUaStackCore/StandardDataTypes/Range.h"
 #include "OpcUaStackCore/StandardDataTypes/EUInformation.h"
+#include "OpcUaStackCore/StandardDataTypes/DataTypeDefinition.h"
+#include "OpcUaStackCore/StandardDataTypes/RolePermissionType.h"
 
 namespace OpcUaStackCore
 {
@@ -180,6 +182,8 @@ namespace OpcUaStackCore
 		rc &= eo.registerFactoryObject<AggregateFilter>();
 		rc &= eo.registerFactoryObject<EUInformation>();
 		rc &= eo.registerFactoryObject<EnumValueType>();
+		rc &= eo.registerFactoryObject<DataTypeDefinition>();
+		rc &= eo.registerFactoryObject<RolePermissionType>();
 
 		if (!rc) {
 			Log(Error, "register extension objects error");

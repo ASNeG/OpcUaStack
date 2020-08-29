@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -2058,6 +2058,8 @@
 #define OpcUaId_TwoStateVariableType 8995
 #define OpcUaId_ConditionVariableType 9002
 #define OpcUaId_ProgramDiagnosticType 2380
+#define OpcUaId_RolePermissionType 96
+#define OpcUaId_DataTypeDefinitionType 97
 
 //
 // private identifier (Application Service)

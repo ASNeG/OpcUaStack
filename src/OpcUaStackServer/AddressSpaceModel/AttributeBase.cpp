@@ -17,6 +17,7 @@
 
 #include <boost/thread.hpp>
 #include <boost/thread/shared_mutex.hpp>
+#include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackServer/AddressSpaceModel/AttributeBase.h"
 
@@ -417,11 +418,11 @@ namespace OpcUaStackServer
 				if (!isPartDataTypeDefinition()) return false;
 				auto extensionObject = variant->variantSPtr<OpcUaExtensionObject>();
 
-				if (extensionObject->typeId() != OpcUaNodeId(97)) {
+				if (extensionObject->typeId() != OpcUaNodeId(OpcUaId_DataTypeDefinitionType)) {
 					Log(Error, "data type error")
 						.parameter("Attribute", "DataTypeDefinition")
 						.parameter("ActualType", extensionObject->typeId())
-						.parameter("ExpectedType", OpcUaNodeId(97));
+						.parameter("ExpectedType", OpcUaNodeId(OpcUaId_DataTypeDefinitionType));
 					return false;
 				}
 
@@ -441,11 +442,11 @@ namespace OpcUaStackServer
 				if (!isPartRolePermissions()) return false;
 				auto extensionObject = variant->variantSPtr<OpcUaExtensionObject>();
 
-				if (extensionObject->typeId() != OpcUaNodeId(96)) {
+				if (extensionObject->typeId() != OpcUaNodeId(OpcUaId_RolePermissionType)) {
 					Log(Error, "data type error")
 						.parameter("Attribute", "RolePermissions")
 						.parameter("ActualType", extensionObject->typeId())
-						.parameter("ExpectedType", OpcUaNodeId(96));
+						.parameter("ExpectedType", OpcUaNodeId(OpcUaId_RolePermissionType));
 					return false;
 				}
 
@@ -468,11 +469,11 @@ namespace OpcUaStackServer
 				if (!isPartUserRolePermissions()) return false;
 				auto extensionObject = variant->variantSPtr<OpcUaExtensionObject>();
 
-				if (extensionObject->typeId() != OpcUaNodeId(96)) {
+				if (extensionObject->typeId() != OpcUaNodeId(OpcUaId_RolePermissionType)) {
 					Log(Error, "data type error")
 						.parameter("Attribute", "UserRolePermissions")
 						.parameter("ActualType", extensionObject->typeId())
-						.parameter("ExpectedType", OpcUaNodeId(96));
+						.parameter("ExpectedType", OpcUaNodeId(OpcUaId_RolePermissionType));
 					return false;
 				}
 
