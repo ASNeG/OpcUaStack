@@ -2415,14 +2415,14 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	AttributeBase::setAccessRestrictionsSync(OpcUaStackCore::AccessRestrictionType& accessRestrictions)
+	AttributeBase::setAccessRestrictionsSync(const OpcUaStackCore::AccessRestrictionType& accessRestrictions)
 	{
 		boost::unique_lock<boost::shared_mutex> lock(mutex_);
 		return setAccessRestrictions(accessRestrictions);
 	}
 
 	bool
-	AttributeBase::setAccessRestrictions(OpcUaStackCore::AccessRestrictionType& accessRestrictions)
+	AttributeBase::setAccessRestrictions(const OpcUaStackCore::AccessRestrictionType& accessRestrictions)
 	{
 		if (!isPartAccessRestrictions()) return false;
 		AccessRestrictionsAttribute* attr = reinterpret_cast<AccessRestrictionsAttribute*>(accessRestrictionsAttribute());
@@ -2490,14 +2490,14 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	AttributeBase::setAccessLevelExSync(OpcUaStackCore::AccessLevelExType& accessLevelEx)
+	AttributeBase::setAccessLevelExSync(const OpcUaStackCore::AccessLevelExType& accessLevelEx)
 	{
 		boost::unique_lock<boost::shared_mutex> lock(mutex_);
 		return setAccessLevelEx(accessLevelEx);
 	}
 
 	bool
-	AttributeBase::setAccessLevelEx(OpcUaStackCore::AccessLevelExType& accessLevelEx)
+	AttributeBase::setAccessLevelEx(const OpcUaStackCore::AccessLevelExType& accessLevelEx)
 	{
 		if (!isPartAccessLevelEx()) return false;
 		AccessLevelExAttribute* attr = reinterpret_cast<AccessLevelExAttribute*>(accessLevelExAttribute());

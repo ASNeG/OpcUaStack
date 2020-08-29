@@ -181,16 +181,17 @@ namespace OpcUaStackServer
 			{
 				auto dataTypeDefinitionAttribute = reinterpret_cast<DataTypeDefinitionAttribute*>(&attribute);
 				auto extensionObject = boost::make_shared<OpcUaExtensionObject>();
-				dataTypeDefinitionAttribute->data().copyTo(*extensionObject->parameter<DataTypeDefinition>(OpcUaId_DataTypeDefinitionType).get());
+				dataTypeDefinitionAttribute->data().copyTo(*extensionObject->parameter<DataTypeDefinition>(OpcUaId_OpcUa_BinarySchema_DataTypeDefinitionType).get());
 				variant.variant(extensionObject);
 				break;
 			}
 			case AttributeId_RolePermissions:
 			{
 				auto rolePermissionsAttribute = reinterpret_cast<RolePermissionsAttribute*>(&attribute);
+				RolePermissionType x;
 				for (auto rolePermission : rolePermissionsAttribute->data()) {
 					auto extensionObject = boost::make_shared<OpcUaExtensionObject>();
-					rolePermission->copyTo(*extensionObject->parameter<RolePermissionType>(OpcUaId_RolePermissionType).get());
+					rolePermission->copyTo(*extensionObject->parameter<RolePermissionType>(OpcUaId_OpcUa_BinarySchema_RolePermissionType).get());
 					variant.pushBack(extensionObject);
 				}
 				break;
@@ -200,7 +201,7 @@ namespace OpcUaStackServer
 				auto userRolePermissionsAttribute = reinterpret_cast<UserRolePermissionsAttribute*>(&attribute);
 				for (auto userRolePermission : userRolePermissionsAttribute->data()) {
 					auto extensionObject = boost::make_shared<OpcUaExtensionObject>();
-					userRolePermission->copyTo(*extensionObject->parameter<RolePermissionType>(OpcUaId_RolePermissionType).get());
+					userRolePermission->copyTo(*extensionObject->parameter<RolePermissionType>(OpcUaId_OpcUa_BinarySchema_RolePermissionType).get());
 					variant.pushBack(extensionObject);
 				}
 				break;
@@ -406,7 +407,7 @@ namespace OpcUaStackServer
 				auto dataTypeDefinitionAttribut = reinterpret_cast<DataTypeDefinitionAttribute*>(&attribute);
 
 				auto extensionObject = variant.variantSPtr<OpcUaExtensionObject>();
-				if (extensionObject->typeId() != OpcUaNodeId(OpcUaId_DataTypeDefinitionType)) {
+				if (extensionObject->typeId() != OpcUaNodeId(OpcUaId_OpcUa_BinarySchema_DataTypeDefinitionType)) {
 					return false;
 				}
 				auto dataTypeDefinition = extensionObject->parameter<DataTypeDefinition>();
@@ -421,7 +422,7 @@ namespace OpcUaStackServer
 
 				for (uint32_t idx=0; idx < variant.arrayLength(); idx++) {
 					auto extensionObject = variant.variantSPtr<OpcUaExtensionObject>(idx);
-					if (extensionObject->typeId() != OpcUaNodeId(OpcUaId_RolePermissionType)) {
+					if (extensionObject->typeId() != OpcUaNodeId(OpcUaId_OpcUa_BinarySchema_RolePermissionType)) {
 						return false;
 					}
 					auto rolePermission = extensionObject->parameter<RolePermissionType>();
@@ -437,7 +438,7 @@ namespace OpcUaStackServer
 
 				for (uint32_t idx=0; idx < variant.arrayLength(); idx++) {
 					auto extensionObject = variant.variantSPtr<OpcUaExtensionObject>(idx);
-					if (extensionObject->typeId() != OpcUaNodeId(OpcUaId_RolePermissionType)) {
+					if (extensionObject->typeId() != OpcUaNodeId(OpcUaId_OpcUa_BinarySchema_RolePermissionType)) {
 						return false;
 					}
 					auto rolePermission = extensionObject->parameter<RolePermissionType>();
@@ -665,7 +666,7 @@ namespace OpcUaStackServer
 				auto dataTypeDefinitionAttribut = reinterpret_cast<DataTypeDefinitionAttribute*>(&attribute);
 
 				auto extensionObject = variant->variantSPtr<OpcUaExtensionObject>();
-				if (extensionObject->typeId() != OpcUaNodeId(OpcUaId_DataTypeDefinitionType)) {
+				if (extensionObject->typeId() != OpcUaNodeId(OpcUaId_OpcUa_BinarySchema_DataTypeDefinitionType)) {
 					return true;
 				}
 				auto dataTypeDefinition = extensionObject->parameter<DataTypeDefinition>();
@@ -681,7 +682,7 @@ namespace OpcUaStackServer
 
 				for (uint32_t idx=0; idx < variant->arrayLength(); idx++) {
 					auto extensionObject = variant->variantSPtr<OpcUaExtensionObject>(idx);
-					if (extensionObject->typeId() != OpcUaNodeId(OpcUaId_RolePermissionType)) {
+					if (extensionObject->typeId() != OpcUaNodeId(OpcUaId_OpcUa_BinarySchema_RolePermissionType)) {
 						return true;
 					}
 					auto rolePermission = extensionObject->parameter<RolePermissionType>();
@@ -700,7 +701,7 @@ namespace OpcUaStackServer
 
 				for (uint32_t idx=0; idx < variant->arrayLength(); idx++) {
 					auto extensionObject = variant->variantSPtr<OpcUaExtensionObject>(idx);
-					if (extensionObject->typeId() != OpcUaNodeId(OpcUaId_RolePermissionType)) {
+					if (extensionObject->typeId() != OpcUaNodeId(OpcUaId_OpcUa_BinarySchema_RolePermissionType)) {
 						return true;
 					}
 					auto userRolePermission = extensionObject->parameter<RolePermissionType>();

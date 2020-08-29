@@ -2017,6 +2017,8 @@
 #define OpcUaId_OpcUa_BinarySchema_XVType 12094
 #define OpcUaId_OpcUa_BinarySchema_ProgramDiagnosticDataType 8247
 #define OpcUaId_OpcUa_BinarySchema_Annotation 8244
+#define OpcUaId_OpcUa_BinarySchema_DataTypeDefinitionType 121
+#define OpcUaId_OpcUa_BinarySchema_RolePermissionType 128
 
 /*============================================================================
 * VariableType Identifiers

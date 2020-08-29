@@ -372,8 +372,8 @@ namespace OpcUaStackServer
 		//
 		virtual Attribute* accessRestrictionsAttribute(void);
 		bool unsetAccessRestrictions(void);
-		bool setAccessRestrictionsSync(OpcUaStackCore::AccessRestrictionType& accessRestrictions);
-		bool setAccessRestrictions(OpcUaStackCore::AccessRestrictionType& accessRestrictions);
+		bool setAccessRestrictionsSync(const OpcUaStackCore::AccessRestrictionType& accessRestrictions);
+		bool setAccessRestrictions(const OpcUaStackCore::AccessRestrictionType& accessRestrictions);
 		bool getAccessRestrictionsSync(OpcUaStackCore::AccessRestrictionType& accessRestrictions);
 		bool getAccessRestrictions(OpcUaStackCore::AccessRestrictionType& accessRestrictions);
 		bool isPartAccessRestrictions(void);
@@ -385,8 +385,8 @@ namespace OpcUaStackServer
 		//
 		virtual Attribute* accessLevelExAttribute(void);
 		bool unsetAccessLevelEx(void);
-		bool setAccessLevelExSync(OpcUaStackCore::AccessLevelExType& accessLevelEx);
-		bool setAccessLevelEx(OpcUaStackCore::AccessLevelExType& accessLevelEx);
+		bool setAccessLevelExSync(const OpcUaStackCore::AccessLevelExType& accessLevelEx);
+		bool setAccessLevelEx(const OpcUaStackCore::AccessLevelExType& accessLevelEx);
 		bool getAccessLevelExSync(OpcUaStackCore::AccessLevelExType& accessLevelEx);
 		bool getAccessLevelEx(OpcUaStackCore::AccessLevelExType& accessLevelEx);
 		bool isPartAccessLevelEx(void);
