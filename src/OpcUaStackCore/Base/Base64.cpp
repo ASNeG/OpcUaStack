@@ -53,7 +53,16 @@ namespace OpcUaStackCore
 	}
 
 	uint32_t
-	Base64::base64NumberPaddingBytes(const char*base64Buf, uint32_t base64Len)
+	Base64::base64Len2asciiLen(uint32_t base64Len, const char* base64Buf)
+	{
+		return base64Len2asciiLen(
+			base64Len,
+			base64NumberPaddingBytes(base64Buf, base64Len)
+		);
+	}
+
+	uint32_t
+	Base64::base64NumberPaddingBytes(const char* base64Buf, uint32_t base64Len)
 	{
 		uint32_t numberPaddings = 0;
 		while ( base64Buf[base64Len-1] == '=' &&  base64Len > 0) {
@@ -126,10 +135,7 @@ namespace OpcUaStackCore
 	bool
 	Base64::decode(const char* base64Buf, uint32_t base64Len, char* asciiBuf, uint32_t& asciiLen)
 	{
-		uint32_t length = base64Len2asciiLen(
-			base64Len,
-			base64NumberPaddingBytes(base64Buf, base64Len)
-		);
+		uint32_t length = base64Len2asciiLen(base64Len, base64Buf);
 		if (length > asciiLen) return false;
 		asciiLen = 0;
 

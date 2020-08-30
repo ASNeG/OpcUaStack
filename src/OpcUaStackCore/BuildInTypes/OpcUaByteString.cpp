@@ -374,10 +374,7 @@ namespace OpcUaStackCore
 			return true;
 		}
 
-		uint32_t valueLen = Base64::base64Len2asciiLen(
-			sourceValue.length(),
-			Base64::base64NumberPaddingBytes(sourceValue.c_str(), sourceValue.length())
-		);
+		uint32_t valueLen = Base64::base64Len2asciiLen(sourceValue.length(), sourceValue.c_str());
 		if (valueLen == 0) {
 			Log(Error, "OpcUaByteString xml encoder error - ascii length error");
 			return false;
@@ -440,10 +437,7 @@ namespace OpcUaStackCore
 			return true;
 		}
 
-		uint32_t valueLen = Base64::base64Len2asciiLen(
-			sourceValue.length(),
-			Base64::base64NumberPaddingBytes(sourceValue.c_str(), sourceValue.length())
-		);
+		uint32_t valueLen = Base64::base64Len2asciiLen(sourceValue.length(), sourceValue.c_str());
 		if (valueLen == 0) {
 			Log(Error, "OpcUaByteString json encoder error - ascii length error");
 			return false;

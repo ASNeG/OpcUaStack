@@ -32,6 +32,7 @@ namespace OpcUaStackCore
 
 		static uint32_t asciiLen2base64Len(uint32_t asciiLen);
 		static uint32_t base64Len2asciiLen(uint32_t base64Len, uint32_t numberPaddingBytes = 0);
+		static uint32_t base64Len2asciiLen(uint32_t base64Len, const char* base64Buf);
 		static uint32_t base64NumberPaddingBytes(const char*base64Buf, uint32_t base64Len);
 
 		static bool isBase64(unsigned char c);

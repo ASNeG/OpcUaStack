@@ -161,12 +161,12 @@ BOOST_AUTO_TEST_CASE(Base64_buf_len)
 
 BOOST_AUTO_TEST_CASE(Base64_buf_len_padding)
 {
-	BOOST_REQUIRE(Base64::base64Len2asciiLen(4, 2) == 1);
-	BOOST_REQUIRE(Base64::base64Len2asciiLen(4, 1) == 2);
-	BOOST_REQUIRE(Base64::base64Len2asciiLen(4, 0) == 3);
-	BOOST_REQUIRE(Base64::base64Len2asciiLen(8, 2) == 4);
-	BOOST_REQUIRE(Base64::base64Len2asciiLen(8, 1) == 5);
-	BOOST_REQUIRE(Base64::base64Len2asciiLen(8, 0) == 6);
+	BOOST_REQUIRE(Base64::base64Len2asciiLen(4, (uint32_t)2) == 1);
+	BOOST_REQUIRE(Base64::base64Len2asciiLen(4, (uint32_t)1) == 2);
+	BOOST_REQUIRE(Base64::base64Len2asciiLen(4, (uint32_t)0) == 3);
+	BOOST_REQUIRE(Base64::base64Len2asciiLen(8, (uint32_t)2) == 4);
+	BOOST_REQUIRE(Base64::base64Len2asciiLen(8, (uint32_t)1) == 5);
+	BOOST_REQUIRE(Base64::base64Len2asciiLen(8, (uint32_t)0) == 6);
 }
 
 BOOST_AUTO_TEST_CASE(Base64_encode_decode)
