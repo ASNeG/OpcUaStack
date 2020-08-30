@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -286,16 +286,19 @@ namespace OpcUaStackCore
 		 */
 		template<typename T>
 		   typename T::SPtr parameter(void) {
+			   // check if object already exist
 			   if (epSPtr_.get() != NULL) {
 				   return boost::static_pointer_cast<T>(epSPtr_);
 			   }
 
+			   // the type must be exist
 			   epSPtr_ = findElement(typeId_);
 			   if (epSPtr_.get() == NULL) {
 				   typename T::SPtr epSPtr;
 				   return epSPtr;
 			   }
 
+			   // create object
 			   typename T::SPtr epSPtr = boost::make_shared<T>();
 			   style_ = S_Type;
 			   epSPtr_ = epSPtr;

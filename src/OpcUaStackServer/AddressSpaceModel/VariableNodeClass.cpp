@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -31,6 +31,7 @@ namespace OpcUaStackServer
 	, historizing_()
 	, arrayDimensions_()
 	, minimumSamplingInterval_()
+	, accessLevelEx_()
 	{
 	}
 
@@ -46,6 +47,7 @@ namespace OpcUaStackServer
 	, historizing_()
 	, arrayDimensions_()
 	, minimumSamplingInterval_()
+	, accessLevelEx_()
 	{
 		OpcUaDataValue dataValue;
 		if (variableNodeClass.getValue(dataValue)) setValue(dataValue);
@@ -70,6 +72,9 @@ namespace OpcUaStackServer
 
 		OpcUaDouble minimumSamplingInterval;
 		if (variableNodeClass.getMinimumSamplingInterval(minimumSamplingInterval)) setMinimumSamplingInterval(minimumSamplingInterval);
+
+		AccessLevelExType accessLevelEx;
+		if (variableNodeClass.getAccessLevelEx(accessLevelEx)) setAccessLevelEx(accessLevelEx);
 	}
 
 	VariableNodeClass::VariableNodeClass(
@@ -84,6 +89,7 @@ namespace OpcUaStackServer
 	, historizing_()
 	, arrayDimensions_()
 	, minimumSamplingInterval_()
+	, accessLevelEx_()
 	{
 		OpcUaDataValue dataValue;
 		if (variableTypeNodeClass.getValue(dataValue)) setValue(dataValue);
@@ -108,6 +114,9 @@ namespace OpcUaStackServer
 
 		OpcUaDouble minimumSamplingInterval = 0;
 		setMinimumSamplingInterval(minimumSamplingInterval);
+
+		AccessLevelExType accessLevelEx = 0;
+		setAccessLevelEx(accessLevelEx);
 	}
 
 	VariableNodeClass::~VariableNodeClass(void)
@@ -162,6 +171,12 @@ namespace OpcUaStackServer
 		return minimumSamplingInterval_;
 	}
 
+	AccessLevelExAttribute&
+	VariableNodeClass::accessLevelEx()
+	{
+		return accessLevelEx_;
+	}
+
 	Attribute* 
 	VariableNodeClass::valueAttribute(void)
 	{
@@ -210,6 +225,12 @@ namespace OpcUaStackServer
 		return &minimumSamplingInterval_;
 	}
 
+	Attribute*
+	VariableNodeClass::accessLevelExAttribute(void)
+	{
+		return &accessLevelEx_;
+	}
+
 	void
 	VariableNodeClass::copyTo(VariableNodeClass::SPtr variableNodeClass)
 	{
@@ -228,6 +249,7 @@ namespace OpcUaStackServer
 		historizingAttribute()->copyTo(variableNodeClass.historizingAttribute());
 		arrayDimensionsAttribute()->copyTo(variableNodeClass.arrayDimensionsAttribute());
 		minimumSamplingIntervalAttribute()->copyTo(variableNodeClass.minimumSamplingIntervalAttribute());
+		accessLevelExAttribute()->copyTo(variableNodeClass.accessLevelExAttribute());
 	}
 
 	BaseNodeClass::SPtr

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -51,6 +51,9 @@ namespace OpcUaStackServer
 		DescriptionAttribute& description(void);
 		WriteMaskAttribute& writeMask(void);
 		UserWriteMaskAttribute& userWriteMask(void);
+		RolePermissionsAttribute& rolePermissions(void);
+		UserRolePermissionsAttribute& userRolePermissions(void);
+		AccessRestrictionsAttribute& accessRestrictions(void);
 
 		Attribute* nodeIdAttribute(void); 
 		Attribute* nodeClassAttribute(void); 
@@ -59,6 +62,9 @@ namespace OpcUaStackServer
 		Attribute* descriptionAttribute(void); 
 		Attribute* writeMaskAttribute(void); 
 		Attribute* userWriteMaskAttribute(void); 
+		Attribute* rolePermissionsAttribute(void);
+		Attribute* userRolePermissionsAttribute(void);
+		Attribute* accessRestrictionsAttribute(void);
 
 		ReferenceItemMap& referenceItemMap(void);
 
@@ -77,6 +83,9 @@ namespace OpcUaStackServer
 		DescriptionAttribute description_;
 		WriteMaskAttribute writeMask_;
 		UserWriteMaskAttribute userWriteMask_;
+		RolePermissionsAttribute rolePermissionsAttribute_;
+		UserRolePermissionsAttribute userRolePermissionsAttribute_;
+		AccessRestrictionsAttribute accessRestrictionsAttribute_;
 
 		ReferenceItemMap referenceItemMap_;
 

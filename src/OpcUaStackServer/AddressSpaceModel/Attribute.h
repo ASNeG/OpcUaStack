@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -22,6 +22,8 @@
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaAttributeId.h"
 #include "OpcUaStackCore/StandardDataTypes/NodeClass.h"
+#include "OpcUaStackCore/StandardDataTypes/DataTypeDefinition.h"
+#include "OpcUaStackCore/StandardDataTypes/RolePermissionType.h"
 
 namespace OpcUaStackServer
 {
@@ -219,13 +221,11 @@ namespace OpcUaStackServer
 	  typedef AttributeMeta<OpcUaStackCore::OpcUaBoolean, OpcUaStackCore::AttributeId_Executable, OpcUaStackCore::OpcUaBuildInType_OpcUaBoolean> ExecutableAttribute;
 	  typedef AttributeMeta<OpcUaStackCore::OpcUaBoolean, OpcUaStackCore::AttributeId_UserExecutable, OpcUaStackCore::OpcUaBuildInType_OpcUaBoolean> UserExecutableAttribute;
 	  typedef AttributeMeta<OpcUaStackCore::OpcUaByte, OpcUaStackCore::AttributeId_UserAccessLevel, OpcUaStackCore::OpcUaBuildInType_OpcUaByte> UserAccessLevelAttribute;
-
-	  // FIXME: todo
-	  typedef AttributeMeta<OpcUaStackCore::OpcUaByte, OpcUaStackCore::AttributeId_DataTypeDefinition, OpcUaStackCore::OpcUaBuildInType_OpcUaExtensionObject> DataTypeDefinitionAttribute;
-	  typedef AttributeMeta<OpcUaStackCore::OpcUaByte, OpcUaStackCore::AttributeId_RolePermissions, OpcUaStackCore::OpcUaBuildInType_OpcUaExtensionObject> RolePermissionsAttribute;
-	  typedef AttributeMeta<OpcUaStackCore::OpcUaByte, OpcUaStackCore::AttributeId_UserRolePermissions, OpcUaStackCore::OpcUaBuildInType_OpcUaExtensionObject> UserRolePermissionsAttribute;
-	  typedef AttributeMeta<OpcUaStackCore::OpcUaByte, OpcUaStackCore::AttributeId_AccessRestrictions, OpcUaStackCore::OpcUaBuildInType_OpcUaExtensionObject> AccessRestrictionsAttribute;
-	  typedef AttributeMeta<OpcUaStackCore::OpcUaByte, OpcUaStackCore::AttributeId_AccessLevelEx, OpcUaStackCore::OpcUaBuildInType_OpcUaExtensionObject> AccessLevelExAttribute;
+	  typedef AttributeMeta<OpcUaStackCore::DataTypeDefinition, OpcUaStackCore::AttributeId_DataTypeDefinition, OpcUaStackCore::OpcUaBuildInType_OpcUaExtensionObject> DataTypeDefinitionAttribute;
+	  typedef AttributeMeta<OpcUaStackCore::RolePermissionTypeArray, OpcUaStackCore::AttributeId_RolePermissions, OpcUaStackCore::OpcUaBuildInType_OpcUaExtensionObject> RolePermissionsAttribute;
+	  typedef AttributeMeta<OpcUaStackCore::RolePermissionTypeArray, OpcUaStackCore::AttributeId_UserRolePermissions, OpcUaStackCore::OpcUaBuildInType_OpcUaExtensionObject> UserRolePermissionsAttribute;
+	  typedef AttributeMeta<OpcUaStackCore::AccessRestrictionType, OpcUaStackCore::AttributeId_AccessRestrictions, OpcUaStackCore::OpcUaBuildInType_OpcUaUInt16> AccessRestrictionsAttribute;
+	  typedef AttributeMeta<OpcUaStackCore::AccessLevelExType, OpcUaStackCore::AttributeId_AccessLevelEx, OpcUaStackCore::OpcUaBuildInType_OpcUaUInt32> AccessLevelExAttribute;
 
 }
 

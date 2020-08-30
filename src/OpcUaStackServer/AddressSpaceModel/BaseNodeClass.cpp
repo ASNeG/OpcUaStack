@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -31,6 +31,9 @@ namespace OpcUaStackServer
 	, writeMask_()
 	, userWriteMask_()
 	, forwardNodeSync_()
+	, rolePermissionsAttribute_()
+	, userRolePermissionsAttribute_()
+	, accessRestrictionsAttribute_()
 	{
 	}
 
@@ -43,6 +46,9 @@ namespace OpcUaStackServer
 	, writeMask_()
 	, userWriteMask_()
 	, forwardNodeSync_()
+	, rolePermissionsAttribute_()
+	, userRolePermissionsAttribute_()
+	, accessRestrictionsAttribute_()
 	{
 	}
 
@@ -55,6 +61,9 @@ namespace OpcUaStackServer
 	, writeMask_()
 	, userWriteMask_()
 	, forwardNodeSync_()
+	, rolePermissionsAttribute_()
+	, userRolePermissionsAttribute_()
+	, accessRestrictionsAttribute_()
 	{
 		setNodeId(nodeId);
 
@@ -68,10 +77,19 @@ namespace OpcUaStackServer
 		if (baseNodeClass->getDescription(description)) setDescription(description);
 
 		OpcUaUInt32 writeMask;
-		if (baseNodeClass->getWriteMask()) setWriteMask(writeMask);
+		if (baseNodeClass->getWriteMask(writeMask)) setWriteMask(writeMask);
 
 		OpcUaUInt32 userWriteMask;
-		if (baseNodeClass->getUserWriteMask()) setUserWriteMask(userWriteMask);
+		if (baseNodeClass->getUserWriteMask(userWriteMask)) setUserWriteMask(userWriteMask);
+
+		RolePermissionTypeArray rolePermissionArray;
+		if (baseNodeClass->getRolePermissions(rolePermissionArray)) setRolePermissions(rolePermissionArray);
+
+		RolePermissionTypeArray userRolePermissionArray;
+		if (baseNodeClass->getUserRolePermissions(userRolePermissionArray)) setUserRolePermissions(userRolePermissionArray);
+
+		AccessLevelExType accessLevelEx;
+		if (baseNodeClass->getAccessLevelEx(accessLevelEx)) setAccessLevelEx(accessLevelEx);
 	}
 
 	BaseNodeClass::~BaseNodeClass(void)
@@ -120,6 +138,24 @@ namespace OpcUaStackServer
 		return userWriteMask_;
 	}
 
+	RolePermissionsAttribute&
+	BaseNodeClass::rolePermissions(void)
+	{
+		return rolePermissionsAttribute_;
+	}
+
+	UserRolePermissionsAttribute&
+	BaseNodeClass::userRolePermissions(void)
+	{
+		return userRolePermissionsAttribute_;
+	}
+
+	AccessRestrictionsAttribute&
+	BaseNodeClass::accessRestrictions(void)
+	{
+		return accessRestrictionsAttribute_;
+	}
+
 	Attribute* 
 	BaseNodeClass::nodeIdAttribute(void)
 	{
@@ -162,6 +198,24 @@ namespace OpcUaStackServer
 		return &userWriteMask_;
 	}
 
+	Attribute*
+	BaseNodeClass::rolePermissionsAttribute(void)
+	{
+		return &rolePermissionsAttribute_;
+	}
+
+	Attribute*
+	BaseNodeClass::userRolePermissionsAttribute(void)
+	{
+		return &userRolePermissionsAttribute_;
+	}
+
+	Attribute*
+	BaseNodeClass::accessRestrictionsAttribute(void)
+	{
+		return &accessRestrictionsAttribute_;
+	}
+
 	ReferenceItemMap& 
 	BaseNodeClass::referenceItemMap(void)
 	{
@@ -183,6 +237,9 @@ namespace OpcUaStackServer
 		descriptionAttribute()->copyTo(baseNodeClass.descriptionAttribute());
 		writeMaskAttribute()->copyTo(baseNodeClass.writeMaskAttribute());
 		userWriteMaskAttribute()->copyTo(baseNodeClass.userWriteMaskAttribute());
+		rolePermissionsAttribute()->copyTo(baseNodeClass.rolePermissionsAttribute());
+		userRolePermissionsAttribute()->copyTo(baseNodeClass.userRolePermissionsAttribute());
+		accessRestrictionsAttribute()->copyTo(baseNodeClass.accessRestrictionsAttribute());
 
 		referenceItemMap_.copyTo(baseNodeClass.referenceItemMap());
 	}
