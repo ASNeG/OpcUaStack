@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -374,7 +374,10 @@ namespace OpcUaStackCore
 			return true;
 		}
 
-		uint32_t valueLen = Base64::base64Len2asciiLen(sourceValue.length());
+		uint32_t valueLen = Base64::base64Len2asciiLen(
+			sourceValue.length(),
+			Base64::base64NumberPaddingBytes(sourceValue.c_str(), sourceValue.length())
+		);
 		if (valueLen == 0) {
 			Log(Error, "OpcUaByteString xml encoder error - ascii length error");
 			return false;
@@ -437,7 +440,10 @@ namespace OpcUaStackCore
 			return true;
 		}
 
-		uint32_t valueLen = Base64::base64Len2asciiLen(sourceValue.length());
+		uint32_t valueLen = Base64::base64Len2asciiLen(
+			sourceValue.length(),
+			Base64::base64NumberPaddingBytes(sourceValue.c_str(), sourceValue.length())
+		);
 		if (valueLen == 0) {
 			Log(Error, "OpcUaByteString json encoder error - ascii length error");
 			return false;
