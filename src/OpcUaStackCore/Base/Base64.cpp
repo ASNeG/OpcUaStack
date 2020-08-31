@@ -1,5 +1,5 @@
 /*
-   Copyright 2016-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -41,17 +41,35 @@ namespace OpcUaStackCore
 	uint32_t
 	Base64::asciiLen2base64Len(uint32_t asciiLen)
 	{
-		uint32_t rest = asciiLen % 3;
-		if (rest != 0) {
-			asciiLen += (3 - rest);
-		}
-		return (4*ceil((double)asciiLen/3.0));
+		asciiLen = ((asciiLen + 3 - 1) / 3 ) * 3;
+		return (4*(asciiLen/3));
 	}
 
 	uint32_t
-	Base64::base64Len2asciiLen(uint32_t base64Len)
+	Base64::base64Len2asciiLen(uint32_t base64Len, uint32_t numberPaddingBytes)
 	{
-		return ((6 * base64Len) / 8);
+		uint32_t asciiLen = ((3 * base64Len) / 4);
+		return (asciiLen - numberPaddingBytes);
+	}
+
+	uint32_t
+	Base64::base64Len2asciiLen(uint32_t base64Len, const char* base64Buf)
+	{
+		return base64Len2asciiLen(
+			base64Len,
+			base64NumberPaddingBytes(base64Buf, base64Len)
+		);
+	}
+
+	uint32_t
+	Base64::base64NumberPaddingBytes(const char* base64Buf, uint32_t base64Len)
+	{
+		uint32_t numberPaddings = 0;
+		while ( base64Buf[base64Len-1] == '=' &&  base64Len > 0) {
+			base64Len--;
+			numberPaddings++;
+		}
+		return numberPaddings;
 	}
 
 	bool
@@ -117,7 +135,7 @@ namespace OpcUaStackCore
 	bool
 	Base64::decode(const char* base64Buf, uint32_t base64Len, char* asciiBuf, uint32_t& asciiLen)
 	{
-		uint32_t length = base64Len2asciiLen(base64Len);
+		uint32_t length = base64Len2asciiLen(base64Len, base64Buf);
 		if (length > asciiLen) return false;
 		asciiLen = 0;
 
