@@ -71,6 +71,9 @@ namespace OpcUaStackClient
 
 		// init state machine
 		sm_.setCtx(ctx_);
+		sm_.setUpdateCallback( // prevent warn log messages
+			[this](SessionServiceStateId state) {}
+		);
 		sm_.setStateId(SessionServiceStateId::Disconnected);
 	}
 
