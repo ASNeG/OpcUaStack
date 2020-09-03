@@ -1,0 +1,69 @@
+
+
+
+Integrate Log Category
+======================
+
+New Class LogCategory: (0.5)
+- Contains function for a log category needed in class Log. In log term each component
+  should have a log component.
+
+New Class LogCategoryManager: (0.5)
+- Manage log category entries in a list.
+- The category with id 1 is used for messages with no categories
+
+New Class LogCategoryEntry:(0.5)
+- Log category data
+
+New Class LogCategoryConfig: (1)
+- Read log category configuration from configuration file
+
+  Example Configration file: Log only messages from COMP1
+
+  <Category>
+    <Cat><Name>Default</Name><Log>Inactive<Log></Cat>
+    <Cat><Name>NoCat</Name><Log>Inactive<Log></Cat>
+    <Cat><Name>COMP1</Name><Log>Active<Log></Cat>
+  <Category>
+
+Add new functionality to logger: (1)
+- Add new constructor in class Log with parameter category
+- Add new parameter function with category parameter
+- Handle category in class Log. Only messages with category state isActivated are logged.
+- Log messages without a log category should be used a default log category configured
+  in the configuration file. 
+
+Init Log category in application: (0.5)
+- Read configuration and create log category instance
+
+
+Add application name into log message
+=====================================
+
+Read new configuration: (1)
+- Set name of parameter to log (in each log interface?)
+
+  Example: 
+
+  <LogParameter>
+    <Parameter>Timestamp</Parameter>
+    <Parameter>ThreadId</Parameter>
+    <Parameter>ApplicationName</Parameter>
+  </LogParameter>
+
+Expand class Log: (0.5)
+- Add application name to log message. The application name will be read from 
+  the configuration file (application name in endpoint configuration).
+- Handle new log parameter configuration
+
+
+Add interface to output of log messages with a Log Daemon
+=========================================================
+
+TBD
+
+
+Add interface to output log messages with a sentry server (Linux first)
+=======================================================================
+
+TBD
