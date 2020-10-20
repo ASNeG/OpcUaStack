@@ -57,10 +57,74 @@ Expand class Log: (0.5)
 - Handle new log parameter configuration
 
 
-Add interface to output of log messages with a Log Daemon
-=========================================================
+Add new log interface to support log messages via a Log Daemon
+===============================================================
 
-TBD
+Add Log Server Configuration section: (1)
+- Add Log Server configuration section
+
+  Example:
+  <LogServer>
+    <Address>127.0.0.1:1234</Address>
+    <MessageBufferSize>10000000</MessageBufferSize>
+    <MacPacketsPerSecond>1000</MaxPacketPerSecond>
+  </LogServer>
+
+Add Message Queue:
+- Add message queue for buffering log message (3)
+
+Add Log Interface: (2)
+- Add new log interface 
+- Write log message to message queue
+
+Add pcap generator: (3)
+- Generate pcap format 
+- pcap format: (https://wiki.wireshark.org/Development/LibpcapFileFormat)
+  
+  * Global Header
+  * Packet Header
+  * Packet Data
+  * Packet Header 
+  * Packet Data
+  * ...
+
+  Global Header:
+  typedef struct pcap_hdr_s {
+        guint32 magic_number;   /* magic number */
+        guint16 version_major;  /* major version number */
+        guint16 version_minor;  /* minor version number */
+        gint32  thiszone;       /* GMT to local correction */
+        guint32 sigfigs;        /* accuracy of timestamps */
+        guint32 snaplen;        /* max length of captured packets, in octets */
+        guint32 network;        /* data link type */
+  } pcap_hdr_t;
+
+  Packet Data:
+  typedef struct pcaprec_hdr_s {
+        guint32 ts_sec;         /* timestamp seconds */
+        guint32 ts_usec;        /* timestamp microseconds */
+        guint32 incl_len;       /* number of octets of packet saved in file */
+        guint32 orig_len;       /* actual length of packet */
+  } pcaprec_hdr_t;
+
+Add TCP Server: (3)
+- Add TCP Server
+- Allow a maximum of one connection
+- If a client connects to the server, the server sends all existing
+  messages in the message queue to the client in pcap format.
+- To avoid peak loads, the maximum number of messages per second is 
+  limited.
+
+Add Log Server: (2)
+- add log server into opc ua server
+- add message queue into opc ua server
+- add pcap generator into opc ua server
+
+Add LUA script: (3)
+- Preperation of the log messages for output by wireshark
+  
+  Example:
+  wireshark -k -i TCP@127.0.0.1:1234 -X lua_script:opcualog.lua
 
 
 Add interface to output log messages with a sentry server (Linux first)
