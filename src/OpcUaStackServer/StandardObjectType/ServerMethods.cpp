@@ -1,5 +1,5 @@
 /*
-   Copyright 2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2019-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -33,7 +33,6 @@ namespace OpcUaStackServer
 	ServerMethod::ServerMethod(const std::string& name)
 	: BaseClass()
 	, name_(name)
-	, methodCallback_()
 	{
 	}
 
@@ -54,6 +53,12 @@ namespace OpcUaStackServer
 	}
 
 	void
+	ServerMethod::applicationContext(BaseClass::SPtr& applicationContext)
+	{
+		applicationContext_ = applicationContext;
+	}
+
+	void
 	ServerMethod::registerMethod(ApplicationCallback::Method methodCallback)
 	{
 		methodCallback_ = methodCallback;
@@ -66,6 +71,7 @@ namespace OpcUaStackServer
 			applicationMethodContext->statusCode_ = BadNotSupported;
 			return;
 		}
+		applicationMethodContext->applicationContext_ = applicationContext_;
 		methodCallback_(applicationMethodContext);
 	}
 
