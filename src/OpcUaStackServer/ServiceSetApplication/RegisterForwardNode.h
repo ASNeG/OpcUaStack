@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -43,6 +43,13 @@ namespace OpcUaStackServer
 		void nodes(const std::vector<OpcUaStackCore::OpcUaNodeId>& nodes);
 		std::vector<OpcUaStackCore::OpcUaNodeId>& nodes(void);
 
+		void addApplicationContext(OpcUaStackCore::BaseClass::SPtr& applicationContext);
+		void addApplicationContext(std::vector<OpcUaStackCore::BaseClass::SPtr>& applicationContextVec);
+		void applicationContext(OpcUaStackCore::BaseClass::SPtr& applicationContext);
+		void applicationContext(std::vector<OpcUaStackCore::BaseClass::SPtr>& applicationContextVec);
+		std::vector<OpcUaStackCore::BaseClass::SPtr>& applicationContextVec(void);
+
+
 		void setReadCallback(
 			OpcUaStackCore::ApplicationCallback::Read callback
 		);
@@ -75,6 +82,7 @@ namespace OpcUaStackServer
 
 	  private:
 		std::vector<OpcUaStackCore::OpcUaNodeId> nodes_;
+		std::vector<OpcUaStackCore::BaseClass::SPtr> applicationContextVec_;
 		OpcUaStackCore::ForwardNodeSync forwardNodeSync_;
 		OpcUaStackCore::OpcUaStatusCode resultCode_;
 		std::vector<OpcUaStackCore::OpcUaStatusCode> statuses_;
