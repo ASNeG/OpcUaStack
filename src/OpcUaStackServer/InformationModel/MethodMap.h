@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -31,14 +31,33 @@ namespace OpcUaStackServer
 	  public:
 		typedef std::map<MethodId, OpcUaStackCore::ForwardMethodSync::SPtr> ForwardMethodSyncMap;
 
-		MethodMap(void);
-		~MethodMap(void);
+		MethodMap(
+			void
+		);
+		~MethodMap(
+			void
+		);
 
-		void clear(void);
-		bool existMethod(const OpcUaStackCore::OpcUaNodeId& objectNodeId, const OpcUaStackCore::OpcUaNodeId& methodNodeId);
-		bool registerMethod(const OpcUaStackCore::OpcUaNodeId& objectNodeId, const OpcUaStackCore::OpcUaNodeId& methodNodeId, OpcUaStackCore::ForwardMethodSync::SPtr& forwardMethodSync);
-		bool deregisterMethod(const OpcUaStackCore::OpcUaNodeId& objectNodeId, const OpcUaStackCore::OpcUaNodeId& methodNodeId);
-		OpcUaStackCore::ForwardMethodSync::SPtr getMethod(const OpcUaStackCore::OpcUaNodeId& objectNodeId, const OpcUaStackCore::OpcUaNodeId& methodNodeId);
+		void clear(
+			void
+		);
+		bool existMethod(
+			const OpcUaStackCore::OpcUaNodeId& objectNodeId,
+			const OpcUaStackCore::OpcUaNodeId& methodNodeId
+		);
+		bool registerMethod(
+			const OpcUaStackCore::OpcUaNodeId& objectNodeId,
+			const OpcUaStackCore::OpcUaNodeId& methodNodeId,
+			OpcUaStackCore::ForwardMethodSync::SPtr& forwardMethodSync
+		);
+		bool deregisterMethod(
+			const OpcUaStackCore::OpcUaNodeId& objectNodeId,
+			const OpcUaStackCore::OpcUaNodeId& methodNodeId
+		);
+		OpcUaStackCore::ForwardMethodSync::SPtr getMethod(
+			const OpcUaStackCore::OpcUaNodeId& objectNodeId,
+			const OpcUaStackCore::OpcUaNodeId& methodNodeId
+		);
 
 	  private:
 		ForwardMethodSyncMap forwardMethodSyncMap_;

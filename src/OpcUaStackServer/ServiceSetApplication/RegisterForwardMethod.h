@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -40,12 +40,16 @@ namespace OpcUaStackServer
 		void methodNodeId(const OpcUaStackCore::OpcUaNodeId& methodNodeId);
 		void setMethodCallback(OpcUaStackCore::ApplicationCallback::Method callback);
 
+		void applicationContext(OpcUaStackCore::BaseClass::SPtr& applicationContext);
+		OpcUaStackCore::BaseClass::SPtr& applicationContext(void);
+
 		bool query(ApplicationServiceIf* applicationServiceIf);
 		OpcUaStackCore::OpcUaStatusCode resultCode(void);
 
 	  private:
 		OpcUaStackCore::OpcUaNodeId objectNodeId_;
 		OpcUaStackCore::OpcUaNodeId methodNodeId_;
+		OpcUaStackCore::BaseClass::SPtr applicationContext_ = nullptr;
 		OpcUaStackCore::ForwardMethodSync forwardMethodSync_;
 		OpcUaStackCore::OpcUaStatusCode resultCode_;
 	};

@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -62,6 +62,18 @@ namespace OpcUaStackServer
 		forwardMethodSync_.methodService().setCallback(callback);
 	}
 
+	void
+	RegisterForwardMethod::applicationContext(OpcUaStackCore::BaseClass::SPtr& applicationContext)
+	{
+		applicationContext_ = applicationContext;
+	}
+
+	OpcUaStackCore::BaseClass::SPtr&
+	RegisterForwardMethod::applicationContext(void)
+	{
+		return applicationContext_;
+	}
+
 	bool
 	RegisterForwardMethod::query(ApplicationServiceIf* applicationServiceIf)
 	{
@@ -72,6 +84,7 @@ namespace OpcUaStackServer
 	  	trx->request()->objectNodeId(objectNodeId_);
 	  	trx->request()->methodNodeId(methodNodeId_);
 	  	trx->request()->forwardMethodSync()->updateFrom(forwardMethodSync_);
+	  	trx->request()->applicationContext(applicationContext_);
 
 		// send query to application service
 		applicationServiceIf->sendSync(trx);
