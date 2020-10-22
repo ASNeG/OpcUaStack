@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -93,6 +93,41 @@ namespace OpcUaStackServer
 	}
 
 	void
+	RegisterForwardNode::addApplicationContext(BaseClass::SPtr& applicationContext)
+	{
+		applicationContextVec_.push_back(applicationContext);
+	}
+
+	void
+	RegisterForwardNode::addApplicationContext(std::vector<BaseClass::SPtr>& applicationContextVec)
+	{
+		applicationContextVec_.insert(
+			applicationContextVec_.end(),
+			applicationContextVec.begin(),
+			applicationContextVec.end()
+		);
+	}
+
+	void
+	RegisterForwardNode::applicationContext(BaseClass::SPtr& applicationContext)
+	{
+		applicationContextVec_.clear();
+		applicationContextVec_.push_back(applicationContext);
+	}
+
+	void
+	RegisterForwardNode::applicationContext(std::vector<BaseClass::SPtr>& applicationContextVec)
+	{
+		applicationContextVec_ = applicationContextVec;
+	}
+
+	std::vector<BaseClass::SPtr>&
+	RegisterForwardNode::applicationContextVec(void)
+	{
+		return applicationContextVec_;
+	}
+
+	void
 	RegisterForwardNode::setReadCallback(
 		ApplicationCallback::Read callback
 	)
@@ -157,20 +192,36 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	RegisterForwardNode::query(ApplicationServiceIf* applicationServiceIf, bool checkStatusCodeArray)
+	RegisterForwardNode::query(
+		ApplicationServiceIf* applicationServiceIf,
+		bool checkStatusCodeArray
+	)
 	{
 		if (nodes_.size() == 0) return false;
 
 		resultCode_ = Success;
 		statuses_.clear();
 
+		// check parameter
+		if (!applicationContextVec_.empty() && applicationContextVec_.size() != nodes_.size()) {
+			return false;
+		}
+
+		//
 		// create request
+		//
 		auto trx = boost::make_shared<ServiceTransactionRegisterForwardNode>();
 		trx->request()->nodesToRegister()->resize(nodes_.size());
 		for (auto node : nodes_) trx->request()->nodesToRegister()->push_back(boost::make_shared<OpcUaNodeId>(node));
+		if (!applicationContextVec_.empty()) {
+			trx->request()->applicationContextArray()->resize(applicationContextVec_.size());
+			for (auto applicationContext : applicationContextVec_) trx->request()->applicationContextArray()->push_back(applicationContext);
+		}
 		trx->request()->forwardNodeSync()->updateFrom(forwardNodeSync_);
 
+		//
 		// send query to application service
+		//
 		applicationServiceIf->sendSync(trx);
 		resultCode_ = trx->statusCode();
 	  	if (resultCode_ != Success) {
