@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -39,14 +39,16 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	MethodMap::existMethod(const OpcUaNodeId& objectNodeId, const OpcUaNodeId& methodNodeId)
+	MethodMap::existMethod(
+		const OpcUaNodeId& objectNodeId,
+		const OpcUaNodeId& methodNodeId
+	)
 	{
 		MethodId methodId;
-		ForwardMethodSyncMap::iterator it;
 
 		methodId.objectNodeId().copyFrom(objectNodeId);
 		methodId.methodNodeId().copyFrom(methodNodeId);
-		it = forwardMethodSyncMap_.find(methodId);
+		auto it = forwardMethodSyncMap_.find(methodId);
 		return (it != forwardMethodSyncMap_.end());
 	}
 
@@ -71,14 +73,16 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	MethodMap::deregisterMethod(const OpcUaNodeId& objectNodeId, const OpcUaNodeId& methodNodeId)
+	MethodMap::deregisterMethod(
+		const OpcUaNodeId& objectNodeId,
+		const OpcUaNodeId& methodNodeId
+	)
 	{
 		MethodId methodId;
 		methodId.objectNodeId().copyFrom(objectNodeId);
 		methodId.methodNodeId().copyFrom(methodNodeId);
 
-		ForwardMethodSyncMap::iterator it;
-		it = forwardMethodSyncMap_.find(methodId);
+		auto it = forwardMethodSyncMap_.find(methodId);
 		if (it == forwardMethodSyncMap_.end()) return true;
 		forwardMethodSyncMap_.erase(it);
 
@@ -86,14 +90,16 @@ namespace OpcUaStackServer
 	}
 
 	ForwardMethodSync::SPtr
-	MethodMap::getMethod(const OpcUaNodeId& objectNodeId, const OpcUaNodeId& methodNodeId)
+	MethodMap::getMethod(
+		const OpcUaNodeId& objectNodeId,
+		const OpcUaNodeId& methodNodeId
+	)
 	{
 		MethodId methodId;
 		methodId.objectNodeId().copyFrom(objectNodeId);
 		methodId.methodNodeId().copyFrom(methodNodeId);
 
-		ForwardMethodSyncMap::iterator it;
-		it = forwardMethodSyncMap_.find(methodId);
+		auto it = forwardMethodSyncMap_.find(methodId);
 		if (it != forwardMethodSyncMap_.end()) {
 			return it->second;
 		}

@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -39,6 +39,8 @@ namespace OpcUaStackCore
 		OpcUaNodeId& objectNodeId(void);
 		void methodNodeId(OpcUaNodeId& methodNodeId);
 		OpcUaNodeId& methodNodeId(void);
+		void applicationContext(OpcUaStackCore::BaseClass::SPtr& applicationContext);
+		OpcUaStackCore::BaseClass::SPtr& applicationContext(void);
 
 		bool opcUaBinaryEncode(std::ostream& os) const;
 		bool opcUaBinaryDecode(std::istream& is);
@@ -47,6 +49,7 @@ namespace OpcUaStackCore
 		ForwardMethodSync::SPtr forwardMethodSync_;
 		OpcUaNodeId objectNodeId_;
 		OpcUaNodeId methodNodeId_;
+		OpcUaStackCore::BaseClass::SPtr applicationContext_ = nullptr;
 	};
 
 }
