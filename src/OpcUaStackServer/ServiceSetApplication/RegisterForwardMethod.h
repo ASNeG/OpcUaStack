@@ -39,9 +39,7 @@ namespace OpcUaStackServer
 		void objectNodeId(const OpcUaStackCore::OpcUaNodeId& objectNodeId);
 		void methodNodeId(const OpcUaStackCore::OpcUaNodeId& methodNodeId);
 		void setMethodCallback(OpcUaStackCore::ApplicationCallback::Method callback);
-
 		void applicationContext(OpcUaStackCore::BaseClass::SPtr& applicationContext);
-		OpcUaStackCore::BaseClass::SPtr& applicationContext(void);
 
 		bool query(ApplicationServiceIf* applicationServiceIf);
 		OpcUaStackCore::OpcUaStatusCode resultCode(void);
@@ -49,7 +47,6 @@ namespace OpcUaStackServer
 	  private:
 		OpcUaStackCore::OpcUaNodeId objectNodeId_;
 		OpcUaStackCore::OpcUaNodeId methodNodeId_;
-		OpcUaStackCore::BaseClass::SPtr applicationContext_ = nullptr;
 		OpcUaStackCore::ForwardMethodSync forwardMethodSync_;
 		OpcUaStackCore::OpcUaStatusCode resultCode_;
 	};

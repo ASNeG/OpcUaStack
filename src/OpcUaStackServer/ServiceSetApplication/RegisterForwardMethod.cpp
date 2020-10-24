@@ -63,15 +63,9 @@ namespace OpcUaStackServer
 	}
 
 	void
-	RegisterForwardMethod::applicationContext(OpcUaStackCore::BaseClass::SPtr& applicationContext)
+	RegisterForwardMethod::applicationContext(BaseClass::SPtr& applicationContext)
 	{
-		applicationContext_ = applicationContext;
-	}
-
-	OpcUaStackCore::BaseClass::SPtr&
-	RegisterForwardMethod::applicationContext(void)
-	{
-		return applicationContext_;
+		forwardMethodSync_.methodService().applicationContext(applicationContext);
 	}
 
 	bool
@@ -84,7 +78,6 @@ namespace OpcUaStackServer
 	  	trx->request()->objectNodeId(objectNodeId_);
 	  	trx->request()->methodNodeId(methodNodeId_);
 	  	trx->request()->forwardMethodSync()->updateFrom(forwardMethodSync_);
-	  	trx->request()->applicationContext(applicationContext_);
 
 		// send query to application service
 		applicationServiceIf->sendSync(trx);

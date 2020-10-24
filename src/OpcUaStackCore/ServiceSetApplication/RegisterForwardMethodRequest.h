@@ -39,8 +39,6 @@ namespace OpcUaStackCore
 		OpcUaNodeId& objectNodeId(void);
 		void methodNodeId(OpcUaNodeId& methodNodeId);
 		OpcUaNodeId& methodNodeId(void);
-		void applicationContext(OpcUaStackCore::BaseClass::SPtr& applicationContext);
-		OpcUaStackCore::BaseClass::SPtr& applicationContext(void);
 
 		bool opcUaBinaryEncode(std::ostream& os) const;
 		bool opcUaBinaryDecode(std::istream& is);
@@ -49,7 +47,6 @@ namespace OpcUaStackCore
 		ForwardMethodSync::SPtr forwardMethodSync_;
 		OpcUaNodeId objectNodeId_;
 		OpcUaNodeId methodNodeId_;
-		OpcUaStackCore::BaseClass::SPtr applicationContext_ = nullptr;
 	};
 
 }

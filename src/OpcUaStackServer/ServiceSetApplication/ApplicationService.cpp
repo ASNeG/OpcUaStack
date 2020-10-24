@@ -263,7 +263,6 @@ namespace OpcUaStackServer
 			);
 		}
 		else {
-			registerForwardMethodRequest->forwardMethodSync()->methodService().applicationContext(registerForwardMethodRequest->applicationContext());
 			informationModel_->methodMap().registerMethod(
 				registerForwardMethodRequest->objectNodeId(),
 				registerForwardMethodRequest->methodNodeId(),
