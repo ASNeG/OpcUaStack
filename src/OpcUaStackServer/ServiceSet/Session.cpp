@@ -1105,13 +1105,14 @@ namespace OpcUaStackServer
 			return;
 		}
 
+		// we must check the smart pointer to the transaction manager
 		if (transactionManagerSPtr_.get() == nullptr) {
 			Log(Error, "transaction manager empty - ignore message request");
 			// ignore request - we cannot generate a response
 			return;
 		}
 
-		// add parameter to service transaction
+		// create a new service transaction with the correct type
 		auto serviceTransactionSPtr = transactionManagerSPtr_->getTransaction(
 			secureChannelTransaction->requestTypeNodeId_
 		);
@@ -1128,7 +1129,7 @@ namespace OpcUaStackServer
 		serviceTransactionSPtr->handle(handle);
 		// FIXME: serviceTransactionSPtr->channelId(secureChannelTransaction->channelId_);
 
-		// decode request
+		// decode service request
 		std::iostream ios(&secureChannelTransaction->is_);
 		serviceTransactionSPtr->requestHeader(requestHeader);
 		if (!serviceTransactionSPtr->opcUaBinaryDecodeRequest(ios)) {
@@ -1146,9 +1147,9 @@ namespace OpcUaStackServer
 
 		// send message request to service component
 		messageBus_->messageSend(
-			messageBusMember_,
-			serviceTransactionSPtr->memberService(),
-			serviceTransactionSPtr
+			messageBusMember_,							// own message bus member
+			serviceTransactionSPtr->memberService(),	// target message bus member
+			serviceTransactionSPtr						// service transaction to send
 		);
 	}
 
