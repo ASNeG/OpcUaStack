@@ -88,16 +88,4 @@ namespace OpcUaStackCore
 		return methodNodeId_;
 	}
 
-	void
-	RegisterForwardMethodRequest::applicationContext(OpcUaStackCore::BaseClass::SPtr& applicationContext)
-	{
-		applicationContext_ = applicationContext;
-	}
-
-	OpcUaStackCore::BaseClass::SPtr&
-	RegisterForwardMethodRequest::applicationContext(void)
-	{
-		return applicationContext_;
-	}
-
 }
