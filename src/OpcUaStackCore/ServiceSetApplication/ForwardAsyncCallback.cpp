@@ -47,8 +47,17 @@ namespace OpcUaStackCore
 	}
 
 	void
+	ForwardAsyncCallback::activate(void)
+	{
+		applicationContext_.reset();
+		used_ = true;
+		active_ = true;
+	}
+
+	void
 	ForwardAsyncCallback::activate(BaseClass::SPtr& applicationContext)
 	{
+		applicationContext_ = applicationContext;
 		used_ = true;
 		active_ = true;
 	}

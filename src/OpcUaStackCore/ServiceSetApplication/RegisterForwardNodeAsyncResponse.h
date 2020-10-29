@@ -15,36 +15,33 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_ForwardAsyncCallback_h__
-#define __OpcUaStackCore_ForwardAsyncCallback_h__
+#ifndef __OpcUaStackCore_RegisterForwardNodeAsyncResponse_h__
+#define __OpcUaStackCore_RegisterForwardNodeAsyncResponse_h__
 
-#include "OpcUaStackCore/Base/BaseClass.h"
+#include "OpcUaStackCore/Base/Object.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT ForwardAsyncCallback
+	class DLLEXPORT RegisterForwardNodeAsyncResponse
+	: public Object
 	{
 	  public:
-		using SPtr = boost::shared_ptr<ForwardAsyncCallback>;
+		using SPtr = boost::shared_ptr<RegisterForwardNodeAsyncResponse>;
 
-		ForwardAsyncCallback(void);
-		~ForwardAsyncCallback(void);
+	    RegisterForwardNodeAsyncResponse(void);
+		virtual ~RegisterForwardNodeAsyncResponse(void);
 
-		void updateFrom(ForwardAsyncCallback& forwardInfo);
-		bool isUsed(void);
-		void activate(void);
-		void activate(BaseClass::SPtr& applicationContext);
-		void deactivate(void);
-		bool isActive(void);
-		BaseClass::SPtr& applicationContext(void);
+		void statusCodeArray(const OpcUaStatusCodeArray::SPtr statusCodeArray);
+		OpcUaStatusCodeArray::SPtr statusCodeArray(void) const;
+
+		bool opcUaBinaryEncode(std::ostream& os) const;
+		bool opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		bool used_ = false;			// indicates whether the variable is used
-		bool active_ = false;		// active/deactivate
-		BaseClass::SPtr applicationContext_ = nullptr;
+		OpcUaStatusCodeArray::SPtr statusCodeArraySPtr_;
 	};
-
 }
 
 #endif

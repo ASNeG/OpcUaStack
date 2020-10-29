@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -22,6 +22,8 @@
 #include "OpcUaStackCore/ServiceSet/ServiceTransactionTemplate.h"
 #include "OpcUaStackCore/ServiceSetApplication/RegisterForwardNodeRequest.h"
 #include "OpcUaStackCore/ServiceSetApplication/RegisterForwardNodeResponse.h"
+#include "OpcUaStackCore/ServiceSetApplication/RegisterForwardNodeAsyncRequest.h"
+#include "OpcUaStackCore/ServiceSetApplication/RegisterForwardNodeAsyncResponse.h"
 #include "OpcUaStackCore/ServiceSetApplication/RegisterForwardMethodRequest.h"
 #include "OpcUaStackCore/ServiceSetApplication/RegisterForwardMethodResponse.h"
 #include "OpcUaStackCore/ServiceSetApplication/RegisterForwardGlobalRequest.h"
@@ -52,6 +54,13 @@ namespace OpcUaStackCore
 		OpcUaId_RegisterForwardNodeRequest_Encoding_DefaultBinary,
 		OpcUaId_RegisterForwardNodeResponse_Encoding_DefaultBinary
 	> ServiceTransactionRegisterForwardNode;
+
+	typedef ServiceTransactionTemplate<
+		RegisterForwardNodeAsyncRequest,
+		RegisterForwardNodeAsyncResponse,
+		OpcUaId_RegisterForwardNodeAsyncRequest_Encoding_DefaultBinary,
+		OpcUaId_RegisterForwardNodeAsyncResponse_Encoding_DefaultBinary
+	> ServiceTransactionRegisterForwardNodeAsync;
 
 	typedef ServiceTransactionTemplate<
 		RegisterForwardMethodRequest,
