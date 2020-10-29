@@ -15,22 +15,56 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <OpcUaStackServer/Forward/ForwardJob.h>
 #include "OpcUaStackCore/Base/Log.h"
-#include "OpcUaStackServer/Async/AsyncManager.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
 
-	AsyncManager::AsyncManager(
+	uint32_t ForwardJob::gId_ = 0;
+
+	ForwardJob::ForwardJob(
 		void
 	)
+	: Object()
 	{
 	}
 
-	AsyncManager::~AsyncManager(void)
+	ForwardJob::~ForwardJob(void)
 	{
 	}
+
+	uint32_t
+	ForwardJob::id(void)
+	{
+		return id_;
+	}
+
+	void
+	ForwardJob::serviceTransaction(OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction)
+	{
+		serviceTransaction_ = serviceTransaction;
+	}
+
+	OpcUaStackCore::ServiceTransaction::SPtr&
+	ForwardJob::serviceTransaction(void)
+	{
+		return serviceTransaction_;
+	}
+
+	void
+	ForwardJob::addForwardTransaction(ForwardTransaction::SPtr& forwardTransaction)
+	{
+		forwardTransactionVec_.push_back(forwardTransaction);
+	}
+
+	ForwardTransaction::Vec&
+	ForwardJob::getForwardTransactionVec(void)
+	{
+		return forwardTransactionVec_;
+	}
+
 
 }

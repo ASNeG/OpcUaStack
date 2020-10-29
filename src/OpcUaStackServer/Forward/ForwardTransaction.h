@@ -15,22 +15,38 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/Base/Log.h"
-#include "OpcUaStackServer/Async/AsyncJob.h"
+#ifndef __OpcUaStackServer_ForwardTransaction_h__
+#define __OpcUaStackServer_ForwardTransaction_h__
 
-using namespace OpcUaStackCore;
+#include <boost/shared_ptr.hpp>
+#include <boost/weak_ptr.hpp>
+
+#include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/Object.h"
+
+#include <vector>
 
 namespace OpcUaStackServer
 {
-
-	AsyncJob::AsyncJob(
-		void
-	)
+	class DLLEXPORT ForwardTransaction
 	{
-	}
+	  public:
+		using SPtr = boost::shared_ptr<ForwardTransaction>;
+		using WPtr = boost::weak_ptr<ForwardTransaction>;
+		using Vec = std::vector<SPtr>;
 
-	AsyncJob::~AsyncJob(void)
-	{
-	}
+		ForwardTransaction(
+			void
+		);
+		~ForwardTransaction(void);
 
+		void forwardJob(const OpcUaStackCore::Object::WPtr& forwardJob);
+		OpcUaStackCore::Object::WPtr& forwardJob(void);
+
+	  private:
+		OpcUaStackCore::Object::WPtr forwardJob_;
+
+	};
 }
+
+#endif
