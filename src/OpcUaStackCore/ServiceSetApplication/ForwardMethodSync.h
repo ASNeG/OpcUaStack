@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,8 +18,8 @@
 #ifndef __OpcUaStackCore_ForwardMethodSync_h__
 #define __OpcUaStackCore_ForwardMethodSync_h__
 
+#include <OpcUaStackCore/ServiceSetApplication/ForwardSyncCallback.h>
 #include "OpcUaStackCore/Application/ApplicationCallback.h"
-#include "OpcUaStackCore/ServiceSetApplication/ForwardCallback.h"
 #include "OpcUaStackCore/Application/ApplicationMethodContext.h"
 
 namespace OpcUaStackCore
@@ -34,12 +34,12 @@ namespace OpcUaStackCore
 		ForwardMethodSync(void);
 		virtual ~ForwardMethodSync(void);
 
-		ForwardCallback<ApplicationCallback::Method>& methodService(void);
+		ForwardSyncCallback<ApplicationCallback::Method>& methodService(void);
 
 		void updateFrom(ForwardMethodSync& forwardInfoSync);
 
 	  private:
-		ForwardCallback<ApplicationCallback::Method> methodService_;
+		ForwardSyncCallback<ApplicationCallback::Method> methodService_;
 	};
 
 }

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -36,65 +36,65 @@ namespace OpcUaStackCore
 	{
 	}
 
-	ForwardCallback<ApplicationCallback::Read>&
+	ForwardSyncCallback<ApplicationCallback::Read>&
 	ForwardNodeSync::readService(void)
 	{
 		return readService_;
 	}
 
-	ForwardCallback<ApplicationCallback::HRead>&
+	ForwardSyncCallback<ApplicationCallback::HRead>&
 	ForwardNodeSync::readHService(void)
 	{
 		return readHService_;
 	}
 
-	ForwardCallback<ApplicationCallback::HERead>&
+	ForwardSyncCallback<ApplicationCallback::HERead>&
 	ForwardNodeSync::readHEService(void)
 	{
 		return readHEService_;
 	}
 
-	ForwardCallback<ApplicationCallback::Write>&
+	ForwardSyncCallback<ApplicationCallback::Write>&
 	ForwardNodeSync::writeService(void)
 	{
 		return writeService_;
 	}
 
-	ForwardCallback<ApplicationCallback::HWrite>&
+	ForwardSyncCallback<ApplicationCallback::HWrite>&
 	ForwardNodeSync::writeHService(void)
 	{
 		return writeHService_;
 	}
 
-	ForwardCallback<ApplicationCallback::Method>&
+	ForwardSyncCallback<ApplicationCallback::Method>&
 	ForwardNodeSync::methodService(void)
 	{
 		return methodService_;
 	}
 
-	ForwardCallback<ApplicationCallback::MonitoredItemStart>&
+	ForwardSyncCallback<ApplicationCallback::MonitoredItemStart>&
 	ForwardNodeSync::monitoredItemStartService(void)
 	{
 		return monitoredItemStartService_;
 	}
 
-	ForwardCallback<ApplicationCallback::MonitoredItemStop>&
+	ForwardSyncCallback<ApplicationCallback::MonitoredItemStop>&
 	ForwardNodeSync::monitoredItemStopService(void)
 	{
 		return monitoredItemStopService_;
 	}
 
 	void
-	ForwardNodeSync::updateFrom(ForwardNodeSync& forwardCallbackSync)
+	ForwardNodeSync::updateFrom(ForwardNodeSync& ForwardSyncCallbackSync)
 	{
-		readService_.updateFrom(forwardCallbackSync.readService());
-		readHService_.updateFrom(forwardCallbackSync.readHService());
-		readHEService_.updateFrom(forwardCallbackSync.readHEService());
-		writeService_.updateFrom(forwardCallbackSync.writeService());
-		writeHService_.updateFrom(forwardCallbackSync.writeHService());
-		methodService_.updateFrom(forwardCallbackSync.methodService());
-		monitoredItemStartService_.updateFrom(forwardCallbackSync.monitoredItemStartService());
-		monitoredItemStopService_.updateFrom(forwardCallbackSync.monitoredItemStopService());
+		readService_.updateFrom(ForwardSyncCallbackSync.readService());
+		readHService_.updateFrom(ForwardSyncCallbackSync.readHService());
+		readHEService_.updateFrom(ForwardSyncCallbackSync.readHEService());
+		writeService_.updateFrom(ForwardSyncCallbackSync.writeService());
+		writeHService_.updateFrom(ForwardSyncCallbackSync.writeHService());
+		methodService_.updateFrom(ForwardSyncCallbackSync.methodService());
+		monitoredItemStartService_.updateFrom(ForwardSyncCallbackSync.monitoredItemStartService());
+		monitoredItemStopService_.updateFrom(ForwardSyncCallbackSync.monitoredItemStopService());
 	}
 
 }

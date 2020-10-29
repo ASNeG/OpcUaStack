@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,7 +18,7 @@
 #ifndef __OpcUaStackCore_ForwardNodeSync_h__
 #define __OpcUaStackCore_ForwardNodeSync_h__
 
-#include "OpcUaStackCore/ServiceSetApplication/ForwardCallback.h"
+#include <OpcUaStackCore/ServiceSetApplication/ForwardSyncCallback.h>
 #include "OpcUaStackCore/Application/ApplicationCallback.h"
 #include "OpcUaStackCore/Application/ApplicationReadContext.h"
 #include "OpcUaStackCore/Application/ApplicationHReadContext.h"
@@ -41,29 +41,29 @@ namespace OpcUaStackCore
 		ForwardNodeSync(void);
 		virtual ~ForwardNodeSync(void);
 
-		ForwardCallback<ApplicationCallback::Read>& readService(void);
-		ForwardCallback<ApplicationCallback::HRead>& readHService(void);
-		ForwardCallback<ApplicationCallback::HERead>& readHEService(void);
-		ForwardCallback<ApplicationCallback::Write>& writeService(void);
-		ForwardCallback<ApplicationCallback::HWrite>& writeHService(void);
-		ForwardCallback<ApplicationCallback::Method>& methodService(void);
-		ForwardCallback<ApplicationCallback::MonitoredItemStart>& monitoredItemStartService(void);
-		ForwardCallback<ApplicationCallback::MonitoredItemStop>& monitoredItemStopService(void);
+		ForwardSyncCallback<ApplicationCallback::Read>& readService(void);
+		ForwardSyncCallback<ApplicationCallback::HRead>& readHService(void);
+		ForwardSyncCallback<ApplicationCallback::HERead>& readHEService(void);
+		ForwardSyncCallback<ApplicationCallback::Write>& writeService(void);
+		ForwardSyncCallback<ApplicationCallback::HWrite>& writeHService(void);
+		ForwardSyncCallback<ApplicationCallback::Method>& methodService(void);
+		ForwardSyncCallback<ApplicationCallback::MonitoredItemStart>& monitoredItemStartService(void);
+		ForwardSyncCallback<ApplicationCallback::MonitoredItemStop>& monitoredItemStopService(void);
 
 		void updateFrom(ForwardNodeSync& forwardInfoSync);
 
 	  private:
 		// attribute service
-		ForwardCallback<ApplicationCallback::Read> readService_;
-		ForwardCallback<ApplicationCallback::HRead> readHService_;
-		ForwardCallback<ApplicationCallback::HERead> readHEService_;
-		ForwardCallback<ApplicationCallback::Write> writeService_;
-		ForwardCallback<ApplicationCallback::HWrite> writeHService_;
-		ForwardCallback<ApplicationCallback::MonitoredItemStart> monitoredItemStartService_;
-		ForwardCallback<ApplicationCallback::MonitoredItemStop> monitoredItemStopService_;
+		ForwardSyncCallback<ApplicationCallback::Read> readService_;
+		ForwardSyncCallback<ApplicationCallback::HRead> readHService_;
+		ForwardSyncCallback<ApplicationCallback::HERead> readHEService_;
+		ForwardSyncCallback<ApplicationCallback::Write> writeService_;
+		ForwardSyncCallback<ApplicationCallback::HWrite> writeHService_;
+		ForwardSyncCallback<ApplicationCallback::MonitoredItemStart> monitoredItemStartService_;
+		ForwardSyncCallback<ApplicationCallback::MonitoredItemStop> monitoredItemStopService_;
 
 		// method service
-		ForwardCallback<ApplicationCallback::Method> methodService_;
+		ForwardSyncCallback<ApplicationCallback::Method> methodService_;
 	};
 
 }

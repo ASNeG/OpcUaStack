@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_ForwardCallback_h__
-#define __OpcUaStackCore_ForwardCallback_h__
+#ifndef __OpcUaStackCore_ForwardSyncCallback_h__
+#define __OpcUaStackCore_ForwardSyncCallback_h__
 
 #include "OpcUaStackCore/Base/BaseClass.h"
 
@@ -24,20 +24,20 @@ namespace OpcUaStackCore
 {
 
     template<typename CallbackFunction>
-	  class DLLEXPORT ForwardCallback
+	  class DLLEXPORT ForwardSyncCallback
 	  {
 	    public:
-		  typedef boost::shared_ptr<ForwardCallback> SPtr;
+    	  using SPtr = boost::shared_ptr<ForwardSyncCallback>;
 
-		  ForwardCallback(void)
+		  ForwardSyncCallback(void)
 		  {
 		  }
 
-		  ~ForwardCallback(void)
+		  ~ForwardSyncCallback(void)
 		  {
 		  }
 
-		  void updateFrom(ForwardCallback& forwardInfo)
+		  void updateFrom(ForwardSyncCallback& forwardInfo)
 		  {
 				// set or unset callback
 				if (forwardInfo.usedCallback()) {

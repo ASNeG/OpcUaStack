@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -37,55 +37,55 @@ namespace OpcUaStackCore
 	{
 	}
 
-	ForwardCallback<ApplicationCallback::RegisterServer>&
+	ForwardSyncCallback<ApplicationCallback::RegisterServer>&
 	ForwardGlobalSync::registerServerService(void)
 	{
 		return registerServerService_;
 	}
 
-	ForwardCallback<ApplicationCallback::FindServer>&
+	ForwardSyncCallback<ApplicationCallback::FindServer>&
 	ForwardGlobalSync::findServersService(void)
 	{
 		return findServersService_;
 	}
 
-	ForwardCallback<ApplicationCallback::EventItemStart>&
+	ForwardSyncCallback<ApplicationCallback::EventItemStart>&
 	ForwardGlobalSync::eventItemStartService(void)
 	{
 		return eventItemStartService_;
 	}
 
-	ForwardCallback<ApplicationCallback::EventItemStop>&
+	ForwardSyncCallback<ApplicationCallback::EventItemStop>&
 	ForwardGlobalSync::eventItemStopService(void)
 	{
 		return eventItemStopService_;
 	}
 
-	ForwardCallback<ApplicationCallback::Authentication>&
+	ForwardSyncCallback<ApplicationCallback::Authentication>&
 	ForwardGlobalSync::authenticationService(void)
 	{
 		return authenticationService_;
 	}
 
-	ForwardCallback<ApplicationCallback::Autorization>&
+	ForwardSyncCallback<ApplicationCallback::Autorization>&
 	ForwardGlobalSync::autorizationService(void)
 	{
 		return autorizationService_;
 	}
 
-	ForwardCallback<ApplicationCallback::CloseSession>&
+	ForwardSyncCallback<ApplicationCallback::CloseSession>&
 	ForwardGlobalSync::closeSessionService(void)
 	{
 		return closeSessionService_;
 	}
 
-	ForwardCallback<ApplicationCallback::NodeNew>&
+	ForwardSyncCallback<ApplicationCallback::NodeNew>&
 	ForwardGlobalSync::nodeNewService(void)
 	{
 		return nodeNewService_;
 	}
 
-	ForwardCallback<ApplicationCallback::NodeDelete>&
+	ForwardSyncCallback<ApplicationCallback::NodeDelete>&
 	ForwardGlobalSync::nodeDeleteService(void)
 	{
 		return nodeDeleteService_;
