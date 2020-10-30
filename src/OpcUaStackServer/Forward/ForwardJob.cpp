@@ -66,5 +66,40 @@ namespace OpcUaStackServer
 		return forwardTransactionVec_;
 	}
 
+	void
+	ForwardJob::countPendingTrx(uint32_t countPendingTrx)
+	{
+		countPendingTrx_ = countPendingTrx;
+	}
+
+	uint32_t
+	ForwardJob::countPendingTrx(void)
+	{
+		return countPendingTrx_;
+	}
+
+	void
+	ForwardJob::countPendingTrxInc(void)
+	{
+		countPendingTrx_++;
+	}
+
+	void
+	ForwardJob::countPendingTrxDec(void)
+	{
+		countPendingTrx_--;
+	}
+
+	void
+	ForwardJob::slotTimerElement(OpcUaStackCore::SlotTimerElement::SPtr& slotTimerElement)
+	{
+		slotTimerElement_ = slotTimerElement;
+	}
+
+	OpcUaStackCore::SlotTimerElement::SPtr
+	ForwardJob::slotTimerElement(void)
+	{
+		return slotTimerElement_;
+	}
 
 }

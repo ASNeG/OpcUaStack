@@ -44,4 +44,28 @@ namespace OpcUaStackServer
 		return forwardJob_;
 	}
 
+	void
+	ForwardTransaction::idx(uint32_t idx)
+	{
+		idx_ = idx;
+	}
+
+	uint32_t
+	ForwardTransaction::idx(void)
+	{
+		return idx_;
+	}
+
+	void
+	ForwardTransaction::complete(bool complete)
+	{
+		complete_ = complete;
+	}
+
+	bool
+	ForwardTransaction::complete(void)
+	{
+		return complete_;
+	}
+
 }

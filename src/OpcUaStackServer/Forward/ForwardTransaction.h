@@ -42,9 +42,15 @@ namespace OpcUaStackServer
 
 		void forwardJob(const OpcUaStackCore::Object::WPtr& forwardJob);
 		OpcUaStackCore::Object::WPtr& forwardJob(void);
+		void idx(uint32_t idx);
+		uint32_t idx(void);
+		void complete(bool complete);
+		bool complete(void);
 
 	  private:
-		OpcUaStackCore::Object::WPtr forwardJob_;
+		OpcUaStackCore::Object::WPtr forwardJob_;	// reference to the associated job
+		uint32_t idx_ = 0;							// index of the entry in the service transaction
+		bool complete_ = false;						// transaction completed
 
 	};
 }

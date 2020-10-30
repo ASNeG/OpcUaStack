@@ -144,6 +144,8 @@ namespace OpcUaStackServer
 		Message::SPtr message
 	)
 	{
+
+
 		// We have to remember the sender of the message. This enables us to
 		// send a reply for the received message later
 		auto serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);

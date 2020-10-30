@@ -49,13 +49,21 @@ namespace OpcUaStackServer
 		OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction(void);
 		void addForwardTransaction(ForwardTransaction::SPtr& forwardTransaction);
 		ForwardTransaction::Vec& getForwardTransactionVec(void);
+		void countPendingTrx(uint32_t countPendingTrx);
+		uint32_t countPendingTrx(void);
+		void countPendingTrxInc(void);
+		void countPendingTrxDec(void);
+		void slotTimerElement(OpcUaStackCore::SlotTimerElement::SPtr& slotTimerElement);
+		OpcUaStackCore::SlotTimerElement::SPtr slotTimerElement(void);
 
 	  private:
 		static uint32_t gId_;
-		uint32_t id_ = 0;
+		uint32_t id_ = 0;					// job identifier
+		uint32_t countPendingTrx_;			// number of pending transactions in the job
 
 		OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction_ = nullptr;
 		ForwardTransaction::Vec forwardTransactionVec_;
+		OpcUaStackCore::SlotTimerElement::SPtr slotTimerElement_ = nullptr;
 	};
 
 }

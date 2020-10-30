@@ -22,6 +22,7 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransaction.h"
+#include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackServer/Forward/ForwardJob.h"
 
 namespace OpcUaStackServer
@@ -34,7 +35,8 @@ namespace OpcUaStackServer
 			ForwardTransaction::SPtr& forwardTransaction
 		)>;
 		using RecvTrxCallback = std::function<void (
-			ForwardJob::SPtr& forwardJob,
+			OpcUaStackCore::OpcUaStatusCode statusCode,
+			OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction,
 			ForwardTransaction::SPtr& forwardTransaction
 		)>;
 		using FinishTrxCallback = std::function<void (
@@ -43,19 +45,32 @@ namespace OpcUaStackServer
 		using SPtr = boost::shared_ptr<ForwardManager>;
 
 		ForwardManager(
-			SendTrxCallback sendTrxCallback,
-			RecvTrxCallback recvTrxCallback,
-			FinishTrxCallback finishTrxCallback
+			OpcUaStackCore::IOThread::SPtr& ioThread,
+			boost::shared_ptr<boost::asio::io_service::strand>& strand,
+			SendTrxCallback sendTrxCallback,	// this callback is called when a transaction
+												// is to be send to asynchronously to the target
+			RecvTrxCallback recvTrxCallback,	// called when a transaction has been called
+												// from the application
+			FinishTrxCallback finishTrxCallback	// all transactions of the job have been processed
 		);
 		~ForwardManager(void);
 
-		ForwardJob::SPtr createJob(void);
+		void jobTimeout(uint32_t jobTimeout);
+
+		ForwardJob::SPtr createJob(OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction);
+		void addTrx(ForwardJob::SPtr& forwardJob, ForwardTransaction::SPtr& forwardTransaction);
 		bool startJob(ForwardJob::SPtr& forwardJob);
 		void recvTrx(ForwardTransaction::SPtr& forwardTransaction);
 
 	  private:
+		void forwardJobTimeout(uint32_t jobId);
+		void finishJob(ForwardJob::SPtr& forwardJob);
+
+		OpcUaStackCore::IOThread::SPtr ioThread_ = nullptr;
+		boost::shared_ptr<boost::asio::io_service::strand> strand_ = nullptr;
 		ForwardJob::Map forwardJobMap_;
 
+		uint32_t jobTimeout_ = 3000;			// job timeout in milliseconds
 		SendTrxCallback sendTrxCallback_ = nullptr;
 		RecvTrxCallback recvTrxCallback_ = nullptr;
 		FinishTrxCallback finishTrxCallback_ = nullptr;
