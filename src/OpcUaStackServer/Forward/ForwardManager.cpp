@@ -26,7 +26,7 @@ namespace OpcUaStackServer
 {
 
 	ForwardManager::ForwardManager(
-		IOThread::SPtr& ioThread,
+		IOThread* ioThread,
 		boost::shared_ptr<boost::asio::io_service::strand>& strand,
 		SendTrxCallback sendTrxCallback,
 		RecvTrxCallback recvTrxCallback,

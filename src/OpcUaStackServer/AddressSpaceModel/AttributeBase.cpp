@@ -1496,7 +1496,7 @@ namespace OpcUaStackServer
 
 
 	//
-	// datat type
+	// data type
 	//
 	Attribute* 
 	AttributeBase::dataTypeAttribute(void)

@@ -45,7 +45,7 @@ namespace OpcUaStackServer
 		using SPtr = boost::shared_ptr<ForwardManager>;
 
 		ForwardManager(
-			OpcUaStackCore::IOThread::SPtr& ioThread,
+			OpcUaStackCore::IOThread* ioThread,
 			boost::shared_ptr<boost::asio::io_service::strand>& strand,
 			SendTrxCallback sendTrxCallback,	// this callback is called when a transaction
 												// is to be send to asynchronously to the target
@@ -66,7 +66,7 @@ namespace OpcUaStackServer
 		void forwardJobTimeout(uint32_t jobId);
 		void finishJob(ForwardJob::SPtr& forwardJob);
 
-		OpcUaStackCore::IOThread::SPtr ioThread_ = nullptr;
+		OpcUaStackCore::IOThread* ioThread_ = nullptr;
 		boost::shared_ptr<boost::asio::io_service::strand> strand_ = nullptr;
 		ForwardJob::Map forwardJobMap_;
 

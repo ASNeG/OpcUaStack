@@ -19,7 +19,7 @@ namespace OpcUaServer
 {
 
 	template<typename REQTYPE, typename RESTYPE, uint32_t REQID, uint32_t RESID>
-	  ServiceTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID>::ServiceTransactionTemplate(void)
+	  ForwardTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID>::ForwardTransactionTemplate(void)
 	  : ServiceTransaction(REQID, RESID)
 	  , request_(boost::make_shared<REQTYPE>())
 	  , response_(boost::make_shared<RESTYPE>())
@@ -27,20 +27,20 @@ namespace OpcUaServer
 	  }
 
 	template<typename REQTYPE, typename RESTYPE, uint32_t REQID, uint32_t RESID>
-	  ServiceTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID>::~ServiceTransactionTemplate(void)
+	  ForwardTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID>::~ForwardTransactionTemplate(void)
 	  {
 	  }
 
 	template<typename REQTYPE, typename RESTYPE, uint32_t REQID, uint32_t RESID>
 	typename REQTYPE::SPtr 
-	  ServiceTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID>::request(void)
+	  ForwardTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID>::request(void)
 	  {
 		  return request_;
 	  }
 		
 	template<typename REQTYPE, typename RESTYPE, uint32_t REQID, uint32_t RESID>
 	  typename RESTYPE::SPtr 
-	  ServiceTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID>::response(void)
+	  ForwardTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID>::response(void)
 	  {
 		  return response_;
 	  }
