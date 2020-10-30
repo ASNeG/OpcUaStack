@@ -23,6 +23,8 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/Object.h"
+#include "OpcUaStackCore/Base/UserContext.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 
 #include <vector>
 
@@ -36,9 +38,13 @@ namespace OpcUaStackServer
 		using Vec = std::vector<SPtr>;
 
 		ForwardTransaction(
-			void
+			OpcUaStackCore::OpcUaUInt32 nodeTypeRequest,
+			OpcUaStackCore::OpcUaUInt32 nodeTypeResponse
 		);
 		~ForwardTransaction(void);
+
+		OpcUaStackCore::OpcUaNodeId& nodeTypeRequest(void);
+		OpcUaStackCore::OpcUaNodeId& nodeTypeResponse(void);
 
 		void forwardJob(const OpcUaStackCore::Object::WPtr& forwardJob);
 		OpcUaStackCore::Object::WPtr& forwardJob(void);
@@ -46,8 +52,14 @@ namespace OpcUaStackServer
 		uint32_t idx(void);
 		void complete(bool complete);
 		bool complete(void);
+		void userContext(const OpcUaStackCore::UserContext::SPtr& userContext);
+		OpcUaStackCore::UserContext::SPtr userContext(void);
 
 	  private:
+		OpcUaStackCore::OpcUaNodeId nodeTypeRequest_;
+		OpcUaStackCore::OpcUaNodeId nodeTypeResponse_;
+
+		OpcUaStackCore::UserContext::SPtr userContext_;	// user context
 		OpcUaStackCore::Object::WPtr forwardJob_;	// reference to the associated job
 		uint32_t idx_ = 0;							// index of the entry in the service transaction
 		bool complete_ = false;						// transaction completed

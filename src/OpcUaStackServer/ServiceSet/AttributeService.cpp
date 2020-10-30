@@ -29,6 +29,7 @@
 #include "OpcUaStackCore/StandardDataTypes/HistoryData.h"
 #include "OpcUaStackServer/ServiceSet/AttributeService.h"
 #include "OpcUaStackServer/AddressSpaceModel/AttributeAccess.h"
+#include "OpcUaStackServer/Forward/ForwardServiceTransaction.h"
 
 using namespace OpcUaStackCore;
 
@@ -276,9 +277,7 @@ namespace OpcUaStackServer
 				serviceTransaction->userContext(),
 				baseNodeClass,
 				idx,
-				trx,
-				readRequest,
-				readResponse
+				trx
 			);
 			if (rc) {
 				// the operation is performed asynchronously
@@ -375,12 +374,38 @@ namespace OpcUaStackServer
 		UserContext::SPtr& userContext,
 		BaseNodeClass::SPtr baseNodeClass,
 		uint32_t idx,
-		ServiceTransactionRead::SPtr& readTrx,
-		ReadRequest::SPtr& readRequest,
-		ReadResponse::SPtr& readResponse
+		ServiceTransactionRead::SPtr& readTrx
 	)
 	{
-		// create new transaction
+		auto serviceReq = readTrx->request();
+		auto serviceRes = readTrx->response();
+
+		// check if async forwarding is enabled
+		auto forwardNodeAsync = baseNodeClass->forwardNodeAsync();
+		if (forwardNodeAsync.get() == nullptr) return false;
+		if (!forwardNodeAsync->readService().isActive()) return false;
+
+		// create new transaction#
+		auto forwardTrx = boost::make_shared<ForwardTransactionRead>();
+		auto forwardReq = forwardTrx->request();
+		auto forwardRes = forwardTrx->response();
+
+		// set request parameter
+		ReadValueId::SPtr readValueId;
+		serviceReq->readValueIdArray()->get(idx, readValueId);
+		forwardReq->readValueId(readValueId);
+		forwardReq->maxAge(serviceReq->maxAge());
+		forwardReq->timestampsToReturn(serviceReq->timestampsToReturn());
+
+		// set transaction parameter
+		forwardTrx->forwardJob(forwardJob);
+		forwardTrx->idx(idx);
+		forwardTrx->complete(false);
+		forwardTrx->userContext(userContext);
+
+		// add forward transaction to forward job
+		ForwardTransaction::SPtr trx = forwardTrx;
+		forwardManager_->addTrx(forwardJob, trx);
 
 		return false;
 	}

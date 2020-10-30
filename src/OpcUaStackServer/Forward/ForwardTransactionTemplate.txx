@@ -15,12 +15,12 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-namespace OpcUaServer
+namespace OpcUaStackServer
 {
 
 	template<typename REQTYPE, typename RESTYPE, uint32_t REQID, uint32_t RESID>
 	  ForwardTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID>::ForwardTransactionTemplate(void)
-	  : ServiceTransaction(REQID, RESID)
+	  : ForwardTransaction(REQID, RESID)
 	  , request_(boost::make_shared<REQTYPE>())
 	  , response_(boost::make_shared<RESTYPE>())
 	  {

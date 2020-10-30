@@ -82,9 +82,7 @@ namespace OpcUaStackServer
 			OpcUaStackCore::UserContext::SPtr& userContext,
 			BaseNodeClass::SPtr baseNodeClass,
 			uint32_t idx,
-			OpcUaStackCore::ServiceTransactionRead::SPtr& readTrx,
-			OpcUaStackCore::ReadRequest::SPtr& readRequest,
-			OpcUaStackCore::ReadResponse::SPtr& readResponse
+			OpcUaStackCore::ServiceTransactionRead::SPtr& readTrx
 		);
 		void forwardReadSync(
 			OpcUaStackCore::UserContext::SPtr& userContext,

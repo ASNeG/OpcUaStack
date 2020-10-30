@@ -23,13 +23,28 @@ namespace OpcUaStackServer
 {
 
 	ForwardTransaction::ForwardTransaction(
-		void
+		OpcUaUInt32 nodeTypeRequest,
+		OpcUaUInt32 nodeTypeResponse
 	)
 	{
+		nodeTypeRequest_ = nodeTypeRequest;
+		nodeTypeResponse_ = nodeTypeResponse;
 	}
 
 	ForwardTransaction::~ForwardTransaction(void)
 	{
+	}
+
+	OpcUaNodeId&
+	ForwardTransaction::nodeTypeRequest(void)
+	{
+		return nodeTypeRequest_;
+	}
+
+	OpcUaNodeId&
+	ForwardTransaction::nodeTypeResponse(void)
+	{
+		return nodeTypeResponse_;
 	}
 
 	void
@@ -66,6 +81,18 @@ namespace OpcUaStackServer
 	ForwardTransaction::complete(void)
 	{
 		return complete_;
+	}
+
+	void
+	ForwardTransaction::userContext(const UserContext::SPtr& userContext)
+	{
+		userContext_ = userContext;
+	}
+
+	UserContext::SPtr
+	ForwardTransaction::userContext(void)
+	{
+		return userContext_;
 	}
 
 }
