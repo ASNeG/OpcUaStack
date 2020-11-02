@@ -79,6 +79,7 @@ file(GLOB INC_OpcUaStackServer_ObjectType OpcUaStackServer/ObjectType/*.h)
 file(GLOB INC_OpcUaStackServer_StandardVariableType OpcUaStackServer/StandardVariableType/*.h)
 file(GLOB INC_OpcUaStackServer_StandardObjectType OpcUaStackServer/StandardObjectType/*.h)
 file(GLOB INC_OpcUaStackServer_Generator OpcUaStackServer/Generator/*.h)
+file(GLOB INC_OpcUaStackServer_Forward OpcUaStackServer/Forward/*.h OpcUaStackServer/Forward/*.txx)
 
 
 install(
@@ -174,5 +175,11 @@ install(
 install(
     FILES ${INC_OpcUaStackServer_Generator} 
     DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/Generator
+    COMPONENT headers
+)
+
+install(
+    FILES ${INC_OpcUaStackServer_Forward} 
+    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/Forward
     COMPONENT headers
 )

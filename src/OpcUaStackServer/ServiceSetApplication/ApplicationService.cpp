@@ -72,6 +72,12 @@ namespace OpcUaStackServer
 		Message::SPtr& message
 	)
 	{
+		// check parameter
+		auto member = handleFrom.lock();
+		if (!member) {
+			Log(Error, "ApplicationService::receive, because handleFrom error");
+		}
+
 		// We have to remember the sender of the message. This enables us to
 		// send a reply for the received message later
 		auto serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
@@ -81,6 +87,9 @@ namespace OpcUaStackServer
 		{
 			case OpcUaId_RegisterForwardNodeRequest_Encoding_DefaultBinary:
 				receiveRegisterForwardNodeRequest(serviceTransaction);
+				break;
+			case OpcUaId_RegisterForwardNodeAsyncRequest_Encoding_DefaultBinary:
+				receiveRegisterForwardNodeAsyncRequest(serviceTransaction);
 				break;
 			case OpcUaId_RegisterForwardMethodRequest_Encoding_DefaultBinary:
 				receiveRegisterForwardMethodRequest(serviceTransaction);
@@ -132,7 +141,9 @@ namespace OpcUaStackServer
 	}
 
 	void
-	ApplicationService::receiveRegisterForwardNodeRequest(ServiceTransaction::SPtr serviceTransaction)
+	ApplicationService::receiveRegisterForwardNodeRequest(
+		ServiceTransaction::SPtr serviceTransaction
+	)
 	{
 		ServiceTransactionRegisterForwardNode::SPtr trx = boost::static_pointer_cast<ServiceTransactionRegisterForwardNode>(serviceTransaction);
 
@@ -196,7 +207,7 @@ namespace OpcUaStackServer
 				if (baseClass.get() != nullptr) {
 					forwardNodeSync->writeService().applicationContext(baseClass);
 					forwardNodeSync->readService().applicationContext(baseClass);
-					forwardNodeSync->writeService().applicationContext(baseClass);
+					forwardNodeSync->writeHService().applicationContext(baseClass);
 					forwardNodeSync->readHService().applicationContext(baseClass);
 					forwardNodeSync->methodService().applicationContext(baseClass);
 					forwardNodeSync->monitoredItemStartService().applicationContext(baseClass);
@@ -206,6 +217,107 @@ namespace OpcUaStackServer
 			baseNodeClass->forwardNodeSync(forwardNodeSync);
 
 			Log(Debug, "register forward node")
+				.parameter("Trx", serviceTransaction->transactionId())
+				.parameter("Idx", idx)
+				.parameter("Node", *nodeId);
+		}
+
+		trx->statusCode(Success);
+		sendAnswer(serviceTransaction);
+	}
+
+	void
+	ApplicationService::receiveRegisterForwardNodeAsyncRequest(
+		ServiceTransaction::SPtr serviceTransaction
+	)
+	{
+		auto trx = boost::static_pointer_cast<ServiceTransactionRegisterForwardNodeAsync>(serviceTransaction);
+
+		auto registerForwardNodeAsyncRequest = trx->request();
+		auto registerForwardNodeAsyncResponse = trx->response();
+
+		Log(Debug, "application service register forward node async request")
+			.parameter("Trx", serviceTransaction->transactionId())
+			.parameter("NumberNodes", registerForwardNodeAsyncRequest->nodesToRegister()->size());
+
+		if (registerForwardNodeAsyncRequest->nodesToRegister()->size() == 0) {
+			trx->statusCode(BadNothingToDo);
+			sendAnswer(serviceTransaction);
+			return;
+		}
+		if (registerForwardNodeAsyncRequest->nodesToRegister()->size() > 1000) { // FIXME: todo
+			trx->statusCode(BadTooManyOperations);
+			sendAnswer(serviceTransaction);
+			return;
+		}
+		bool applicationContextArray = false;
+		if (registerForwardNodeAsyncRequest->applicationContextArray()->size() == registerForwardNodeAsyncRequest->nodesToRegister()->size()) {
+			applicationContextArray = true;
+		}
+
+		// register forward
+		registerForwardNodeAsyncResponse->statusCodeArray()->resize(registerForwardNodeAsyncRequest->nodesToRegister()->size());
+		for (uint32_t idx = 0; idx < registerForwardNodeAsyncRequest->nodesToRegister()->size(); idx++) {
+			OpcUaDataValue::SPtr dataValue = boost::make_shared<OpcUaDataValue>();
+			registerForwardNodeAsyncResponse->statusCodeArray()->set(idx, Success);
+
+			OpcUaNodeId::SPtr nodeId;
+			if (!registerForwardNodeAsyncRequest->nodesToRegister()->get(idx, nodeId)) {
+				registerForwardNodeAsyncResponse->statusCodeArray()->set(idx, BadNodeIdInvalid);
+				Log(Debug, "register forward node async error, because node request parameter node id invalid")
+					.parameter("Trx", serviceTransaction->transactionId())
+					.parameter("Idx", idx);
+				continue;
+			}
+
+			// find node
+			BaseNodeClass::SPtr baseNodeClass = informationModel_->find(nodeId);
+			if (baseNodeClass.get() == nullptr) {
+				registerForwardNodeAsyncResponse->statusCodeArray()->set(idx, BadNodeIdUnknown);
+				Log(Debug, "register forward node async error, because node not exist in information model")
+					.parameter("Trx", serviceTransaction->transactionId())
+					.parameter("Idx", idx)
+					.parameter("Node", *nodeId);
+				continue;
+			}
+
+			// add source message bus member
+			if (registerForwardNodeAsyncRequest->forwardNodeAsync()->writeService().isUsed()) {
+				registerForwardNodeAsyncRequest->forwardNodeAsync()->writeService().messageBusMember(serviceTransaction->memberServiceSession());
+			}
+			if (registerForwardNodeAsyncRequest->forwardNodeAsync()->readService().isUsed()) {
+				registerForwardNodeAsyncRequest->forwardNodeAsync()->readService().messageBusMember(serviceTransaction->memberServiceSession());
+			}
+			if (registerForwardNodeAsyncRequest->forwardNodeAsync()->methodService().isUsed()) {
+				registerForwardNodeAsyncRequest->forwardNodeAsync()->methodService().messageBusMember(serviceTransaction->memberServiceSession());
+			}
+
+			// create or update forward info
+			auto forwardNodeAsync = baseNodeClass->forwardNodeAsync();
+			if (!forwardNodeAsync) {
+				forwardNodeAsync  = boost::make_shared<ForwardNodeAsync>();
+			}
+			forwardNodeAsync->updateFrom(*registerForwardNodeAsyncRequest->forwardNodeAsync());
+
+			// add application context
+			if (applicationContextArray) {
+				BaseClass::SPtr baseClass;
+				registerForwardNodeAsyncRequest->applicationContextArray()->get(idx, baseClass);
+				if (baseClass.get() != nullptr) {
+					if (registerForwardNodeAsyncRequest->forwardNodeAsync()->writeService().isUsed()) {
+						forwardNodeAsync->writeService().applicationContext(baseClass);
+					}
+					if (registerForwardNodeAsyncRequest->forwardNodeAsync()->readService().isUsed()) {
+						forwardNodeAsync->readService().applicationContext(baseClass);
+					}
+					if (registerForwardNodeAsyncRequest->forwardNodeAsync()->methodService().isUsed()) {
+						forwardNodeAsync->methodService().applicationContext(baseClass);
+					}
+				}
+			}
+			baseNodeClass->forwardNodeAsync(forwardNodeAsync);
+
+			Log(Debug, "register forward node async")
 				.parameter("Trx", serviceTransaction->transactionId())
 				.parameter("Idx", idx)
 				.parameter("Node", *nodeId);

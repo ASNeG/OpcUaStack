@@ -2088,6 +2088,11 @@
 #define OpcUaId_CreateVariableResponse_Encoding_DefaultBinary 			1000019
 #define OpcUaId_CreateObjectRequest_Encoding_DefaultBinary 				1000020
 #define OpcUaId_CreateObjectResponse_Encoding_DefaultBinary 			1000021
+#define OpcUaId_RegisterForwardNodeAsyncRequest_Encoding_DefaultBinary 	1000022
+#define OpcUaId_RegisterForwardNodeAsyncResponse_Encoding_DefaultBinary 1000023
+
+#define OpcUaId_ForwardTransactionReadRequest_Encoding_DefaultBinary 	1000024
+#define OpcUaId_ForwardTransactionReadResponse_Encoding_DefaultBinary 	1000025
 
 //
 // private identifier (Server Info Service)

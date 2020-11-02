@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,6 +19,7 @@
 #define __OpcUaStackServer_ApplicationServiceIf_h__
 
 #include "OpcUaStackCore/ServiceSet/ServiceTransaction.h"
+#include "OpcUaStackServer/Forward/ForwardTransaction.h"
 
 namespace OpcUaStackServer
 {
@@ -29,8 +30,15 @@ namespace OpcUaStackServer
 		ApplicationServiceIf(void) {}
 		virtual ~ApplicationServiceIf(void) {}
 
-		virtual void send(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction) = 0;
-		virtual void sendSync(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction) = 0;
+		virtual void send(
+			OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction
+		) = 0;
+		virtual void sendForwardTrx(
+			OpcUaStackServer::ForwardTransaction::SPtr forwardTransaction
+		) = 0;
+		virtual void sendSync(
+			OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction
+		) = 0;
 		virtual void reload(void) {}
 	};
 

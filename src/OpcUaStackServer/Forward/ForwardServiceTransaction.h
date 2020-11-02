@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,30 +15,24 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/ServiceSetApplication/ForwardMethodSync.h"
+#ifndef __OpcUaStackCore_ForwardServiceTransaction_h__
+#define __OpcUaStackCore_ForwardServiceTransaction_h__
 
-namespace OpcUaStackCore
+#include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
+#include "OpcUaStackServer/Forward/ForwardTransactionTemplate.h"
+#include "OpcUaStackServer/Forward/ReadForwardRequest.h"
+#include "OpcUaStackServer/Forward/ReadForwardResponse.h"
+
+namespace OpcUaStackServer
 {
-
-	ForwardMethodSync::ForwardMethodSync(void)
-	: methodService_()
-	{
-	}
-
-	ForwardMethodSync::~ForwardMethodSync(void)
-	{
-	}
-
-	ForwardSyncCallback<ApplicationCallback::Method>&
-	ForwardMethodSync::methodService(void)
-	{
-		return methodService_;
-	}
-
-	void
-	ForwardMethodSync::updateFrom(ForwardMethodSync& ForwardSyncCallbackSync)
-	{
-		methodService_.updateFrom(ForwardSyncCallbackSync.methodService());
-	}
+	
+	typedef ForwardTransactionTemplate<
+		ReadForwardRequest,
+		ReadForwardResponse,
+		OpcUaId_ForwardTransactionReadRequest_Encoding_DefaultBinary,
+		OpcUaId_ForwardTransactionReadResponse_Encoding_DefaultBinary
+	> ForwardTransactionRead;
 
 }
+
+#endif

@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,31 +15,36 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_ForwardMethodSync_h__
-#define __OpcUaStackCore_ForwardMethodSync_h__
+#ifndef __OpcUaStackCore_ForwardNodeAsync_h__
+#define __OpcUaStackCore_ForwardNodeAsync_h__
 
-#include <OpcUaStackCore/ServiceSetApplication/ForwardSyncCallback.h>
-#include "OpcUaStackCore/Application/ApplicationCallback.h"
-#include "OpcUaStackCore/Application/ApplicationMethodContext.h"
+#include <OpcUaStackCore/ServiceSetApplication/ForwardAsyncCallback.h>
 
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT ForwardMethodSync
+	class DLLEXPORT ForwardNodeAsync
 	: public  Object
 	{
 	  public:
-		using SPtr = boost::shared_ptr<ForwardMethodSync>;
+		using SPtr = boost::shared_ptr<ForwardNodeAsync>;
 
-		ForwardMethodSync(void);
-		virtual ~ForwardMethodSync(void);
+		ForwardNodeAsync(void);
+		virtual ~ForwardNodeAsync(void);
 
-		ForwardSyncCallback<ApplicationCallback::Method>& methodService(void);
+		ForwardAsyncCallback& readService(void);
+		ForwardAsyncCallback& writeService(void);
+		ForwardAsyncCallback& methodService(void);
 
-		void updateFrom(ForwardMethodSync& forwardInfoSync);
+		void updateFrom(ForwardNodeAsync& forwardInfoAsync);
 
 	  private:
-		ForwardSyncCallback<ApplicationCallback::Method> methodService_;
+		// attribute service
+		ForwardAsyncCallback readService_;
+		ForwardAsyncCallback writeService_;
+
+		// method service
+		ForwardAsyncCallback methodService_;
 	};
 
 }

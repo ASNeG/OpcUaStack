@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,30 +15,31 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/ServiceSetApplication/ForwardMethodSync.h"
+#ifndef __OpcUaStackCore_ReadForwardResponse_h__
+#define __OpcUaStackCore_ReadForwardResponse_h__
 
-namespace OpcUaStackCore
+#include <stdint.h>
+#include "OpcUaStackCore/BuildInTypes/OpcUaDataValue.h"
+
+namespace OpcUaStackServer
 {
 
-	ForwardMethodSync::ForwardMethodSync(void)
-	: methodService_()
+	class DLLEXPORT ReadForwardResponse
+	: public OpcUaStackCore::Object
 	{
-	}
+	  public:
+		typedef boost::shared_ptr<ReadForwardResponse> SPtr;
 
-	ForwardMethodSync::~ForwardMethodSync(void)
-	{
-	}
+		ReadForwardResponse(void);
+		virtual ~ReadForwardResponse(void);
 
-	ForwardSyncCallback<ApplicationCallback::Method>&
-	ForwardMethodSync::methodService(void)
-	{
-		return methodService_;
-	}
+		void dataValue(const OpcUaStackCore::OpcUaDataValue::SPtr& dataValue);
+		OpcUaStackCore::OpcUaDataValue::SPtr dataValue(void) const;
 
-	void
-	ForwardMethodSync::updateFrom(ForwardMethodSync& ForwardSyncCallbackSync)
-	{
-		methodService_.updateFrom(ForwardSyncCallbackSync.methodService());
-	}
+	  private:
+		OpcUaStackCore::OpcUaDataValue::SPtr dataValue_ = nullptr;
+	};
 
 }
+
+#endif

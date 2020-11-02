@@ -193,7 +193,7 @@ namespace OpcUaStackServer
 				continue;
 			}
 
-			// call forward calbacks
+			// call forward callbacks
 			ApplicationMethodContext applicationMethodContext;
 			applicationMethodContext.objectNodeId_ = *callMethod->objectId();
 			applicationMethodContext.methodNodeId_ = *callMethod->methodId();

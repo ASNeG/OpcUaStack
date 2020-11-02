@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,7 +18,7 @@
 #ifndef __OpcUaStackCore_ForwardGlobalSync_h__
 #define __OpcUaStackCore_ForwardGlobalSync_h__
 
-#include "OpcUaStackCore/ServiceSetApplication/ForwardCallback.h"
+#include <OpcUaStackCore/ServiceSetApplication/ForwardSyncCallback.h>
 #include "OpcUaStackCore/Application/ApplicationCallback.h"
 #include "OpcUaStackCore/Application/ApplicationRegisterServerContext.h"
 #include "OpcUaStackCore/Application/ApplicationFindServerContext.h"
@@ -42,35 +42,35 @@ namespace OpcUaStackCore
 		ForwardGlobalSync(void);
 		virtual ~ForwardGlobalSync(void);
 
-		ForwardCallback<ApplicationCallback::RegisterServer>& registerServerService(void);
-		ForwardCallback<ApplicationCallback::FindServer>& findServersService(void);
-		ForwardCallback<ApplicationCallback::EventItemStart>& eventItemStartService(void);
-		ForwardCallback<ApplicationCallback::EventItemStop>& eventItemStopService(void);
-		ForwardCallback<ApplicationCallback::Authentication>& authenticationService(void);
-		ForwardCallback<ApplicationCallback::Autorization>& autorizationService(void);
-		ForwardCallback<ApplicationCallback::CloseSession>& closeSessionService(void);
-		ForwardCallback<ApplicationCallback::NodeNew>& nodeNewService(void);
-		ForwardCallback<ApplicationCallback::NodeDelete>& nodeDeleteService(void);
+		ForwardSyncCallback<ApplicationCallback::RegisterServer>& registerServerService(void);
+		ForwardSyncCallback<ApplicationCallback::FindServer>& findServersService(void);
+		ForwardSyncCallback<ApplicationCallback::EventItemStart>& eventItemStartService(void);
+		ForwardSyncCallback<ApplicationCallback::EventItemStop>& eventItemStopService(void);
+		ForwardSyncCallback<ApplicationCallback::Authentication>& authenticationService(void);
+		ForwardSyncCallback<ApplicationCallback::Autorization>& autorizationService(void);
+		ForwardSyncCallback<ApplicationCallback::CloseSession>& closeSessionService(void);
+		ForwardSyncCallback<ApplicationCallback::NodeNew>& nodeNewService(void);
+		ForwardSyncCallback<ApplicationCallback::NodeDelete>& nodeDeleteService(void);
 
 		void updateFrom(ForwardGlobalSync& forwardGlobalSync);
 
 	  private:
 		// discovery service
-		ForwardCallback<ApplicationCallback::RegisterServer> registerServerService_;
-		ForwardCallback<ApplicationCallback::FindServer> findServersService_;
+		ForwardSyncCallback<ApplicationCallback::RegisterServer> registerServerService_;
+		ForwardSyncCallback<ApplicationCallback::FindServer> findServersService_;
 
 		// event service
-		ForwardCallback<ApplicationCallback::EventItemStart> eventItemStartService_;
-		ForwardCallback<ApplicationCallback::EventItemStop> eventItemStopService_;
+		ForwardSyncCallback<ApplicationCallback::EventItemStart> eventItemStartService_;
+		ForwardSyncCallback<ApplicationCallback::EventItemStop> eventItemStopService_;
 
 		// authentication and authorization
-		ForwardCallback<ApplicationCallback::Authentication> authenticationService_;
-		ForwardCallback<ApplicationCallback::Autorization> autorizationService_;
-		ForwardCallback<ApplicationCallback::CloseSession> closeSessionService_;
+		ForwardSyncCallback<ApplicationCallback::Authentication> authenticationService_;
+		ForwardSyncCallback<ApplicationCallback::Autorization> autorizationService_;
+		ForwardSyncCallback<ApplicationCallback::CloseSession> closeSessionService_;
 
 		// node service
-		ForwardCallback<ApplicationCallback::NodeNew> nodeNewService_;
-		ForwardCallback<ApplicationCallback::NodeDelete> nodeDeleteService_;
+		ForwardSyncCallback<ApplicationCallback::NodeNew> nodeNewService_;
+		ForwardSyncCallback<ApplicationCallback::NodeDelete> nodeDeleteService_;
 	};
 
 }

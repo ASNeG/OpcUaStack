@@ -256,4 +256,16 @@ namespace OpcUaStackServer
 		return forwardNodeSync_;
 	}
 
+	void
+	BaseNodeClass::forwardNodeAsync(ForwardNodeAsync::SPtr forwardNodeAsync)
+	{
+		forwardNodeAsync_ = forwardNodeAsync;
+	}
+
+	ForwardNodeAsync::SPtr
+	BaseNodeClass::forwardNodeAsync(void)
+	{
+		return forwardNodeAsync_;
+	}
+
 }

@@ -22,6 +22,7 @@
 #include <vector>
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/ServiceSetApplication/ForwardNodeSync.h"
+#include "OpcUaStackCore/ServiceSetApplication/ForwardNodeAsync.h"
 #include "OpcUaStackServer/AddressSpaceModel/Attribute.h"
 #include "OpcUaStackServer/AddressSpaceModel/ReferenceType.h"
 #include "OpcUaStackServer/AddressSpaceModel/AttributeBase.h"
@@ -74,6 +75,8 @@ namespace OpcUaStackServer
 
 		void forwardNodeSync(OpcUaStackCore::ForwardNodeSync::SPtr forwardInfo);
 		OpcUaStackCore::ForwardNodeSync::SPtr forwardNodeSync(void);
+		void forwardNodeAsync(OpcUaStackCore::ForwardNodeAsync::SPtr forwardInfo);
+		OpcUaStackCore::ForwardNodeAsync::SPtr forwardNodeAsync(void);
 
 	  private:
 		NodeIdAttribute nodeId_;
@@ -90,6 +93,7 @@ namespace OpcUaStackServer
 		ReferenceItemMap referenceItemMap_;
 
 		OpcUaStackCore::ForwardNodeSync::SPtr forwardNodeSync_;
+		OpcUaStackCore::ForwardNodeAsync::SPtr forwardNodeAsync_;
 	};
 
 }

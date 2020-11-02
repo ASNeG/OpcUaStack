@@ -23,6 +23,7 @@
 #include "OpcUaStackCore/StandardDataTypes/UpdateStructureDataDetails.h"
 #include "OpcUaStackServer/ServiceSet/ServiceSetBase.h"
 #include "OpcUaStackServer/ServiceSet/ServerServiceBase.h"
+#include "OpcUaStackServer/Forward/ForwardManager.h"
 
 namespace OpcUaStackServer
 {
@@ -45,18 +46,73 @@ namespace OpcUaStackServer
 	  private:
 		void receive(
 			const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
+			OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction
+		);
+		void receive(
+			const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
+			OpcUaStackServer::ForwardTransaction::SPtr& forwardTransaction
+		);
+		void receive(
+			const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
 			OpcUaStackCore::Message::SPtr& message
 		);
 
 		void sendAnswer(OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction);
-		void receiveReadRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
-		void forwardRead(
+
+		// --------------------------------------------------------------------
+		//
+		// The following functions are used for asynchronously communication
+		// with the application.
+		//
+		// --------------------------------------------------------------------
+		void sendTrxForwardAsync(
+			ForwardTransaction::SPtr& forwardTransaction
+		);
+		void recvTrxForwardAsync(
+			OpcUaStackCore::OpcUaStatusCode statusCode,
+			OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction,
+			ForwardTransaction::SPtr& forwardTransaction
+		);
+		void finishTrxForwardAsync(
+			OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction
+		);
+
+		// --------------------------------------------------------------------
+		//
+		// read service
+		//
+		// --------------------------------------------------------------------
+		void receiveReadRequest(
+			OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction
+		);
+		void forwardReadAsyncResponse(
+			OpcUaStackCore::OpcUaStatusCode statusCode,
+			OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction,
+			ForwardTransaction::SPtr& forwardTransaction
+		);
+		bool forwardReadAsync(
+			ForwardJob::SPtr& forwardJob,
+			OpcUaStackCore::UserContext::SPtr& userContext,
+			BaseNodeClass::SPtr baseNodeClass,
+			uint32_t idx,
+			OpcUaStackCore::ServiceTransactionRead::SPtr& readTrx
+		);
+		void forwardReadSync(
 			OpcUaStackCore::UserContext::SPtr& userContext,
 			BaseNodeClass::SPtr baseNodeClass,
 			OpcUaStackCore::ReadRequest::SPtr readRequest,
 			OpcUaStackCore::ReadValueId::SPtr readValueId
 		);
-		OpcUaStackCore::OpcUaStatusCode forwardAuthorizationRead(OpcUaStackCore::UserContext::SPtr& userContext, OpcUaStackCore::ReadValueId::SPtr& readValueId);
+		OpcUaStackCore::OpcUaStatusCode forwardAuthorizationRead(
+			OpcUaStackCore::UserContext::SPtr& userContext,
+			OpcUaStackCore::ReadValueId::SPtr& readValueId
+		);
+
+		// --------------------------------------------------------------------
+		//
+		// write service
+		//
+		// --------------------------------------------------------------------
 		void receiveWriteRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 		OpcUaStackCore::OpcUaStatusCode forwardWrite(
 			OpcUaStackCore::UserContext::SPtr& userContext,
@@ -65,6 +121,12 @@ namespace OpcUaStackServer
 			OpcUaStackCore::WriteValue::SPtr writeValue
 		);
 		OpcUaStackCore::OpcUaStatusCode forwardAuthorizationWrite(OpcUaStackCore::UserContext::SPtr& userContext, OpcUaStackCore::WriteValue::SPtr& writeValue);
+
+		// --------------------------------------------------------------------
+		//
+		// read history service
+		//
+		// --------------------------------------------------------------------
 		void receiveHistoryReadRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 		void receiveHistoryReadRawRequest(
 			OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction,
@@ -79,8 +141,16 @@ namespace OpcUaStackServer
 			OpcUaStackCore::HistoryReadResponse::SPtr readResponse
 		);
 		OpcUaStackCore::OpcUaStatusCode forwardAuthorizationHistoricalRead(OpcUaStackCore::UserContext::SPtr& userContext, OpcUaStackCore::HistoryReadValueId::SPtr& readValueId);
+
+		// --------------------------------------------------------------------
+		//
+		// write history service
+		//
+		// --------------------------------------------------------------------
 		void receiveHistoryUpdateRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 		OpcUaStackCore::OpcUaStatusCode forwardAuthorizationHistoricalWrite(OpcUaStackCore::UserContext::SPtr& userContext, OpcUaStackCore::UpdateStructureDataDetails::SPtr& updateStructureDataDetails);
+
+		ForwardManager::SPtr forwardManager_;
 	};
 
 }

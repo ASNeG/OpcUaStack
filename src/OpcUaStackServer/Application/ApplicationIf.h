@@ -23,6 +23,7 @@
 #include "OpcUaStackCore/Certificate/CryptoManager.h"
 #include "OpcUaStackServer/Application/ApplicationServiceIf.h"
 #include "OpcUaStackServer/Application/ApplicationInfo.h"
+#include "OpcUaStackServer/Forward/ForwardTransaction.h"
 
 namespace OpcUaStackServer
 {
@@ -64,6 +65,7 @@ namespace OpcUaStackServer
 		virtual bool startup(void) = 0;
 		virtual bool shutdown(void) = 0;
 		virtual void receive(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
+		virtual void receiveForwardTrx(ForwardTransaction::SPtr forwardTransaction);
 		virtual std::string version(void);
 		virtual std::string gitCommit(void);
 		virtual std::string gitBranch(void);

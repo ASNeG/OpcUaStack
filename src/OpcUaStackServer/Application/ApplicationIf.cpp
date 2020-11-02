@@ -121,6 +121,11 @@ namespace OpcUaStackServer
 	{
 	}
 
+	void
+	ApplicationIf::receiveForwardTrx(ForwardTransaction::SPtr forwardTransaction)
+	{
+	}
+
 	std::string
 	ApplicationIf::version(void)
 	{

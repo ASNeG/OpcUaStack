@@ -22,6 +22,7 @@
 #include "OpcUaStackServer/Application/ApplicationBase.h"
 #include "OpcUaStackServer/Application/ApplicationServiceIf.h"
 #include "OpcUaStackServer/Application/ReloadIf.h"
+#include "OpcUaStackServer/Forward/ForwardTransaction.h"
 #include <map>
 
 namespace OpcUaStackServer
@@ -60,13 +61,30 @@ namespace OpcUaStackServer
 		bool shutdown(void);
 
 		//- ApplicationServiceIf ------------------------------------------------------
-		virtual void send(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
-		virtual void sendSync(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
-		virtual void reload(void);
+		void send(
+			OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction
+		) override;
+		void sendForwardTrx(
+			OpcUaStackServer::ForwardTransaction::SPtr forwardTransaction
+		) override;
+		void sendSync(
+			OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction
+		) override;
+		void reload(
+		    void
+		) override;
 		//- ApplicationServiceIf ------------------------------------------------------
 
 	  private:
 		void receive(
+			const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
+			OpcUaStackCore::Message::SPtr message
+		);
+		void receiveServiceTrx(
+			const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
+			OpcUaStackCore::Message::SPtr message
+		);
+		void receiveForwardTrx(
 			const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
 			OpcUaStackCore::Message::SPtr message
 		);
