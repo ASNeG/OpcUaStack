@@ -3,6 +3,8 @@
 
 **Features**:
 
+* Add asynchronously call request #446, by @huebl
+* Add asynchronously write request #447, by @huebl
 * Add asynchronously read request #448, by @huebl
 * Add usage of certificate chains in opc ua stack #401, by @huebl
 * Add new thread and communication concept #339, by @huebl 
