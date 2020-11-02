@@ -139,13 +139,11 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	void
-	Application::receive(
+	Application::receiveServiceTrx(
 		const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
 		Message::SPtr message
 	)
 	{
-
-
 		// We have to remember the sender of the message. This enables us to
 		// send a reply for the received message later
 		auto serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
@@ -160,6 +158,32 @@ namespace OpcUaStackServer
 		applicationIf_->receive(serviceTransaction);
 	}
 
+	void
+	Application::receiveForwardTrx(
+		const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
+		Message::SPtr message
+	)
+	{
+		auto forwardTransaction = boost::static_pointer_cast<ForwardTransaction>(message);
+		forwardTransaction->messageBusMemberSource(handleFrom);
+
+		applicationIf_->receiveForwardTrx(forwardTransaction);
+	}
+
+	void
+	Application::receive(
+		const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
+		Message::SPtr message
+	)
+	{
+		if (message->type_ == Message::ServiceTransaction) {
+			receiveServiceTrx(handleFrom, message);
+		}
+		else {
+			receiveForwardTrx(handleFrom, message);
+		}
+	}
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
@@ -168,15 +192,35 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	void
-	Application::send(ServiceTransaction::SPtr serviceTransaction)
+	Application::send(
+		ServiceTransaction::SPtr serviceTransaction
+	)
 	{
 		updateServiceTransactionRequest(serviceTransaction);
 		serviceTransaction->sync(false);
-		messageBus_->messageSend(messageBusMember_, messageBusMemberApplication_, serviceTransaction);
+		messageBus_->messageSend(
+			messageBusMember_,
+			messageBusMemberApplication_,
+			serviceTransaction
+		);
 	}
 
 	void
-	Application::sendSync(ServiceTransaction::SPtr serviceTransaction)
+	Application::sendForwardTrx(
+		OpcUaStackServer::ForwardTransaction::SPtr forwardTransaction
+	)
+	{
+		messageBus_->messageSend(
+			messageBusMember_,
+			forwardTransaction->messageBusMemberSource(),
+			forwardTransaction
+		);
+	}
+
+	void
+	Application::sendSync(
+		ServiceTransaction::SPtr serviceTransaction
+	)
 	{
 
 		updateServiceTransactionRequest(serviceTransaction);

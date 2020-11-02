@@ -26,6 +26,7 @@ namespace OpcUaStackServer
 		OpcUaUInt32 nodeTypeRequest,
 		OpcUaUInt32 nodeTypeResponse
 	)
+	: Message(Message::ForwardTransaction)
 	{
 		nodeTypeRequest_ = nodeTypeRequest;
 		nodeTypeResponse_ = nodeTypeResponse;
@@ -45,6 +46,54 @@ namespace OpcUaStackServer
 	ForwardTransaction::nodeTypeResponse(void)
 	{
 		return nodeTypeResponse_;
+	}
+
+	void
+	ForwardTransaction::messageBusMemberSource(const MessageBusMember::WPtr& messageBusMemberSource)
+	{
+		messageBusMemberSource_ = messageBusMemberSource;
+	}
+
+	MessageBusMember::WPtr
+	ForwardTransaction::messageBusMemberSource(void)
+	{
+		return messageBusMemberSource_;
+	}
+
+	void
+	ForwardTransaction::messageBusMemberTarget(const MessageBusMember::WPtr& messageBusMemberTarget)
+	{
+		messageBusMemberTarget_ = messageBusMemberTarget;
+	}
+
+	MessageBusMember::WPtr
+	ForwardTransaction::messageBusMemberTarget(void)
+	{
+		return messageBusMemberTarget_;
+	}
+
+	void
+	ForwardTransaction::name(const std::string& name)
+	{
+		name_ = name;
+	}
+
+	std::string&
+	ForwardTransaction::name(void)
+	{
+		return name_;
+	}
+
+	void
+	ForwardTransaction::applicationContext(const BaseClass::SPtr& applicationContext)
+	{
+		applicationContext_ = applicationContext;
+	}
+
+	BaseClass::SPtr
+	ForwardTransaction::applicationContext(void)
+	{
+		return applicationContext_;
 	}
 
 	void
@@ -93,6 +142,18 @@ namespace OpcUaStackServer
 	ForwardTransaction::userContext(void)
 	{
 		return userContext_;
+	}
+
+	void
+	ForwardTransaction::statusCode(OpcUaStatusCode statusCode)
+	{
+		statusCode_ = statusCode;
+	}
+
+	OpcUaStatusCode
+	ForwardTransaction::statusCode(void)
+	{
+		return statusCode_;
 	}
 
 }

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -21,13 +21,16 @@
 #include "OpcUaStackCore/Base/Object.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
 
+#include <vector>
+
 namespace OpcUaStackCore
 {
 
 	class DLLEXPORT BaseClass
 	{
 	  public:
-		typedef boost::shared_ptr<BaseClass> SPtr;
+		using SPtr = boost::shared_ptr<BaseClass>;
+		using Vec = std::vector<SPtr>;
 
 		BaseClass(void) {}
 		virtual ~BaseClass(void) {}

@@ -35,7 +35,8 @@ namespace OpcUaStackCore
 	}
 
 	ServiceTransaction::ServiceTransaction(OpcUaUInt32 nodeTypeRequest, OpcUaUInt32 nodeTypeResponse)
-	: requestTimeout_(0)
+	: Message(Message::ServiceTransaction)
+	, requestTimeout_(0)
 	, requestHeader_()
 	, responseHeader_()
 	, sync_(false)

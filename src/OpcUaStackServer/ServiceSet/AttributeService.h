@@ -46,6 +46,14 @@ namespace OpcUaStackServer
 	  private:
 		void receive(
 			const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
+			OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction
+		);
+		void receive(
+			const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
+			OpcUaStackServer::ForwardTransaction::SPtr& forwardTransaction
+		);
+		void receive(
+			const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
 			OpcUaStackCore::Message::SPtr& message
 		);
 
@@ -76,6 +84,11 @@ namespace OpcUaStackServer
 		// --------------------------------------------------------------------
 		void receiveReadRequest(
 			OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction
+		);
+		void forwardReadAsyncResponse(
+			OpcUaStackCore::OpcUaStatusCode statusCode,
+			OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction,
+			ForwardTransaction::SPtr& forwardTransaction
 		);
 		bool forwardReadAsync(
 			ForwardJob::SPtr& forwardJob,

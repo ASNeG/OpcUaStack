@@ -49,6 +49,8 @@ namespace OpcUaStackServer
 		void applicationContext(std::vector<OpcUaStackCore::BaseClass::SPtr>& applicationContextVec);
 		std::vector<OpcUaStackCore::BaseClass::SPtr>& applicationContextVec(void);
 
+		OpcUaStackCore::ForwardNodeAsync& forwardNodeAsync(void);
+
 
 		bool query(ApplicationServiceIf* applicationServiceIf, bool checkStatusCodeArray = false);
 		OpcUaStackCore::OpcUaStatusCode resultCode(void);

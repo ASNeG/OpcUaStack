@@ -19,6 +19,7 @@
 #define __OpcUaStackCore_ForwardAsyncCallback_h__
 
 #include "OpcUaStackCore/Base/BaseClass.h"
+#include "OpcUaStackCore/MessageBus/MessageBusMember.h"
 
 namespace OpcUaStackCore
 {
@@ -37,11 +38,15 @@ namespace OpcUaStackCore
 		void activate(BaseClass::SPtr& applicationContext);
 		void deactivate(void);
 		bool isActive(void);
+		void messageBusMember(const MessageBusMember::WPtr& messageBusMember);
+		MessageBusMember::WPtr messageBusMember(void);
+		void applicationContext(BaseClass::SPtr& applicationContext);
 		BaseClass::SPtr& applicationContext(void);
 
 	  private:
 		bool used_ = false;			// indicates whether the variable is used
 		bool active_ = false;		// active/deactivate
+		MessageBusMember::WPtr messageBusMember_;
 		BaseClass::SPtr applicationContext_ = nullptr;
 	};
 

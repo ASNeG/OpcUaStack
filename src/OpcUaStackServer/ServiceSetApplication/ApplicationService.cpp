@@ -72,6 +72,12 @@ namespace OpcUaStackServer
 		Message::SPtr& message
 	)
 	{
+		// check parameter
+		auto member = handleFrom.lock();
+		if (!member) {
+			Log(Error, "ApplicationService::receive, because handleFrom error");
+		}
+
 		// We have to remember the sender of the message. This enables us to
 		// send a reply for the received message later
 		auto serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
@@ -135,7 +141,9 @@ namespace OpcUaStackServer
 	}
 
 	void
-	ApplicationService::receiveRegisterForwardNodeRequest(ServiceTransaction::SPtr serviceTransaction)
+	ApplicationService::receiveRegisterForwardNodeRequest(
+		ServiceTransaction::SPtr serviceTransaction
+	)
 	{
 		ServiceTransactionRegisterForwardNode::SPtr trx = boost::static_pointer_cast<ServiceTransactionRegisterForwardNode>(serviceTransaction);
 
@@ -219,7 +227,9 @@ namespace OpcUaStackServer
 	}
 
 	void
-	ApplicationService::receiveRegisterForwardNodeAsyncRequest(ServiceTransaction::SPtr serviceTransaction)
+	ApplicationService::receiveRegisterForwardNodeAsyncRequest(
+		ServiceTransaction::SPtr serviceTransaction
+	)
 	{
 		auto trx = boost::static_pointer_cast<ServiceTransactionRegisterForwardNodeAsync>(serviceTransaction);
 
@@ -271,19 +281,38 @@ namespace OpcUaStackServer
 				continue;
 			}
 
+			// add source message bus member
+			if (registerForwardNodeAsyncRequest->forwardNodeAsync()->writeService().isUsed()) {
+				registerForwardNodeAsyncRequest->forwardNodeAsync()->writeService().messageBusMember(serviceTransaction->memberServiceSession());
+			}
+			if (registerForwardNodeAsyncRequest->forwardNodeAsync()->readService().isUsed()) {
+				registerForwardNodeAsyncRequest->forwardNodeAsync()->readService().messageBusMember(serviceTransaction->memberServiceSession());
+			}
+			if (registerForwardNodeAsyncRequest->forwardNodeAsync()->methodService().isUsed()) {
+				registerForwardNodeAsyncRequest->forwardNodeAsync()->methodService().messageBusMember(serviceTransaction->memberServiceSession());
+			}
+
 			// create or update forward info
-			ForwardNodeAsync::SPtr forwardNodeAsync; // FIXME: todo = baseNodeClass->forwardNodeAsync();
-			if (forwardNodeAsync.get() == nullptr) {
-				forwardNodeAsync = boost::make_shared<ForwardNodeAsync>();
+			auto forwardNodeAsync = baseNodeClass->forwardNodeAsync();
+			if (!forwardNodeAsync) {
+				forwardNodeAsync  = boost::make_shared<ForwardNodeAsync>();
 			}
 			forwardNodeAsync->updateFrom(*registerForwardNodeAsyncRequest->forwardNodeAsync());
+
+			// add application context
 			if (applicationContextArray) {
 				BaseClass::SPtr baseClass;
 				registerForwardNodeAsyncRequest->applicationContextArray()->get(idx, baseClass);
 				if (baseClass.get() != nullptr) {
-					forwardNodeAsync->writeService().activate(baseClass);
-					forwardNodeAsync->readService().activate(baseClass);
-					forwardNodeAsync->methodService().activate(baseClass);
+					if (registerForwardNodeAsyncRequest->forwardNodeAsync()->writeService().isUsed()) {
+						forwardNodeAsync->writeService().applicationContext(baseClass);
+					}
+					if (registerForwardNodeAsyncRequest->forwardNodeAsync()->readService().isUsed()) {
+						forwardNodeAsync->readService().applicationContext(baseClass);
+					}
+					if (registerForwardNodeAsyncRequest->forwardNodeAsync()->methodService().isUsed()) {
+						forwardNodeAsync->methodService().applicationContext(baseClass);
+					}
 				}
 			}
 			baseNodeClass->forwardNodeAsync(forwardNodeAsync);

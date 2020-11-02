@@ -33,6 +33,7 @@ namespace OpcUaStackCore
 		if (forwardInfo.isUsed()) {
 			if (forwardInfo.isActive()) {
 				activate(forwardInfo.applicationContext());
+				messageBusMember(forwardInfo.messageBusMember_);
 			}
 			else {
 				deactivate();
@@ -73,6 +74,24 @@ namespace OpcUaStackCore
 	ForwardAsyncCallback::isActive(void)
 	{
 		return active_;
+	}
+
+	void
+	ForwardAsyncCallback::messageBusMember(const MessageBusMember::WPtr& messageBusMember)
+	{
+		messageBusMember_ = messageBusMember;
+	}
+
+	MessageBusMember::WPtr
+	ForwardAsyncCallback::messageBusMember(void)
+	{
+		return messageBusMember_;
+	}
+
+	void
+	ForwardAsyncCallback::applicationContext(BaseClass::SPtr& applicationContext)
+	{
+		applicationContext_ = applicationContext;
 	}
 
 	BaseClass::SPtr&

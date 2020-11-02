@@ -46,6 +46,7 @@ namespace OpcUaStackServer
 		// delete all forward jobs from job map
 		for (auto it : forwardJobMap_) {
 			auto forwardJob = it.second;
+			if (forwardJob->slotTimerElement()) continue;
 			ioThread_->slotTimer()->stop(forwardJob->slotTimerElement());
 		}
 	}

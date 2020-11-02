@@ -29,7 +29,26 @@ namespace OpcUaStackCore
 	  public:
 		typedef boost::shared_ptr<Message> SPtr;
 
+		typedef enum {
+			Unknown,
+			ServiceTransaction,
+			ForwardTransaction
+		} Type_t;
+
+		Message(Type_t type)
+		: type_(type)
+		{
+		}
+
+		virtual ~Message(void)
+		{
+		}
+
 		uint32_t sequence_ = 0;
+		Type_t type_ = Unknown;
+
+	  private:
+		Message(void) {}
 	};
 
 }
