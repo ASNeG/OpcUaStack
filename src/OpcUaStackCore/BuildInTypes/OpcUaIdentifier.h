@@ -2095,6 +2095,8 @@
 #define OpcUaId_ForwardTransactionReadResponse_Encoding_DefaultBinary 	1000025
 #define OpcUaId_ForwardTransactionWriteRequest_Encoding_DefaultBinary 	1000026
 #define OpcUaId_ForwardTransactionWriteResponse_Encoding_DefaultBinary 	1000027
+#define OpcUaId_ForwardTransactionMethodRequest_Encoding_DefaultBinary 	1000028
+#define OpcUaId_ForwardTransactionMethodResponse_Encoding_DefaultBinary 1000029
 
 //
 // private identifier (Server Info Service)

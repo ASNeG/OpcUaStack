@@ -24,6 +24,8 @@
 #include "OpcUaStackServer/Forward/ReadForwardResponse.h"
 #include "OpcUaStackServer/Forward/WriteForwardRequest.h"
 #include "OpcUaStackServer/Forward/WriteForwardResponse.h"
+#include "OpcUaStackServer/Forward/CallForwardRequest.h"
+#include "OpcUaStackServer/Forward/CallForwardResponse.h"
 
 namespace OpcUaStackServer
 {
@@ -41,6 +43,13 @@ namespace OpcUaStackServer
 		OpcUaId_ForwardTransactionWriteRequest_Encoding_DefaultBinary,
 		OpcUaId_ForwardTransactionWriteResponse_Encoding_DefaultBinary
 	> ForwardTransactionWrite;
+
+	typedef ForwardTransactionTemplate<
+		CallForwardRequest,
+		CallForwardResponse,
+		OpcUaId_ForwardTransactionMethodRequest_Encoding_DefaultBinary,
+		OpcUaId_ForwardTransactionMethodResponse_Encoding_DefaultBinary
+	> ForwardTransactionCall;
 
 }
 
