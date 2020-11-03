@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -2652,6 +2652,22 @@ namespace OpcUaStackCore
     }
 
     void
+	OpcUaDataValue::set(const OpcUaFloat& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+    {
+    	variant()->setValue(value);
+    	opcUaStatusCode_ = statusCode;
+    	sourceTimestamp_ = sourceTimestamp;
+    }
+
+    void
+	OpcUaDataValue::set(const OpcUaDouble& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+    {
+    	variant()->setValue(value);
+    	opcUaStatusCode_ = statusCode;
+    	sourceTimestamp_ = sourceTimestamp;
+    }
+
+    void
 	OpcUaDataValue::set(const OpcUaString& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
     {
     	variant()->setValue(value);
@@ -2741,7 +2757,7 @@ namespace OpcUaStackCore
 
     void
  	OpcUaDataValue::set(const OpcUaBooleanArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-     {
+    {
  		opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
  		for (uint32_t idx = 0; idx < value.size(); idx++) {
  			OpcUaBoolean val;
@@ -2753,7 +2769,7 @@ namespace OpcUaStackCore
      }
 
      void
- 	OpcUaDataValue::set(const OpcUaByteArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+ 	 OpcUaDataValue::set(const OpcUaByteArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
      {
  		opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
  		for (uint32_t idx = 0; idx < value.size(); idx++) {
@@ -2766,7 +2782,7 @@ namespace OpcUaStackCore
      }
 
      void
- 	OpcUaDataValue::set(const OpcUaSByteArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+ 	 OpcUaDataValue::set(const OpcUaSByteArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
      {
  		opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
  		for (uint32_t idx = 0; idx < value.size(); idx++) {
@@ -2779,7 +2795,7 @@ namespace OpcUaStackCore
      }
 
      void
- 	OpcUaDataValue::set(const OpcUaInt16Array& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+ 	 OpcUaDataValue::set(const OpcUaInt16Array& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
      {
  		opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
  		for (uint32_t idx = 0; idx < value.size(); idx++) {
@@ -2792,7 +2808,7 @@ namespace OpcUaStackCore
      }
 
      void
- 	OpcUaDataValue::set(const OpcUaUInt16Array& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+ 	 OpcUaDataValue::set(const OpcUaUInt16Array& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
      {
  		opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
  		for (uint32_t idx = 0; idx < value.size(); idx++) {
@@ -2805,7 +2821,7 @@ namespace OpcUaStackCore
      }
 
      void
- 	OpcUaDataValue::set(const OpcUaInt32Array& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+ 	 OpcUaDataValue::set(const OpcUaInt32Array& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
      {
  		opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
  		for (uint32_t idx = 0; idx < value.size(); idx++) {
@@ -2818,7 +2834,7 @@ namespace OpcUaStackCore
      }
 
      void
- 	OpcUaDataValue::set(const OpcUaUInt32Array& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+ 	 OpcUaDataValue::set(const OpcUaUInt32Array& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
      {
  		opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
  		for (uint32_t idx = 0; idx < value.size(); idx++) {
@@ -2831,7 +2847,7 @@ namespace OpcUaStackCore
      }
 
      void
- 	OpcUaDataValue::set(const OpcUaInt64Array& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+ 	 OpcUaDataValue::set(const OpcUaInt64Array& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
      {
  		opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
  		for (uint32_t idx = 0; idx < value.size(); idx++) {
@@ -2844,7 +2860,7 @@ namespace OpcUaStackCore
      }
 
      void
- 	OpcUaDataValue::set(const OpcUaUInt64Array& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+ 	 OpcUaDataValue::set(const OpcUaUInt64Array& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
      {
  		opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
  		for (uint32_t idx = 0; idx < value.size(); idx++) {
@@ -2856,8 +2872,34 @@ namespace OpcUaStackCore
      	sourceTimestamp_ = sourceTimestamp;
      }
 
+	void
+	OpcUaDataValue::set(const OpcUaFloatArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+	{
+ 		opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaFloat val;
+ 			const_cast<OpcUaFloatArray*>(&value)->get(idx, val);
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+     	opcUaStatusCode_ = statusCode;
+     	sourceTimestamp_ = sourceTimestamp;
+	}
+
+	void
+	OpcUaDataValue::set(const OpcUaDoubleArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+	{
+ 		opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaDouble val;
+ 			const_cast<OpcUaDoubleArray*>(&value)->get(idx, val);
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+     	opcUaStatusCode_ = statusCode;
+     	sourceTimestamp_ = sourceTimestamp;
+	}
+
      void
- 	OpcUaDataValue::set(const OpcUaStringArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+ 	 OpcUaDataValue::set(const OpcUaStringArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
      {
  		opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
  		for (uint32_t idx = 0; idx < value.size(); idx++) {
@@ -2870,7 +2912,7 @@ namespace OpcUaStackCore
      }
 
      void
- 	OpcUaDataValue::set(const OpcUaDateTimeArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+ 	 OpcUaDataValue::set(const OpcUaDateTimeArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
      {
  		opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
  		for (uint32_t idx = 0; idx < value.size(); idx++) {
@@ -2883,7 +2925,7 @@ namespace OpcUaStackCore
      }
 
      void
- 	OpcUaDataValue::set(const OpcUaGuidArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+ 	 OpcUaDataValue::set(const OpcUaGuidArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
      {
  		opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
  		for (uint32_t idx = 0; idx < value.size(); idx++) {
@@ -2896,7 +2938,7 @@ namespace OpcUaStackCore
      }
 
      void
- 	OpcUaDataValue::set(const OpcUaByteStringArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+ 	 OpcUaDataValue::set(const OpcUaByteStringArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
      {
  		opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
  		for (uint32_t idx = 0; idx < value.size(); idx++) {
@@ -2909,7 +2951,7 @@ namespace OpcUaStackCore
      }
 
      void
- 	OpcUaDataValue::set(const OpcUaXmlElementArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+ 	 OpcUaDataValue::set(const OpcUaXmlElementArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
      {
  		opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
  		for (uint32_t idx = 0; idx < value.size(); idx++) {
@@ -2922,7 +2964,7 @@ namespace OpcUaStackCore
      }
 
      void
- 	OpcUaDataValue::set(const OpcUaNodeIdArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+ 	 OpcUaDataValue::set(const OpcUaNodeIdArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
      {
  		opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
  		for (uint32_t idx = 0; idx < value.size(); idx++) {
@@ -2935,7 +2977,7 @@ namespace OpcUaStackCore
      }
 
      void
- 	OpcUaDataValue::set(const OpcUaExpandedNodeIdArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+ 	 OpcUaDataValue::set(const OpcUaExpandedNodeIdArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
      {
  		opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
  		for (uint32_t idx = 0; idx < value.size(); idx++) {
@@ -2948,7 +2990,7 @@ namespace OpcUaStackCore
      }
 
      void
- 	OpcUaDataValue::set(const OpcUaStatusCodeArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+ 	 OpcUaDataValue::set(const OpcUaStatusCodeArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
      {
  		opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
  		for (uint32_t idx = 0; idx < value.size(); idx++) {
@@ -2961,7 +3003,7 @@ namespace OpcUaStackCore
      }
 
      void
- 	OpcUaDataValue::set(const OpcUaQualifiedNameArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+ 	 OpcUaDataValue::set(const OpcUaQualifiedNameArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
      {
  		opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
  		for (uint32_t idx = 0; idx < value.size(); idx++) {
@@ -2974,7 +3016,7 @@ namespace OpcUaStackCore
      }
 
      void
- 	OpcUaDataValue::set(const OpcUaLocalizedTextArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+ 	 OpcUaDataValue::set(const OpcUaLocalizedTextArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
      {
  		opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
  		for (uint32_t idx = 0; idx < value.size(); idx++) {
@@ -2987,7 +3029,7 @@ namespace OpcUaStackCore
      }
 
      void
- 	OpcUaDataValue::set(const OpcUaExtensionObjectArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+ 	 OpcUaDataValue::set(const OpcUaExtensionObjectArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
      {
  		opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
  		for (uint32_t idx = 0; idx < value.size(); idx++) {
@@ -3000,7 +3042,7 @@ namespace OpcUaStackCore
      }
 
      void
- 	OpcUaDataValue::set(const std::vector<OpcUaBoolean>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+ 	 OpcUaDataValue::set(const std::vector<OpcUaBoolean>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
      {
      	opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
      	for (auto it = value.begin(); it != value.end(); it++) {
@@ -3011,7 +3053,7 @@ namespace OpcUaStackCore
      }
 
      void
- 	OpcUaDataValue::set(const std::vector<OpcUaByte>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+ 	 OpcUaDataValue::set(const std::vector<OpcUaByte>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
      {
      	opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
      	for (auto it = value.begin(); it != value.end(); it++) {
@@ -3022,7 +3064,7 @@ namespace OpcUaStackCore
      }
 
      void
- 	OpcUaDataValue::set(const std::vector<OpcUaSByte>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+ 	 OpcUaDataValue::set(const std::vector<OpcUaSByte>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
      {
      	opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
      	for (auto it = value.begin(); it != value.end(); it++) {
@@ -3033,7 +3075,7 @@ namespace OpcUaStackCore
      }
 
      void
- 	OpcUaDataValue::set(const std::vector<OpcUaInt16>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+ 	 OpcUaDataValue::set(const std::vector<OpcUaInt16>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
      {
      	opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
      	for (auto it = value.begin(); it != value.end(); it++) {
@@ -3044,7 +3086,7 @@ namespace OpcUaStackCore
      }
 
      void
- 	OpcUaDataValue::set(const std::vector<OpcUaUInt16>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+ 	 OpcUaDataValue::set(const std::vector<OpcUaUInt16>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
      {
      	opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
      	for (auto it = value.begin(); it != value.end(); it++) {
@@ -3055,7 +3097,7 @@ namespace OpcUaStackCore
      }
 
      void
- 	OpcUaDataValue::set(const std::vector<OpcUaInt32>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+ 	 OpcUaDataValue::set(const std::vector<OpcUaInt32>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
      {
      	opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
      	for (auto it = value.begin(); it != value.end(); it++) {
@@ -3066,7 +3108,7 @@ namespace OpcUaStackCore
      }
 
      void
- 	OpcUaDataValue::set(const std::vector<OpcUaUInt32>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+ 	 OpcUaDataValue::set(const std::vector<OpcUaUInt32>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
      {
      	opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
      	for (auto it = value.begin(); it != value.end(); it++) {
@@ -3077,7 +3119,7 @@ namespace OpcUaStackCore
      }
 
      void
- 	OpcUaDataValue::set(const std::vector<OpcUaInt64>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+ 	 OpcUaDataValue::set(const std::vector<OpcUaInt64>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
      {
      	opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
      	for (auto it = value.begin(); it != value.end(); it++) {
@@ -3088,7 +3130,40 @@ namespace OpcUaStackCore
      }
 
      void
- 	OpcUaDataValue::set(const std::vector<OpcUaUInt64>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+ 	 OpcUaDataValue::set(const std::vector<OpcUaUInt64>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+     	opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
+     	for (auto it = value.begin(); it != value.end(); it++) {
+     		opcUaVariantSPtr_->pushBack(*it);
+     	}
+        opcUaStatusCode_ = statusCode;
+        sourceTimestamp_ = sourceTimestamp;
+     }
+
+	void
+	OpcUaDataValue::set(const std::vector<OpcUaFloat>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+    {
+    	opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
+    	for (auto it = value.begin(); it != value.end(); it++) {
+    		opcUaVariantSPtr_->pushBack(*it);
+    	}
+       	opcUaStatusCode_ = statusCode;
+        sourceTimestamp_ = sourceTimestamp;
+    }
+
+	void
+	OpcUaDataValue::set(const std::vector<OpcUaDouble>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+    {
+    	opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
+    	for (auto it = value.begin(); it != value.end(); it++) {
+    		opcUaVariantSPtr_->pushBack(*it);
+    	}
+       	opcUaStatusCode_ = statusCode;
+        sourceTimestamp_ = sourceTimestamp;
+    }
+
+     void
+ 	 OpcUaDataValue::set(const std::vector<OpcUaString::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
      {
      	opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
      	for (auto it = value.begin(); it != value.end(); it++) {
@@ -3099,7 +3174,7 @@ namespace OpcUaStackCore
      }
 
      void
- 	OpcUaDataValue::set(const std::vector<OpcUaString::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+ 	 OpcUaDataValue::set(const std::vector<OpcUaDateTime>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
      {
      	opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
      	for (auto it = value.begin(); it != value.end(); it++) {
@@ -3110,7 +3185,7 @@ namespace OpcUaStackCore
      }
 
      void
- 	OpcUaDataValue::set(const std::vector<OpcUaDateTime>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+   	 OpcUaDataValue::set(const std::vector<OpcUaGuid::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
      {
      	opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
      	for (auto it = value.begin(); it != value.end(); it++) {
@@ -3121,7 +3196,7 @@ namespace OpcUaStackCore
      }
 
      void
- 	OpcUaDataValue::set(const std::vector<OpcUaGuid::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+ 	 OpcUaDataValue::set(const std::vector<OpcUaByteString::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
      {
      	opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
      	for (auto it = value.begin(); it != value.end(); it++) {
@@ -3132,18 +3207,7 @@ namespace OpcUaStackCore
      }
 
      void
- 	OpcUaDataValue::set(const std::vector<OpcUaByteString::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-     {
-     	opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
-     	for (auto it = value.begin(); it != value.end(); it++) {
-     		opcUaVariantSPtr_->pushBack(*it);
-     	}
-        	opcUaStatusCode_ = statusCode;
-         sourceTimestamp_ = sourceTimestamp;
-     }
-
-     void
- 	OpcUaDataValue::set(const std::vector<OpcUaXmlElement::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+ 	 OpcUaDataValue::set(const std::vector<OpcUaXmlElement::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
      {
      	opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
      	for (auto it = value.begin(); it != value.end(); it++) {
@@ -3165,7 +3229,7 @@ namespace OpcUaStackCore
      }
 
      void
- 	OpcUaDataValue::set(const std::vector<OpcUaExpandedNodeId::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+ 	 OpcUaDataValue::set(const std::vector<OpcUaExpandedNodeId::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
      {
      	opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
      	for (auto it = value.begin(); it != value.end(); it++) {
@@ -3187,7 +3251,7 @@ namespace OpcUaStackCore
      }
 
      void
- 	OpcUaDataValue::set(const std::vector<OpcUaQualifiedName::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+ 	 OpcUaDataValue::set(const std::vector<OpcUaQualifiedName::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
      {
      	opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
      	for (auto it = value.begin(); it != value.end(); it++) {
@@ -3198,7 +3262,7 @@ namespace OpcUaStackCore
      }
 
      void
- 	OpcUaDataValue::set(const std::vector<OpcUaLocalizedText::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+ 	 OpcUaDataValue::set(const std::vector<OpcUaLocalizedText::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
      {
      	opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
      	for (auto it = value.begin(); it != value.end(); it++) {
@@ -3209,7 +3273,7 @@ namespace OpcUaStackCore
      }
 
      void
- 	OpcUaDataValue::set(const std::vector<OpcUaExtensionObject::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+ 	 OpcUaDataValue::set(const std::vector<OpcUaExtensionObject::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
      {
      	opcUaVariantSPtr_ = boost::make_shared<OpcUaVariant>();
      	for (auto it = value.begin(); it != value.end(); it++) {
