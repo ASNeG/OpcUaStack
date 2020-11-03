@@ -429,6 +429,11 @@ namespace OpcUaStackServer
 			return;
 		}
 
+		// add source message bus member
+		if (req->forwardMethodAsync()->methodService().isUsed()) {
+			req->forwardMethodAsync()->methodService().messageBusMember(serviceTransaction->memberServiceSession());
+		}
+
 		// register/deregister method call
 		if (!req->forwardMethodAsync()->methodService().isActive()) {
 			informationModel_->methodMap().deregisterMethodAsync(

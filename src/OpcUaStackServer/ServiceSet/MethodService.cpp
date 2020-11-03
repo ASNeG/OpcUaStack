@@ -493,7 +493,7 @@ namespace OpcUaStackServer
 		forwardReq->callMethodRequest(callMethodRequest);
 
 		// set transaction parameter
-		forwardTrx->name("AsyncRead");
+		forwardTrx->name("AsyncMethod");
 		forwardTrx->messageBusMemberTarget(forwardMethodAsync->methodService().messageBusMember());
 		forwardTrx->forwardJob(forwardJob);
 		forwardTrx->idx(idx);
