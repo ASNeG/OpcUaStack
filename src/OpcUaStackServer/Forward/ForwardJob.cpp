@@ -29,6 +29,7 @@ namespace OpcUaStackServer
 		void
 	)
 	: Object()
+	, id_(gId_++)
 	{
 	}
 

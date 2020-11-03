@@ -57,7 +57,9 @@ namespace OpcUaStackServer
 			OpcUaStackCore::Message::SPtr& message
 		);
 
-		void sendAnswer(OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction);
+		void sendAnswer(
+			OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction
+		);
 
 		// --------------------------------------------------------------------
 		//
@@ -120,7 +122,22 @@ namespace OpcUaStackServer
 			OpcUaStackCore::WriteRequest::SPtr writeRequest,
 			OpcUaStackCore::WriteValue::SPtr writeValue
 		);
-		OpcUaStackCore::OpcUaStatusCode forwardAuthorizationWrite(OpcUaStackCore::UserContext::SPtr& userContext, OpcUaStackCore::WriteValue::SPtr& writeValue);
+		void forwardWriteAsyncResponse(
+			OpcUaStackCore::OpcUaStatusCode statusCode,
+			OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction,
+			ForwardTransaction::SPtr& forwardTransaction
+		);
+		bool forwardWriteAsync(
+			ForwardJob::SPtr& forwardJob,
+			OpcUaStackCore::UserContext::SPtr& userContext,
+			BaseNodeClass::SPtr baseNodeClass,
+			uint32_t idx,
+			OpcUaStackCore::ServiceTransactionWrite::SPtr& writeTrx
+		);
+		OpcUaStackCore::OpcUaStatusCode forwardAuthorizationWrite(
+			OpcUaStackCore::UserContext::SPtr& userContext,
+			OpcUaStackCore::WriteValue::SPtr& writeValue
+		);
 
 		// --------------------------------------------------------------------
 		//

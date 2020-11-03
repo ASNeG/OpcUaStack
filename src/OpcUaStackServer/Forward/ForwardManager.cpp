@@ -81,6 +81,10 @@ namespace OpcUaStackServer
 	bool
 	ForwardManager::startJob(ForwardJob::SPtr& forwardJob)
 	{
+		Log(Debug, "start async job")
+			.parameter("NumberOps", forwardJob->getForwardTransactionVec().size())
+			.parameter("Id", forwardJob->id());
+
 		// check number of transaction to send
 		if (forwardJob->getForwardTransactionVec().empty()) {
 			return false;
@@ -92,11 +96,6 @@ namespace OpcUaStackServer
 			return false;
 		}
 		forwardJobMap_.insert(std::make_pair(forwardJob->id(), forwardJob));
-
-		// send transactions
-		for (auto trx : forwardJob->getForwardTransactionVec()) {
-			sendTrxCallback_(trx);
-		}
 
 		// definition of job timeout callback
 		auto jobId = forwardJob->id();
@@ -136,10 +135,12 @@ namespace OpcUaStackServer
 		forwardJob->countPendingTrxDec();
 
 		// check whether the job has been completely processed
-		if (forwardJob->countPendingTrx() == 0) {
+		if (forwardJob->countPendingTrx() > 0) {
 			return;
 		}
 
+		Log(Debug, "finish async job")
+			.parameter("Id", forwardJob->id());
 		finishJob(forwardJob);
 	}
 
