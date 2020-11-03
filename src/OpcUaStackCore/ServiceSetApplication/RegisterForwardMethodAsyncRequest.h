@@ -40,6 +40,9 @@ namespace OpcUaStackCore
 		void methodNodeId(OpcUaNodeId& methodNodeId);
 		OpcUaNodeId& methodNodeId(void);
 
+		bool opcUaBinaryEncode(std::ostream& os) const { return true; }
+		bool opcUaBinaryDecode(std::istream& is) { return true; }
+
 	  private:
 		ForwardMethodAsync::SPtr forwardMethodAsync_;
 		OpcUaNodeId objectNodeId_;

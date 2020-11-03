@@ -316,19 +316,6 @@ namespace OpcUaStackServer
 				continue;
 			}
 
-			// find registered method call in information model
-			ForwardMethodSync::SPtr forwardMethodSync;
-			forwardMethodSync = informationModel_->methodMap().getMethod(*callMethod->objectId(), *callMethod->methodId());
-			if (forwardMethodSync.get() == nullptr) {
-				callMethodResult->statusCode(BadServiceUnsupported);
-				Log(Debug, "call method error, because service not supported")
-			 		.parameter("Trx", serviceTransaction->transactionId())
-					.parameter("Idx", idx)
-					.parameter("ObjectNode", *callMethod->objectId())
-					.parameter("MethodNode", *callMethod->methodId());
-				continue;
-			}
-
 			// forward read async request
 			bool rc = forwardCallAsync(
 				forwardJob,
@@ -339,6 +326,19 @@ namespace OpcUaStackServer
 			);
 			if (rc) {
 				// the operation is performed asynchronously
+				continue;
+			}
+
+			// find registered method call in information model
+			ForwardMethodSync::SPtr forwardMethodSync;
+			forwardMethodSync = informationModel_->methodMap().getMethodSync(*callMethod->objectId(), *callMethod->methodId());
+			if (forwardMethodSync.get() == nullptr) {
+				callMethodResult->statusCode(BadServiceUnsupported);
+				Log(Debug, "call method error, because service not supported")
+			 		.parameter("Trx", serviceTransaction->transactionId())
+					.parameter("Idx", idx)
+					.parameter("ObjectNode", *callMethod->objectId())
+					.parameter("MethodNode", *callMethod->methodId());
 				continue;
 			}
 
@@ -473,9 +473,16 @@ namespace OpcUaStackServer
 		auto serviceRes = readTrx->response();
 
 		// check if async forwarding is enabled
-		auto forwardNodeAsync = baseNodeClass->forwardNodeAsync();
-		if (forwardNodeAsync.get() == nullptr) return false;
-		if (!forwardNodeAsync->methodService().isActive()) return false;
+		CallMethodRequest::SPtr callMethodRequest;
+		serviceReq->methodsToCall()->get(idx, callMethodRequest);
+
+		// find registered method call in information model
+		ForwardMethodAsync::SPtr forwardMethodAsync;
+		forwardMethodAsync = informationModel_->methodMap().getMethodAsync(
+			*callMethodRequest->objectId(), *callMethodRequest->methodId()
+		);
+		if (forwardMethodAsync.get() == nullptr) return false;
+		if (!forwardMethodAsync->methodService().isActive()) return false;
 
 		// create new transaction
 		auto forwardTrx = boost::make_shared<ForwardTransactionCall>();
@@ -483,18 +490,16 @@ namespace OpcUaStackServer
 		auto forwardRes = forwardTrx->response();
 
 		// set request parameter
-		CallMethodRequest::SPtr callMethodRequest;
-		serviceReq->methodsToCall()->get(idx, callMethodRequest);
 		forwardReq->callMethodRequest(callMethodRequest);
 
 		// set transaction parameter
 		forwardTrx->name("AsyncRead");
-		forwardTrx->messageBusMemberTarget(forwardNodeAsync->readService().messageBusMember());
+		forwardTrx->messageBusMemberTarget(forwardMethodAsync->methodService().messageBusMember());
 		forwardTrx->forwardJob(forwardJob);
 		forwardTrx->idx(idx);
 		forwardTrx->complete(false);
 		forwardTrx->userContext(userContext);
-		forwardTrx->applicationContext(forwardNodeAsync->readService().applicationContext());
+		forwardTrx->applicationContext(forwardMethodAsync->methodService().applicationContext());
 
 		// add forward transaction to forward job
 		ForwardTransaction::SPtr trx = forwardTrx;
