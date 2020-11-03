@@ -15,38 +15,31 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_ForwardNodeAsync_h__
-#define __OpcUaStackCore_ForwardNodeAsync_h__
+#ifndef __OpcUaStackCore_RegisterForwardMethodAsyncResponse_h__
+#define __OpcUaStackCore_RegisterForwardMethodAsyncResponse_h__
 
-#include "OpcUaStackCore/ServiceSetApplication/ForwardAsyncCallback.h"
+#include "OpcUaStackCore/Base/Object.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
+
 
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT ForwardNodeAsync
-	: public  Object
+	class DLLEXPORT RegisterForwardMethodAsyncResponse
+	: public Object
 	{
 	  public:
-		using SPtr = boost::shared_ptr<ForwardNodeAsync>;
+		typedef boost::shared_ptr<RegisterForwardMethodAsyncResponse> SPtr;
 
-		ForwardNodeAsync(void);
-		virtual ~ForwardNodeAsync(void);
+	    RegisterForwardMethodAsyncResponse(void);
+		virtual ~RegisterForwardMethodAsyncResponse(void);
 
-		ForwardAsyncCallback& readService(void);
-		ForwardAsyncCallback& writeService(void);
-		ForwardAsyncCallback& methodService(void);
-
-		void updateFrom(ForwardNodeAsync& forwardInfoAsync);
+		void statusCode(OpcUaStatusCode statusCode);
+		OpcUaStatusCode statusCode(void);
 
 	  private:
-		// attribute service
-		ForwardAsyncCallback readService_;
-		ForwardAsyncCallback writeService_;
-
-		// method service
-		ForwardAsyncCallback methodService_;
+		OpcUaStatusCode statusCode_;
 	};
-
 }
 
 #endif
