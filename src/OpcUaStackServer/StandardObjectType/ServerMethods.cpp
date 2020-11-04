@@ -110,6 +110,12 @@ namespace OpcUaStackServer
 		applicationContext_ = applicationContext;
 	}
 
+	BaseClass::SPtr
+	ServerMethod::applicationContext(void)
+	{
+		return applicationContext_;
+	}
+
 	void
 	ServerMethod::registerMethod(ApplicationCallback::Method methodCallback)
 	{

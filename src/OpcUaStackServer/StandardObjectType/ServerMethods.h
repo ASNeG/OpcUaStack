@@ -46,6 +46,7 @@ namespace OpcUaStackServer
 		void methodBaseNode(const BaseNodeClass::WPtr& methodBaseNode);
 		BaseNodeClass::WPtr& methodBaseNode(void);
 		void applicationContext(OpcUaStackCore::BaseClass::SPtr& applicationContext);
+		OpcUaStackCore::BaseClass::SPtr applicationContext(void);
 		void registerMethod(OpcUaStackCore::ApplicationCallback::Method methodCallback);
 		void method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
