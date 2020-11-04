@@ -39,6 +39,8 @@ namespace OpcUaStackServer
 
 		void name(const std::string& name);
 		std::string& name(void);
+		OpcUaStackCore::OpcUaNodeId objectNodeId(void);
+		OpcUaStackCore::OpcUaNodeId methodNodeId(void);
 		void objectBaseNode(const BaseNodeClass::WPtr& objectBaseNode);
 		BaseNodeClass::WPtr& objectBaseNode(void);
 		void methodBaseNode(const BaseNodeClass::WPtr& methodBaseNode);

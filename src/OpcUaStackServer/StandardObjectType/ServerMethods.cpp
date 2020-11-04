@@ -52,6 +52,34 @@ namespace OpcUaStackServer
 		return name_;
 	}
 
+	OpcUaNodeId
+	ServerMethod::objectNodeId(void)
+	{
+		OpcUaNodeId nodeId;
+
+		auto baseNode = objectBaseNode_.lock();
+		if (baseNode.get() == nullptr) {
+			return nodeId;
+		}
+
+		baseNode->getNodeIdSync(nodeId);
+		return nodeId;
+	}
+
+	OpcUaNodeId
+	ServerMethod::methodNodeId(void)
+	{
+		OpcUaNodeId nodeId;
+
+		auto baseNode = methodBaseNode_.lock();
+		if (baseNode.get() == nullptr) {
+			return nodeId;
+		}
+
+		baseNode->getNodeIdSync(nodeId);
+		return nodeId;
+	}
+
 	void
 	ServerMethod::objectBaseNode(const BaseNodeClass::WPtr& objectBaseNode)
 	{
