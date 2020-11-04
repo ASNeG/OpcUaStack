@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -23,9 +23,6 @@ namespace OpcUaStackServer
 {
 
 	GetNamespaceInfo::GetNamespaceInfo(void)
-	: resultCode_(Success)
-	, index2NamespaceMap_()
-	, namespace2IndexMap_()
 	{
 	}
 
@@ -38,6 +35,11 @@ namespace OpcUaStackServer
 	{
 		// create request
 		auto trx = boost::make_shared<ServiceTransactionNamespaceInfo>();
+		auto req = trx->request();
+		auto res = trx->response();
+
+		// set request parameter
+		req->newNamespaceUri(newNamespaceUri_);
 
 		// send query to application service
 		applicationServiceIf->sendSync(trx);
@@ -45,8 +47,8 @@ namespace OpcUaStackServer
 	  	if (resultCode_ != Success) return false;
 
 	  	// handle response
-		index2NamespaceMap_ = trx->response()->index2NamespaceMap();
-		namespace2IndexMap_= trx->response()->namespace2IndexMap();
+		index2NamespaceMap_ = res->index2NamespaceMap();
+		namespace2IndexMap_= res->namespace2IndexMap();
 
 		return true;
 	}
@@ -55,6 +57,12 @@ namespace OpcUaStackServer
 	GetNamespaceInfo::resultCode(void)
 	{
 		return resultCode_;
+	}
+
+	void
+	GetNamespaceInfo::newNamespaceUri(const std::string& newNamespaceUri)
+	{
+		newNamespaceUri_ = newNamespaceUri;
 	}
 
 	int32_t
