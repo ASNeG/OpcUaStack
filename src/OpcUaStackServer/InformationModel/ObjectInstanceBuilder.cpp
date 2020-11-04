@@ -498,6 +498,11 @@ namespace OpcUaStackServer
 			forwardMethodSync
 		);
 
+		// get base node class of parent node and set node infos in server method
+		auto parentNode = informationModel_->find(parentNodeId);
+		serverMethod->methodBaseNode(methodNode);
+		serverMethod->objectBaseNode(parentNode);
+
 		// added new method node to information model
 		informationModel_->insert(methodNode);
 		return methodNode;
