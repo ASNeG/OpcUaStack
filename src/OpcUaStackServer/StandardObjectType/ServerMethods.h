@@ -20,6 +20,7 @@
 
 #include <map>
 #include "OpcUaStackCore/Base/BaseClass.h"
+#include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 #include "OpcUaStackCore/Application/ApplicationCallback.h"
 #include "OpcUaStackCore/Application/ApplicationMethodContext.h"
 
@@ -38,11 +39,18 @@ namespace OpcUaStackServer
 
 		void name(const std::string& name);
 		std::string& name(void);
+		void objectBaseNode(const BaseNodeClass::WPtr& objectBaseNode);
+		BaseNodeClass::WPtr& objectBaseNode(void);
+		void methodBaseNode(const BaseNodeClass::WPtr& methodBaseNode);
+		BaseNodeClass::WPtr& methodBaseNode(void);
 		void applicationContext(OpcUaStackCore::BaseClass::SPtr& applicationContext);
 		void registerMethod(OpcUaStackCore::ApplicationCallback::Method methodCallback);
 		void method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
 	  private:
+		BaseNodeClass::WPtr objectBaseNode_;
+		BaseNodeClass::WPtr methodBaseNode_;
+
 		std::string name_;
 		OpcUaStackCore::ApplicationCallback::Method methodCallback_ = nullptr;
 		OpcUaStackCore::BaseClass::SPtr applicationContext_ = nullptr;

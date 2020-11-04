@@ -53,6 +53,30 @@ namespace OpcUaStackServer
 	}
 
 	void
+	ServerMethod::objectBaseNode(const BaseNodeClass::WPtr& objectBaseNode)
+	{
+		objectBaseNode_ = objectBaseNode;
+	}
+
+	BaseNodeClass::WPtr&
+	ServerMethod::objectBaseNode(void)
+	{
+		return objectBaseNode_;
+	}
+
+	void
+	ServerMethod::methodBaseNode(const BaseNodeClass::WPtr& methodBaseNode)
+	{
+		methodBaseNode_ = methodBaseNode;
+	}
+
+	BaseNodeClass::WPtr&
+	ServerMethod::methodBaseNode(void)
+	{
+		return methodBaseNode_;
+	}
+
+	void
 	ServerMethod::applicationContext(BaseClass::SPtr& applicationContext)
 	{
 		applicationContext_ = applicationContext;
