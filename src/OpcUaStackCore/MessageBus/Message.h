@@ -26,7 +26,7 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT Message
-	: OpcUaStackCore::Object
+	: public OpcUaStackCore::Object
 	{
 	  public:
 		typedef boost::shared_ptr<Message> SPtr;
@@ -35,11 +35,11 @@ namespace OpcUaStackCore
 			Unknown,
 			ServiceTransaction,
 			ForwardTransaction,
-			CutomerTransaction1,
-			CutomerTransaction2,
-			CutomerTransaction3,
-			CutomerTransaction4,
-			CutomerTransaction5,
+			CustomerTransaction1,
+			CustomerTransaction2,
+			CustomerTransaction3,
+			CustomerTransaction4,
+			CustomerTransaction5,
 		} Type_t;
 
 		Message(Type_t type)

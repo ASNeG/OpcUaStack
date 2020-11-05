@@ -27,13 +27,17 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT BaseClass
+	: public OpcUaStackCore::Object
 	{
 	  public:
 		using SPtr = boost::shared_ptr<BaseClass>;
 		using Vec = std::vector<SPtr>;
 
-		BaseClass(void) {}
-		virtual ~BaseClass(void) {}
+		BaseClass(void)
+		: OpcUaStackCore::Object()
+		{}
+		virtual ~BaseClass(void)
+		{}
 
 		void copyTo(BaseClass& baseClass) {}
 		void out(std::ostream& os) {}
