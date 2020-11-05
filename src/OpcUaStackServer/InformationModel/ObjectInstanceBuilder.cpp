@@ -492,7 +492,7 @@ namespace OpcUaStackServer
 		// register method callback
 		auto forwardMethodSync = boost::make_shared<ForwardMethodSync>();
 		forwardMethodSync->methodService().setCallback(boost::bind(&ServerMethod::method, serverMethod.get(), _1));
-		informationModel_->methodMap().registerMethod(
+		informationModel_->methodMap().registerMethodSync(
 			parentNodeId,
 			nodeId,
 			forwardMethodSync

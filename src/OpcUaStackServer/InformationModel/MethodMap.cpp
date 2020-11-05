@@ -39,7 +39,7 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	MethodMap::existMethod(
+	MethodMap::existMethodSync(
 		const OpcUaNodeId& objectNodeId,
 		const OpcUaNodeId& methodNodeId
 	)
@@ -53,14 +53,28 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	MethodMap::registerMethod(
+	MethodMap::existMethodAsync(
+		const OpcUaNodeId& objectNodeId,
+		const OpcUaNodeId& methodNodeId
+	)
+	{
+		MethodId methodId;
+
+		methodId.objectNodeId().copyFrom(objectNodeId);
+		methodId.methodNodeId().copyFrom(methodNodeId);
+		auto it = forwardMethodAsyncMap_.find(methodId);
+		return (it != forwardMethodAsyncMap_.end());
+	}
+
+	bool
+	MethodMap::registerMethodSync(
 		const OpcUaNodeId& objectNodeId,
 		const OpcUaNodeId& methodNodeId,
 		ForwardMethodSync::SPtr& forwardMethodSync
 	)
 	{
-		if (existMethod(objectNodeId, methodNodeId)) {
-			deregisterMethod(objectNodeId, methodNodeId);
+		if (existMethodSync(objectNodeId, methodNodeId)) {
+			deregisterMethodSync(objectNodeId, methodNodeId);
 		}
 
 		MethodId methodId;
@@ -73,7 +87,27 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	MethodMap::deregisterMethod(
+	MethodMap::registerMethodAsync(
+		const OpcUaNodeId& objectNodeId,
+		const OpcUaNodeId& methodNodeId,
+		ForwardMethodAsync::SPtr& forwardMethodAsync
+	)
+	{
+		if (existMethodAsync(objectNodeId, methodNodeId)) {
+			deregisterMethodAsync(objectNodeId, methodNodeId);
+		}
+
+		MethodId methodId;
+		methodId.objectNodeId().copyFrom(objectNodeId);
+		methodId.methodNodeId().copyFrom(methodNodeId);
+
+		forwardMethodAsyncMap_.insert(std::make_pair(methodId, forwardMethodAsync));
+
+		return true;
+	}
+
+	bool
+	MethodMap::deregisterMethodSync(
 		const OpcUaNodeId& objectNodeId,
 		const OpcUaNodeId& methodNodeId
 	)
@@ -89,8 +123,25 @@ namespace OpcUaStackServer
 		return true;
 	}
 
+	bool
+	MethodMap::deregisterMethodAsync(
+		const OpcUaNodeId& objectNodeId,
+		const OpcUaNodeId& methodNodeId
+	)
+	{
+		MethodId methodId;
+		methodId.objectNodeId().copyFrom(objectNodeId);
+		methodId.methodNodeId().copyFrom(methodNodeId);
+
+		auto it = forwardMethodAsyncMap_.find(methodId);
+		if (it == forwardMethodAsyncMap_.end()) return true;
+		forwardMethodAsyncMap_.erase(it);
+
+		return true;
+	}
+
 	ForwardMethodSync::SPtr
-	MethodMap::getMethod(
+	MethodMap::getMethodSync(
 		const OpcUaNodeId& objectNodeId,
 		const OpcUaNodeId& methodNodeId
 	)
@@ -106,6 +157,25 @@ namespace OpcUaStackServer
 
 		ForwardMethodSync::SPtr forwardMethodSync;
 		return forwardMethodSync;
+	}
+
+	ForwardMethodAsync::SPtr
+	MethodMap::getMethodAsync(
+		const OpcUaNodeId& objectNodeId,
+		const OpcUaNodeId& methodNodeId
+	)
+	{
+		MethodId methodId;
+		methodId.objectNodeId().copyFrom(objectNodeId);
+		methodId.methodNodeId().copyFrom(methodNodeId);
+
+		auto it = forwardMethodAsyncMap_.find(methodId);
+		if (it != forwardMethodAsyncMap_.end()) {
+			return it->second;
+		}
+
+		ForwardMethodAsync::SPtr forwardMethodAsync;
+		return forwardMethodAsync;
 	}
 
 }

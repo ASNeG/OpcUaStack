@@ -254,6 +254,7 @@ namespace OpcUaStackServer
 			case OpcUaId_RegisterForwardNodeRequest_Encoding_DefaultBinary:
 			case OpcUaId_RegisterForwardNodeAsyncRequest_Encoding_DefaultBinary:
 			case OpcUaId_RegisterForwardMethodRequest_Encoding_DefaultBinary:
+			case OpcUaId_RegisterForwardMethodAsyncRequest_Encoding_DefaultBinary:
 			case OpcUaId_RegisterForwardGlobalRequest_Encoding_DefaultBinary:
 			case OpcUaId_GetNodeReferenceRequest_Encoding_DefaultBinary:
 			case OpcUaId_NamespaceInfoRequest_Encoding_DefaultBinary:

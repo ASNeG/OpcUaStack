@@ -50,6 +50,7 @@ namespace OpcUaStackServer
 		void receiveRegisterForwardNodeRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 		void receiveRegisterForwardNodeAsyncRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 		void receiveRegisterForwardMethodRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
+		void receiveRegisterForwardMethodAsyncRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 		void receiveRegisterForwardGlobalRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 		void receiveGetNodeReferenceRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 		void receiveNamespaceInfoRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);

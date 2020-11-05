@@ -15,36 +15,29 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_ForwardNodeAsync_h__
-#define __OpcUaStackCore_ForwardNodeAsync_h__
+#ifndef __OpcUaStackCore_CallForwardResponse_h__
+#define __OpcUaStackCore_CallForwardResponse_h__
 
-#include "OpcUaStackCore/ServiceSetApplication/ForwardAsyncCallback.h"
+#include "OpcUaStackCore/ServiceSet/CallMethodResult.h"
 
-namespace OpcUaStackCore
+namespace OpcUaStackServer
 {
 
-	class DLLEXPORT ForwardNodeAsync
-	: public  Object
+	class DLLEXPORT CallForwardResponse
+	: public OpcUaStackCore::Object
 	{
 	  public:
-		using SPtr = boost::shared_ptr<ForwardNodeAsync>;
+		typedef boost::shared_ptr<CallForwardResponse> SPtr;
 
-		ForwardNodeAsync(void);
-		virtual ~ForwardNodeAsync(void);
+		CallForwardResponse(void);
+		virtual ~CallForwardResponse(void);
 
-		ForwardAsyncCallback& readService(void);
-		ForwardAsyncCallback& writeService(void);
-		ForwardAsyncCallback& methodService(void);
-
-		void updateFrom(ForwardNodeAsync& forwardInfoAsync);
+		void result(const OpcUaStackCore::CallMethodResult::SPtr& restult);
+		OpcUaStackCore::CallMethodResult::SPtr result(void) const;
 
 	  private:
-		// attribute service
-		ForwardAsyncCallback readService_;
-		ForwardAsyncCallback writeService_;
+		OpcUaStackCore::CallMethodResult::SPtr callMethodResult_ = nullptr;
 
-		// method service
-		ForwardAsyncCallback methodService_;
 	};
 
 }

@@ -21,6 +21,7 @@
 #include <map>
 
 #include "OpcUaStackCore/ServiceSetApplication/ForwardMethodSync.h"
+#include "OpcUaStackCore/ServiceSetApplication/ForwardMethodAsync.h"
 #include "OpcUaStackServer/InformationModel/MethodId.h"
 
 namespace OpcUaStackServer
@@ -30,6 +31,7 @@ namespace OpcUaStackServer
 	{
 	  public:
 		typedef std::map<MethodId, OpcUaStackCore::ForwardMethodSync::SPtr> ForwardMethodSyncMap;
+		typedef std::map<MethodId, OpcUaStackCore::ForwardMethodAsync::SPtr> ForwardMethodAsyncMap;
 
 		MethodMap(
 			void
@@ -41,26 +43,44 @@ namespace OpcUaStackServer
 		void clear(
 			void
 		);
-		bool existMethod(
+		bool existMethodSync(
 			const OpcUaStackCore::OpcUaNodeId& objectNodeId,
 			const OpcUaStackCore::OpcUaNodeId& methodNodeId
 		);
-		bool registerMethod(
+		bool existMethodAsync(
+			const OpcUaStackCore::OpcUaNodeId& objectNodeId,
+			const OpcUaStackCore::OpcUaNodeId& methodNodeId
+		);
+		bool registerMethodSync(
 			const OpcUaStackCore::OpcUaNodeId& objectNodeId,
 			const OpcUaStackCore::OpcUaNodeId& methodNodeId,
 			OpcUaStackCore::ForwardMethodSync::SPtr& forwardMethodSync
 		);
-		bool deregisterMethod(
+		bool registerMethodAsync(
+			const OpcUaStackCore::OpcUaNodeId& objectNodeId,
+			const OpcUaStackCore::OpcUaNodeId& methodNodeId,
+			OpcUaStackCore::ForwardMethodAsync::SPtr& forwardMethodAsync
+		);
+		bool deregisterMethodSync(
 			const OpcUaStackCore::OpcUaNodeId& objectNodeId,
 			const OpcUaStackCore::OpcUaNodeId& methodNodeId
 		);
-		OpcUaStackCore::ForwardMethodSync::SPtr getMethod(
+		bool deregisterMethodAsync(
+			const OpcUaStackCore::OpcUaNodeId& objectNodeId,
+			const OpcUaStackCore::OpcUaNodeId& methodNodeId
+		);
+		OpcUaStackCore::ForwardMethodSync::SPtr getMethodSync(
+			const OpcUaStackCore::OpcUaNodeId& objectNodeId,
+			const OpcUaStackCore::OpcUaNodeId& methodNodeId
+		);
+		OpcUaStackCore::ForwardMethodAsync::SPtr getMethodAsync(
 			const OpcUaStackCore::OpcUaNodeId& objectNodeId,
 			const OpcUaStackCore::OpcUaNodeId& methodNodeId
 		);
 
 	  private:
 		ForwardMethodSyncMap forwardMethodSyncMap_;
+		ForwardMethodAsyncMap forwardMethodAsyncMap_;
 	};
 
 }

@@ -15,38 +15,30 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_ForwardNodeAsync_h__
-#define __OpcUaStackCore_ForwardNodeAsync_h__
-
-#include "OpcUaStackCore/ServiceSetApplication/ForwardAsyncCallback.h"
+#include "OpcUaStackCore/ServiceSetApplication/ForwardMethodAsync.h"
 
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT ForwardNodeAsync
-	: public  Object
+	ForwardMethodAsync::ForwardMethodAsync(void)
+	: methodService_()
 	{
-	  public:
-		using SPtr = boost::shared_ptr<ForwardNodeAsync>;
+	}
 
-		ForwardNodeAsync(void);
-		virtual ~ForwardNodeAsync(void);
+	ForwardMethodAsync::~ForwardMethodAsync(void)
+	{
+	}
 
-		ForwardAsyncCallback& readService(void);
-		ForwardAsyncCallback& writeService(void);
-		ForwardAsyncCallback& methodService(void);
+	ForwardAsyncCallback&
+	ForwardMethodAsync::methodService(void)
+	{
+		return methodService_;
+	}
 
-		void updateFrom(ForwardNodeAsync& forwardInfoAsync);
-
-	  private:
-		// attribute service
-		ForwardAsyncCallback readService_;
-		ForwardAsyncCallback writeService_;
-
-		// method service
-		ForwardAsyncCallback methodService_;
-	};
+	void
+	ForwardMethodAsync::updateFrom(ForwardMethodAsync& ForwardSyncCallbackSync)
+	{
+		methodService_.updateFrom(ForwardSyncCallbackSync.methodService());
+	}
 
 }
-
-#endif

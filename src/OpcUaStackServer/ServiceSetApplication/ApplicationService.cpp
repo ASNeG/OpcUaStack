@@ -94,6 +94,9 @@ namespace OpcUaStackServer
 			case OpcUaId_RegisterForwardMethodRequest_Encoding_DefaultBinary:
 				receiveRegisterForwardMethodRequest(serviceTransaction);
 				break;
+			case OpcUaId_RegisterForwardMethodAsyncRequest_Encoding_DefaultBinary:
+				receiveRegisterForwardMethodAsyncRequest(serviceTransaction);
+				break;
 			case OpcUaId_RegisterForwardGlobalRequest_Encoding_DefaultBinary:
 				receiveRegisterForwardGlobalRequest(serviceTransaction);
 				break;
@@ -328,13 +331,13 @@ namespace OpcUaStackServer
 	}
 
 	void
-	ApplicationService::receiveRegisterForwardMethodRequest(ServiceTransaction::SPtr serviceTransaction)
+	ApplicationService::receiveRegisterForwardMethodRequest(
+		ServiceTransaction::SPtr serviceTransaction)
 	{
 		BaseNodeClass::SPtr baseNodeClass;
-		ServiceTransactionRegisterForwardMethod::SPtr trx = boost::static_pointer_cast<ServiceTransactionRegisterForwardMethod>(serviceTransaction);
-
-		RegisterForwardMethodRequest::SPtr registerForwardMethodRequest = trx->request();
-		RegisterForwardMethodResponse::SPtr registerForwardMethodResponse = trx->response();
+		auto trx = boost::static_pointer_cast<ServiceTransactionRegisterForwardMethod>(serviceTransaction);
+		auto registerForwardMethodRequest = trx->request();
+		auto registerForwardMethodResponse = trx->response();
 
 		Log(Debug, "application service register forward method request")
 			.parameter("Trx", serviceTransaction->transactionId())
@@ -369,16 +372,80 @@ namespace OpcUaStackServer
 
 		// register/deregister method call
 		if (!registerForwardMethodRequest->forwardMethodSync()->methodService().isCallback()) {
-			informationModel_->methodMap().deregisterMethod(
+			informationModel_->methodMap().deregisterMethodSync(
 				registerForwardMethodRequest->objectNodeId(),
 				registerForwardMethodRequest->methodNodeId()
 			);
 		}
 		else {
-			informationModel_->methodMap().registerMethod(
+			informationModel_->methodMap().registerMethodSync(
 				registerForwardMethodRequest->objectNodeId(),
 				registerForwardMethodRequest->methodNodeId(),
 				registerForwardMethodRequest->forwardMethodSync()
+			);
+		}
+
+		trx->statusCode(Success);
+		sendAnswer(serviceTransaction);
+	}
+
+	void
+	ApplicationService::receiveRegisterForwardMethodAsyncRequest(
+		ServiceTransaction::SPtr serviceTransaction)
+	{
+		BaseNodeClass::SPtr baseNodeClass;
+		auto trx = boost::static_pointer_cast<ServiceTransactionRegisterForwardMethodAsync>(serviceTransaction);
+		auto req = trx->request();
+		auto res = trx->response();
+
+		Log(Debug, "application service register forward method async request")
+			.parameter("Trx", serviceTransaction->transactionId())
+			.parameter("ObjectNodeId", req->objectNodeId().toString())
+			.parameter("MethodNodeId", req->methodNodeId().toString());
+
+		// find object node
+		baseNodeClass = informationModel_->find(req->objectNodeId());
+		if (baseNodeClass.get() == nullptr) {
+			res->statusCode(BadNodeIdUnknown);
+			Log(Debug, "register forward method async error, because object node not exist in information model")
+				.parameter("Trx", serviceTransaction->transactionId())
+				.parameter("ObjectNode", req->objectNodeId().toString());
+
+			trx->statusCode(Success);
+			sendAnswer(serviceTransaction);
+			return;
+		}
+
+		// find method node
+		baseNodeClass = informationModel_->find(req->methodNodeId());
+		if (baseNodeClass.get() == nullptr) {
+			res->statusCode(BadNodeIdUnknown);
+			Log(Debug, "register forward method async error, because function node not exist in information model")
+				.parameter("Trx", serviceTransaction->transactionId())
+				.parameter("MethodNode", req->methodNodeId().toString());
+
+			trx->statusCode(Success);
+			sendAnswer(serviceTransaction);
+			return;
+		}
+
+		// add source message bus member
+		if (req->forwardMethodAsync()->methodService().isUsed()) {
+			req->forwardMethodAsync()->methodService().messageBusMember(serviceTransaction->memberServiceSession());
+		}
+
+		// register/deregister method call
+		if (!req->forwardMethodAsync()->methodService().isActive()) {
+			informationModel_->methodMap().deregisterMethodAsync(
+				req->objectNodeId(),
+				req->methodNodeId()
+			);
+		}
+		else {
+			informationModel_->methodMap().registerMethodAsync(
+				req->objectNodeId(),
+				req->methodNodeId(),
+				req->forwardMethodAsync()
 			);
 		}
 
