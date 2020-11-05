@@ -32,7 +32,12 @@ namespace OpcUaStackCore
 		typedef enum {
 			Unknown,
 			ServiceTransaction,
-			ForwardTransaction
+			ForwardTransaction,
+			CutomerTransaction1,
+			CutomerTransaction2,
+			CutomerTransaction3,
+			CutomerTransaction4,
+			CutomerTransaction5,
 		} Type_t;
 
 		Message(Type_t type)
