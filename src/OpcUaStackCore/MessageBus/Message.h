@@ -20,11 +20,13 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/Object.h"
 
 namespace OpcUaStackCore
 {
 
 	class DLLEXPORT Message
+	: OpcUaStackCore::Object
 	{
 	  public:
 		typedef boost::shared_ptr<Message> SPtr;
@@ -41,7 +43,8 @@ namespace OpcUaStackCore
 		} Type_t;
 
 		Message(Type_t type)
-		: type_(type)
+		: OpcUaStackCore::Object()
+		, type_(type)
 		{
 		}
 
