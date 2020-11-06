@@ -20,6 +20,7 @@
 
 #include <map>
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
+#include "OpcUaStackCore/Application/ApplicationMethodContext.h"
 
 using namespace OpcUaStackCore;
 
@@ -41,6 +42,8 @@ namespace OpcUaStackServer
 		OpcUaStackCore::OpcUaNodeId nodeId(void);
 		void baseNode(const BaseNodeClass::WPtr& baseNode);
 		BaseNodeClass::WPtr& baseNode(void);
+		void applicationContext(OpcUaStackCore::BaseClass::SPtr& applicationContext);
+		OpcUaStackCore::BaseClass::SPtr applicationContext(void);
 
 		bool setDataValue(const OpcUaStackCore::OpcUaDataValue& dataValue);
 		bool getDataValue(OpcUaStackCore::OpcUaDataValue& dataValue);
@@ -48,6 +51,7 @@ namespace OpcUaStackServer
 	  private:
 		std::string name_;
 		BaseNodeClass::WPtr baseNode_;
+		OpcUaStackCore::BaseClass::SPtr applicationContext_ = nullptr;
 	};
 
 

@@ -103,6 +103,18 @@ namespace OpcUaStackServer
 		return true;
 	}
 
+	void
+	ServerVariable::applicationContext(BaseClass::SPtr& applicationContext)
+	{
+		applicationContext_ = applicationContext;
+	}
+
+	OpcUaStackCore::BaseClass::SPtr
+	ServerVariable::applicationContext(void)
+	{
+		return applicationContext_;
+	}
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
