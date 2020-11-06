@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -36,10 +36,12 @@ namespace OpcUaStackServer
 		bool query(ApplicationServiceIf* applicationServiceIf);
 		OpcUaStackCore::OpcUaStatusCode resultCode(void);
 
+		void newNamespaceUri(const std::string& newNamespaceUri);
 		int32_t getNamespaceIndex(const std::string& namespaceUri);
 
 	  private:
-		OpcUaStackCore::OpcUaStatusCode resultCode_;
+		std::string newNamespaceUri_ = "";
+		OpcUaStackCore::OpcUaStatusCode resultCode_ = OpcUaStackCore::Success;
 		OpcUaStackCore::NamespaceInfoResponse::Index2NamespaceMap index2NamespaceMap_;
 		OpcUaStackCore::NamespaceInfoResponse::Namespace2IndexMap namespace2IndexMap_;
 	};
