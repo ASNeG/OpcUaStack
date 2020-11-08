@@ -29,8 +29,7 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT ServiceTransaction
-	: public Object
-	, public Message
+	: public Message
 	{
 	  public:
 		typedef boost::shared_ptr<ServiceTransaction> SPtr;

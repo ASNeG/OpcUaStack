@@ -20,11 +20,13 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/Object.h"
 
 namespace OpcUaStackCore
 {
 
 	class DLLEXPORT Message
+	: public OpcUaStackCore::Object
 	{
 	  public:
 		typedef boost::shared_ptr<Message> SPtr;
@@ -32,11 +34,17 @@ namespace OpcUaStackCore
 		typedef enum {
 			Unknown,
 			ServiceTransaction,
-			ForwardTransaction
+			ForwardTransaction,
+			CustomerTransaction1,
+			CustomerTransaction2,
+			CustomerTransaction3,
+			CustomerTransaction4,
+			CustomerTransaction5,
 		} Type_t;
 
 		Message(Type_t type)
-		: type_(type)
+		: OpcUaStackCore::Object()
+		, type_(type)
 		{
 		}
 
