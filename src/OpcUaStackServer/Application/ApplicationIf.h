@@ -44,15 +44,34 @@ namespace OpcUaStackServer
 		ApplicationInfo* applicationInfo(void);
 		void cryptoManager(const OpcUaStackCore::CryptoManager::SPtr& cryptoManager);
 		OpcUaStackCore::CryptoManager::SPtr& cryptoManager(void);
+
 		void applicationThreadPool(const OpcUaStackCore::IOThread::SPtr& applicationThreadPool);
 		OpcUaStackCore::IOThread::SPtr& applicationThreadPool(void);
+
+		void messageBusThreadPool(const OpcUaStackCore::IOThread::SPtr& messageBusThreadPool);
+		OpcUaStackCore::IOThread::SPtr& messageBusThreadPool(void);
+		void messageBusStrand(boost::shared_ptr<boost::asio::io_service::strand>& messageBusStrand);
+		boost::shared_ptr<boost::asio::io_service::strand>& messageBusStrand(void);
 
 	  private:
 		ApplicationServiceIf* applicationServiceIf_;
 		OpcUaStackCore::Config* config_;
 		ApplicationInfo* applicationInfo_;
 		OpcUaStackCore::CryptoManager::SPtr cryptoManager_;
-		OpcUaStackCore::IOThread::SPtr applicationThreadPool_;
+
+		// This thread pool can be used by the application. This thread pool
+		// is independent of the opc ua server. The number of threads in the
+		// thread pool is specified in the opc ua server configuration file.
+		// (ApplThreadPool)
+		OpcUaStackCore::IOThread::SPtr applicationThreadPool_ = nullptr;
+
+		// This thread pool can be used by the application. This thread pool
+		// is used by the applications's message bus and can therefore be used
+		// together with the stand to synchronize the application. The number
+		// of threads in the thread pool is specified in the OPC UA configuration
+		// file. (ServerThreadPool)
+		OpcUaStackCore::IOThread::SPtr messageBusThreadPool_ = nullptr;
+		boost::shared_ptr<boost::asio::io_service::strand> messageBusStrand_ = nullptr;
 	};
 
 

@@ -95,6 +95,7 @@ namespace OpcUaStackServer
 		ReloadIf* reloadIf_;
 		std::string applicationName_;
 
+		OpcUaStackCore::IOThread::SPtr ioThread_ = nullptr;
 		OpcUaStackCore::MessageBusMember::WPtr messageBusMemberApplication_;
 	};
 
