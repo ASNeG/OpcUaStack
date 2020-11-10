@@ -100,6 +100,30 @@ namespace OpcUaStackServer
 		return applicationThreadPool_;
 	}
 
+	void
+	ApplicationData::messageBusThreadPool(const OpcUaStackCore::IOThread::SPtr& messageBusThreadPool)
+	{
+		messageBusThreadPool_ = messageBusThreadPool;
+	}
+
+	OpcUaStackCore::IOThread::SPtr&
+	ApplicationData::messageBusThreadPool(void)
+	{
+		return messageBusThreadPool_;
+	}
+
+	void
+	ApplicationData::messageBusStrand(boost::shared_ptr<boost::asio::io_service::strand>& messageBusStrand)
+	{
+		messageBusStrand_ = messageBusStrand;
+	}
+
+	boost::shared_ptr<boost::asio::io_service::strand>&
+	ApplicationData::messageBusStrand(void)
+	{
+		return messageBusStrand_;
+	}
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//

@@ -39,6 +39,7 @@ namespace OpcUaStackServer
 		// set parameter in server service base
 		serviceName_ = serviceName;
 		ServerServiceBase::ioThread_ = ioThread.get();
+		ioThread_ = ioThread;
 		strand_ = ioThread->createStrand();
 		messageBus_ = messageBus;
 
@@ -67,6 +68,9 @@ namespace OpcUaStackServer
 	{
 		applicationIf_ = applicationIf;
 		applicationIf_->service(this);
+
+		applicationIf_->applicationData()->messageBusThreadPool(ioThread_);
+		applicationIf_->applicationData()->messageBusStrand(strand_);
 	}
 
 	ApplicationIf*
