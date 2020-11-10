@@ -294,7 +294,7 @@ namespace OpcUaStackCore
 			std::promise<void> promise;
 			std::future<void> future = promise.get_future();
 			strand->dispatch(
-				[this, &promise, keys](void) mutable {
+				[this, &promise, &keys](void) mutable {
 					this->keys(keys);
 					promise.set_value();
 			    }
