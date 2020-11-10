@@ -139,7 +139,7 @@ namespace OpcUaStackCore
 			return;
 		}
 		cancel_ = true;
-		timeoutCallback_ = nullptr;
+		//timeoutCallback_ = nullptr;
 	}
 
 	bool
@@ -189,6 +189,9 @@ namespace OpcUaStackCore
 		        }
 	        );
 		    asyncPendingQueueConfig_.slotTimer()->start(timerElement);
+		}
+		else {
+			return false;
 		}
 
 		return true;
@@ -294,7 +297,7 @@ namespace OpcUaStackCore
 			std::promise<void> promise;
 			std::future<void> future = promise.get_future();
 			strand->dispatch(
-				[this, &promise, keys](void) mutable {
+				[this, &promise, &keys](void) mutable {
 					this->keys(keys);
 					promise.set_value();
 			    }
@@ -358,8 +361,6 @@ namespace OpcUaStackCore
 		auto element = pendingQueueElement->element();
 
 		TimeoutCallback timeoutCallback = timeoutCallback_;
-		timeoutCallback_ = nullptr;
-
 		asyncPendingQueueConfig_.strand()->dispatch(
 			[timeoutCallback, key, &element](void) {
 		        timeoutCallback(false, key, element);
