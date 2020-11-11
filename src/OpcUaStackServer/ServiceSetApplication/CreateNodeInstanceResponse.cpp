@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,9 +15,11 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/ServiceSetApplication/CreateNodeInstanceResponse.h"
+#include "OpcUaStackServer/ServiceSetApplication/CreateNodeInstanceResponse.h"
 
-namespace OpcUaStackCore
+using namespace OpcUaStackCore;
+
+namespace OpcUaStackServer
 {
 
 	// ------------------------------------------------------------------------
@@ -35,6 +37,18 @@ namespace OpcUaStackCore
 
 	CreateNodeInstanceResponse::~CreateNodeInstanceResponse(void)
 	{
+	}
+
+	void
+	CreateNodeInstanceResponse::baseNodeClass(BaseNodeClass::WPtr& baseNodeClass)
+	{
+		baseNodeClass_ = baseNodeClass;
+	}
+
+	BaseNodeClass::WPtr&
+	CreateNodeInstanceResponse::baseNodeClass(void)
+	{
+		return baseNodeClass_;
 	}
 
 	bool

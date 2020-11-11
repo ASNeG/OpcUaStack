@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_ApplicationServiceTransaction_h__
-#define __OpcUaStackCore_ApplicationServiceTransaction_h__
+#ifndef __OpcUaStackServer_ApplicationServiceTransaction_h__
+#define __OpcUaStackServer_ApplicationServiceTransaction_h__
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransactionTemplate.h"
@@ -34,8 +34,6 @@
 #include "OpcUaStackCore/ServiceSetApplication/GetNodeReferenceResponse.h"
 #include "OpcUaStackCore/ServiceSetApplication/NamespaceInfoRequest.h"
 #include "OpcUaStackCore/ServiceSetApplication/NamespaceInfoResponse.h"
-#include "OpcUaStackCore/ServiceSetApplication/CreateNodeInstanceRequest.h"
-#include "OpcUaStackCore/ServiceSetApplication/CreateNodeInstanceResponse.h"
 #include "OpcUaStackCore/ServiceSetApplication/DelNodeInstanceRequest.h"
 #include "OpcUaStackCore/ServiceSetApplication/DelNodeInstanceResponse.h"
 #include "OpcUaStackCore/ServiceSetApplication/FireEventRequest.h"
@@ -46,97 +44,99 @@
 #include "OpcUaStackCore/ServiceSetApplication/CreateVariableResponse.h"
 #include "OpcUaStackCore/ServiceSetApplication/CreateObjectRequest.h"
 #include "OpcUaStackCore/ServiceSetApplication/CreateObjectResponse.h"
+#include "OpcUaStackServer/ServiceSetApplication/CreateNodeInstanceRequest.h"
+#include "OpcUaStackServer/ServiceSetApplication/CreateNodeInstanceResponse.h"
 
-namespace OpcUaStackCore
+namespace OpcUaStackServer
 {
 	
-	typedef ServiceTransactionTemplate<
-		RegisterForwardNodeRequest,
-		RegisterForwardNodeResponse,
+	typedef OpcUaStackCore::ServiceTransactionTemplate<
+		OpcUaStackCore::RegisterForwardNodeRequest,
+		OpcUaStackCore::RegisterForwardNodeResponse,
 		OpcUaId_RegisterForwardNodeRequest_Encoding_DefaultBinary,
 		OpcUaId_RegisterForwardNodeResponse_Encoding_DefaultBinary
 	> ServiceTransactionRegisterForwardNode;
 
-	typedef ServiceTransactionTemplate<
-		RegisterForwardNodeAsyncRequest,
-		RegisterForwardNodeAsyncResponse,
+	typedef OpcUaStackCore::ServiceTransactionTemplate<
+		OpcUaStackCore::RegisterForwardNodeAsyncRequest,
+		OpcUaStackCore::RegisterForwardNodeAsyncResponse,
 		OpcUaId_RegisterForwardNodeAsyncRequest_Encoding_DefaultBinary,
 		OpcUaId_RegisterForwardNodeAsyncResponse_Encoding_DefaultBinary
 	> ServiceTransactionRegisterForwardNodeAsync;
 
-	typedef ServiceTransactionTemplate<
-		RegisterForwardMethodRequest,
-		RegisterForwardMethodResponse,
+	typedef OpcUaStackCore::ServiceTransactionTemplate<
+		OpcUaStackCore::RegisterForwardMethodRequest,
+		OpcUaStackCore::RegisterForwardMethodResponse,
 		OpcUaId_RegisterForwardMethodRequest_Encoding_DefaultBinary,
 		OpcUaId_RegisterForwardMethodResponse_Encoding_DefaultBinary
 	> ServiceTransactionRegisterForwardMethod;
 
-	typedef ServiceTransactionTemplate<
-		RegisterForwardMethodAsyncRequest,
-		RegisterForwardMethodAsyncResponse,
+	typedef OpcUaStackCore::ServiceTransactionTemplate<
+		OpcUaStackCore::RegisterForwardMethodAsyncRequest,
+		OpcUaStackCore::RegisterForwardMethodAsyncResponse,
 		OpcUaId_RegisterForwardMethodAsyncRequest_Encoding_DefaultBinary,
 		OpcUaId_RegisterForwardMethodAsyncResponse_Encoding_DefaultBinary
 	> ServiceTransactionRegisterForwardMethodAsync;
 
-	typedef ServiceTransactionTemplate<
-		RegisterForwardGlobalRequest,
-		RegisterForwardGlobalResponse,
+	typedef OpcUaStackCore::ServiceTransactionTemplate<
+		OpcUaStackCore::RegisterForwardGlobalRequest,
+		OpcUaStackCore::RegisterForwardGlobalResponse,
 		OpcUaId_RegisterForwardGlobalRequest_Encoding_DefaultBinary,
 		OpcUaId_RegisterForwardGlobalResponse_Encoding_DefaultBinary
 	> ServiceTransactionRegisterForwardGlobal;
 
-	typedef ServiceTransactionTemplate<
-		GetNodeReferenceRequest,
-		GetNodeReferenceResponse,
+	typedef OpcUaStackCore::ServiceTransactionTemplate<
+		OpcUaStackCore::GetNodeReferenceRequest,
+		OpcUaStackCore::GetNodeReferenceResponse,
 		OpcUaId_GetNodeReferenceRequest_Encoding_DefaultBinary,
 		OpcUaId_GetNodeReferenceResponse_Encoding_DefaultBinary
 	> ServiceTransactionGetNodeReference;
 
-	typedef ServiceTransactionTemplate<
-		NamespaceInfoRequest,
-		NamespaceInfoResponse,
+	typedef OpcUaStackCore::ServiceTransactionTemplate<
+		OpcUaStackCore::NamespaceInfoRequest,
+		OpcUaStackCore::NamespaceInfoResponse,
 		OpcUaId_NamespaceInfoRequest_Encoding_DefaultBinary,
 		OpcUaId_NamespaceInfoResponse_Encoding_DefaultBinary
 	> ServiceTransactionNamespaceInfo;
 
-	typedef ServiceTransactionTemplate<
+	typedef OpcUaStackCore::ServiceTransactionTemplate<
 		CreateNodeInstanceRequest,
 		CreateNodeInstanceResponse,
 		OpcUaId_CreateNodeInstanceRequest_Encoding_DefaultBinary,
 		OpcUaId_CreateNodeInstanceResponse_Encoding_DefaultBinary
 	> ServiceTransactionCreateNodeInstance;
 
-	typedef ServiceTransactionTemplate<
-		DelNodeInstanceRequest,
-		DelNodeInstanceResponse,
+	typedef OpcUaStackCore::ServiceTransactionTemplate<
+		OpcUaStackCore::DelNodeInstanceRequest,
+		OpcUaStackCore::DelNodeInstanceResponse,
 		OpcUaId_DelNodeInstanceRequest_Encoding_DefaultBinary,
 		OpcUaId_DelNodeInstanceResponse_Encoding_DefaultBinary
 	> ServiceTransactionDelNodeInstance;
 
-	typedef ServiceTransactionTemplate<
-		FireEventRequest,
-		FireEventResponse,
+	typedef OpcUaStackCore::ServiceTransactionTemplate<
+		OpcUaStackCore::FireEventRequest,
+		OpcUaStackCore::FireEventResponse,
 		OpcUaId_FireEventRequest_Encoding_DefaultBinary,
 		OpcUaId_FireEventResponse_Encoding_DefaultBinary
 	> ServiceTransactionFireEvent;
 
-	typedef ServiceTransactionTemplate<
-		BrowsePathToNodeIdRequest,
-        BrowsePathToNodeIdResponse,
+	typedef OpcUaStackCore::ServiceTransactionTemplate<
+		OpcUaStackCore::BrowsePathToNodeIdRequest,
+		OpcUaStackCore::BrowsePathToNodeIdResponse,
         OpcUaId_BrowsePathToNodeIdRequest_Encoding_DefaultBinary,
         OpcUaId_BrowsePathToNodeIdResponse_Encoding_DefaultBinary
     > ServiceTransactionBrowsePathToNodeId;
 
-	typedef ServiceTransactionTemplate<
-		CreateVariableRequest,
-		CreateVariableResponse,
+	typedef OpcUaStackCore::ServiceTransactionTemplate<
+		OpcUaStackCore::CreateVariableRequest,
+		OpcUaStackCore::CreateVariableResponse,
 		OpcUaId_CreateVariableRequest_Encoding_DefaultBinary,
 		OpcUaId_CreateVariableResponse_Encoding_DefaultBinary
 	> ServiceTransactionCreateVariable;
 
-	typedef ServiceTransactionTemplate<
-		CreateObjectRequest,
-		CreateObjectResponse,
+	typedef OpcUaStackCore::ServiceTransactionTemplate<
+		OpcUaStackCore::CreateObjectRequest,
+		OpcUaStackCore::CreateObjectResponse,
 		OpcUaId_CreateObjectRequest_Encoding_DefaultBinary,
 		OpcUaId_CreateObjectResponse_Encoding_DefaultBinary
 	> ServiceTransactionCreateObject;

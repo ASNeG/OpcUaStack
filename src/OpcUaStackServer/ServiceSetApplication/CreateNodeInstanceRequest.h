@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,46 +15,46 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_CreateNodeInstanceRequest_h__
-#define __OpcUaStackCore_CreateNodeInstanceRequest_h__
+#ifndef __OpcUaStackServer_CreateNodeInstanceRequest_h__
+#define __OpcUaStackServer_CreateNodeInstanceRequest_h__
 
 #include "OpcUaStackCore/StandardDataTypes/NodeClass.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaLocalizedText.h"
 
-namespace OpcUaStackCore
+namespace OpcUaStackServer
 {
 
 	class DLLEXPORT CreateNodeInstanceRequest
-	: public  Object
+	: public OpcUaStackCore::Object
 	{
 	  public:
-		typedef boost::shared_ptr<CreateNodeInstanceRequest> SPtr;
+		using SPtr =  boost::shared_ptr<CreateNodeInstanceRequest>;
 
 		CreateNodeInstanceRequest(void);
 		virtual ~CreateNodeInstanceRequest(void);
 
 		std::string& name(void);
-		NodeClass::Enum& nodeClassType(void);
-		OpcUaNodeId& parentNodeId(void);
-		OpcUaNodeId& nodeId(void);
-		OpcUaLocalizedText& displayName(void);
-		OpcUaQualifiedName& browseName(void);
-		OpcUaNodeId& referenceNodeId(void);
-		OpcUaNodeId& typeNodeId(void);
+		OpcUaStackCore::NodeClass::Enum& nodeClassType(void);
+		OpcUaStackCore::OpcUaNodeId& parentNodeId(void);
+		OpcUaStackCore::OpcUaNodeId& nodeId(void);
+		OpcUaStackCore::OpcUaLocalizedText& displayName(void);
+		OpcUaStackCore::OpcUaQualifiedName& browseName(void);
+		OpcUaStackCore::OpcUaNodeId& referenceNodeId(void);
+		OpcUaStackCore::OpcUaNodeId& typeNodeId(void);
 
 		bool opcUaBinaryEncode(std::ostream& os) const;
 		bool opcUaBinaryDecode(std::istream& is);
 
 	  private:
 		std::string name_;
-		NodeClass::Enum nodeClassType_;
-		OpcUaNodeId parentNodeId_;
-		OpcUaNodeId nodeId_;
-		OpcUaLocalizedText displayName_;
-		OpcUaQualifiedName browseName_;
-		OpcUaNodeId referenceNodeId_;
-		OpcUaNodeId typeNodeId_;			// optional
+		OpcUaStackCore::NodeClass::Enum nodeClassType_;
+		OpcUaStackCore::OpcUaNodeId parentNodeId_;
+		OpcUaStackCore::OpcUaNodeId nodeId_;
+		OpcUaStackCore::OpcUaLocalizedText displayName_;
+		OpcUaStackCore::OpcUaQualifiedName browseName_;
+		OpcUaStackCore::OpcUaNodeId referenceNodeId_;
+		OpcUaStackCore::OpcUaNodeId typeNodeId_;			// optional
 	};
 
 }

@@ -19,7 +19,7 @@
 #define __OpcUaStackServer_ApplicationService_h__
 
 #include "OpcUaStackCore/ServiceSet/ServiceTransactionIf.h"
-#include "OpcUaStackCore/ServiceSetApplication/ApplicationServiceTransaction.h"
+#include "OpcUaStackServer/ServiceSetApplication/ApplicationServiceTransaction.h"
 #include "OpcUaStackServer/ServiceSet/ServiceSetBase.h"
 #include "OpcUaStackServer/ServiceSet/ServerServiceBase.h"
 

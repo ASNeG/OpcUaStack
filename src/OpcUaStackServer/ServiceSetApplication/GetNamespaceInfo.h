@@ -20,7 +20,7 @@
 
 #include <vector>
 #include "OpcUaStackServer/Application/ApplicationIf.h"
-#include "OpcUaStackCore/ServiceSetApplication/ApplicationServiceTransaction.h"
+#include "OpcUaStackServer/ServiceSetApplication/ApplicationServiceTransaction.h"
 
 namespace OpcUaStackServer
 {
@@ -28,7 +28,7 @@ namespace OpcUaStackServer
 	class DLLEXPORT GetNamespaceInfo
 	{
 	  public:
-		typedef boost::shared_ptr<GetNamespaceInfo> SPtr;
+		using SPtr = boost::shared_ptr<GetNamespaceInfo>;
 
 		GetNamespaceInfo(void);
 		virtual ~GetNamespaceInfo(void);

@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,27 +15,32 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_CreateNodeInstanceResponse_h__
-#define __OpcUaStackCore_CreateNodeInstanceResponse_h__
+#ifndef __OpcUaStackServer_CreateNodeInstanceResponse_h__
+#define __OpcUaStackServer_CreateNodeInstanceResponse_h__
 
 #include "OpcUaStackCore/Base/Object.h"
+#include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 
-namespace OpcUaStackCore
+namespace OpcUaStackServer
 {
 
 	class DLLEXPORT CreateNodeInstanceResponse
-	: public  Object
+	: public OpcUaStackCore::Object
 	{
 	  public:
-		typedef boost::shared_ptr<CreateNodeInstanceResponse> SPtr;
+		using SPtr = boost::shared_ptr<CreateNodeInstanceResponse>;
 
 		CreateNodeInstanceResponse(void);
 		virtual ~CreateNodeInstanceResponse(void);
+
+		void baseNodeClass(OpcUaStackServer::BaseNodeClass::WPtr& baseNodeClass);
+		OpcUaStackServer::BaseNodeClass::WPtr& baseNodeClass(void);
 
 		bool opcUaBinaryEncode(std::ostream& os) const;
 		bool opcUaBinaryDecode(std::istream& is);
 
 	  private:
+		OpcUaStackServer::BaseNodeClass::WPtr baseNodeClass_;// base class reference of the created node
 	};
 
 }

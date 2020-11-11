@@ -16,8 +16,8 @@
  */
 
 #include "OpcUaStackCore/Base/Log.h"
-#include "OpcUaStackCore/ServiceSetApplication/ApplicationServiceTransaction.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
+#include "OpcUaStackServer/ServiceSetApplication/ApplicationServiceTransaction.h"
 #include "OpcUaStackServer/InformationModel/InformationModelManager.h"
 #include "OpcUaStackServer/InformationModel/InformationModelAccess.h"
 #include "OpcUaStackServer/InformationModel/NamespaceArray.h"
@@ -564,12 +564,13 @@ namespace OpcUaStackServer
 	}
 
 	void
-	ApplicationService::receiveCreateNodeInstanceRequest(ServiceTransaction::SPtr serviceTransaction)
+	ApplicationService::receiveCreateNodeInstanceRequest(
+		ServiceTransaction::SPtr serviceTransaction
+	)
 	{
-		ServiceTransactionCreateNodeInstance::SPtr trx = boost::static_pointer_cast<ServiceTransactionCreateNodeInstance>(serviceTransaction);
-
-		CreateNodeInstanceRequest::SPtr createNodeInstanceRequest = trx->request();
-		CreateNodeInstanceResponse::SPtr createNodeInstanceResponse = trx->response();
+		auto trx = boost::static_pointer_cast<ServiceTransactionCreateNodeInstance>(serviceTransaction);
+		auto req = trx->request();
+		auto res = trx->response();
 
 		Log(Debug, "application service create node instance request")
 			.parameter("Trx", serviceTransaction->transactionId());
@@ -579,25 +580,34 @@ namespace OpcUaStackServer
 		//
 		AddNodeRule addNodeRule;
 		addNodeRule.delemiter("/");
-		addNodeRule.displayPath(createNodeInstanceRequest->name());
+		addNodeRule.displayPath(req->name());
 		InformationModelManager imm(informationModel_);
 		bool success = imm.addNode(
-			createNodeInstanceRequest->nodeClassType(),
+			req->nodeClassType(),
 			addNodeRule,
-			createNodeInstanceRequest->parentNodeId(),
-			createNodeInstanceRequest->nodeId(),
-			createNodeInstanceRequest->displayName(),
-			createNodeInstanceRequest->browseName(),
-			createNodeInstanceRequest->referenceNodeId(),
-			createNodeInstanceRequest->typeNodeId()
+			req->parentNodeId(),
+			req->nodeId(),
+			req->displayName(),
+			req->browseName(),
+			req->referenceNodeId(),
+			req->typeNodeId()
 		);
 
+		//
+		// find created base node class
+		//
+		BaseNodeClass::WPtr baseNodeClass = informationModel_->find(req->nodeId());
+		res->baseNodeClass(baseNodeClass);
 		if (success) {
 			trx->statusCode(Success);
 		}
 		else {
 			trx->statusCode(BadInternalError);
 		}
+
+		//
+		// send answer
+		//
 		sendAnswer(serviceTransaction);
 	}
 
