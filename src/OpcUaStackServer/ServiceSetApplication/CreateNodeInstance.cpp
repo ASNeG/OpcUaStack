@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,7 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/ServiceSetApplication/ApplicationServiceTransaction.h"
+#include "OpcUaStackServer/ServiceSetApplication/ApplicationServiceTransaction.h"
 #include "OpcUaStackServer/ServiceSetApplication/CreateNodeInstance.h"
 #include "OpcUaStackServer/ServiceSetApplication/NodeReferenceApplication.h"
 
@@ -130,9 +130,13 @@ namespace OpcUaStackServer
 		// send query to application service
 		applicationServiceIf->sendSync(trx);
 		resultCode_ = trx->statusCode();
-	  	if (resultCode_ != Success) {
-	  		return false;
-	  	}
+		if (resultCode_ == Success) {
+			baseNodeClass_ = trx->response()->baseNodeClass();
+		}
+		else {
+			baseNodeClass_.reset();
+			return false;
+		}
 		return true;
 	}
 
@@ -140,6 +144,12 @@ namespace OpcUaStackServer
 	CreateNodeInstance::resultCode(void)
 	{
 		return resultCode_;
+	}
+
+	BaseNodeClass::WPtr&
+	CreateNodeInstance::baseNodeClass(void)
+	{
+		return baseNodeClass_;
 	}
 
 }

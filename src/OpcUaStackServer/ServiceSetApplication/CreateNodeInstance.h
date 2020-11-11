@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -23,6 +23,7 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackCore/StandardDataTypes/NodeClass.h"
 #include "OpcUaStackServer/Application/ApplicationIf.h"
+#include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 
 namespace OpcUaStackServer
 {
@@ -30,7 +31,7 @@ namespace OpcUaStackServer
 	class DLLEXPORT CreateNodeInstance
 	{
 	  public:
-		typedef boost::shared_ptr<CreateNodeInstance> SPtr;
+		using SPtr = boost::shared_ptr<CreateNodeInstance>;
 
 		CreateNodeInstance(void);
 		CreateNodeInstance(
@@ -55,7 +56,9 @@ namespace OpcUaStackServer
 		void typeNodeId(const OpcUaStackCore::OpcUaNodeId& typeNodeId);
 
 		bool query(ApplicationServiceIf* applicationServiceIf);
+
 		OpcUaStackCore::OpcUaStatusCode resultCode(void);
+		OpcUaStackServer::BaseNodeClass::WPtr& baseNodeClass(void);
 
 	  private:
 		std::string name_;
@@ -67,7 +70,8 @@ namespace OpcUaStackServer
 		OpcUaStackCore::OpcUaNodeId referenceNodeId_;
 		OpcUaStackCore::OpcUaNodeId typeNodeId_;			// optional
 
-		OpcUaStackCore::OpcUaStatusCode resultCode_;
+		OpcUaStackCore::OpcUaStatusCode resultCode_ = OpcUaStackCore::Success;	// result code of the operation
+		OpcUaStackServer::BaseNodeClass::WPtr baseNodeClass_;// base class reference of the created node
 	};
 
 }
