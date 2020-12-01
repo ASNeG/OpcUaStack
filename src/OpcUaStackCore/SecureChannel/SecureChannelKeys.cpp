@@ -95,6 +95,12 @@ namespace OpcUaStackCore
 		return expireTime_;
 	}
 
+	bool
+	SecureChannelKey::isExpiredSecurechannelKey(void)
+	{
+		return boost::posix_time::microsec_clock::universal_time() > expireTime_;
+	}
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
@@ -108,6 +114,68 @@ namespace OpcUaStackCore
 
 	SecureChannelKeys::~SecureChannelKeys(void)
 	{
+	}
+
+	SecureChannelKey::SPtr
+	SecureChannelKeys::createSecureChannelKey(uint32_t liveTime)
+	{
+		// create new secure channel key
+		auto secureChannelKey = std::make_shared<SecureChannelKey>();
+		secureChannelKey->createTime(boost::posix_time::microsec_clock::universal_time());
+		secureChannelKey->expireTime(secureChannelKey->createTime() + boost::posix_time::microsec(liveTime));
+
+		// create unique security token
+		while (1) {
+			secureChannelKey->securityToken(std::rand());
+			auto it = secureChannelKeyMap_.find(secureChannelKey->securityToken());
+			if (it == secureChannelKeyMap_.end()) {
+				break;
+			}
+		}
+
+		// insert new secure channel key to security channel key map
+		secureChannelKeyMap_.insert(std::make_pair(secureChannelKey->securityToken(), secureChannelKey));
+
+		return secureChannelKey;
+	}
+
+	SecureChannelKey::SPtr
+	SecureChannelKeys::getSecureChannelKey(uint32_t securityToken)
+	{
+		// find secure channel key
+		auto it = secureChannelKeyMap_.find(securityToken);
+		if (it != secureChannelKeyMap_.end()) {
+			return it->second;
+		}
+
+		return nullptr;
+	}
+
+	bool
+	SecureChannelKeys::delSecureChannelKey(uint32_t securityToken)
+	{
+		// find secure channel key
+		auto it = secureChannelKeyMap_.find(securityToken);
+		if (it == secureChannelKeyMap_.end()) {
+			return false;
+		}
+
+		// remove secure channel key from secure channel key map
+		secureChannelKeyMap_.erase(it);
+
+		return true;
+	}
+
+	bool
+	SecureChannelKeys::existSecureChannelKey(uint32_t securityToken)
+	{
+		// find secure channel key
+		auto it = secureChannelKeyMap_.find(securityToken);
+		if (it == secureChannelKeyMap_.end()) {
+			return false;
+		}
+
+		return true;
 	}
 
 }

@@ -31,7 +31,7 @@ namespace OpcUaStackCore
 	class DLLEXPORT SecureChannelKey
 	{
 	  public:
-		using SPtr = std::shared_ptr<SecureChannelKey>();
+		using SPtr = std::shared_ptr<SecureChannelKey>;
 		using Map = std::map<uint32_t, SPtr>;
 
 		SecureChannelKey(void);
@@ -47,6 +47,8 @@ namespace OpcUaStackCore
 		boost::posix_time::ptime& createTime(void);
 		void expireTime(const boost::posix_time::ptime& expireTime);
 		boost::posix_time::ptime& expireTime(void);
+
+		bool isExpiredSecurechannelKey(void);
 
 	  private:
 		SecurityKeySet ownSecurityKeySet_;
@@ -66,7 +68,13 @@ namespace OpcUaStackCore
 		SecureChannelKeys(void);
 		~SecureChannelKeys(void);
 
+		SecureChannelKey::SPtr createSecureChannelKey(uint32_t liveTime);
+		SecureChannelKey::SPtr getSecureChannelKey(uint32_t securityToken);
+		bool delSecureChannelKey(uint32_t securityToken);
+		bool existSecureChannelKey(uint32_t securityToken);
+
 	  private:
+		SecureChannelKey::Map secureChannelKeyMap_;
 	};
 
 }
