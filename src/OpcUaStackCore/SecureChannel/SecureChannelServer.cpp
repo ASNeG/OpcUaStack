@@ -415,6 +415,11 @@ namespace OpcUaStackCore
 			openSecureChannelResponse->serverNonce((OpcUaByte*)memBuf, keyLen);
 		}
 
+		//
+		// create new secure channel key
+		//
+		auto secureChannelKey = securitySettings.secureChannelKeys().createSecureChannelKey(openSecureChannelRequest.requestedLifetime());
+
 		// create symmetric key set. The key sets are used to sign and crypt
 		// opc ua packets.
 		//
@@ -428,8 +433,8 @@ namespace OpcUaStackCore
 			OpcUaStatusCode statusCode = securitySettings.cryptoBase()->deriveChannelKeyset(
 				securitySettings.partnerNonce(),
 				securitySettings.ownNonce(),
-				securitySettings.partnerSecurityKeySet(),
-				securitySettings.ownSecurityKeySet()
+				secureChannelKey->partnerSecurityKeySet(),
+				secureChannelKey->ownSecurityKeySet()
 			);
 			if (statusCode != Success) {
 				Log(Error, "create derived channel keyset error")
@@ -440,13 +445,6 @@ namespace OpcUaStackCore
 					return;
 			}
 		}
-
-		// create new security token
-		uint32_t securityToken = std::rand();
-		secureChannel->secureTokenVec_.push_back(securityToken);
-		Log(Debug, "create new security token")
-			.parameter("ChannelId", *secureChannel)
-			.parameter("SecurityToken", securityToken);
 
 		// check parameter
 		bool success = true;
@@ -544,7 +542,7 @@ namespace OpcUaStackCore
 
 		// create open secure channel response
 		openSecureChannelResponse->securityToken()->channelId(secureChannel->channelId_);
-		openSecureChannelResponse->securityToken()->tokenId(secureChannel->secureTokenVec_[secureChannel->secureTokenVec_.size()-1]);
+		openSecureChannelResponse->securityToken()->tokenId(secureChannelKey->securityToken());
 		openSecureChannelResponse->securityToken()->createAt().dateTime(boost::posix_time::microsec_clock::local_time());
 		openSecureChannelResponse->securityToken()->revisedLifetime(openSecureChannelRequest.requestedLifetime());
 		openSecureChannelResponse->responseHeader()->serviceResult(Success);

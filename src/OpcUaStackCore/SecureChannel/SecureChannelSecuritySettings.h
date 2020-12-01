@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -22,6 +22,7 @@
 #include "OpcUaStackCore/Certificate/CryptoBase.h"
 #include "OpcUaStackCore/Certificate/SecurityKeySet.h"
 #include "OpcUaStackCore/Certificate/CertificateChain.h"
+#include "OpcUaStackCore/SecureChannel/SecureChannelKeys.h"
 #include "OpcUaStackCore/StandardDataTypes/EndpointDescription.h"
 
 namespace OpcUaStackCore
@@ -36,6 +37,8 @@ namespace OpcUaStackCore
 		void cryptoBase(CryptoBase::SPtr& cryptoBase);
 		CryptoBase::SPtr& cryptoBase(void);
 		EndpointDescription::SPtr& endpointDescription(void);
+
+		SecureChannelKeys& secureChannelKeys(void);
 
 		bool isOwnEncryptionEnabled(void);
 		bool isOwnSignatureEnabled(void);
@@ -56,6 +59,8 @@ namespace OpcUaStackCore
 	  private:
 		CryptoBase::SPtr cryptoBase_;
 		EndpointDescription::SPtr endpointDescription_;
+
+		SecureChannelKeys secureChannelKeys_;
 
 		OpcUaByteString ownCertificateThumbprint_;
 		OpcUaByteString ownSecurityPolicyUri_;

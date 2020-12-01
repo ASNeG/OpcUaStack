@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -22,6 +22,7 @@
 #include "OpcUaStackCore/Certificate/CryptoManager.h"
 #include "OpcUaStackCore/Certificate/ApplicationCertificate.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannel.h"
+#include "OpcUaStackCore/SecureChannel/SecureChannelKeys.h"
 
 namespace OpcUaStackCore
 {
@@ -101,13 +102,16 @@ namespace OpcUaStackCore
 		// receive message request
 		//
 		OpcUaStatusCode secureReceivedMessageRequest(
-			SecureChannel* secureChannel
+			SecureChannel* secureChannel,
+			SecureChannelKey::SPtr& secureChannelKey
 		);
 		OpcUaStatusCode decryptReceivedMessage(
-			SecureChannel* secureChannel
+			SecureChannel* secureChannel,
+			SecureChannelKey::SPtr& secureChannelKey
 		);
 		OpcUaStatusCode verifyReceivedMessage(
-			SecureChannel* secureChannel
+			SecureChannel* secureChannel,
+			SecureChannelKey::SPtr& secureChannelKey
 		);
 
 		//
@@ -147,16 +151,19 @@ namespace OpcUaStackCore
 		OpcUaStatusCode secureSendMessageResponse(
 			MemoryBuffer& plainText,
 			MemoryBuffer& encryptedText,
-			SecureChannel* secureChannel
+			SecureChannel* secureChannel,
+			SecureChannelKey::SPtr& secureChannelKey
 		);
 		OpcUaStatusCode signSendMessageResponse(
 			MemoryBuffer& plainText,
-			SecureChannel* secureChannel
+			SecureChannel* secureChannel,
+			SecureChannelKey::SPtr& secureChannelKey
 		);
 		OpcUaStatusCode encryptSendMessageResponse(
 			MemoryBuffer& plainText,
 			MemoryBuffer& encryptedText,
-			SecureChannel* secureChannel
+			SecureChannel* secureChannel,
+			SecureChannelKey::SPtr& secureChannelKey
 		);
 
 

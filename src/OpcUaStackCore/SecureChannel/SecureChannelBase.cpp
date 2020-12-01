@@ -996,8 +996,20 @@ namespace OpcUaStackCore
 			return;
 		}
 
+		// find actual secure channel keys
+		auto& securitySettings = secureChannel->securitySettings();
+		auto secureChannelKey = securitySettings.secureChannelKeys().getSecureChannelKey(secureChannel->secureChannelTransaction_->securityTokenId_);
+		if (!secureChannelKey) {
+			Log(Debug, "opc ua secure channel security token unknown")
+				.parameter("ChannelId", *secureChannel)
+				.parameter("SecurityToken", secureChannel->secureChannelTransaction_->securityTokenId_);
+
+			closeChannel(secureChannel, true);
+			return;
+		}
+
 		// handle security
-		if (secureReceivedMessageRequest(secureChannel) != Success) {
+		if (secureReceivedMessageRequest(secureChannel, secureChannelKey) != Success) {
 			Log(Debug, "opc ua decrypt received message error")
 				.parameter("ChannelId", *secureChannel);
 
@@ -1213,8 +1225,20 @@ namespace OpcUaStackCore
 			return;
 		}
 
+		// find actual secure channel keys
+		auto& securitySettings = secureChannel->securitySettings();
+		auto secureChannelKey = securitySettings.secureChannelKeys().getSecureChannelKey(secureChannel->secureChannelTransaction_->securityTokenId_);
+		if (!secureChannelKey) {
+			Log(Debug, "opc ua secure channel security token unknown")
+				.parameter("ChannelId", *secureChannel)
+				.parameter("SecurityToken", secureChannel->secureChannelTransaction_->securityTokenId_);
+
+			closeChannel(secureChannel, true);
+			return;
+		}
+
 		// handle security
-		if (secureReceivedMessageRequest(secureChannel) != Success) {
+		if (secureReceivedMessageRequest(secureChannel, secureChannelKey) != Success) {
 			Log(Debug, "opc ua decrypt received message error")
 				.parameter("ChannelId", *secureChannel);
 
@@ -1222,7 +1246,7 @@ namespace OpcUaStackCore
 			return;
 		}
 
-		// encode sequence number
+		// decode sequence number
 		if (!OpcUaNumber::opcUaBinaryDecode(is, secureChannel->recvSequenceNumber_)) {
 			Log(Debug, "opc ua secure channel decode sequence number error")
 				.parameter("ChannelId", *secureChannel);
@@ -1231,7 +1255,7 @@ namespace OpcUaStackCore
 			return;
 		}
 
-		// encode request id
+		// decode request id
 		if (!OpcUaNumber::opcUaBinaryDecode(is, secureChannel->secureChannelTransaction_->requestId_)) {
 			Log(Debug, "opc ua secure channel decode sequence request id error")
 				.parameter("ChannelId", *secureChannel);
@@ -1679,6 +1703,16 @@ namespace OpcUaStackCore
 			return;
 		}
 
+		// find actual secure channel keys
+		auto& securitySettings = secureChannel->securitySettings();
+		auto secureChannelKey = securitySettings.secureChannelKeys().getSecureChannelKey(secureChannelTransaction->securityTokenId_);
+		if (!secureChannelKey) {
+			Log(Debug, "opc ua secure channel send message error, because security token unknown or timed out")
+				.parameter("ChannelId", *secureChannel)
+				.parameter("SecurityToken", secureChannelTransaction->securityTokenId_);
+			return;
+		}
+
 		// debug output
 		secureChannel->debugSendHeader(secureChannel->messageHeader_);
 		secureChannel->debugSendMessageResponse(secureChannelTransaction);
@@ -1698,7 +1732,7 @@ namespace OpcUaStackCore
 			MemoryBuffer plainText(sb2, sb1, sb);
 			MemoryBuffer encryptedText;
 
-			if (secureSendMessageResponse(plainText, encryptedText, secureChannel) != Success) {
+			if (secureSendMessageResponse(plainText, encryptedText, secureChannel, secureChannelKey) != Success) {
 				Log(Debug, "opc ua secure channel encrypt send message error")
 					.parameter("ChannelId", *secureChannel);
 				return;
@@ -1725,7 +1759,7 @@ namespace OpcUaStackCore
 			MemoryBuffer plainText(sb2, sb1, secureChannelTransaction->os_);
 			MemoryBuffer encryptedText;
 
-			if (secureSendMessageResponse(plainText, encryptedText, secureChannel) != Success) {
+			if (secureSendMessageResponse(plainText, encryptedText, secureChannel, secureChannelKey) != Success) {
 				Log(Debug, "opc ua secure channel encrypt send message error")
 					.parameter("ChannelId", *secureChannel);
 				return;
