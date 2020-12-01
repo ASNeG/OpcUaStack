@@ -15,7 +15,10 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include "boost/date_time/posix_time/posix_time.hpp"
+
 #include "OpcUaStackCore/SecureChannel/SecureChannelKeys.h"
+#include "OpcUaStackCore/Base/Log.h"
 
 namespace OpcUaStackCore
 {
@@ -77,7 +80,7 @@ namespace OpcUaStackCore
 		createTime_ = createTime;
 	}
 
-	boost::posix_time::ptime&
+	boost::posix_time::ptime
 	SecureChannelKey::createTime(void)
 	{
 		return createTime_;
@@ -89,7 +92,7 @@ namespace OpcUaStackCore
 		expireTime_ = expireTime;
 	}
 
-	boost::posix_time::ptime&
+	boost::posix_time::ptime
 	SecureChannelKey::expireTime(void)
 	{
 		return expireTime_;
@@ -136,6 +139,9 @@ namespace OpcUaStackCore
 		// insert new secure channel key to security channel key map
 		secureChannelKeyMap_.insert(std::make_pair(secureChannelKey->securityToken(), secureChannelKey));
 
+		Log(Debug, "create secure channel key")
+			.parameter("SecurityToken", secureChannelKey->securityToken())
+			.parameter("ExpireTime", secureChannelKey->expireTime());
 		return secureChannelKey;
 	}
 
@@ -160,6 +166,10 @@ namespace OpcUaStackCore
 			return false;
 		}
 
+		Log(Debug, "remove secure channel key")
+			.parameter("SecurityToken", it->second->securityToken())
+			.parameter("ExpireTime", it->second->expireTime());
+
 		// remove secure channel key from secure channel key map
 		secureChannelKeyMap_.erase(it);
 
@@ -176,6 +186,20 @@ namespace OpcUaStackCore
 		}
 
 		return true;
+	}
+
+	void
+	SecureChannelKeys::removeExpiredSecureChannelKeys(void)
+	{
+		for (auto it : secureChannelKeyMap_) {
+			if (it.second->isExpiredSecurechannelKey()) {
+				Log(Debug, "create secure channel key")
+					.parameter("SecurityToken", it.second->securityToken())
+					.parameter("ExpireTime", it.second->expireTime());
+
+				secureChannelKeyMap_.erase(it.first);
+			}
+		}
 	}
 
 }

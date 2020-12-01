@@ -44,9 +44,9 @@ namespace OpcUaStackCore
 		void securityToken(uint32_t securityToken);
 		uint32_t securityToken(void);
 		void createTime(const boost::posix_time::ptime& createTime);
-		boost::posix_time::ptime& createTime(void);
+		boost::posix_time::ptime createTime(void);
 		void expireTime(const boost::posix_time::ptime& expireTime);
-		boost::posix_time::ptime& expireTime(void);
+		boost::posix_time::ptime expireTime(void);
 
 		bool isExpiredSecurechannelKey(void);
 
@@ -72,6 +72,7 @@ namespace OpcUaStackCore
 		SecureChannelKey::SPtr getSecureChannelKey(uint32_t securityToken);
 		bool delSecureChannelKey(uint32_t securityToken);
 		bool existSecureChannelKey(uint32_t securityToken);
+		void removeExpiredSecureChannelKeys(void);
 
 	  private:
 		SecureChannelKey::Map secureChannelKeyMap_;
