@@ -516,6 +516,14 @@ namespace OpcUaStackCore
 			secureChannel->messageHeader_.channelId()
 		);
 
+		Log(Debug, "receive open secure channel request")
+			.parameter("ChannelId", *secureChannel)
+			.parameter("RequestId", secureChannel->recvRequestId_)
+			.parameter("RequestType", openSecureChannelRequest.requestType())
+			.parameter("SecurityPolicyUriLen", secureSettings.partnerSecurityPolicyUri().size())
+			.parameter("PartnerCertificateChainLen", secureSettings.partnerCertificateChain().size())
+			.parameter("OwnCertificateThumbprintLen", secureSettings.ownCertificateThumbprint().size());
+
 		// process open secure channel request
 		handleRecvOpenSecureChannelRequest(
 			secureChannel,
@@ -792,9 +800,15 @@ namespace OpcUaStackCore
 		if (secureChannel->openSecureChannelResponseList_.size() == 0) return;
 		if (secureChannel->asyncSend_) return;
 
-		OpenSecureChannelResponse::SPtr openSecureChannelResponse;
-		openSecureChannelResponse = secureChannel->openSecureChannelResponseList_.front();
+		auto openSecureChannelResponse = secureChannel->openSecureChannelResponseList_.front();
 		secureChannel->openSecureChannelResponseList_.pop_front();
+
+		Log(Debug, "send open secure channel response")
+			.parameter("ChannelId", *secureChannel)
+			.parameter("RequestId", secureChannel->recvRequestId_)
+			.parameter("OwnSecurityPolicyUriLen", securitySettings.ownSecurityPolicyUri().size())
+			.parameter("CertificateChainLen", securitySettings.ownCertificateChain().size())
+			.parameter("PartnerCertificateThumbprint", securitySettings.partnerCertificateThumbprint().size());
 
 		boost::asio::streambuf sb1;
 		std::iostream ios1(&sb1);

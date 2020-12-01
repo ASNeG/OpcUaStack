@@ -396,6 +396,10 @@ namespace OpcUaStackCore
 			if (len > 0) {
 				securitySettings.partnerNonce().set(buf, len);
 			}
+			else {
+				Log(Debug, "receive open secure channel request without client nonce")
+				    .parameter("ChannelId", *secureChannel);
+			}
 		}
 
 		// create own nonce
@@ -411,7 +415,15 @@ namespace OpcUaStackCore
 			openSecureChannelResponse->serverNonce((OpcUaByte*)memBuf, keyLen);
 		}
 
-		// create symmetric key set
+		// create symmetric key set. The key sets are used to sign and crypt
+		// opc ua packets.
+		//
+		// 1. partner nonce was read from open secure channel request
+		// 2. own nonce was generated above
+		//
+		// The own security key set and the partner security key set are now
+		// created.
+		//
 		if (securitySettings.isPartnerEncryptionEnabled() && securitySettings.isOwnEncryptionEnabled()) {
 			OpcUaStatusCode statusCode = securitySettings.cryptoBase()->deriveChannelKeyset(
 				securitySettings.partnerNonce(),
@@ -429,11 +441,16 @@ namespace OpcUaStackCore
 			}
 		}
 
+		// create new security token
+		uint32_t securityToken = std::rand();
+		secureChannel->secureTokenVec_.push_back(securityToken);
+		Log(Debug, "create new security token")
+			.parameter("ChannelId", *secureChannel)
+			.parameter("SecurityToken", securityToken);
+
 		// check parameter
 		bool success = true;
 		if (openSecureChannelRequest.requestType() == RT_ISSUE) {
-
-			// create a new security token for a new security channel
 
 			if (secureChannel->channelId_ != 0) {
 				success = false;
@@ -449,8 +466,6 @@ namespace OpcUaStackCore
 			secureChannel->channelId_ = secureChannel->gChannelId_;
 		}
 		else if (openSecureChannelRequest.requestType() ==  RT_RENEW) {
-
-			// create a new security token for an existing security channel
 
 			if (secureChannel->channelId_ != channelId) {
 				success = false;
@@ -478,9 +493,6 @@ namespace OpcUaStackCore
 			secureChannel->state_ = SecureChannel::S_CloseSecureChannel;
 			return;
 		}
-
-		// create new security token
-		secureChannel->secureTokenVec_.push_back(std::rand());
 
 		// --------------------------------------------------------------------
 		// --------------------------------------------------------------------

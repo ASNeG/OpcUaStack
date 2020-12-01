@@ -252,8 +252,13 @@ namespace OpcUaStackCore
 	{
 		bool rc = true;
 
-		rc &= OpcUaNumber::opcUaBinaryEncode(os, length_);
-		if (length_ < 1) return rc;
+		// encode length of the byte string
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, length_ < 0 ? (OpcUaInt32)0 : length_);
+		if (length_ < 1) {
+			return rc;
+		}
+
+		// encode byte string data
 		if (rc) {
 		    os.write((char*)value_, length_);
 		    rc = os.good();
