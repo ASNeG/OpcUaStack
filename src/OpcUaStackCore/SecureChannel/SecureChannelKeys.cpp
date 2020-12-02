@@ -191,15 +191,22 @@ namespace OpcUaStackCore
 	void
 	SecureChannelKeys::removeExpiredSecureChannelKeys(void)
 	{
-		for (auto it : secureChannelKeyMap_) {
+		// find expired secure channel keys
+		std::vector<uint32_t> securityTokens;
+ 		for (auto it : secureChannelKeyMap_) {
 			if (it.second->isExpiredSecurechannelKey()) {
 				Log(Debug, "create secure channel key")
 					.parameter("SecurityToken", it.second->securityToken())
 					.parameter("ExpireTime", it.second->expireTime());
 
-				secureChannelKeyMap_.erase(it.first);
+				securityTokens.push_back(it.first);
 			}
 		}
+
+ 		// remove expired secure channel keys
+ 		for (auto securityToken : securityTokens) {
+ 			secureChannelKeyMap_.erase(securityToken);
+ 		}
 	}
 
 }
