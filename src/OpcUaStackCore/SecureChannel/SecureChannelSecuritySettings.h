@@ -46,7 +46,7 @@ namespace OpcUaStackCore
 		OpcUaByteString& ownSecurityPolicyUri(void);
 		CertificateChain& ownCertificateChain(void);
 		MemoryBuffer& ownNonce(void);
-		SecurityKeySet& ownSecurityKeySet(void);
+		//SecurityKeySet& ownSecurityKeySet(void);
 
 		bool isPartnerEncryptionEnabled(void);
 		bool isPartnerSignatureEnabled(void);
@@ -54,7 +54,7 @@ namespace OpcUaStackCore
 		OpcUaByteString& partnerSecurityPolicyUri(void);
 		CertificateChain& partnerCertificateChain(void);
 		MemoryBuffer& partnerNonce(void);
-		SecurityKeySet& partnerSecurityKeySet(void);
+		//SecurityKeySet& partnerSecurityKeySet(void);
 
 	  private:
 		CryptoBase::SPtr cryptoBase_;
@@ -66,13 +66,11 @@ namespace OpcUaStackCore
 		OpcUaByteString ownSecurityPolicyUri_;
 		CertificateChain ownCertificateChain_;
 		MemoryBuffer ownNonce_;
-		SecurityKeySet ownSecurityKeySet_;
 
 		OpcUaByteString partnerCertificateThumbprint_;
 		OpcUaByteString partnerSecurityPolicyUri_;
 		CertificateChain partnerCertificateChain_;
 		MemoryBuffer partnerNonce_;
-		SecurityKeySet partnerSecurityKeySet_;
 	};
 
 }

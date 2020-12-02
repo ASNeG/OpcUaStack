@@ -1219,7 +1219,7 @@ namespace OpcUaStackCore
 		boost::asio::streambuf streambuf;
 		std::iostream os(&streambuf);
 		messageHeader->opcUaBinaryEncode(os, true);
-		OpcUaNumber::opcUaBinaryEncode(os, secureChannel->tokenId_);
+		OpcUaNumber::opcUaBinaryEncode(os, secureChannelKey->securityToken());
 
 		uint32_t plainTextLen = streambuf.size() + secureChannel->recvBuffer_.size();
 		MemoryBuffer plainText(plainTextLen);

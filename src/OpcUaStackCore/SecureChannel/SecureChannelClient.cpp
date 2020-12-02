@@ -401,9 +401,6 @@ namespace OpcUaStackCore
 		// set security parameter
 		SecurityToken::SPtr securityToken = openSecureChannelResponse.securityToken();
 		secureChannel->channelId_ = securityToken->channelId();
-		secureChannel->tokenId_ = securityToken->tokenId();
-		secureChannel->createAt_ = securityToken->createAt();
-		secureChannel->revisedLifetime_ = securityToken->revisedLifetime();
 
 		//
 		// create new secure channel key and remove all expired secure channel keys

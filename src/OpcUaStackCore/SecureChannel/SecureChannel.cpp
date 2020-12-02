@@ -53,9 +53,6 @@ namespace OpcUaStackCore
 	, typeId_()
 
 	, channelId_(0)
-	, tokenId_(0)
-	, createAt_()
-	, revisedLifetime_(0)
 
 	, receivedBufferSize_(MessageDefaults::receivedBufferSizeDefault_)
 	, sendBufferSize_(MessageDefaults::sendBufferSizeDefault_)

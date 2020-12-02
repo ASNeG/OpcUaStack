@@ -126,11 +126,6 @@ namespace OpcUaStackCore
 		boost::asio::ip::tcp::endpoint partner_;
 
 		OpcUaUInt32 channelId_;
-		OpcUaUInt32 tokenId_;
-		std::vector<OpcUaUInt32> secureTokenVec_;
-		OpcUaUtcTime createAt_;
-		OpcUaInt32 revisedLifetime_;
-
 		OpcUaNodeId typeId_;
 
 		SecureChannelTransaction::SPtr secureChannelTransaction_;

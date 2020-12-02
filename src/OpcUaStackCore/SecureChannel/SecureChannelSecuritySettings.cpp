@@ -25,8 +25,6 @@ namespace OpcUaStackCore
 	: cryptoBase_()
 	, partnerNonce_()
 	, ownNonce_()
-	, partnerSecurityKeySet_()
-	, ownSecurityKeySet_()
 	{
 	}
 
@@ -95,13 +93,6 @@ namespace OpcUaStackCore
 		return ownNonce_;
 	}
 
-	SecurityKeySet&
-	SecureChannelSecuritySettings::ownSecurityKeySet(void)
-	{
-		return ownSecurityKeySet_;
-	}
-
-
 	bool
 	SecureChannelSecuritySettings::isPartnerEncryptionEnabled(void)
 	{
@@ -136,12 +127,6 @@ namespace OpcUaStackCore
 	SecureChannelSecuritySettings::partnerNonce(void)
 	{
 		return partnerNonce_;
-	}
-
-	SecurityKeySet&
-	SecureChannelSecuritySettings::partnerSecurityKeySet(void)
-	{
-		return partnerSecurityKeySet_;
 	}
 
 }
