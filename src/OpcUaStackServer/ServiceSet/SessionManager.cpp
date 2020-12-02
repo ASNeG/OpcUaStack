@@ -23,6 +23,8 @@
 #include "OpcUaStackCore/ServiceSet/CloseSessionResponse.h"
 #include "OpcUaStackCore/ServiceSet/CancelRequest.h"
 #include "OpcUaStackCore/ServiceSet/CancelResponse.h"
+#include "OpcUaStackCore/ServiceSet/PublishRequest.h"
+#include "OpcUaStackCore/ServiceSet/PublishResponse.h"
 #include "OpcUaStackServer/ServiceSet/SessionManager.h"
 
 using namespace OpcUaStackCore;
@@ -241,7 +243,10 @@ namespace OpcUaStackServer
 	void
 	SessionManager::handleMessageRequest(SecureChannel* secureChannel)
 	{
-		Log(Debug, "session manager handle message request");
+
+		uint32_t requestType = secureChannel->secureChannelTransaction_->requestTypeNodeId_.nodeId<OpcUaStackCore::OpcUaUInt32>();
+		Log(Debug, "session manager handle message request")
+			.parameter("RequestType", OpcUaIdMap::shortString(requestType));
 
 		//
 		// this function is called by the secure channel when a new request
@@ -254,7 +259,7 @@ namespace OpcUaStackServer
 		requestHeader->opcUaBinaryDecode(ios);
 
 		// process request
-		switch (secureChannel->secureChannelTransaction_->requestTypeNodeId_.nodeId<OpcUaStackCore::OpcUaUInt32>())
+		switch (secureChannel->secureChannelTransaction_->requestTypeNodeId_.nodeId<OpcUaUInt32>())
 		{
 			case OpcUaId_RegisterServerRequest_Encoding_DefaultBinary:
 			{
@@ -381,6 +386,9 @@ namespace OpcUaStackServer
 		OpcUaStatusCode statusCode
 	)
 	{
+		Log(Debug, "activate session request error")
+			.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
+
 		// added response type
 		auto secureChannelTransaction = secureChannel->secureChannelTransaction_;
 		secureChannelTransaction->responseTypeNodeId_ = OpcUaId_ActivateSessionResponse_Encoding_DefaultBinary;
@@ -394,7 +402,7 @@ namespace OpcUaStackServer
 		std::iostream iosres(&secureChannelTransaction->os_);
 
 		ActivateSessionResponse activateSessionResponse;
-		activateSessionResponse.responseHeader()->requestHandle(activateSessionRequest.requestHeader()->requestHandle());
+		activateSessionResponse.responseHeader()->requestHandle(requestHeader->requestHandle());
 		activateSessionResponse.responseHeader()->serviceResult(statusCode);
 
 		activateSessionResponse.responseHeader()->opcUaBinaryEncode(iosres);
@@ -564,7 +572,32 @@ namespace OpcUaStackServer
 		OpcUaStatusCode statusCode
 	)
 	{
-		// FIXME: todo
+		auto secureChannelTransaction = secureChannel->secureChannelTransaction_;
+
+
+		if (secureChannelTransaction->requestTypeNodeId_.nodeId<OpcUaUInt32>() == OpcUaId_PublishRequest_Encoding_DefaultBinary) {
+			secureChannelTransaction->responseTypeNodeId_ = OpcUaId_PublishResponse_Encoding_DefaultBinary;
+
+			// decode publish request
+			std::iostream ios(&secureChannelTransaction->is_);
+			PublishRequest publishRequest;
+			publishRequest.opcUaBinaryDecode(ios);
+
+			// create publish response
+			std::iostream iosres(&secureChannelTransaction->os_);
+
+			auto responseHeader = boost::make_shared<ResponseHeader>();
+			responseHeader->requestHandle(requestHeader->requestHandle());
+			responseHeader->serviceResult(BadNoSubscription);
+			responseHeader->opcUaBinaryEncode(iosres);
+
+			PublishResponse publishResponse;
+			publishResponse.opcUaBinaryEncode(iosres);
+
+			// send cancel response
+			responseMessage(responseHeader, secureChannelTransaction);
+			return;
+		}
 	}
 
 	// ------------------------------------------------------------------------
