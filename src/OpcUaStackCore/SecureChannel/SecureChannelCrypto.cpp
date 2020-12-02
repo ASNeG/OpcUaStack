@@ -655,7 +655,7 @@ namespace OpcUaStackCore
 		uint32_t securityHeaderLen =
 			16 +														// security header length fields
 			securitySettings.ownSecurityPolicyUri().size() +			// security policy
-			securitySettings.ownCertificateChain().lastCertificateSize() +	// sender certificate
+			securitySettings.ownCertificateChain().certificateSize() +	// sender certificate
 			20;															// thumbPrint
 		uint32_t sequenceHeaderLen = 8;
 		uint32_t bodyLen = plainText.memLen() -
@@ -754,7 +754,7 @@ namespace OpcUaStackCore
 		uint32_t securityHeaderLen =
 			16 +														// security header length fields
 			securitySettings.ownSecurityPolicyUri().size() +			// security policy
-			securitySettings.ownCertificateChain().lastCertificateSize() +	// sender certificate
+			securitySettings.ownCertificateChain().certificateSize() +	// sender certificate
 			20;
 		uint32_t sequenceHeaderLen = 8;
 		uint32_t bodyLen =

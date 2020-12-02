@@ -125,7 +125,7 @@ namespace OpcUaStackCore
 		// create new secure channel key
 		auto secureChannelKey = std::make_shared<SecureChannelKey>();
 		secureChannelKey->createTime(boost::posix_time::microsec_clock::universal_time());
-		secureChannelKey->expireTime(secureChannelKey->createTime() + boost::posix_time::microsec(liveTime));
+		secureChannelKey->expireTime(secureChannelKey->createTime() + boost::posix_time::millisec(liveTime));
 
 		// create unique security token
 		while (1) {

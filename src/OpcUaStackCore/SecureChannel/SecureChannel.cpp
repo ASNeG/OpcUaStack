@@ -315,7 +315,7 @@ namespace OpcUaStackCore
 		Log(Debug, "opc ua secure channel send OpenSecureChannelResponse")
 			.parameter("ChannelId", *this)
 			.parameter("ChannelId", openSecureChannelResponse.securityToken()->channelId())
-			.parameter("TokenId", openSecureChannelResponse.securityToken()->channelId())
+			.parameter("TokenId", openSecureChannelResponse.securityToken()->tokenId())
 			.parameter("CreateAt", openSecureChannelResponse.securityToken()->createAt())
 			.parameter("RevisedTime", openSecureChannelResponse.securityToken()->revisedLifetime());
 	}
