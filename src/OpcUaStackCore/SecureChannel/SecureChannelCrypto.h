@@ -120,29 +120,35 @@ namespace OpcUaStackCore
 		OpcUaStatusCode secureSendMessageRequest(
 			MemoryBuffer& plainText,
 			MemoryBuffer& encryptedText,
-			SecureChannel* secureChannel
+			SecureChannel* secureChannel,
+			SecureChannelKey::SPtr& secureChannelKey
 		);
 		OpcUaStatusCode signSendMessageRequest(
 			MemoryBuffer& plainText,
-			SecureChannel* secureChannel
+			SecureChannel* secureChannel,
+			SecureChannelKey::SPtr& secureChannelKey
 		);
 		OpcUaStatusCode encryptSendMessageRequest(
 			MemoryBuffer& plainText,
 			MemoryBuffer& encryptedText,
-			SecureChannel* secureChannel
+			SecureChannel* secureChannel,
+			SecureChannelKey::SPtr& secureChannelKey
 		);
 
 		//
 		// receive message response
 		//
 		OpcUaStatusCode secureReceivedMessageResponse(
-			SecureChannel* secureChannel
+			SecureChannel* secureChannel,
+			SecureChannelKey::SPtr& secureChannelKey
 		);
 		OpcUaStatusCode decryptReceivedMessageResponse(
-			SecureChannel* secureChannel
+			SecureChannel* secureChannel,
+			SecureChannelKey::SPtr& secureChannelKey
 		);
 		OpcUaStatusCode verifyReceivedMessageResponse(
-			SecureChannel* secureChannel
+			SecureChannel* secureChannel,
+			SecureChannelKey::SPtr& secureChannelKey
 		);
 
 		//

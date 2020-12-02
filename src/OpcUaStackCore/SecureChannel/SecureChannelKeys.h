@@ -68,13 +68,15 @@ namespace OpcUaStackCore
 		SecureChannelKeys(void);
 		~SecureChannelKeys(void);
 
-		SecureChannelKey::SPtr createSecureChannelKey(uint32_t liveTime);
+		uint32_t actSecurityToken(void);
+		SecureChannelKey::SPtr createSecureChannelKey(uint32_t liveTime, uint32_t securityToken = 0);
 		SecureChannelKey::SPtr getSecureChannelKey(uint32_t securityToken);
 		bool delSecureChannelKey(uint32_t securityToken);
 		bool existSecureChannelKey(uint32_t securityToken);
 		void removeExpiredSecureChannelKeys(void);
 
 	  private:
+		uint32_t actSecurityToken_ = 0;
 		SecureChannelKey::Map secureChannelKeyMap_;
 	};
 

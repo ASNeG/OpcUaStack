@@ -119,8 +119,14 @@ namespace OpcUaStackCore
 	{
 	}
 
+	uint32_t
+	SecureChannelKeys::actSecurityToken(void)
+	{
+		return actSecurityToken_;
+	}
+
 	SecureChannelKey::SPtr
-	SecureChannelKeys::createSecureChannelKey(uint32_t liveTime)
+	SecureChannelKeys::createSecureChannelKey(uint32_t liveTime, uint32_t securityToken)
 	{
 		// create new secure channel key
 		auto secureChannelKey = std::make_shared<SecureChannelKey>();
@@ -128,15 +134,23 @@ namespace OpcUaStackCore
 		secureChannelKey->expireTime(secureChannelKey->createTime() + boost::posix_time::millisec(liveTime));
 
 		// create unique security token
-		while (1) {
-			secureChannelKey->securityToken(std::rand());
-			auto it = secureChannelKeyMap_.find(secureChannelKey->securityToken());
-			if (it == secureChannelKeyMap_.end()) {
-				break;
+		if (securityToken != 0) {
+			// we use an existing security token
+			secureChannelKey->securityToken(securityToken);
+		}
+		else {
+			// we must generate a new global unique security token
+			while (1) {
+				secureChannelKey->securityToken(std::rand());
+				auto it = secureChannelKeyMap_.find(secureChannelKey->securityToken());
+				if (it == secureChannelKeyMap_.end()) {
+					break;
+				}
 			}
 		}
 
 		// insert new secure channel key to security channel key map
+		actSecurityToken_ = secureChannelKey->securityToken();
 		secureChannelKeyMap_.insert(std::make_pair(secureChannelKey->securityToken(), secureChannelKey));
 
 		Log(Debug, "create secure channel key")

@@ -941,7 +941,8 @@ namespace OpcUaStackCore
 	SecureChannelCrypto::secureSendMessageRequest(
 		MemoryBuffer& plainText,
 		MemoryBuffer& encryptedText,
-		SecureChannel* secureChannel
+		SecureChannel* secureChannel,
+		SecureChannelKey::SPtr& secureChannelKey
 	)
 	{
 		OpcUaStatusCode statusCode;
@@ -955,7 +956,7 @@ namespace OpcUaStackCore
 		}
 
 		if (securitySettings.isOwnSignatureEnabled()) {
-			statusCode = signSendMessageRequest(plainText, secureChannel);
+			statusCode = signSendMessageRequest(plainText, secureChannel, secureChannelKey);
 			if (statusCode != Success) {
 				return statusCode;
 			}
@@ -963,7 +964,7 @@ namespace OpcUaStackCore
 
 		// encrypt send open secure channel response
 		if (securitySettings.isOwnEncryptionEnabled()) {
-			statusCode = encryptSendMessageRequest(plainText, encryptedText, secureChannel);
+			statusCode = encryptSendMessageRequest(plainText, encryptedText, secureChannel, secureChannelKey);
 			if (statusCode != Success) {
 				return statusCode;
 			}
@@ -978,7 +979,8 @@ namespace OpcUaStackCore
 	OpcUaStatusCode
 	SecureChannelCrypto::signSendMessageRequest(
 		MemoryBuffer& plainText,
-		SecureChannel* secureChannel
+		SecureChannel* secureChannel,
+		SecureChannelKey::SPtr& secureChannelKey
 	)
 	{
 		OpcUaStatusCode statusCode;
@@ -1029,7 +1031,7 @@ namespace OpcUaStackCore
 		statusCode = securitySettings.cryptoBase()->symmetricSign(
 			plainText.memBuf(),
 			plainText.memLen() - signatureDataLen,
-			securitySettings.ownSecurityKeySet().signKey(),
+			secureChannelKey->ownSecurityKeySet().signKey(),
 			plainText.memBuf() + plainText.memLen() - signatureDataLen,
 			&keyLen
 		);
@@ -1063,7 +1065,8 @@ namespace OpcUaStackCore
 	SecureChannelCrypto::encryptSendMessageRequest(
 		MemoryBuffer& plainText,
 		MemoryBuffer& encryptedText,
-		SecureChannel* secureChannel
+		SecureChannel* secureChannel,
+		SecureChannelKey::SPtr& secureChannelKey
 	)
 	{
 		OpcUaStatusCode statusCode;
@@ -1111,8 +1114,8 @@ namespace OpcUaStackCore
 		statusCode = securitySettings.cryptoBase()->symmetricEncrypt(
 			plainText.memBuf() + messageHeaderLen + securityHeaderLen,
 			plainText.memLen() - messageHeaderLen - securityHeaderLen,
-			securitySettings.ownSecurityKeySet().encryptKey(),
-			securitySettings.ownSecurityKeySet().iv(),
+			secureChannelKey->ownSecurityKeySet().encryptKey(),
+			secureChannelKey->ownSecurityKeySet().iv(),
 			plainText.memBuf() + messageHeaderLen + securityHeaderLen,
 			&encryptedTextLen
 		);
@@ -1136,7 +1139,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	OpcUaStatusCode
 	SecureChannelCrypto::secureReceivedMessageResponse(
-		SecureChannel* secureChannel
+		SecureChannel* secureChannel,
+		SecureChannelKey::SPtr& secureChannelKey
 	)
 	{
 		OpcUaStatusCode statusCode;
@@ -1150,7 +1154,7 @@ namespace OpcUaStackCore
 
 		// decrypt received message request
 		if (securitySettings.isPartnerEncryptionEnabled()) {
-			statusCode = decryptReceivedMessageResponse(secureChannel);
+			statusCode = decryptReceivedMessageResponse(secureChannel, secureChannelKey);
 			if (statusCode != Success) {
 				return statusCode;
 			}
@@ -1158,7 +1162,7 @@ namespace OpcUaStackCore
 
 		// verify signature
 		if (securitySettings.isPartnerSignatureEnabled()) {
-			statusCode = verifyReceivedMessageResponse(secureChannel);
+			statusCode = verifyReceivedMessageResponse(secureChannel, secureChannelKey);
 			if (statusCode != Success) {
 				return statusCode;
 			}
@@ -1169,7 +1173,8 @@ namespace OpcUaStackCore
 
 	OpcUaStatusCode
 	SecureChannelCrypto::decryptReceivedMessageResponse(
-		SecureChannel* secureChannel
+		SecureChannel* secureChannel,
+		SecureChannelKey::SPtr& secureChannelKey
 	)
 	{
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
@@ -1186,8 +1191,8 @@ namespace OpcUaStackCore
 		statusCode = securitySettings.cryptoBase()->symmetricDecrypt(
 			encryptedText.memBuf(),
 			encryptedText.memLen(),
-			securitySettings.partnerSecurityKeySet().encryptKey(),
-			securitySettings.partnerSecurityKeySet().iv(),
+			secureChannelKey->partnerSecurityKeySet().encryptKey(),
+			secureChannelKey->partnerSecurityKeySet().iv(),
 			plainText.memBuf(),
 			&receivedDataLen
 		);
@@ -1201,7 +1206,8 @@ namespace OpcUaStackCore
 
 	OpcUaStatusCode
 	SecureChannelCrypto::verifyReceivedMessageResponse(
-		SecureChannel* secureChannel
+		SecureChannel* secureChannel,
+		SecureChannelKey::SPtr& secureChannelKey
 	)
 	{
 		OpcUaStatusCode statusCode;
@@ -1226,7 +1232,7 @@ namespace OpcUaStackCore
 		statusCode = securitySettings.cryptoBase()->symmetricVerify(
 			plainText.memBuf(),
 			plainText.memLen() - securitySettings.cryptoBase()->signatureDataLen(),
-			securitySettings.partnerSecurityKeySet().signKey(),
+			secureChannelKey->partnerSecurityKeySet().signKey(),
 			plainText.memBuf() + plainText.memLen() - securitySettings.cryptoBase()->signatureDataLen(),
 			securitySettings.cryptoBase()->signatureDataLen()
 		);

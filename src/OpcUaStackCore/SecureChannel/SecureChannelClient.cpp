@@ -299,6 +299,7 @@ namespace OpcUaStackCore
 			return;
 		}
 
+		// now we start the read loop
 		asyncRead(secureChannel);
 		secureChannel->local_ = secureChannel->socket().local_endpoint();
 
@@ -320,7 +321,7 @@ namespace OpcUaStackCore
 			.parameter("Address", secureChannel->partner_.address().to_string())
 			.parameter("Port", secureChannel->partner_.port());
 
-		// send hello message
+		// send hello message to opc ua server
 		secureChannel->state_ = SecureChannel::S_Hello;
 		asyncWriteHello(secureChannel, helloMessage);
 	}
@@ -397,13 +398,37 @@ namespace OpcUaStackCore
 			}
 		}
 
-		// create symmetric key set
+		// set security parameter
+		SecurityToken::SPtr securityToken = openSecureChannelResponse.securityToken();
+		secureChannel->channelId_ = securityToken->channelId();
+		secureChannel->tokenId_ = securityToken->tokenId();
+		secureChannel->createAt_ = securityToken->createAt();
+		secureChannel->revisedLifetime_ = securityToken->revisedLifetime();
+
+		//
+		// create new secure channel key and remove all expired secure channel keys
+		//
+		securitySettings.secureChannelKeys().removeExpiredSecureChannelKeys();
+		auto secureChannelKey = securitySettings.secureChannelKeys().createSecureChannelKey(
+			securityToken->revisedLifetime(),
+			securityToken->tokenId()
+		);
+
+		// create symmetric key set. The key sets are used to sign and crypt
+		// opc ua packets.
+		//
+		// 1. partner nonce was read from open secure channel response
+		// 2. own nonce was generated before send open secure channel request
+		//
+		// The own security key set and the partner security key set are now
+		// created.
+		//
 		if (securitySettings.isPartnerEncryptionEnabled() && securitySettings.isOwnEncryptionEnabled()) {
-			OpcUaStatusCode statusCode = securitySettings.cryptoBase()->deriveChannelKeyset(
+			auto statusCode = securitySettings.cryptoBase()->deriveChannelKeyset(
 				securitySettings.ownNonce(),
 				securitySettings.partnerNonce(),
-				securitySettings.ownSecurityKeySet(),
-				securitySettings.partnerSecurityKeySet()
+				secureChannelKey->ownSecurityKeySet(),
+				secureChannelKey->partnerSecurityKeySet()
 			);
 			if (statusCode != Success) {
 				Log(Error, "create derived channel keyset error")
@@ -414,13 +439,6 @@ namespace OpcUaStackCore
 					// FIXME: todo - handle error
 			}
 		}
-
-		// set security parameter
-		SecurityToken::SPtr securityToken = openSecureChannelResponse.securityToken();
-		secureChannel->channelId_ = securityToken->channelId();
-		secureChannel->tokenId_ = securityToken->tokenId();
-		secureChannel->createAt_ = securityToken->createAt();
-		secureChannel->revisedLifetime_ = securityToken->revisedLifetime();
 
 		// start timer to renew security token
 		slotTimerElementRenew_->expireFromNow(securityToken->revisedLifetime() * 0.75);
