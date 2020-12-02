@@ -416,8 +416,9 @@ namespace OpcUaStackCore
 		}
 
 		//
-		// create new secure channel key
+		// create new secure channel key and remove all expired secure channel keys
 		//
+		securitySettings.secureChannelKeys().removeExpiredSecureChannelKeys();
 		auto secureChannelKey = securitySettings.secureChannelKeys().createSecureChannelKey(openSecureChannelRequest.requestedLifetime());
 
 		// create symmetric key set. The key sets are used to sign and crypt

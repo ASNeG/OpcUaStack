@@ -253,7 +253,7 @@ namespace OpcUaStackCore
 		bool rc = true;
 
 		// encode length of the byte string
-		rc &= OpcUaNumber::opcUaBinaryEncode(os, length_ < 0 ? (OpcUaInt32)0 : length_);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, length_);
 		if (length_ < 1) {
 			return rc;
 		}
