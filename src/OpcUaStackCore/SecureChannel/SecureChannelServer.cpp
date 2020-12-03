@@ -396,6 +396,10 @@ namespace OpcUaStackCore
 			if (len > 0) {
 				securitySettings.partnerNonce().set(buf, len);
 			}
+			else {
+				Log(Debug, "receive open secure channel request without client nonce")
+				    .parameter("ChannelId", *secureChannel);
+			}
 		}
 
 		// create own nonce
@@ -411,13 +415,27 @@ namespace OpcUaStackCore
 			openSecureChannelResponse->serverNonce((OpcUaByte*)memBuf, keyLen);
 		}
 
-		// create symmetric key set
+		//
+		// create new secure channel key and remove all expired secure channel keys
+		//
+		securitySettings.secureChannelKeys().removeExpiredSecureChannelKeys();
+		auto secureChannelKey = securitySettings.secureChannelKeys().createSecureChannelKey(openSecureChannelRequest.requestedLifetime());
+
+		// create symmetric key set. The key sets are used to sign and crypt
+		// opc ua packets.
+		//
+		// 1. partner nonce was read from open secure channel request
+		// 2. own nonce was generated above
+		//
+		// The own security key set and the partner security key set are now
+		// created.
+		//
 		if (securitySettings.isPartnerEncryptionEnabled() && securitySettings.isOwnEncryptionEnabled()) {
 			OpcUaStatusCode statusCode = securitySettings.cryptoBase()->deriveChannelKeyset(
 				securitySettings.partnerNonce(),
 				securitySettings.ownNonce(),
-				securitySettings.partnerSecurityKeySet(),
-				securitySettings.ownSecurityKeySet()
+				secureChannelKey->partnerSecurityKeySet(),
+				secureChannelKey->ownSecurityKeySet()
 			);
 			if (statusCode != Success) {
 				Log(Error, "create derived channel keyset error")
@@ -433,8 +451,6 @@ namespace OpcUaStackCore
 		bool success = true;
 		if (openSecureChannelRequest.requestType() == RT_ISSUE) {
 
-			// create a new security token for a new security channel
-
 			if (secureChannel->channelId_ != 0) {
 				success = false;
 				Log(Error, "receive invalid request type in OpenSecureChannelRequest")
@@ -449,8 +465,6 @@ namespace OpcUaStackCore
 			secureChannel->channelId_ = secureChannel->gChannelId_;
 		}
 		else if (openSecureChannelRequest.requestType() ==  RT_RENEW) {
-
-			// create a new security token for an existing security channel
 
 			if (secureChannel->channelId_ != channelId) {
 				success = false;
@@ -478,9 +492,6 @@ namespace OpcUaStackCore
 			secureChannel->state_ = SecureChannel::S_CloseSecureChannel;
 			return;
 		}
-
-		// create new security token
-		secureChannel->secureTokenVec_.push_back(std::rand());
 
 		// --------------------------------------------------------------------
 		// --------------------------------------------------------------------
@@ -532,7 +543,7 @@ namespace OpcUaStackCore
 
 		// create open secure channel response
 		openSecureChannelResponse->securityToken()->channelId(secureChannel->channelId_);
-		openSecureChannelResponse->securityToken()->tokenId(secureChannel->secureTokenVec_[secureChannel->secureTokenVec_.size()-1]);
+		openSecureChannelResponse->securityToken()->tokenId(secureChannelKey->securityToken());
 		openSecureChannelResponse->securityToken()->createAt().dateTime(boost::posix_time::microsec_clock::local_time());
 		openSecureChannelResponse->securityToken()->revisedLifetime(openSecureChannelRequest.requestedLifetime());
 		openSecureChannelResponse->responseHeader()->serviceResult(Success);

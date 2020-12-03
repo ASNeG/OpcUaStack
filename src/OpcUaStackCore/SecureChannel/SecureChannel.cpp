@@ -53,9 +53,6 @@ namespace OpcUaStackCore
 	, typeId_()
 
 	, channelId_(0)
-	, tokenId_(0)
-	, createAt_()
-	, revisedLifetime_(0)
 
 	, receivedBufferSize_(MessageDefaults::receivedBufferSizeDefault_)
 	, sendBufferSize_(MessageDefaults::sendBufferSizeDefault_)
@@ -315,7 +312,7 @@ namespace OpcUaStackCore
 		Log(Debug, "opc ua secure channel send OpenSecureChannelResponse")
 			.parameter("ChannelId", *this)
 			.parameter("ChannelId", openSecureChannelResponse.securityToken()->channelId())
-			.parameter("TokenId", openSecureChannelResponse.securityToken()->channelId())
+			.parameter("TokenId", openSecureChannelResponse.securityToken()->tokenId())
 			.parameter("CreateAt", openSecureChannelResponse.securityToken()->createAt())
 			.parameter("RevisedTime", openSecureChannelResponse.securityToken()->revisedLifetime());
 	}

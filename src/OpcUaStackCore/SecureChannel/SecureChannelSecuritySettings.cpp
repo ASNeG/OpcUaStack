@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -25,8 +25,6 @@ namespace OpcUaStackCore
 	: cryptoBase_()
 	, partnerNonce_()
 	, ownNonce_()
-	, partnerSecurityKeySet_()
-	, ownSecurityKeySet_()
 	{
 	}
 
@@ -50,6 +48,12 @@ namespace OpcUaStackCore
 	SecureChannelSecuritySettings::endpointDescription(void)
 	{
 		return endpointDescription_;
+	}
+
+	SecureChannelKeys&
+	SecureChannelSecuritySettings::secureChannelKeys(void)
+	{
+		return secureChannelKeys_;
 	}
 
 	bool
@@ -89,13 +93,6 @@ namespace OpcUaStackCore
 		return ownNonce_;
 	}
 
-	SecurityKeySet&
-	SecureChannelSecuritySettings::ownSecurityKeySet(void)
-	{
-		return ownSecurityKeySet_;
-	}
-
-
 	bool
 	SecureChannelSecuritySettings::isPartnerEncryptionEnabled(void)
 	{
@@ -130,12 +127,6 @@ namespace OpcUaStackCore
 	SecureChannelSecuritySettings::partnerNonce(void)
 	{
 		return partnerNonce_;
-	}
-
-	SecurityKeySet&
-	SecureChannelSecuritySettings::partnerSecurityKeySet(void)
-	{
-		return partnerSecurityKeySet_;
 	}
 
 }

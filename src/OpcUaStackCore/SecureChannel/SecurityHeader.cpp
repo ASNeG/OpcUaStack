@@ -28,11 +28,14 @@ namespace OpcUaStackCore
 		OpcUaByteString& receiverCertificateThumbprint
 	)
 	{
+		bool rc = true;
+
 		// encode security header
-		securityPolicyUri.opcUaBinaryEncode(os);
-		certificateChain.opcUaBinaryEncode(os);
-		receiverCertificateThumbprint.opcUaBinaryEncode(os);
-		return true;
+		rc &= securityPolicyUri.opcUaBinaryEncode(os);
+		rc &= certificateChain.opcUaBinaryEncode(os);
+		rc &= receiverCertificateThumbprint.opcUaBinaryEncode(os);
+
+		return rc;
 	}
 
 	bool
@@ -43,11 +46,14 @@ namespace OpcUaStackCore
 		OpcUaByteString& receiverCertificateThumbprint
 	)
 	{
+		bool rc = true;
+
 		// decode
-		securityPolicyUri.opcUaBinaryDecode(is);
-		certificateChain.opcUaBinaryDecode(is);
-		receiverCertificateThumbprint.opcUaBinaryDecode(is);
-		return true;
+		rc &= securityPolicyUri.opcUaBinaryDecode(is);
+		rc &= certificateChain.opcUaBinaryDecode(is);
+		rc &= receiverCertificateThumbprint.opcUaBinaryDecode(is);
+
+		return rc;
 	}
 
 }	
