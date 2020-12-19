@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -192,6 +192,90 @@ namespace OpcUaStackCore
 		boost::optional<Config> cfg = getChild(prefixPath);
 		if (!cfg) return;
 		return cfg->getChilds(valueName, configVec);
+	}
+
+	bool
+	Config::getConfigParameter(uint8_t& value)
+	{
+		uint32_t valueTemp;
+		if (!getConfigParameter(valueTemp)) {
+			return false;
+		}
+		if (valueTemp > 0xFF) {
+			return false;
+		}
+		value = (uint8_t)valueTemp;
+		return true;
+	}
+
+	bool
+	Config::getConfigParameter(int8_t& value)
+	{
+		int32_t valueTemp;
+		if (!getConfigParameter(valueTemp)) {
+			return false;
+		}
+		if (valueTemp > 127 || valueTemp < -128) {
+			return false;
+		}
+		value = (int8_t)valueTemp;
+		return true;
+	}
+
+	bool
+	Config::getConfigParameter(const std::string& path, uint8_t& value)
+	{
+		uint32_t valueTemp;
+		if (!getConfigParameter(path, valueTemp)) {
+			return false;
+		}
+		if (valueTemp > 0xFF) {
+			return false;
+		}
+		value = (uint8_t)valueTemp;
+		return true;
+	}
+
+	bool
+	Config::getConfigParameter(const std::string& path, int8_t& value)
+	{
+		int32_t valueTemp;
+		if (!getConfigParameter(path, valueTemp)) {
+			return false;
+		}
+		if (valueTemp > 127 || valueTemp < -128) {
+			return false;
+		}
+		value = (int8_t)valueTemp;
+		return true;
+	}
+
+	bool
+	Config::getConfigParameter(const std::string& path, uint8_t& value, const std::string& defaultValue)
+	{
+		uint32_t valueTemp;
+		if (!getConfigParameter(path, valueTemp, defaultValue)) {
+			return false;
+		}
+		if (valueTemp > 0xFF) {
+			return false;
+		}
+		value = (uint8_t)valueTemp;
+		return true;
+	}
+
+	bool
+	Config::getConfigParameter(const std::string& path, int8_t& value, const std::string& defaultValue)
+	{
+		int32_t valueTemp;
+		if (!getConfigParameter(path, valueTemp, defaultValue)) {
+			return false;
+		}
+		if (valueTemp > 127 || valueTemp < -128) {
+			return false;
+		}
+		value = (int8_t)valueTemp;
+		return true;
 	}
 
 	bool 

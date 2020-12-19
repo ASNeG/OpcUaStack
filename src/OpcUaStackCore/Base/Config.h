@@ -94,6 +94,8 @@ namespace OpcUaStackCore
 			  }
 			  return true;
 		  }
+		bool getConfigParameter(uint8_t& value);
+		bool getConfigParameter(int8_t& value);
 
 		template<typename T>
 		  bool getConfigParameter(const std::string& path, T& value)
@@ -108,6 +110,8 @@ namespace OpcUaStackCore
 			  }
 			  return true;
 		  }
+		bool getConfigParameter(const std::string& path, uint8_t& value);
+		bool getConfigParameter(const std::string& path, int8_t& value);
 
 		template<typename T>
 		  bool getConfigParameter(const std::string& path, T&value, const std::string& defaultValue)
@@ -134,6 +138,8 @@ namespace OpcUaStackCore
 
 			  return true;
 		  }
+		bool getConfigParameter(const std::string& path, uint8_t& value, const std::string& defaultValue);
+		bool getConfigParameter(const std::string& path, int8_t& value, const std::string& defaultValue);
 
 		template<typename T>
 		  bool isConfigParameterFromType(void)
