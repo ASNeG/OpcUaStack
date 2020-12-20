@@ -30,8 +30,8 @@
 #include "OpcUaStackServer/ServiceSetApplication/RegisterForwardMethodAsyncResponse.h"
 #include "OpcUaStackServer/ServiceSetApplication/RegisterForwardGlobalRequest.h"
 #include "OpcUaStackServer/ServiceSetApplication/RegisterForwardGlobalResponse.h"
-#include "OpcUaStackCore/ServiceSetApplication/GetNodeReferenceRequest.h"
-#include "OpcUaStackCore/ServiceSetApplication/GetNodeReferenceResponse.h"
+#include "OpcUaStackServer/ServiceSetApplication/GetNodeReferenceRequest.h"
+#include "OpcUaStackServer/ServiceSetApplication/GetNodeReferenceResponse.h"
 #include "OpcUaStackServer/ServiceSetApplication/NamespaceInfoRequest.h"
 #include "OpcUaStackServer/ServiceSetApplication/NamespaceInfoResponse.h"
 #include "OpcUaStackServer/ServiceSetApplication/DelNodeInstanceRequest.h"
@@ -86,8 +86,8 @@ namespace OpcUaStackServer
 	> ServiceTransactionRegisterForwardGlobal;
 
 	typedef OpcUaStackCore::ServiceTransactionTemplate<
-		OpcUaStackCore::GetNodeReferenceRequest,
-		OpcUaStackCore::GetNodeReferenceResponse,
+		GetNodeReferenceRequest,
+		GetNodeReferenceResponse,
 		OpcUaId_GetNodeReferenceRequest_Encoding_DefaultBinary,
 		OpcUaId_GetNodeReferenceResponse_Encoding_DefaultBinary
 	> ServiceTransactionGetNodeReference;

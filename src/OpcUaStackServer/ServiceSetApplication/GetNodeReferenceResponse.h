@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,16 +15,16 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_GetNodeReferenceResponse_h__
-#define __OpcUaStackCore_GetNodeReferenceResponse_h__
+#ifndef __OpcUaStackServer_GetNodeReferenceResponse_h__
+#define __OpcUaStackServer_GetNodeReferenceResponse_h__
 
 #include "OpcUaStackCore/ServiceSetApplication/NodeReference.h"
 
-namespace OpcUaStackCore
+namespace OpcUaStackServer
 {
 
 	class DLLEXPORT GetNodeReferenceResponse
-	: public Object
+	: public OpcUaStackCore::Object
 	{
 	  public:
 		typedef boost::shared_ptr<GetNodeReferenceResponse> SPtr;
@@ -32,14 +32,14 @@ namespace OpcUaStackCore
 	    GetNodeReferenceResponse(void);
 		virtual ~GetNodeReferenceResponse(void);
 
-		void nodeReferenceArray(const NodeReferenceArray::SPtr& nodeReferenceArray);
-		NodeReferenceArray::SPtr& nodeReferenceArray(void);
+		void nodeReferenceArray(const OpcUaStackCore::NodeReferenceArray::SPtr& nodeReferenceArray);
+		OpcUaStackCore::NodeReferenceArray::SPtr& nodeReferenceArray(void);
 
 		bool opcUaBinaryEncode(std::ostream& os) const;
 		bool opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		NodeReferenceArray::SPtr nodeReferenceArray_;
+		OpcUaStackCore::NodeReferenceArray::SPtr nodeReferenceArray_;
 	};
 }
 
