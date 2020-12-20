@@ -15,9 +15,11 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/ServiceSetApplication/RegisterForwardNodeAsyncResponse.h"
+#include "OpcUaStackServer/ServiceSetApplication/RegisterForwardNodeAsyncResponse.h"
 
-namespace OpcUaStackCore
+using namespace OpcUaStackCore;
+
+namespace OpcUaStackServer
 {
 
 	// ------------------------------------------------------------------------

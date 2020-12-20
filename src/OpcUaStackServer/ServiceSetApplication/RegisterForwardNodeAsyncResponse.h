@@ -15,17 +15,17 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_RegisterForwardNodeAsyncResponse_h__
-#define __OpcUaStackCore_RegisterForwardNodeAsyncResponse_h__
+#ifndef __OpcUaStackServer_RegisterForwardNodeAsyncResponse_h__
+#define __OpcUaStackServer_RegisterForwardNodeAsyncResponse_h__
 
 #include "OpcUaStackCore/Base/Object.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 
-namespace OpcUaStackCore
+namespace OpcUaStackServer
 {
 
 	class DLLEXPORT RegisterForwardNodeAsyncResponse
-	: public Object
+	: public OpcUaStackCore::Object
 	{
 	  public:
 		using SPtr = boost::shared_ptr<RegisterForwardNodeAsyncResponse>;
@@ -33,14 +33,14 @@ namespace OpcUaStackCore
 	    RegisterForwardNodeAsyncResponse(void);
 		virtual ~RegisterForwardNodeAsyncResponse(void);
 
-		void statusCodeArray(const OpcUaStatusCodeArray::SPtr statusCodeArray);
-		OpcUaStatusCodeArray::SPtr statusCodeArray(void) const;
+		void statusCodeArray(const OpcUaStackCore::OpcUaStatusCodeArray::SPtr statusCodeArray);
+		OpcUaStackCore::OpcUaStatusCodeArray::SPtr statusCodeArray(void) const;
 
 		bool opcUaBinaryEncode(std::ostream& os) const;
 		bool opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		OpcUaStatusCodeArray::SPtr statusCodeArraySPtr_;
+		OpcUaStackCore::OpcUaStatusCodeArray::SPtr statusCodeArraySPtr_;
 	};
 }
 
