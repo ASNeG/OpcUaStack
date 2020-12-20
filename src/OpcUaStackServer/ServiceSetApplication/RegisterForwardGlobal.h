@@ -67,7 +67,7 @@ namespace OpcUaStackServer
 
 
 	  private:
-		OpcUaStackCore::ForwardGlobalSync forwardGlobalSync_;
+		ForwardGlobalSync forwardGlobalSync_;
 		OpcUaStackCore::OpcUaStatusCode resultCode_;
 	};
 

@@ -15,33 +15,40 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackServer_RegisterForwardGlobalRequest_h__
-#define __OpcUaStackServer_RegisterForwardGlobalRequest_h__
+#include "OpcUaStackServer/ServiceSetApplication/FireEventResponse.h"
 
-#include "OpcUaStackServer/ServiceSetApplication/ForwardGlobalSync.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
 
-	class DLLEXPORT RegisterForwardGlobalRequest
-	: public OpcUaStackCore::Object
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// FireEventResponse
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+
+	FireEventResponse::FireEventResponse(void)
+	: Object()
 	{
-	  public:
-		typedef boost::shared_ptr<RegisterForwardGlobalRequest> SPtr;
+	}
 
-		RegisterForwardGlobalRequest(void);
-		virtual ~RegisterForwardGlobalRequest(void);
+	FireEventResponse::~FireEventResponse(void)
+	{
+	}
 
-		void forwardGlobalSync(ForwardGlobalSync::SPtr forwardGlobalSync);
-		ForwardGlobalSync::SPtr forwardGlobalSync(void);
+	bool
+	FireEventResponse::opcUaBinaryEncode(std::ostream& os) const
+	{
+		return false;
+	}
 
-		bool opcUaBinaryEncode(std::ostream& os) const;
-		bool opcUaBinaryDecode(std::istream& is);
-
-	  private:
-		ForwardGlobalSync::SPtr forwardGlobalSync_;
-	};
+	bool
+	FireEventResponse::opcUaBinaryDecode(std::istream& is)
+	{
+		return false;
+	}
 
 }
-
-#endif

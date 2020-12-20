@@ -19,7 +19,7 @@
 #define __OpcUaStackServer_ServiceSetBase_h__
 
 #include "OpcUaStackCore/Base/IOService.h"
-#include "OpcUaStackCore/ServiceSetApplication/ForwardGlobalSync.h"
+#include "OpcUaStackServer/ServiceSetApplication/ForwardGlobalSync.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
 #include "OpcUaStackServer/InformationModel/NamespaceArray.h"
 #include "OpcUaStackServer/InformationModel/ServerArray.h"
@@ -37,8 +37,8 @@ namespace OpcUaStackServer
 		InformationModel::SPtr informationModel(void);
 		NamespaceArray::SPtr namespaceArray(void);
 		ServerArray::SPtr serverArray(void);
-		void forwardGlobalSync(OpcUaStackCore::ForwardGlobalSync::SPtr forwardGlobalSync);
-		OpcUaStackCore::ForwardGlobalSync::SPtr forwardGlobalSync(void);
+		void forwardGlobalSync(ForwardGlobalSync::SPtr forwardGlobalSync);
+		ForwardGlobalSync::SPtr forwardGlobalSync(void);
 
 		virtual bool init(void) { return true; }
 		virtual bool shutdown(void) { return true; }
@@ -47,7 +47,7 @@ namespace OpcUaStackServer
 		InformationModel::SPtr informationModel_;
 		NamespaceArray::SPtr namespaceArray_;
 		ServerArray::SPtr serverArray_; 
-		OpcUaStackCore::ForwardGlobalSync::SPtr forwardGlobalSync_;
+		ForwardGlobalSync::SPtr forwardGlobalSync_;
 	};
 
 }

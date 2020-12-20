@@ -15,31 +15,35 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackServer_RegisterForwardGlobalRequest_h__
-#define __OpcUaStackServer_RegisterForwardGlobalRequest_h__
+#ifndef __OpcUaStackServer_FireEventRequest_h__
+#define __OpcUaStackServer_FireEventRequest_h__
 
-#include "OpcUaStackServer/ServiceSetApplication/ForwardGlobalSync.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
+#include "OpcUaStackCore/EventType/EventBase.h"
 
 namespace OpcUaStackServer
 {
 
-	class DLLEXPORT RegisterForwardGlobalRequest
+	class DLLEXPORT FireEventRequest
 	: public OpcUaStackCore::Object
 	{
 	  public:
-		typedef boost::shared_ptr<RegisterForwardGlobalRequest> SPtr;
+		typedef boost::shared_ptr<FireEventRequest> SPtr;
 
-		RegisterForwardGlobalRequest(void);
-		virtual ~RegisterForwardGlobalRequest(void);
+		FireEventRequest(void);
+		virtual ~FireEventRequest(void);
 
-		void forwardGlobalSync(ForwardGlobalSync::SPtr forwardGlobalSync);
-		ForwardGlobalSync::SPtr forwardGlobalSync(void);
+		void eventBase(OpcUaStackCore::EventBase::SPtr& eventBase);
+		OpcUaStackCore::EventBase::SPtr& eventBase(void);
+		void nodeId(OpcUaStackCore::OpcUaNodeId& nodeId);
+		OpcUaStackCore::OpcUaNodeId& nodeId(void);
 
 		bool opcUaBinaryEncode(std::ostream& os) const;
 		bool opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		ForwardGlobalSync::SPtr forwardGlobalSync_;
+		OpcUaStackCore::EventBase::SPtr eventBase_;
+		OpcUaStackCore::OpcUaNodeId nodeId_;
 	};
 
 }

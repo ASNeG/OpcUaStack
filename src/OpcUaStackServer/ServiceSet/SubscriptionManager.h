@@ -22,9 +22,9 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackCore/Utility/SlotTimer.h"
 #include "OpcUaStackCore/MessageBus/MessageBus.h"
-#include "OpcUaStackCore/ServiceSetApplication/ForwardGlobalSync.h"
 #include "OpcUaStackCore/ServiceSet/SubscriptionServiceTransaction.h"
 #include "OpcUaStackCore/ServiceSet/MonitoredItemServiceTransaction.h"
+#include "OpcUaStackServer/ServiceSetApplication/ForwardGlobalSync.h"
 #include "OpcUaStackServer/ServiceSet/Subscription.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
 
@@ -50,7 +50,7 @@ namespace OpcUaStackServer
 		void messageBusMember(OpcUaStackCore::MessageBusMember::WPtr& messageBusMember);
 		void strand(boost::shared_ptr<boost::asio::io_service::strand>& strand);
 		void informationModel(InformationModel::SPtr informationModel);
-		void forwardGlobalSync(OpcUaStackCore::ForwardGlobalSync::SPtr& forwardGlobalSync);
+		void forwardGlobalSync(ForwardGlobalSync::SPtr& forwardGlobalSync);
 		void sessionId(uint32_t sessionId);
 
 		OpcUaStackCore::OpcUaStatusCode receive(OpcUaStackCore::ServiceTransactionCreateSubscription::SPtr trx);
@@ -75,7 +75,7 @@ namespace OpcUaStackServer
 		boost::shared_ptr<boost::asio::io_service::strand> strand_ = nullptr;
 		OpcUaStackCore::MessageBusMember::WPtr messageBusMember_;
 		InformationModel::SPtr informationModel_;
-		OpcUaStackCore::ForwardGlobalSync::SPtr forwardGlobalSync_;
+		ForwardGlobalSync::SPtr forwardGlobalSync_;
 		SubscriptionMap subscriptionMap_;
 		uint32_t sessionId_;
 

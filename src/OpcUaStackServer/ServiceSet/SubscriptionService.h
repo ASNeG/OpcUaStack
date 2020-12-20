@@ -18,9 +18,9 @@
 #ifndef __OpcUaStackServer_SubscriptionService_h__
 #define __OpcUaStackServer_SubscriptionService_h__
 
-#include "OpcUaStackCore/ServiceSetApplication/ForwardGlobalSync.h"
 #include "OpcUaStackCore/ServiceSet/SubscriptionServiceTransaction.h"
 #include "OpcUaStackCore/ServiceSet/MonitoredItemServiceTransaction.h"
+#include "OpcUaStackServer/ServiceSetApplication/ForwardGlobalSync.h"
 #include "OpcUaStackServer/ServiceSet/ServiceSetBase.h"
 #include "OpcUaStackServer/ServiceSet/SubscriptionManager.h"
 #include "OpcUaStackServer/ServiceSet/ServerServiceBase.h"
