@@ -122,6 +122,32 @@ namespace OpcUaStackCore
 		std::cout << std::endl; 
 	}
 
+	Log&
+	Log::parameter(
+	    const std::string& parameterName,
+		uint8_t parameterValue
+	)
+	{
+		  if (!activate_) return *this;
+		  std::stringstream ss;
+		  ss << (uint32_t)parameterValue;
+		  format(parameterName, ss.str());
+		  return *this;
+	}
+
+	Log&
+	Log::parameter(
+	    const std::string& parameterName,
+		int8_t parameterValue
+	)
+	{
+		  if (!activate_) return *this;
+		  std::stringstream ss;
+		  ss << (uint32_t)parameterValue;
+		  format(parameterName, ss.str());
+		  return *this;
+	}
+
 	std::string 
 	Log::logLevel(void)
 	{

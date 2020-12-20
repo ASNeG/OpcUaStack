@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -75,7 +75,10 @@ namespace OpcUaStackCore
 		~Log(void);
 
 		template<typename T>
-		  Log& parameter(const std::string& parameterName, const T& parameterValue) {
+		  Log& parameter(
+		     const std::string& parameterName,
+			 const T& parameterValue
+		  ) {
 			  if (!activate_) return *this;
 			  std::stringstream ss;
 			  ss << parameterValue;
@@ -84,7 +87,11 @@ namespace OpcUaStackCore
 		  }
 
 		template<typename T1, typename T2>
-		  Log& parameter(const std::string& parameterName, const T1& parameterValue1, const T2& parameterValue2) {
+		  Log& parameter(
+		      const std::string& parameterName,
+			  const T1& parameterValue1,
+			  const T2& parameterValue2
+		  ) {
 			  if (!activate_) return *this;
 			  std::stringstream ss;
 			  ss << parameterValue1 << parameterValue2;
@@ -107,7 +114,10 @@ namespace OpcUaStackCore
 		  }
 
 		template<typename T>
-		  Log& parameter(const std::string& parameterName, boost::shared_ptr<T> parameterValueSPtr) {
+		  Log& parameter(
+		      const std::string& parameterName,
+			  boost::shared_ptr<T> parameterValueSPtr
+		  ) {
 			  if (!activate_) return *this;
 			  std::stringstream ss;
 			  if (parameterValueSPtr.get() != nullptr) ss << *parameterValueSPtr;
@@ -116,7 +126,10 @@ namespace OpcUaStackCore
 		  }
 
 		template<typename T>
-		  Log& parameter(const std::string& parameterName, std::vector<T>& parameterValue) {
+		  Log& parameter(
+		      const std::string& parameterName,
+			  std::vector<T>& parameterValue
+		  ) {
 			  if (!activate_) return *this;
 			  std::stringstream ss;
 			  bool first = true;
@@ -132,7 +145,10 @@ namespace OpcUaStackCore
 		  }
 
 		template<typename T>
-		  Log& parameter(const std::string& parameterName, std::set<T>& parameterValue) {
+		  Log& parameter(
+		      const std::string& parameterName,
+			  std::set<T>& parameterValue
+		  ) {
 			  if (!activate_) return *this;
 			  std::stringstream ss;
 			  bool first = true;
@@ -148,7 +164,10 @@ namespace OpcUaStackCore
 		  }
 
 		template<typename T>
-		  Log& parameter(const std::string& parameterName, std::vector<boost::shared_ptr<T> >& parameterValue) {
+		  Log& parameter(
+		      const std::string& parameterName,
+			  std::vector<boost::shared_ptr<T> >& parameterValue
+		  ) {
 			  if (!activate_) return *this;
 			  std::stringstream ss;
 			  bool first = true;
@@ -162,6 +181,15 @@ namespace OpcUaStackCore
 			  format(parameterName, ss.str());
 			  return *this;
 		  }
+
+		Log& parameter(
+		    const std::string& parameterName,
+			uint8_t parameterValue
+		);
+		Log& parameter(
+		    const std::string& parameterName,
+			int8_t parameterValue
+		);
 
 		std::string logLevel(void);
 
