@@ -15,33 +15,32 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_ForwardMethodSync_h__
-#define __OpcUaStackCore_ForwardMethodSync_h__
+#include "OpcUaStackServer/ServiceSetApplication/ForwardMethodSync.h"
 
-#include <OpcUaStackCore/ServiceSetApplication/ForwardSyncCallback.h>
-#include "OpcUaStackCore/Application/ApplicationCallback.h"
-#include "OpcUaStackCore/Application/ApplicationMethodContext.h"
+using namespace OpcUaStackCore;
 
-namespace OpcUaStackCore
+namespace OpcUaStackServer
 {
 
-	class DLLEXPORT ForwardMethodSync
-	: public  Object
+	ForwardMethodSync::ForwardMethodSync(void)
+	: methodService_()
 	{
-	  public:
-		using SPtr = boost::shared_ptr<ForwardMethodSync>;
+	}
 
-		ForwardMethodSync(void);
-		virtual ~ForwardMethodSync(void);
+	ForwardMethodSync::~ForwardMethodSync(void)
+	{
+	}
 
-		ForwardSyncCallback<ApplicationCallback::Method>& methodService(void);
+	ForwardSyncCallback<ApplicationCallback::Method>&
+	ForwardMethodSync::methodService(void)
+	{
+		return methodService_;
+	}
 
-		void updateFrom(ForwardMethodSync& forwardInfoSync);
-
-	  private:
-		ForwardSyncCallback<ApplicationCallback::Method> methodService_;
-	};
+	void
+	ForwardMethodSync::updateFrom(ForwardMethodSync& ForwardSyncCallbackSync)
+	{
+		methodService_.updateFrom(ForwardSyncCallbackSync.methodService());
+	}
 
 }
-
-#endif

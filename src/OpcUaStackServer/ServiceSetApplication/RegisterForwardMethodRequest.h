@@ -19,7 +19,7 @@
 #define __OpcUaStackServer_RegisterForwardMethodRequest_h__
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
-#include "OpcUaStackCore/ServiceSetApplication/ForwardMethodSync.h"
+#include "OpcUaStackServer/ServiceSetApplication/ForwardMethodSync.h"
 
 namespace OpcUaStackServer
 {
@@ -33,8 +33,8 @@ namespace OpcUaStackServer
 		RegisterForwardMethodRequest(void);
 		virtual ~RegisterForwardMethodRequest(void);
 
-		void forwardMethodSync(OpcUaStackCore::ForwardMethodSync::SPtr forwardMethodSync);
-		OpcUaStackCore::ForwardMethodSync::SPtr& forwardMethodSync(void);
+		void forwardMethodSync(ForwardMethodSync::SPtr forwardMethodSync);
+		ForwardMethodSync::SPtr& forwardMethodSync(void);
 		void objectNodeId(OpcUaStackCore::OpcUaNodeId& objectNodeId);
 		OpcUaStackCore::OpcUaNodeId& objectNodeId(void);
 		void methodNodeId(OpcUaStackCore::OpcUaNodeId& methodNodeId);
@@ -44,7 +44,7 @@ namespace OpcUaStackServer
 		bool opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		OpcUaStackCore::ForwardMethodSync::SPtr forwardMethodSync_;
+		ForwardMethodSync::SPtr forwardMethodSync_;
 		OpcUaStackCore::OpcUaNodeId objectNodeId_;
 		OpcUaStackCore::OpcUaNodeId methodNodeId_;
 	};

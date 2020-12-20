@@ -20,7 +20,7 @@
 
 #include <map>
 
-#include "OpcUaStackCore/ServiceSetApplication/ForwardMethodSync.h"
+#include "OpcUaStackServer/ServiceSetApplication/ForwardMethodSync.h"
 #include "OpcUaStackCore/ServiceSetApplication/ForwardMethodAsync.h"
 #include "OpcUaStackServer/InformationModel/MethodId.h"
 
@@ -30,7 +30,7 @@ namespace OpcUaStackServer
 	class DLLEXPORT MethodMap
 	{
 	  public:
-		typedef std::map<MethodId, OpcUaStackCore::ForwardMethodSync::SPtr> ForwardMethodSyncMap;
+		typedef std::map<MethodId, ForwardMethodSync::SPtr> ForwardMethodSyncMap;
 		typedef std::map<MethodId, OpcUaStackCore::ForwardMethodAsync::SPtr> ForwardMethodAsyncMap;
 
 		MethodMap(
@@ -54,7 +54,7 @@ namespace OpcUaStackServer
 		bool registerMethodSync(
 			const OpcUaStackCore::OpcUaNodeId& objectNodeId,
 			const OpcUaStackCore::OpcUaNodeId& methodNodeId,
-			OpcUaStackCore::ForwardMethodSync::SPtr& forwardMethodSync
+			ForwardMethodSync::SPtr& forwardMethodSync
 		);
 		bool registerMethodAsync(
 			const OpcUaStackCore::OpcUaNodeId& objectNodeId,
@@ -69,7 +69,7 @@ namespace OpcUaStackServer
 			const OpcUaStackCore::OpcUaNodeId& objectNodeId,
 			const OpcUaStackCore::OpcUaNodeId& methodNodeId
 		);
-		OpcUaStackCore::ForwardMethodSync::SPtr getMethodSync(
+		ForwardMethodSync::SPtr getMethodSync(
 			const OpcUaStackCore::OpcUaNodeId& objectNodeId,
 			const OpcUaStackCore::OpcUaNodeId& methodNodeId
 		);
