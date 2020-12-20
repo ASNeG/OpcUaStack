@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,17 +15,17 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_RegisterForwardNodeRequest_h__
-#define __OpcUaStackCore_RegisterForwardNodeRequest_h__
+#ifndef __OpcUaStackServer_RegisterForwardNodeRequest_h__
+#define __OpcUaStackServer_RegisterForwardNodeRequest_h__
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackCore/ServiceSetApplication/ForwardNodeSync.h"
 
-namespace OpcUaStackCore
+namespace OpcUaStackServer
 {
 
 	class DLLEXPORT RegisterForwardNodeRequest
-	: public  Object
+	: public OpcUaStackCore::Object
 	{
 	  public:
 		typedef boost::shared_ptr<RegisterForwardNodeRequest> SPtr;
@@ -33,20 +33,20 @@ namespace OpcUaStackCore
 		RegisterForwardNodeRequest(void);
 		virtual ~RegisterForwardNodeRequest(void);
 
-		void nodesToRegister(const OpcUaNodeIdArray::SPtr nodesToRegister);
-		OpcUaNodeIdArray::SPtr nodesToRegister(void) const;
-		void forwardNodeSync(ForwardNodeSync::SPtr forwardInfo);
-		ForwardNodeSync::SPtr forwardNodeSync(void);
-		void applicationContextArray(BaseClassArray::SPtr& applicationContextArray);
-		BaseClassArray::SPtr& applicationContextArray(void);
+		void nodesToRegister(const OpcUaStackCore::OpcUaNodeIdArray::SPtr nodesToRegister);
+		OpcUaStackCore::OpcUaNodeIdArray::SPtr nodesToRegister(void) const;
+		void forwardNodeSync(OpcUaStackCore::ForwardNodeSync::SPtr forwardInfo);
+		OpcUaStackCore::ForwardNodeSync::SPtr forwardNodeSync(void);
+		void applicationContextArray(OpcUaStackCore::BaseClassArray::SPtr& applicationContextArray);
+		OpcUaStackCore::BaseClassArray::SPtr& applicationContextArray(void);
 
 		bool opcUaBinaryEncode(std::ostream& os) const;
 		bool opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		ForwardNodeSync::SPtr forwardNodeSync_;
-		OpcUaNodeIdArray::SPtr nodesToRegisterArraySPtr_;
-		BaseClassArray::SPtr applicationContextArray_;
+		OpcUaStackCore::ForwardNodeSync::SPtr forwardNodeSync_;
+		OpcUaStackCore::OpcUaNodeIdArray::SPtr nodesToRegisterArraySPtr_;
+		OpcUaStackCore::BaseClassArray::SPtr applicationContextArray_;
 	};
 
 }
