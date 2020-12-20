@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,38 +15,33 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_NamespaceInfoResponse_h__
-#define __OpcUaStackCore_NamespaceInfoResponse_h__
+#ifndef __OpcUaStackServer_NamespaceInfoRequest_h__
+#define __OpcUaStackServer_NamespaceInfoRequest_h__
 
-#include <map>
-#include <string>
 #include "OpcUaStackCore/Base/Object.h"
 
-
-namespace OpcUaStackCore
+namespace OpcUaStackServer
 {
 
-	class DLLEXPORT NamespaceInfoResponse
-	: public Object
+	class DLLEXPORT NamespaceInfoRequest
+	: public OpcUaStackCore::Object
 	{
 	  public:
-		typedef boost::shared_ptr<NamespaceInfoResponse> SPtr;
-		typedef std::map<uint32_t,std::string> Index2NamespaceMap;
-		typedef std::map<std::string,uint32_t> Namespace2IndexMap;
+		typedef boost::shared_ptr<NamespaceInfoRequest> SPtr;
 
-	    NamespaceInfoResponse(void);
-		virtual ~NamespaceInfoResponse(void);
+		NamespaceInfoRequest(void);
+		virtual ~NamespaceInfoRequest(void);
 
-		Index2NamespaceMap& index2NamespaceMap(void);
-		Namespace2IndexMap& namespace2IndexMap(void);
+		void newNamespaceUri(const std::string& newNamespaceUri);
+		std::string& newNamespaceUri(void);
 
 		bool opcUaBinaryEncode(std::ostream& os) const;
 		bool opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		Index2NamespaceMap index2NamespaceMap_;
-		Namespace2IndexMap namespace2IndexMap_;
+		std::string newNamespaceUri_;
 	};
+
 }
 
 #endif

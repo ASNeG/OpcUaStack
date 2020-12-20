@@ -32,8 +32,8 @@
 #include "OpcUaStackServer/ServiceSetApplication/RegisterForwardGlobalResponse.h"
 #include "OpcUaStackCore/ServiceSetApplication/GetNodeReferenceRequest.h"
 #include "OpcUaStackCore/ServiceSetApplication/GetNodeReferenceResponse.h"
-#include "OpcUaStackCore/ServiceSetApplication/NamespaceInfoRequest.h"
-#include "OpcUaStackCore/ServiceSetApplication/NamespaceInfoResponse.h"
+#include "OpcUaStackServer/ServiceSetApplication/NamespaceInfoRequest.h"
+#include "OpcUaStackServer/ServiceSetApplication/NamespaceInfoResponse.h"
 #include "OpcUaStackServer/ServiceSetApplication/DelNodeInstanceRequest.h"
 #include "OpcUaStackServer/ServiceSetApplication/DelNodeInstanceResponse.h"
 #include "OpcUaStackCore/ServiceSetApplication/FireEventRequest.h"
@@ -93,8 +93,8 @@ namespace OpcUaStackServer
 	> ServiceTransactionGetNodeReference;
 
 	typedef OpcUaStackCore::ServiceTransactionTemplate<
-		OpcUaStackCore::NamespaceInfoRequest,
-		OpcUaStackCore::NamespaceInfoResponse,
+		NamespaceInfoRequest,
+		NamespaceInfoResponse,
 		OpcUaId_NamespaceInfoRequest_Encoding_DefaultBinary,
 		OpcUaId_NamespaceInfoResponse_Encoding_DefaultBinary
 	> ServiceTransactionNamespaceInfo;

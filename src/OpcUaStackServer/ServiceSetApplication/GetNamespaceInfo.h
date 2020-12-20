@@ -42,8 +42,8 @@ namespace OpcUaStackServer
 	  private:
 		std::string newNamespaceUri_ = "";
 		OpcUaStackCore::OpcUaStatusCode resultCode_ = OpcUaStackCore::Success;
-		OpcUaStackCore::NamespaceInfoResponse::Index2NamespaceMap index2NamespaceMap_;
-		OpcUaStackCore::NamespaceInfoResponse::Namespace2IndexMap namespace2IndexMap_;
+		NamespaceInfoResponse::Index2NamespaceMap index2NamespaceMap_;
+		NamespaceInfoResponse::Namespace2IndexMap namespace2IndexMap_;
 	};
 
 }
