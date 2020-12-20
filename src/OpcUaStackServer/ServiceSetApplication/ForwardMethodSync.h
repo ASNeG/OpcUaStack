@@ -18,9 +18,9 @@
 #ifndef __OpcUaStackCore_ForwardMethodSync_h__
 #define __OpcUaStackCore_ForwardMethodSync_h__
 
-#include <OpcUaStackCore/ServiceSetApplication/ForwardSyncCallback.h>
 #include "OpcUaStackCore/Application/ApplicationCallback.h"
 #include "OpcUaStackCore/Application/ApplicationMethodContext.h"
+#include "OpcUaStackServer/ServiceSetApplication/ForwardSyncCallback.h"
 
 namespace OpcUaStackServer
 {
@@ -34,12 +34,12 @@ namespace OpcUaStackServer
 		ForwardMethodSync(void);
 		virtual ~ForwardMethodSync(void);
 
-		OpcUaStackCore::ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::Method>& methodService(void);
+		ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::Method>& methodService(void);
 
 		void updateFrom(ForwardMethodSync& forwardInfoSync);
 
 	  private:
-		OpcUaStackCore::ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::Method> methodService_;
+		ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::Method> methodService_;
 	};
 
 }

@@ -15,12 +15,12 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_ForwardSyncCallback_h__
-#define __OpcUaStackCore_ForwardSyncCallback_h__
+#ifndef __OpcUaStackServer_ForwardSyncCallback_h__
+#define __OpcUaStackServer_ForwardSyncCallback_h__
 
 #include "OpcUaStackCore/Base/BaseClass.h"
 
-namespace OpcUaStackCore
+namespace OpcUaStackServer
 {
 
     template<typename CallbackFunction>
@@ -80,12 +80,12 @@ namespace OpcUaStackCore
 			  return callback_;
 		  }
 
-		  void applicationContext(BaseClass::SPtr& applicationContext)
+		  void applicationContext(OpcUaStackCore::BaseClass::SPtr& applicationContext)
 		  {
 			  applicationContext_ = applicationContext;
 		  }
 
-		  BaseClass::SPtr& applicationContext(void)
+		  OpcUaStackCore::BaseClass::SPtr& applicationContext(void)
 		  {
 			  return applicationContext_;
 		  }
@@ -94,7 +94,7 @@ namespace OpcUaStackCore
 		  bool callbackFlag_ = false;
 		  bool usedCallbackFlag_ = false;
 		  CallbackFunction callback_ = nullptr;
-		  BaseClass::SPtr applicationContext_ = nullptr;
+		  OpcUaStackCore::BaseClass::SPtr applicationContext_ = nullptr;
 	  };
 
 }

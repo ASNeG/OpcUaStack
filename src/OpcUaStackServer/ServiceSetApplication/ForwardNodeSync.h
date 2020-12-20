@@ -18,7 +18,6 @@
 #ifndef __OpcUaStackServer_ForwardNodeSync_h__
 #define __OpcUaStackServer_ForwardNodeSync_h__
 
-#include <OpcUaStackCore/ServiceSetApplication/ForwardSyncCallback.h>
 #include "OpcUaStackCore/Application/ApplicationCallback.h"
 #include "OpcUaStackCore/Application/ApplicationReadContext.h"
 #include "OpcUaStackCore/Application/ApplicationHReadContext.h"
@@ -28,6 +27,7 @@
 #include "OpcUaStackCore/Application/ApplicationMethodContext.h"
 #include "OpcUaStackCore/Application/ApplicationMonitoredItemStartContext.h"
 #include "OpcUaStackCore/Application/ApplicationMonitoredItemStopContext.h"
+#include "OpcUaStackServer/ServiceSetApplication/ForwardSyncCallback.h"
 
 namespace OpcUaStackServer
 {
@@ -41,29 +41,29 @@ namespace OpcUaStackServer
 		ForwardNodeSync(void);
 		virtual ~ForwardNodeSync(void);
 
-		OpcUaStackCore::ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::Read>& readService(void);
-		OpcUaStackCore::ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::HRead>& readHService(void);
-		OpcUaStackCore::ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::HERead>& readHEService(void);
-		OpcUaStackCore::ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::Write>& writeService(void);
-		OpcUaStackCore::ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::HWrite>& writeHService(void);
-		OpcUaStackCore::ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::Method>& methodService(void);
-		OpcUaStackCore::ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::MonitoredItemStart>& monitoredItemStartService(void);
-		OpcUaStackCore::ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::MonitoredItemStop>& monitoredItemStopService(void);
+		ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::Read>& readService(void);
+		ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::HRead>& readHService(void);
+		ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::HERead>& readHEService(void);
+		ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::Write>& writeService(void);
+		ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::HWrite>& writeHService(void);
+		ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::Method>& methodService(void);
+		ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::MonitoredItemStart>& monitoredItemStartService(void);
+		ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::MonitoredItemStop>& monitoredItemStopService(void);
 
 		void updateFrom(ForwardNodeSync& forwardInfoSync);
 
 	  private:
 		// attribute service
-		OpcUaStackCore::ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::Read> readService_;
-		OpcUaStackCore::ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::HRead> readHService_;
-		OpcUaStackCore::ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::HERead> readHEService_;
-		OpcUaStackCore::ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::Write> writeService_;
-		OpcUaStackCore::ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::HWrite> writeHService_;
-		OpcUaStackCore::ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::MonitoredItemStart> monitoredItemStartService_;
-		OpcUaStackCore::ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::MonitoredItemStop> monitoredItemStopService_;
+		ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::Read> readService_;
+		ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::HRead> readHService_;
+		ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::HERead> readHEService_;
+		ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::Write> writeService_;
+		ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::HWrite> writeHService_;
+		ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::MonitoredItemStart> monitoredItemStartService_;
+		ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::MonitoredItemStop> monitoredItemStopService_;
 
 		// method service
-		OpcUaStackCore::ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::Method> methodService_;
+		ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::Method> methodService_;
 	};
 
 }

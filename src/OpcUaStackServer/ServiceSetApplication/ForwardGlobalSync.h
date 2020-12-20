@@ -18,7 +18,6 @@
 #ifndef __OpcUaStackCore_ForwardGlobalSync_h__
 #define __OpcUaStackCore_ForwardGlobalSync_h__
 
-#include <OpcUaStackCore/ServiceSetApplication/ForwardSyncCallback.h>
 #include "OpcUaStackCore/Application/ApplicationCallback.h"
 #include "OpcUaStackCore/Application/ApplicationRegisterServerContext.h"
 #include "OpcUaStackCore/Application/ApplicationFindServerContext.h"
@@ -29,6 +28,7 @@
 #include "OpcUaStackCore/Application/ApplicationCloseSessionContext.h"
 #include "OpcUaStackCore/Application/ApplicationNodeNewContext.h"
 #include "OpcUaStackCore/Application/ApplicationNodeDeleteContext.h"
+#include "OpcUaStackServer/ServiceSetApplication/ForwardSyncCallback.h"
 
 namespace OpcUaStackServer
 {
@@ -42,35 +42,35 @@ namespace OpcUaStackServer
 		ForwardGlobalSync(void);
 		virtual ~ForwardGlobalSync(void);
 
-		OpcUaStackCore::ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::RegisterServer>& registerServerService(void);
-		OpcUaStackCore::ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::FindServer>& findServersService(void);
-		OpcUaStackCore::ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::EventItemStart>& eventItemStartService(void);
-		OpcUaStackCore::ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::EventItemStop>& eventItemStopService(void);
-		OpcUaStackCore::ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::Authentication>& authenticationService(void);
-		OpcUaStackCore::ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::Autorization>& autorizationService(void);
-		OpcUaStackCore::ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::CloseSession>& closeSessionService(void);
-		OpcUaStackCore::ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::NodeNew>& nodeNewService(void);
-		OpcUaStackCore::ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::NodeDelete>& nodeDeleteService(void);
+		ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::RegisterServer>& registerServerService(void);
+		ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::FindServer>& findServersService(void);
+		ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::EventItemStart>& eventItemStartService(void);
+		ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::EventItemStop>& eventItemStopService(void);
+		ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::Authentication>& authenticationService(void);
+		ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::Autorization>& autorizationService(void);
+		ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::CloseSession>& closeSessionService(void);
+		ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::NodeNew>& nodeNewService(void);
+		ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::NodeDelete>& nodeDeleteService(void);
 
 		void updateFrom(ForwardGlobalSync& forwardGlobalSync);
 
 	  private:
 		// discovery service
-		OpcUaStackCore::ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::RegisterServer> registerServerService_;
-		OpcUaStackCore::ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::FindServer> findServersService_;
+		ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::RegisterServer> registerServerService_;
+		ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::FindServer> findServersService_;
 
 		// event service
-		OpcUaStackCore::ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::EventItemStart> eventItemStartService_;
-		OpcUaStackCore::ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::EventItemStop> eventItemStopService_;
+		ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::EventItemStart> eventItemStartService_;
+		ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::EventItemStop> eventItemStopService_;
 
 		// authentication and authorization
-		OpcUaStackCore::ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::Authentication> authenticationService_;
-		OpcUaStackCore::ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::Autorization> autorizationService_;
-		OpcUaStackCore::ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::CloseSession> closeSessionService_;
+		ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::Authentication> authenticationService_;
+		ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::Autorization> autorizationService_;
+		ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::CloseSession> closeSessionService_;
 
 		// node service
-		OpcUaStackCore::ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::NodeNew> nodeNewService_;
-		OpcUaStackCore::ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::NodeDelete> nodeDeleteService_;
+		ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::NodeNew> nodeNewService_;
+		ForwardSyncCallback<OpcUaStackCore::ApplicationCallback::NodeDelete> nodeDeleteService_;
 	};
 
 }
