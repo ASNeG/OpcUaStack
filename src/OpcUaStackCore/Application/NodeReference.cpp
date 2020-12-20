@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -16,7 +16,7 @@
  */
 
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/ServiceSetApplication/NodeReference.h"
+#include "OpcUaStackCore/Application/NodeReference.h"
 
 namespace OpcUaStackCore
 {

@@ -18,7 +18,7 @@
 #ifndef __OpcUaStackServer_GetNodeReferenceResponse_h__
 #define __OpcUaStackServer_GetNodeReferenceResponse_h__
 
-#include "OpcUaStackCore/ServiceSetApplication/NodeReference.h"
+#include "OpcUaStackCore/Application/NodeReference.h"
 
 namespace OpcUaStackServer
 {

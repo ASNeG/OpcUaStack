@@ -18,7 +18,7 @@
 #ifndef __OpcUaStackServer_NodeReferenceApplication_h__
 #define __OpcUaStackServer_NodeReferenceApplication_h__
 
-#include "OpcUaStackCore/ServiceSetApplication/NodeReference.h"
+#include "OpcUaStackCore/Application/NodeReference.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 
 namespace OpcUaStackServer
