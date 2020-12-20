@@ -18,7 +18,7 @@
 #ifndef __OpcUaStackServer_ForwardNodeAsync_h__
 #define __OpcUaStackServer_ForwardNodeAsync_h__
 
-#include "OpcUaStackCore/ServiceSetApplication/ForwardAsyncCallback.h"
+#include "OpcUaStackServer/ServiceSetApplication/ForwardAsyncCallback.h"
 
 namespace OpcUaStackServer
 {
@@ -32,19 +32,19 @@ namespace OpcUaStackServer
 		ForwardNodeAsync(void);
 		virtual ~ForwardNodeAsync(void);
 
-		OpcUaStackCore::ForwardAsyncCallback& readService(void);
-		OpcUaStackCore::ForwardAsyncCallback& writeService(void);
-		OpcUaStackCore::ForwardAsyncCallback& methodService(void);
+		ForwardAsyncCallback& readService(void);
+		ForwardAsyncCallback& writeService(void);
+		ForwardAsyncCallback& methodService(void);
 
 		void updateFrom(ForwardNodeAsync& forwardInfoAsync);
 
 	  private:
 		// attribute service
-		OpcUaStackCore::ForwardAsyncCallback readService_;
-		OpcUaStackCore::ForwardAsyncCallback writeService_;
+		ForwardAsyncCallback readService_;
+		ForwardAsyncCallback writeService_;
 
 		// method service
-		OpcUaStackCore::ForwardAsyncCallback methodService_;
+		ForwardAsyncCallback methodService_;
 	};
 
 }

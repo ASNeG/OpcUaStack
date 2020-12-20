@@ -18,7 +18,7 @@
 #ifndef __OpcUaStackCore_NodeInfoObjectType_h__
 #define __OpcUaStackCore_NodeInfoObjectType_h__
 
-#include "OpcUaStackCore/ServiceSetApplication/BrowseName.h"
+#include "OpcUaStackCore/Application/BrowseName.h"
 #include "OpcUaStackServer/Generator/NodeInfo.h"
 #include "OpcUaStackServer/Generator/VariableTypeField.h"
 #include "OpcUaStackServer/Generator/MethodTypeField.h"

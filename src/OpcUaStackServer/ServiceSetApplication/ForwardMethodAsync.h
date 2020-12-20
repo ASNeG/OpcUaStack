@@ -18,7 +18,7 @@
 #ifndef __OpcUaStackServer_ForwardMethodAsync_h__
 #define __OpcUaStackServer_ForwardMethodAsync_h__
 
-#include "OpcUaStackCore/ServiceSetApplication/ForwardAsyncCallback.h"
+#include "OpcUaStackServer/ServiceSetApplication/ForwardAsyncCallback.h"
 
 namespace OpcUaStackServer
 {
@@ -32,12 +32,12 @@ namespace OpcUaStackServer
 		ForwardMethodAsync(void);
 		virtual ~ForwardMethodAsync(void);
 
-		OpcUaStackCore::ForwardAsyncCallback& methodService(void);
+		ForwardAsyncCallback& methodService(void);
 
 		void updateFrom(ForwardMethodAsync& forwardInfoSync);
 
 	  private:
-		OpcUaStackCore::ForwardAsyncCallback methodService_;
+		ForwardAsyncCallback methodService_;
 	};
 
 }

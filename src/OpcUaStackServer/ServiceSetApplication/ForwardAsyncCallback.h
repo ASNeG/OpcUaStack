@@ -15,13 +15,13 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_ForwardAsyncCallback_h__
-#define __OpcUaStackCore_ForwardAsyncCallback_h__
+#ifndef __OpcUaStackServer_ForwardAsyncCallback_h__
+#define __OpcUaStackServer_ForwardAsyncCallback_h__
 
 #include "OpcUaStackCore/Base/BaseClass.h"
 #include "OpcUaStackCore/MessageBus/MessageBusMember.h"
 
-namespace OpcUaStackCore
+namespace OpcUaStackServer
 {
 
 	class DLLEXPORT ForwardAsyncCallback
@@ -35,19 +35,19 @@ namespace OpcUaStackCore
 		void updateFrom(ForwardAsyncCallback& forwardInfo);
 		bool isUsed(void);
 		void activate(void);
-		void activate(BaseClass::SPtr& applicationContext);
+		void activate(OpcUaStackCore::BaseClass::SPtr& applicationContext);
 		void deactivate(void);
 		bool isActive(void);
-		void messageBusMember(const MessageBusMember::WPtr& messageBusMember);
-		MessageBusMember::WPtr messageBusMember(void);
-		void applicationContext(BaseClass::SPtr& applicationContext);
-		BaseClass::SPtr& applicationContext(void);
+		void messageBusMember(const OpcUaStackCore::MessageBusMember::WPtr& messageBusMember);
+		OpcUaStackCore::MessageBusMember::WPtr messageBusMember(void);
+		void applicationContext(OpcUaStackCore::BaseClass::SPtr& applicationContext);
+		OpcUaStackCore::BaseClass::SPtr& applicationContext(void);
 
 	  private:
 		bool used_ = false;			// indicates whether the variable is used
 		bool active_ = false;		// active/deactivate
-		MessageBusMember::WPtr messageBusMember_;
-		BaseClass::SPtr applicationContext_ = nullptr;
+		OpcUaStackCore::MessageBusMember::WPtr messageBusMember_;
+		OpcUaStackCore::BaseClass::SPtr applicationContext_ = nullptr;
 	};
 
 }

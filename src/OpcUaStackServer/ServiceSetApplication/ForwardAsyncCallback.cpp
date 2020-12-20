@@ -15,9 +15,11 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/ServiceSetApplication/ForwardAsyncCallback.h"
+#include "OpcUaStackServer/ServiceSetApplication/ForwardAsyncCallback.h"
 
-namespace OpcUaStackCore
+using namespace OpcUaStackCore;
+
+namespace OpcUaStackServer
 {
 	ForwardAsyncCallback::ForwardAsyncCallback(void)
 	{

@@ -18,7 +18,7 @@
 #ifndef __OpcUaStackServer_ObjectInstanceBuilder_h__
 #define __OpcUaStackServer_ObjectInstanceBuilder_h__
 
-#include "OpcUaStackCore/ServiceSetApplication/BrowseName.h"
+#include "OpcUaStackCore/Application/BrowseName.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/VariableNodeClass.h"

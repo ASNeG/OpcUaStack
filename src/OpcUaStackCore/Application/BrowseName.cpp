@@ -15,7 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/ServiceSetApplication/BrowseName.h"
+#include "OpcUaStackCore/Application/BrowseName.h"
 
 namespace OpcUaStackCore
 {

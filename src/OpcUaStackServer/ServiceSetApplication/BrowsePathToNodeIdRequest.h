@@ -18,7 +18,7 @@
 #ifndef __OpcUaStackServer_BrowsePathToNodeIdRequest_h__
 #define __OpcUaStackServer_BrowsePathToNodeIdRequest_h__
 
-#include "OpcUaStackCore/ServiceSetApplication/BrowseName.h"
+#include "OpcUaStackCore/Application/BrowseName.h"
 
 namespace OpcUaStackServer
 {
