@@ -60,7 +60,7 @@ namespace OpcUaStackServer
 		void receiveBrowsePathToNodeIdRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 		void receiveCreateVariableRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 		void receiveCreateObjectRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
-		void getNodeIdFromBrowsePath(OpcUaStackCore::BrowseName::SPtr& browseName, OpcUaStackCore::NodeIdResult::SPtr& nodeIdResult);
+		void getNodeIdFromBrowsePath(OpcUaStackCore::BrowseName::SPtr& browseName, NodeIdResult::SPtr& nodeIdResult);
 	};
 
 }

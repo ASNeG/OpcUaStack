@@ -38,8 +38,8 @@
 #include "OpcUaStackServer/ServiceSetApplication/DelNodeInstanceResponse.h"
 #include "OpcUaStackServer/ServiceSetApplication/FireEventRequest.h"
 #include "OpcUaStackServer/ServiceSetApplication/FireEventResponse.h"
-#include "OpcUaStackCore/ServiceSetApplication/BrowsePathToNodeIdRequest.h"
-#include "OpcUaStackCore/ServiceSetApplication/BrowsePathToNodeIdResponse.h"
+#include "OpcUaStackServer/ServiceSetApplication/BrowsePathToNodeIdRequest.h"
+#include "OpcUaStackServer/ServiceSetApplication/BrowsePathToNodeIdResponse.h"
 #include "OpcUaStackServer/ServiceSetApplication/CreateVariableRequest.h"
 #include "OpcUaStackServer/ServiceSetApplication/CreateVariableResponse.h"
 #include "OpcUaStackServer/ServiceSetApplication/CreateObjectRequest.h"
@@ -121,8 +121,8 @@ namespace OpcUaStackServer
 	> ServiceTransactionFireEvent;
 
 	typedef OpcUaStackCore::ServiceTransactionTemplate<
-		OpcUaStackCore::BrowsePathToNodeIdRequest,
-		OpcUaStackCore::BrowsePathToNodeIdResponse,
+		BrowsePathToNodeIdRequest,
+		BrowsePathToNodeIdResponse,
         OpcUaId_BrowsePathToNodeIdRequest_Encoding_DefaultBinary,
         OpcUaId_BrowsePathToNodeIdResponse_Encoding_DefaultBinary
     > ServiceTransactionBrowsePathToNodeId;

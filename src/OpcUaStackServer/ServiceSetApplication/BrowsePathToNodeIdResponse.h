@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,17 +15,17 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_BrowsePathToNodeIdResponse_h__
-#define __OpcUaStackCore_BrowsePathToNodeIdResponse_h__
+#ifndef __OpcUaStackServer_BrowsePathToNodeIdResponse_h__
+#define __OpcUaStackServer_BrowsePathToNodeIdResponse_h__
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 
-namespace OpcUaStackCore
+namespace OpcUaStackServer
 {
 
 	class DLLEXPORT NodeIdResult
-	: public JsonFormatter
+	: public OpcUaStackCore::JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<NodeIdResult> SPtr;
@@ -33,34 +33,34 @@ namespace OpcUaStackCore
 		NodeIdResult(void);
 		~NodeIdResult(void);
 
-		void statusCode(OpcUaStatusCode statusCode);
-		OpcUaStatusCode statusCode(void);
-		void nodeId(OpcUaNodeId& nodeId);
-		OpcUaNodeId& nodeId(void);
+		void statusCode(OpcUaStackCore::OpcUaStatusCode statusCode);
+		OpcUaStackCore::OpcUaStatusCode statusCode(void);
+		void nodeId(OpcUaStackCore::OpcUaNodeId& nodeId);
+		OpcUaStackCore::OpcUaNodeId& nodeId(void);
 
 		void copyTo(NodeIdResult& nodeIdResult)  {}
 		void out(std::ostream& os) const {}
 
 		bool opcUaBinaryEncode(std::ostream& os) const { return false; }
 		bool opcUaBinaryDecode(std::istream& is) { return false; }
-		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
-		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
-		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
-		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, OpcUaStackCore::Xmlns& xmlns) { return false; }
+		bool xmlEncode(boost::property_tree::ptree& pt, OpcUaStackCore::Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, OpcUaStackCore::Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, OpcUaStackCore::Xmlns& xmlns) { return false; }
 
 	  protected:
 		bool jsonEncodeImpl(boost::property_tree::ptree &pt) const { return false; }
 		bool jsonDecodeImpl(const boost::property_tree::ptree &pt) { return false; }
 
 	  private:
-		OpcUaStatusCode statusCode_;
-		OpcUaNodeId nodeId_;
+		OpcUaStackCore::OpcUaStatusCode statusCode_;
+		OpcUaStackCore::OpcUaNodeId nodeId_;
 	};
 
 
 	class DLLEXPORT NodeIdResultArray
-	: public OpcUaArray<NodeIdResult::SPtr, SPtrTypeCoder<NodeIdResult> >
-	, public Object
+	: public OpcUaStackCore::OpcUaArray<NodeIdResult::SPtr, OpcUaStackCore::SPtrTypeCoder<NodeIdResult> >
+	, public OpcUaStackCore::Object
 	{
 	  public:
 		typedef boost::shared_ptr<NodeIdResultArray> SPtr;
@@ -68,7 +68,7 @@ namespace OpcUaStackCore
 
 
 	class DLLEXPORT BrowsePathToNodeIdResponse
-	: public  Object
+	: public  OpcUaStackCore::Object
 	{
 	  public:
 		typedef boost::shared_ptr<BrowsePathToNodeIdResponse> SPtr;
