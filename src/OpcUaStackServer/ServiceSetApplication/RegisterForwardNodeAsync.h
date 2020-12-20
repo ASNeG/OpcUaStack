@@ -49,7 +49,7 @@ namespace OpcUaStackServer
 		void applicationContext(std::vector<OpcUaStackCore::BaseClass::SPtr>& applicationContextVec);
 		std::vector<OpcUaStackCore::BaseClass::SPtr>& applicationContextVec(void);
 
-		OpcUaStackCore::ForwardNodeAsync& forwardNodeAsync(void);
+		ForwardNodeAsync& forwardNodeAsync(void);
 
 
 		bool query(ApplicationServiceIf* applicationServiceIf, bool checkStatusCodeArray = false);
@@ -60,7 +60,7 @@ namespace OpcUaStackServer
 	  private:
 		std::vector<OpcUaStackCore::OpcUaNodeId> nodes_;
 		std::vector<OpcUaStackCore::BaseClass::SPtr> applicationContextVec_;
-		OpcUaStackCore::ForwardNodeAsync forwardNodeAsync_;
+		ForwardNodeAsync forwardNodeAsync_;
 		OpcUaStackCore::OpcUaStatusCode resultCode_;
 		std::vector<OpcUaStackCore::OpcUaStatusCode> statuses_;
 	};

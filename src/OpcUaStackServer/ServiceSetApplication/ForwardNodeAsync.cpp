@@ -15,9 +15,11 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/ServiceSetApplication/ForwardNodeAsync.h"
+#include "OpcUaStackServer/ServiceSetApplication/ForwardNodeAsync.h"
 
-namespace OpcUaStackCore
+using namespace OpcUaStackCore;
+
+namespace OpcUaStackServer
 {
 
 	ForwardNodeAsync::ForwardNodeAsync(void)
