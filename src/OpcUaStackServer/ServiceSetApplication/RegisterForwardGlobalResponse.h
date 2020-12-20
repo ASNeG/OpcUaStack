@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,33 +15,33 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_RegisterForwardGlobalRequest_h__
-#define __OpcUaStackCore_RegisterForwardGlobalRequest_h__
+#ifndef __OpcUaStackServer_RegisterForwardGlobalResponse_h__
+#define __OpcUaStackServer_RegisterForwardGlobalResponse_h__
 
-#include "OpcUaStackCore/ServiceSetApplication/ForwardGlobalSync.h"
+#include "OpcUaStackCore/Base/Object.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 
-namespace OpcUaStackCore
+namespace OpcUaStackServer
 {
 
-	class DLLEXPORT RegisterForwardGlobalRequest
-	: public  Object
+	class DLLEXPORT RegisterForwardGlobalResponse
+	: public OpcUaStackCore::Object
 	{
 	  public:
-		typedef boost::shared_ptr<RegisterForwardGlobalRequest> SPtr;
+		typedef boost::shared_ptr<RegisterForwardGlobalResponse> SPtr;
 
-		RegisterForwardGlobalRequest(void);
-		virtual ~RegisterForwardGlobalRequest(void);
+	    RegisterForwardGlobalResponse(void);
+		virtual ~RegisterForwardGlobalResponse(void);
 
-		void forwardGlobalSync(ForwardGlobalSync::SPtr forwardGlobalSync);
-		ForwardGlobalSync::SPtr forwardGlobalSync(void);
+		void statusCode(const OpcUaStackCore::OpcUaStatusCode statusCode);
+		OpcUaStackCore::OpcUaStatusCode statusCode(void) const;
 
 		bool opcUaBinaryEncode(std::ostream& os) const;
 		bool opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		ForwardGlobalSync::SPtr forwardGlobalSync_;
+		OpcUaStackCore::OpcUaStatusCode statusCode_;
 	};
-
 }
 
 #endif
