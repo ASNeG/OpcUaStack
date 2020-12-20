@@ -36,8 +36,8 @@
 #include "OpcUaStackServer/ServiceSetApplication/NamespaceInfoResponse.h"
 #include "OpcUaStackServer/ServiceSetApplication/DelNodeInstanceRequest.h"
 #include "OpcUaStackServer/ServiceSetApplication/DelNodeInstanceResponse.h"
-#include "OpcUaStackCore/ServiceSetApplication/FireEventRequest.h"
-#include "OpcUaStackCore/ServiceSetApplication/FireEventResponse.h"
+#include "OpcUaStackServer/ServiceSetApplication/FireEventRequest.h"
+#include "OpcUaStackServer/ServiceSetApplication/FireEventResponse.h"
 #include "OpcUaStackCore/ServiceSetApplication/BrowsePathToNodeIdRequest.h"
 #include "OpcUaStackCore/ServiceSetApplication/BrowsePathToNodeIdResponse.h"
 #include "OpcUaStackCore/ServiceSetApplication/CreateVariableRequest.h"
@@ -114,8 +114,8 @@ namespace OpcUaStackServer
 	> ServiceTransactionDelNodeInstance;
 
 	typedef OpcUaStackCore::ServiceTransactionTemplate<
-		OpcUaStackCore::FireEventRequest,
-		OpcUaStackCore::FireEventResponse,
+		FireEventRequest,
+		FireEventResponse,
 		OpcUaId_FireEventRequest_Encoding_DefaultBinary,
 		OpcUaId_FireEventResponse_Encoding_DefaultBinary
 	> ServiceTransactionFireEvent;
