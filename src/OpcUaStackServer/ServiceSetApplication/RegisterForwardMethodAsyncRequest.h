@@ -15,17 +15,17 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_RegisterForwardMethodAsyncRequest_h__
-#define __OpcUaStackCore_RegisterForwardMethodAsyncRequest_h__
+#ifndef __OpcUaStackServer_RegisterForwardMethodAsyncRequest_h__
+#define __OpcUaStackServer_RegisterForwardMethodAsyncRequest_h__
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackCore/ServiceSetApplication/ForwardMethodAsync.h"
 
-namespace OpcUaStackCore
+namespace OpcUaStackServer
 {
 
 	class DLLEXPORT RegisterForwardMethodAsyncRequest
-	: public  Object
+	: public OpcUaStackCore::Object
 	{
 	  public:
 		typedef boost::shared_ptr<RegisterForwardMethodAsyncRequest> SPtr;
@@ -33,20 +33,20 @@ namespace OpcUaStackCore
 		RegisterForwardMethodAsyncRequest(void);
 		virtual ~RegisterForwardMethodAsyncRequest(void);
 
-		void forwardMethodAsync(ForwardMethodAsync::SPtr forwardMethodAsync);
-		ForwardMethodAsync::SPtr& forwardMethodAsync(void);
-		void objectNodeId(OpcUaNodeId& objectNodeId);
-		OpcUaNodeId& objectNodeId(void);
-		void methodNodeId(OpcUaNodeId& methodNodeId);
-		OpcUaNodeId& methodNodeId(void);
+		void forwardMethodAsync(OpcUaStackCore::ForwardMethodAsync::SPtr forwardMethodAsync);
+		OpcUaStackCore::ForwardMethodAsync::SPtr& forwardMethodAsync(void);
+		void objectNodeId(OpcUaStackCore::OpcUaNodeId& objectNodeId);
+		OpcUaStackCore::OpcUaNodeId& objectNodeId(void);
+		void methodNodeId(OpcUaStackCore::OpcUaNodeId& methodNodeId);
+		OpcUaStackCore::OpcUaNodeId& methodNodeId(void);
 
 		bool opcUaBinaryEncode(std::ostream& os) const { return true; }
 		bool opcUaBinaryDecode(std::istream& is) { return true; }
 
 	  private:
-		ForwardMethodAsync::SPtr forwardMethodAsync_;
-		OpcUaNodeId objectNodeId_;
-		OpcUaNodeId methodNodeId_;
+		OpcUaStackCore::ForwardMethodAsync::SPtr forwardMethodAsync_;
+		OpcUaStackCore::OpcUaNodeId objectNodeId_;
+		OpcUaStackCore::OpcUaNodeId methodNodeId_;
 	};
 
 }

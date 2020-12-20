@@ -15,18 +15,18 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_RegisterForwardMethodAsyncResponse_h__
-#define __OpcUaStackCore_RegisterForwardMethodAsyncResponse_h__
+#ifndef __OpcUaStackServer_RegisterForwardMethodAsyncResponse_h__
+#define __OpcUaStackServer_RegisterForwardMethodAsyncResponse_h__
 
 #include "OpcUaStackCore/Base/Object.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 
 
-namespace OpcUaStackCore
+namespace OpcUaStackServer
 {
 
 	class DLLEXPORT RegisterForwardMethodAsyncResponse
-	: public Object
+	: public OpcUaStackCore::Object
 	{
 	  public:
 		typedef boost::shared_ptr<RegisterForwardMethodAsyncResponse> SPtr;
@@ -34,14 +34,14 @@ namespace OpcUaStackCore
 	    RegisterForwardMethodAsyncResponse(void);
 		virtual ~RegisterForwardMethodAsyncResponse(void);
 
-		void statusCode(OpcUaStatusCode statusCode);
-		OpcUaStatusCode statusCode(void);
+		void statusCode(OpcUaStackCore::OpcUaStatusCode statusCode);
+		OpcUaStackCore::OpcUaStatusCode statusCode(void);
 
 		bool opcUaBinaryEncode(std::ostream& os) const { return true; }
 		bool opcUaBinaryDecode(std::istream& is) { return true; }
 
 	  private:
-		OpcUaStatusCode statusCode_;
+		OpcUaStackCore::OpcUaStatusCode statusCode_;
 	};
 }
 
