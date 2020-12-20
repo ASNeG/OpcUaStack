@@ -19,7 +19,7 @@
 #define __OpcUaStackServer_RegisterForwardMethodAsyncRequest_h__
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
-#include "OpcUaStackCore/ServiceSetApplication/ForwardMethodAsync.h"
+#include "OpcUaStackServer/ServiceSetApplication/ForwardMethodAsync.h"
 
 namespace OpcUaStackServer
 {
@@ -33,8 +33,8 @@ namespace OpcUaStackServer
 		RegisterForwardMethodAsyncRequest(void);
 		virtual ~RegisterForwardMethodAsyncRequest(void);
 
-		void forwardMethodAsync(OpcUaStackCore::ForwardMethodAsync::SPtr forwardMethodAsync);
-		OpcUaStackCore::ForwardMethodAsync::SPtr& forwardMethodAsync(void);
+		void forwardMethodAsync(ForwardMethodAsync::SPtr forwardMethodAsync);
+		ForwardMethodAsync::SPtr& forwardMethodAsync(void);
 		void objectNodeId(OpcUaStackCore::OpcUaNodeId& objectNodeId);
 		OpcUaStackCore::OpcUaNodeId& objectNodeId(void);
 		void methodNodeId(OpcUaStackCore::OpcUaNodeId& methodNodeId);
@@ -44,7 +44,7 @@ namespace OpcUaStackServer
 		bool opcUaBinaryDecode(std::istream& is) { return true; }
 
 	  private:
-		OpcUaStackCore::ForwardMethodAsync::SPtr forwardMethodAsync_;
+		ForwardMethodAsync::SPtr forwardMethodAsync_;
 		OpcUaStackCore::OpcUaNodeId objectNodeId_;
 		OpcUaStackCore::OpcUaNodeId methodNodeId_;
 	};

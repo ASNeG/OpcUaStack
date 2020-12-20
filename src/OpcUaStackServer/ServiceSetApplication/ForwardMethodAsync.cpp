@@ -15,31 +15,32 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_ForwardMethodAsync_h__
-#define __OpcUaStackCore_ForwardMethodAsync_h__
+#include "OpcUaStackServer/ServiceSetApplication/ForwardMethodAsync.h"
 
-#include "OpcUaStackCore/ServiceSetApplication/ForwardAsyncCallback.h"
+using namespace OpcUaStackCore;
 
-namespace OpcUaStackCore
+namespace OpcUaStackServer
 {
 
-	class DLLEXPORT ForwardMethodAsync
-	: public  Object
+	ForwardMethodAsync::ForwardMethodAsync(void)
+	: methodService_()
 	{
-	  public:
-		using SPtr = boost::shared_ptr<ForwardMethodAsync>;
+	}
 
-		ForwardMethodAsync(void);
-		virtual ~ForwardMethodAsync(void);
+	ForwardMethodAsync::~ForwardMethodAsync(void)
+	{
+	}
 
-		ForwardAsyncCallback& methodService(void);
+	ForwardAsyncCallback&
+	ForwardMethodAsync::methodService(void)
+	{
+		return methodService_;
+	}
 
-		void updateFrom(ForwardMethodAsync& forwardInfoSync);
-
-	  private:
-		ForwardAsyncCallback methodService_;
-	};
+	void
+	ForwardMethodAsync::updateFrom(ForwardMethodAsync& ForwardSyncCallbackSync)
+	{
+		methodService_.updateFrom(ForwardSyncCallbackSync.methodService());
+	}
 
 }
-
-#endif
