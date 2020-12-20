@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,43 +15,38 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/ServiceSetApplication/DelNodeInstanceRequest.h"
+#include "OpcUaStackServer/ServiceSetApplication/DelNodeInstanceResponse.h"
 
-namespace OpcUaStackCore
+using namespace OpcUaStackCore;
+
+namespace OpcUaStackServer
 {
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
-	// OpcUa DelNodeInstanceRequest
+	// OpcUa DelNodeInstanceResponse
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 
-	DelNodeInstanceRequest::DelNodeInstanceRequest(void)
+	DelNodeInstanceResponse::DelNodeInstanceResponse(void)
 	: Object()
-	, nodeId_()
 	{
 	}
 
-	DelNodeInstanceRequest::~DelNodeInstanceRequest(void)
+	DelNodeInstanceResponse::~DelNodeInstanceResponse(void)
 	{
-	}
-
-	OpcUaNodeId&
-	DelNodeInstanceRequest::nodeId(void)
-	{
-		return nodeId_;
 	}
 
 	bool
-	DelNodeInstanceRequest::opcUaBinaryEncode(std::ostream& os) const
+	DelNodeInstanceResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
 		return false;
 	}
 	
 	bool
-	DelNodeInstanceRequest::opcUaBinaryDecode(std::istream& is)
+	DelNodeInstanceResponse::opcUaBinaryDecode(std::istream& is)
 	{
 		return false;
 	}

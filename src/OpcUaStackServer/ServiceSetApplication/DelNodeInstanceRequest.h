@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,16 +15,16 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_DelNodeInstanceRequest_h__
-#define __OpcUaStackCore_DelNodeInstanceRequest_h__
+#ifndef __OpcUaStackServer_DelNodeInstanceRequest_h__
+#define __OpcUaStackServer_DelNodeInstanceRequest_h__
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 
-namespace OpcUaStackCore
+namespace OpcUaStackServer
 {
 
 	class DLLEXPORT DelNodeInstanceRequest
-	: public  Object
+	: public OpcUaStackCore::Object
 	{
 	  public:
 		typedef boost::shared_ptr<DelNodeInstanceRequest> SPtr;
@@ -32,13 +32,13 @@ namespace OpcUaStackCore
 		DelNodeInstanceRequest(void);
 		virtual ~DelNodeInstanceRequest(void);
 
-		OpcUaNodeId& nodeId(void);
+		OpcUaStackCore::OpcUaNodeId& nodeId(void);
 
 		bool opcUaBinaryEncode(std::ostream& os) const;
 		bool opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		OpcUaNodeId nodeId_;
+		OpcUaStackCore::OpcUaNodeId nodeId_;
 	};
 
 }

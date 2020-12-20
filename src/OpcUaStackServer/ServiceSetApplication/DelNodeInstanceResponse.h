@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,16 +15,16 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_DelNodeInstanceResponse_h__
-#define __OpcUaStackCore_DelNodeInstanceResponse_h__
+#ifndef __OpcUaStackServer_DelNodeInstanceResponse_h__
+#define __OpcUaStackServer_DelNodeInstanceResponse_h__
 
 #include "OpcUaStackCore/Base/Object.h"
 
-namespace OpcUaStackCore
+namespace OpcUaStackServer
 {
 
 	class DLLEXPORT DelNodeInstanceResponse
-	: public  Object
+	: public OpcUaStackCore::Object
 	{
 	  public:
 		typedef boost::shared_ptr<DelNodeInstanceResponse> SPtr;

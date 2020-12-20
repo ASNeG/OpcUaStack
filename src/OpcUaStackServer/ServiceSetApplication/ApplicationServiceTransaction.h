@@ -34,8 +34,8 @@
 #include "OpcUaStackCore/ServiceSetApplication/GetNodeReferenceResponse.h"
 #include "OpcUaStackCore/ServiceSetApplication/NamespaceInfoRequest.h"
 #include "OpcUaStackCore/ServiceSetApplication/NamespaceInfoResponse.h"
-#include "OpcUaStackCore/ServiceSetApplication/DelNodeInstanceRequest.h"
-#include "OpcUaStackCore/ServiceSetApplication/DelNodeInstanceResponse.h"
+#include "OpcUaStackServer/ServiceSetApplication/DelNodeInstanceRequest.h"
+#include "OpcUaStackServer/ServiceSetApplication/DelNodeInstanceResponse.h"
 #include "OpcUaStackCore/ServiceSetApplication/FireEventRequest.h"
 #include "OpcUaStackCore/ServiceSetApplication/FireEventResponse.h"
 #include "OpcUaStackCore/ServiceSetApplication/BrowsePathToNodeIdRequest.h"
@@ -51,36 +51,36 @@ namespace OpcUaStackServer
 {
 	
 	typedef OpcUaStackCore::ServiceTransactionTemplate<
-		OpcUaStackServer::RegisterForwardNodeRequest,
-		OpcUaStackServer::RegisterForwardNodeResponse,
+		RegisterForwardNodeRequest,
+		RegisterForwardNodeResponse,
 		OpcUaId_RegisterForwardNodeRequest_Encoding_DefaultBinary,
 		OpcUaId_RegisterForwardNodeResponse_Encoding_DefaultBinary
 	> ServiceTransactionRegisterForwardNode;
 
 	typedef OpcUaStackCore::ServiceTransactionTemplate<
-		OpcUaStackServer::RegisterForwardNodeAsyncRequest,
-		OpcUaStackServer::RegisterForwardNodeAsyncResponse,
+		RegisterForwardNodeAsyncRequest,
+		RegisterForwardNodeAsyncResponse,
 		OpcUaId_RegisterForwardNodeAsyncRequest_Encoding_DefaultBinary,
 		OpcUaId_RegisterForwardNodeAsyncResponse_Encoding_DefaultBinary
 	> ServiceTransactionRegisterForwardNodeAsync;
 
 	typedef OpcUaStackCore::ServiceTransactionTemplate<
-		OpcUaStackServer::RegisterForwardMethodRequest,
-		OpcUaStackServer::RegisterForwardMethodResponse,
+		RegisterForwardMethodRequest,
+		RegisterForwardMethodResponse,
 		OpcUaId_RegisterForwardMethodRequest_Encoding_DefaultBinary,
 		OpcUaId_RegisterForwardMethodResponse_Encoding_DefaultBinary
 	> ServiceTransactionRegisterForwardMethod;
 
 	typedef OpcUaStackCore::ServiceTransactionTemplate<
-		OpcUaStackServer::RegisterForwardMethodAsyncRequest,
-		OpcUaStackServer::RegisterForwardMethodAsyncResponse,
+		RegisterForwardMethodAsyncRequest,
+		RegisterForwardMethodAsyncResponse,
 		OpcUaId_RegisterForwardMethodAsyncRequest_Encoding_DefaultBinary,
 		OpcUaId_RegisterForwardMethodAsyncResponse_Encoding_DefaultBinary
 	> ServiceTransactionRegisterForwardMethodAsync;
 
 	typedef OpcUaStackCore::ServiceTransactionTemplate<
-		OpcUaStackServer::RegisterForwardGlobalRequest,
-		OpcUaStackServer::RegisterForwardGlobalResponse,
+		RegisterForwardGlobalRequest,
+		RegisterForwardGlobalResponse,
 		OpcUaId_RegisterForwardGlobalRequest_Encoding_DefaultBinary,
 		OpcUaId_RegisterForwardGlobalResponse_Encoding_DefaultBinary
 	> ServiceTransactionRegisterForwardGlobal;
@@ -107,8 +107,8 @@ namespace OpcUaStackServer
 	> ServiceTransactionCreateNodeInstance;
 
 	typedef OpcUaStackCore::ServiceTransactionTemplate<
-		OpcUaStackCore::DelNodeInstanceRequest,
-		OpcUaStackCore::DelNodeInstanceResponse,
+		DelNodeInstanceRequest,
+		DelNodeInstanceResponse,
 		OpcUaId_DelNodeInstanceRequest_Encoding_DefaultBinary,
 		OpcUaId_DelNodeInstanceResponse_Encoding_DefaultBinary
 	> ServiceTransactionDelNodeInstance;
