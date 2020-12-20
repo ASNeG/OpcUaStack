@@ -21,7 +21,7 @@
 #include <boost/weak_ptr.hpp>
 #include <vector>
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/ServiceSetApplication/ForwardNodeSync.h"
+#include "OpcUaStackServer/ServiceSetApplication/ForwardNodeSync.h"
 #include "OpcUaStackCore/ServiceSetApplication/ForwardNodeAsync.h"
 #include "OpcUaStackServer/AddressSpaceModel/Attribute.h"
 #include "OpcUaStackServer/AddressSpaceModel/ReferenceType.h"
@@ -73,8 +73,8 @@ namespace OpcUaStackServer
 		void copyTo(BaseNodeClass& baseNodeClass);
 		virtual BaseNodeClass::SPtr clone(void) = 0;
 
-		void forwardNodeSync(OpcUaStackCore::ForwardNodeSync::SPtr forwardInfo);
-		OpcUaStackCore::ForwardNodeSync::SPtr forwardNodeSync(void);
+		void forwardNodeSync(ForwardNodeSync::SPtr forwardInfo);
+		ForwardNodeSync::SPtr forwardNodeSync(void);
 		void forwardNodeAsync(OpcUaStackCore::ForwardNodeAsync::SPtr forwardInfo);
 		OpcUaStackCore::ForwardNodeAsync::SPtr forwardNodeAsync(void);
 
@@ -92,7 +92,7 @@ namespace OpcUaStackServer
 
 		ReferenceItemMap referenceItemMap_;
 
-		OpcUaStackCore::ForwardNodeSync::SPtr forwardNodeSync_;
+		ForwardNodeSync::SPtr forwardNodeSync_;
 		OpcUaStackCore::ForwardNodeAsync::SPtr forwardNodeAsync_;
 	};
 

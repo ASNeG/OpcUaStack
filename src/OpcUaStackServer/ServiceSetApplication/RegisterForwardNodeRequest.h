@@ -19,7 +19,7 @@
 #define __OpcUaStackServer_RegisterForwardNodeRequest_h__
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
-#include "OpcUaStackCore/ServiceSetApplication/ForwardNodeSync.h"
+#include "OpcUaStackServer/ServiceSetApplication/ForwardNodeSync.h"
 
 namespace OpcUaStackServer
 {
@@ -35,8 +35,8 @@ namespace OpcUaStackServer
 
 		void nodesToRegister(const OpcUaStackCore::OpcUaNodeIdArray::SPtr nodesToRegister);
 		OpcUaStackCore::OpcUaNodeIdArray::SPtr nodesToRegister(void) const;
-		void forwardNodeSync(OpcUaStackCore::ForwardNodeSync::SPtr forwardInfo);
-		OpcUaStackCore::ForwardNodeSync::SPtr forwardNodeSync(void);
+		void forwardNodeSync(ForwardNodeSync::SPtr forwardInfo);
+		ForwardNodeSync::SPtr forwardNodeSync(void);
 		void applicationContextArray(OpcUaStackCore::BaseClassArray::SPtr& applicationContextArray);
 		OpcUaStackCore::BaseClassArray::SPtr& applicationContextArray(void);
 
@@ -44,7 +44,7 @@ namespace OpcUaStackServer
 		bool opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		OpcUaStackCore::ForwardNodeSync::SPtr forwardNodeSync_;
+		ForwardNodeSync::SPtr forwardNodeSync_;
 		OpcUaStackCore::OpcUaNodeIdArray::SPtr nodesToRegisterArraySPtr_;
 		OpcUaStackCore::BaseClassArray::SPtr applicationContextArray_;
 	};
