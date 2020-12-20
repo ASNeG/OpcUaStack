@@ -42,8 +42,8 @@
 #include "OpcUaStackCore/ServiceSetApplication/BrowsePathToNodeIdResponse.h"
 #include "OpcUaStackServer/ServiceSetApplication/CreateVariableRequest.h"
 #include "OpcUaStackServer/ServiceSetApplication/CreateVariableResponse.h"
-#include "OpcUaStackCore/ServiceSetApplication/CreateObjectRequest.h"
-#include "OpcUaStackCore/ServiceSetApplication/CreateObjectResponse.h"
+#include "OpcUaStackServer/ServiceSetApplication/CreateObjectRequest.h"
+#include "OpcUaStackServer/ServiceSetApplication/CreateObjectResponse.h"
 #include "OpcUaStackServer/ServiceSetApplication/CreateNodeInstanceRequest.h"
 #include "OpcUaStackServer/ServiceSetApplication/CreateNodeInstanceResponse.h"
 
@@ -135,8 +135,8 @@ namespace OpcUaStackServer
 	> ServiceTransactionCreateVariable;
 
 	typedef OpcUaStackCore::ServiceTransactionTemplate<
-		OpcUaStackCore::CreateObjectRequest,
-		OpcUaStackCore::CreateObjectResponse,
+		CreateObjectRequest,
+		CreateObjectResponse,
 		OpcUaId_CreateObjectRequest_Encoding_DefaultBinary,
 		OpcUaId_CreateObjectResponse_Encoding_DefaultBinary
 	> ServiceTransactionCreateObject;
