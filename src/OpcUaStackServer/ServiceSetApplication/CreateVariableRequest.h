@@ -1,5 +1,5 @@
 /*
-   Copyright 2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2019-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,17 +15,17 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_CreateVariableRequest_h__
-#define __OpcUaStackCore_CreateVariableRequest_h__
+#ifndef __OpcUaStackServer_CreateVariableRequest_h__
+#define __OpcUaStackServer_CreateVariableRequest_h__
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaLocalizedText.h"
 
-namespace OpcUaStackCore
+namespace OpcUaStackServer
 {
 
 	class DLLEXPORT CreateVariableRequest
-	: public  Object
+	: public OpcUaStackCore::Object
 	{
 	  public:
 		typedef boost::shared_ptr<CreateVariableRequest> SPtr;
@@ -35,12 +35,12 @@ namespace OpcUaStackCore
 
 		void namespaceName(const std::string& namespaceName);
 		std::string& namespaceName(void);
-		void displayName(const OpcUaLocalizedText& displayName);
-		OpcUaLocalizedText& displayName(void);
-		void parentNodeId(const OpcUaNodeId& parentNodeId);
-		OpcUaNodeId& parentNodeId(void);
-		void referenceTypeNodeId(const OpcUaNodeId& referenceTypeNodeId);
-		OpcUaNodeId& referenceTypeNodeId(void);
+		void displayName(const OpcUaStackCore::OpcUaLocalizedText& displayName);
+		OpcUaStackCore::OpcUaLocalizedText& displayName(void);
+		void parentNodeId(const OpcUaStackCore::OpcUaNodeId& parentNodeId);
+		OpcUaStackCore::OpcUaNodeId& parentNodeId(void);
+		void referenceTypeNodeId(const OpcUaStackCore::OpcUaNodeId& referenceTypeNodeId);
+		OpcUaStackCore::OpcUaNodeId& referenceTypeNodeId(void);
         void variableInstance(Object::SPtr& variableInstance);
         Object::SPtr& variableInstance(void);
 
@@ -49,9 +49,9 @@ namespace OpcUaStackCore
 
 	  private:
 		std::string namespaceName_;
-		OpcUaLocalizedText displayName_;
-		OpcUaNodeId parentNodeId_;
-		OpcUaNodeId referenceTypeNodeId_;
+		OpcUaStackCore::OpcUaLocalizedText displayName_;
+		OpcUaStackCore::OpcUaNodeId parentNodeId_;
+		OpcUaStackCore::OpcUaNodeId referenceTypeNodeId_;
 		Object::SPtr variableInstance_;
 	};
 
