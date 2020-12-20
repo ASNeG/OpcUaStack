@@ -15,9 +15,11 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/ServiceSetApplication/RegisterForwardMethodRequest.h"
+#include "OpcUaStackServer/ServiceSetApplication/RegisterForwardMethodRequest.h"
 
-namespace OpcUaStackCore
+using namespace OpcUaStackCore;
+
+namespace OpcUaStackServer
 {
 
 	// ------------------------------------------------------------------------

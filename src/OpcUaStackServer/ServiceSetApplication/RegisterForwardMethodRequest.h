@@ -15,17 +15,17 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_RegisterForwardMethodRequest_h__
-#define __OpcUaStackCore_RegisterForwardMethodRequest_h__
+#ifndef __OpcUaStackServer_RegisterForwardMethodRequest_h__
+#define __OpcUaStackServer_RegisterForwardMethodRequest_h__
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackCore/ServiceSetApplication/ForwardMethodSync.h"
 
-namespace OpcUaStackCore
+namespace OpcUaStackServer
 {
 
 	class DLLEXPORT RegisterForwardMethodRequest
-	: public  Object
+	: public OpcUaStackCore::Object
 	{
 	  public:
 		typedef boost::shared_ptr<RegisterForwardMethodRequest> SPtr;
@@ -33,20 +33,20 @@ namespace OpcUaStackCore
 		RegisterForwardMethodRequest(void);
 		virtual ~RegisterForwardMethodRequest(void);
 
-		void forwardMethodSync(ForwardMethodSync::SPtr forwardMethodSync);
-		ForwardMethodSync::SPtr& forwardMethodSync(void);
-		void objectNodeId(OpcUaNodeId& objectNodeId);
-		OpcUaNodeId& objectNodeId(void);
-		void methodNodeId(OpcUaNodeId& methodNodeId);
-		OpcUaNodeId& methodNodeId(void);
+		void forwardMethodSync(OpcUaStackCore::ForwardMethodSync::SPtr forwardMethodSync);
+		OpcUaStackCore::ForwardMethodSync::SPtr& forwardMethodSync(void);
+		void objectNodeId(OpcUaStackCore::OpcUaNodeId& objectNodeId);
+		OpcUaStackCore::OpcUaNodeId& objectNodeId(void);
+		void methodNodeId(OpcUaStackCore::OpcUaNodeId& methodNodeId);
+		OpcUaStackCore::OpcUaNodeId& methodNodeId(void);
 
 		bool opcUaBinaryEncode(std::ostream& os) const;
 		bool opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		ForwardMethodSync::SPtr forwardMethodSync_;
-		OpcUaNodeId objectNodeId_;
-		OpcUaNodeId methodNodeId_;
+		OpcUaStackCore::ForwardMethodSync::SPtr forwardMethodSync_;
+		OpcUaStackCore::OpcUaNodeId objectNodeId_;
+		OpcUaStackCore::OpcUaNodeId methodNodeId_;
 	};
 
 }

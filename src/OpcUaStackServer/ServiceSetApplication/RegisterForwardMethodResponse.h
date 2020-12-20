@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,18 +15,18 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_RegisterForwardMethodResponse_h__
-#define __OpcUaStackCore_RegisterForwardMethodResponse_h__
+#ifndef __OpcUaStackServer_RegisterForwardMethodResponse_h__
+#define __OpcUaStackServer_RegisterForwardMethodResponse_h__
 
 #include "OpcUaStackCore/Base/Object.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 
 
-namespace OpcUaStackCore
+namespace OpcUaStackServer
 {
 
 	class DLLEXPORT RegisterForwardMethodResponse
-	: public Object
+	: public OpcUaStackCore::Object
 	{
 	  public:
 		typedef boost::shared_ptr<RegisterForwardMethodResponse> SPtr;
@@ -34,14 +34,14 @@ namespace OpcUaStackCore
 	    RegisterForwardMethodResponse(void);
 		virtual ~RegisterForwardMethodResponse(void);
 
-		void statusCode(OpcUaStatusCode statusCode);
-		OpcUaStatusCode statusCode(void);
+		void statusCode(OpcUaStackCore::OpcUaStatusCode statusCode);
+		OpcUaStackCore::OpcUaStatusCode statusCode(void);
 
 		bool opcUaBinaryEncode(std::ostream& os) const;
 		bool opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		OpcUaStatusCode statusCode_;
+		OpcUaStackCore::OpcUaStatusCode statusCode_;
 	};
 }
 
