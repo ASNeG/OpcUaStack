@@ -21,9 +21,9 @@
 #include <boost/thread/mutex.hpp>
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackCore/Utility/SlotTimer.h"
-#include "OpcUaStackCore/ServiceSetApplication/ForwardGlobalSync.h"
 #include "OpcUaStackCore/ServiceSet/SubscriptionServiceTransaction.h"
 #include "OpcUaStackCore/ServiceSet/MonitoredItemServiceTransaction.h"
+#include "OpcUaStackServer/ServiceSetApplication/ForwardGlobalSync.h"
 #include "OpcUaStackServer/ServiceSet/MonitorManager.h"
 #include "OpcUaStackServer/ServiceSet/AcknowledgementManager.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
@@ -58,7 +58,7 @@ namespace OpcUaStackServer
 		void ioThread(OpcUaStackCore::IOThread* ioThread);
 		void strand(boost::shared_ptr<boost::asio::io_service::strand>& strand);
 		void informationModel(InformationModel::SPtr informationModel);
-		void forwardGlobalSync(OpcUaStackCore::ForwardGlobalSync::SPtr& forwardGlobalSync);
+		void forwardGlobalSync(ForwardGlobalSync::SPtr& forwardGlobalSync);
 		OpcUaStackCore::OpcUaStatusCode receiveAcknowledgement(uint32_t acknowledgmentNumber);
 
 		void retransmissionQueue(OpcUaStackCore::SubscriptionAcknowledgement::SPtr subscriptionAcknowledgement);

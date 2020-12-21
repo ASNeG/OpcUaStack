@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2020 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,7 +19,7 @@
 #define __OpcUaStackCore_NodeInfoVariableType_h__
 
 #include "OpcUaStackCore/StandardDataTypes/StructureDefinitionExpand.h"
-#include "OpcUaStackCore/ServiceSetApplication/BrowseName.h"
+#include "OpcUaStackCore/Application/BrowseName.h"
 #include "OpcUaStackServer/Generator/NodeInfo.h"
 #include "OpcUaStackServer/Generator/VariableTypeField.h"
 

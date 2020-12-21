@@ -25,9 +25,9 @@
 #include "OpcUaStackCore/ServiceSet/ActivateSessionRequest.h"
 #include "OpcUaStackCore/ServiceSet/CancelRequest.h"
 #include "OpcUaStackCore/StandardDataTypes/EndpointDescription.h"
-#include "OpcUaStackCore/ServiceSetApplication/ForwardGlobalSync.h"
 #include "OpcUaStackCore/Certificate/ApplicationCertificate.h"
 #include "OpcUaStackCore/Certificate/CryptoManager.h"
+#include "OpcUaStackServer/ServiceSetApplication/ForwardGlobalSync.h"
 #include "OpcUaStackServer/ServiceSet/TransactionManager.h"
 #include "OpcUaStackServer/ServiceSet/ServerServiceBase.h"
 
@@ -76,7 +76,7 @@ namespace OpcUaStackServer
 
 		void cryptoManager(OpcUaStackCore::CryptoManager::SPtr& cryptoManager);
 		void transactionManager(TransactionManager::SPtr transactionManager);
-		void forwardGlobalSync(OpcUaStackCore::ForwardGlobalSync::SPtr& forwardGlobalSync);
+		void forwardGlobalSync(ForwardGlobalSync::SPtr& forwardGlobalSync);
 
 		void responseMessageCallback(const ResponseMessageCallback& responseMessageCallback);
 		void deleteSessionCallback(const DeleteSessionCallback& deleteSessionCallback);
@@ -159,7 +159,7 @@ namespace OpcUaStackServer
 		OpcUaStackCore::EndpointDescription::SPtr endpointDescription_;
 		OpcUaStackCore::CryptoManager::SPtr cryptoManager_;
 
-		OpcUaStackCore::ForwardGlobalSync::SPtr forwardGlobalSync_;
+		ForwardGlobalSync::SPtr forwardGlobalSync_;
 		TransactionManager::SPtr transactionManagerSPtr_;
 
 		OpcUaStackCore::UserContext::SPtr userContext_;

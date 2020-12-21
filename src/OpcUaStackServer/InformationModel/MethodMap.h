@@ -20,8 +20,8 @@
 
 #include <map>
 
-#include "OpcUaStackCore/ServiceSetApplication/ForwardMethodSync.h"
-#include "OpcUaStackCore/ServiceSetApplication/ForwardMethodAsync.h"
+#include "OpcUaStackServer/ServiceSetApplication/ForwardMethodSync.h"
+#include "OpcUaStackServer/ServiceSetApplication/ForwardMethodAsync.h"
 #include "OpcUaStackServer/InformationModel/MethodId.h"
 
 namespace OpcUaStackServer
@@ -30,8 +30,8 @@ namespace OpcUaStackServer
 	class DLLEXPORT MethodMap
 	{
 	  public:
-		typedef std::map<MethodId, OpcUaStackCore::ForwardMethodSync::SPtr> ForwardMethodSyncMap;
-		typedef std::map<MethodId, OpcUaStackCore::ForwardMethodAsync::SPtr> ForwardMethodAsyncMap;
+		typedef std::map<MethodId, ForwardMethodSync::SPtr> ForwardMethodSyncMap;
+		typedef std::map<MethodId, ForwardMethodAsync::SPtr> ForwardMethodAsyncMap;
 
 		MethodMap(
 			void
@@ -54,12 +54,12 @@ namespace OpcUaStackServer
 		bool registerMethodSync(
 			const OpcUaStackCore::OpcUaNodeId& objectNodeId,
 			const OpcUaStackCore::OpcUaNodeId& methodNodeId,
-			OpcUaStackCore::ForwardMethodSync::SPtr& forwardMethodSync
+			ForwardMethodSync::SPtr& forwardMethodSync
 		);
 		bool registerMethodAsync(
 			const OpcUaStackCore::OpcUaNodeId& objectNodeId,
 			const OpcUaStackCore::OpcUaNodeId& methodNodeId,
-			OpcUaStackCore::ForwardMethodAsync::SPtr& forwardMethodAsync
+			ForwardMethodAsync::SPtr& forwardMethodAsync
 		);
 		bool deregisterMethodSync(
 			const OpcUaStackCore::OpcUaNodeId& objectNodeId,
@@ -69,11 +69,11 @@ namespace OpcUaStackServer
 			const OpcUaStackCore::OpcUaNodeId& objectNodeId,
 			const OpcUaStackCore::OpcUaNodeId& methodNodeId
 		);
-		OpcUaStackCore::ForwardMethodSync::SPtr getMethodSync(
+		ForwardMethodSync::SPtr getMethodSync(
 			const OpcUaStackCore::OpcUaNodeId& objectNodeId,
 			const OpcUaStackCore::OpcUaNodeId& methodNodeId
 		);
-		OpcUaStackCore::ForwardMethodAsync::SPtr getMethodAsync(
+		ForwardMethodAsync::SPtr getMethodAsync(
 			const OpcUaStackCore::OpcUaNodeId& objectNodeId,
 			const OpcUaStackCore::OpcUaNodeId& methodNodeId
 		);

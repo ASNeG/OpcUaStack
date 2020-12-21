@@ -127,7 +127,7 @@ namespace OpcUaStackServer
 		return applicationContextVec_;
 	}
 
-	OpcUaStackCore::ForwardNodeAsync&
+	ForwardNodeAsync&
 	RegisterForwardNodeAsync::forwardNodeAsync(void)
 	{
 		return forwardNodeAsync_;

@@ -61,7 +61,7 @@ namespace OpcUaStackServer
 		void messageBus(OpcUaStackCore::MessageBus::SPtr& messageBus);
 		void endpointDescriptionSet(OpcUaStackCore::EndpointDescriptionSet::SPtr& endpointDescriptionSet);
 		void config(OpcUaStackCore::Config* config);
-		void forwardGlobalSync(OpcUaStackCore::ForwardGlobalSync::SPtr& forwardGlobalSync);
+		void forwardGlobalSync(ForwardGlobalSync::SPtr& forwardGlobalSync);
 
 		bool startup(void);
 		bool shutdown(void);
@@ -169,7 +169,7 @@ namespace OpcUaStackServer
 		bool shutdownFlag_;
 		std::promise<bool> shutdownComplete_;
 		OpcUaStackCore::SecureChannelServer::Map secureChannelServerMap_;
-		OpcUaStackCore::ForwardGlobalSync::SPtr forwardGlobalSync_;
+		ForwardGlobalSync::SPtr forwardGlobalSync_;
 
 		TransactionManager::SPtr transactionManagerSPtr_;
 

@@ -83,7 +83,7 @@ namespace OpcUaStackServer
 	  private:
 		std::vector<OpcUaStackCore::OpcUaNodeId> nodes_;
 		std::vector<OpcUaStackCore::BaseClass::SPtr> applicationContextVec_;
-		OpcUaStackCore::ForwardNodeSync forwardNodeSync_;
+		ForwardNodeSync forwardNodeSync_;
 		OpcUaStackCore::OpcUaStatusCode resultCode_;
 		std::vector<OpcUaStackCore::OpcUaStatusCode> statuses_;
 	};

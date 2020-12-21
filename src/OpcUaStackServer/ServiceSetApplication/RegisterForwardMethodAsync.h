@@ -47,7 +47,7 @@ namespace OpcUaStackServer
 	  private:
 		OpcUaStackCore::OpcUaNodeId objectNodeId_;
 		OpcUaStackCore::OpcUaNodeId methodNodeId_;
-		OpcUaStackCore::ForwardMethodAsync forwardMethodAsync_;
+		ForwardMethodAsync forwardMethodAsync_;
 		OpcUaStackCore::OpcUaStatusCode resultCode_;
 	};
 

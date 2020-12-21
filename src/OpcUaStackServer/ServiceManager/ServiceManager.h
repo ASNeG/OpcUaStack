@@ -75,7 +75,7 @@ namespace OpcUaStackServer
 		OpcUaStackCore::EndpointDescriptionSet::SPtr endpointDescriptionSet_ = nullptr;
 		OpcUaStackCore::CryptoManager::SPtr cryptoManager_ = nullptr;
 
-		OpcUaStackCore::ForwardGlobalSync::SPtr forwardGlobalSync_ = nullptr;
+		ForwardGlobalSync::SPtr forwardGlobalSync_ = nullptr;
 
 		TransactionManager::SPtr transactionManager_ = nullptr;
 		ServerInfoService::SPtr serverInfoService_ = nullptr;
