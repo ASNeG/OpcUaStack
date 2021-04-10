@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -988,7 +988,8 @@ namespace OpcUaStackCore
 		}
 
 		// get security token
-		if (!OpcUaNumber::opcUaBinaryDecode(is, secureChannel->secureChannelTransaction_->securityTokenId_)) {
+		uint32_t securityTokenId;
+		if (!OpcUaNumber::opcUaBinaryDecode(is, securityTokenId)) {
 			Log(Debug, "opc ua secure channel decode security token error")
 				.parameter("ChannelId", *secureChannel);
 
@@ -998,11 +999,11 @@ namespace OpcUaStackCore
 
 		// find actual secure channel key and check if secure channel key is expired
 		auto& securitySettings = secureChannel->securitySettings();
-		auto secureChannelKey = securitySettings.secureChannelKeys().getSecureChannelKey(secureChannel->secureChannelTransaction_->securityTokenId_);
+		auto secureChannelKey = securitySettings.secureChannelKeys().getSecureChannelKey(securityTokenId);
 		if (!secureChannelKey) {
 			Log(Debug, "opc ua secure channel security token unknown")
 				.parameter("ChannelId", *secureChannel)
-				.parameter("SecurityToken", secureChannel->secureChannelTransaction_->securityTokenId_);
+				.parameter("SecurityToken", securityTokenId);
 
 			closeChannel(secureChannel, true);
 			return;
@@ -1011,11 +1012,12 @@ namespace OpcUaStackCore
 			securitySettings.secureChannelKeys().removeExpiredSecureChannelKeys();
 			Log(Debug, "opc ua secure channel security token expired")
 				.parameter("ChannelId", *secureChannel)
-				.parameter("SecurityToken", secureChannel->secureChannelTransaction_->securityTokenId_);
+				.parameter("SecurityToken", securityTokenId);
 
 			closeChannel(secureChannel, true);
 			return;
 		}
+		securitySettings.secureChannelKeys().actServerSecurityToken(securityTokenId);
 
 		// handle security
 		if (secureReceivedMessageRequest(secureChannel, secureChannelKey) != Success) {
@@ -1245,7 +1247,8 @@ namespace OpcUaStackCore
 		}
 
 		// get security token
-		if (!OpcUaNumber::opcUaBinaryDecode(is, secureChannel->secureChannelTransaction_->securityTokenId_)) {
+		uint32_t securityTokenId;
+		if (!OpcUaNumber::opcUaBinaryDecode(is, securityTokenId)) {
 			Log(Debug, "opc ua secure channel decode security token error")
 				.parameter("ChannelId", *secureChannel);
 
@@ -1255,11 +1258,11 @@ namespace OpcUaStackCore
 
 		// find actual secure channel key and check if secure channel key is expired
 		auto& securitySettings = secureChannel->securitySettings();
-		auto secureChannelKey = securitySettings.secureChannelKeys().getSecureChannelKey(secureChannel->secureChannelTransaction_->securityTokenId_);
+		auto secureChannelKey = securitySettings.secureChannelKeys().getSecureChannelKey(securityTokenId);
 		if (!secureChannelKey) {
 			Log(Debug, "opc ua secure channel security token unknown")
 				.parameter("ChannelId", *secureChannel)
-				.parameter("SecurityToken", secureChannel->secureChannelTransaction_->securityTokenId_);
+				.parameter("SecurityToken", securityTokenId);
 
 			closeChannel(secureChannel, true);
 			return;
@@ -1268,11 +1271,12 @@ namespace OpcUaStackCore
 			securitySettings.secureChannelKeys().removeExpiredSecureChannelKeys();
 			Log(Debug, "opc ua secure channel security token expired")
 				.parameter("ChannelId", *secureChannel)
-				.parameter("SecurityToken", secureChannel->secureChannelTransaction_->securityTokenId_);
+				.parameter("SecurityToken", securityTokenId);
 
 			closeChannel(secureChannel, true);
 			return;
 		}
+		securitySettings.secureChannelKeys().actServerSecurityToken(securityTokenId);
 
 		// handle security
 		if (secureReceivedMessageRequest(secureChannel, secureChannelKey) != Success) {
@@ -1710,6 +1714,8 @@ namespace OpcUaStackCore
 		if (secureChannel->asyncSend_) return;
 
 		auto secureChannelTransaction = secureChannel->secureChannelTransactionList_.front();
+		auto& securitySettings = secureChannel->securitySettings();
+		auto securityTokenId = securitySettings.secureChannelKeys().actServerSecurityToken();
 
 		boost::asio::streambuf sb1;
 		std::iostream ios1(&sb1);
@@ -1723,7 +1729,7 @@ namespace OpcUaStackCore
 		}
 
 		// encode token id
-		if (!OpcUaNumber::opcUaBinaryEncode(ios1, secureChannelTransaction->securityTokenId_)) {
+		if (!OpcUaNumber::opcUaBinaryEncode(ios1, securityTokenId)) {
 			Log(Debug, "opc ua secure channel encode token id error")
 				.parameter("ChannelId", *secureChannel);
 			return;
@@ -1776,19 +1782,18 @@ namespace OpcUaStackCore
 		}
 
 		// find actual secure channel key and check if secure channel key is expired
-		auto& securitySettings = secureChannel->securitySettings();
-		auto secureChannelKey = securitySettings.secureChannelKeys().getSecureChannelKey(secureChannelTransaction->securityTokenId_);
+		auto secureChannelKey = securitySettings.secureChannelKeys().getSecureChannelKey(securityTokenId);
 		if (!secureChannelKey) {
 			Log(Debug, "opc ua secure channel send message error, because security token unknown or timed out")
 				.parameter("ChannelId", *secureChannel)
-				.parameter("SecurityToken", secureChannelTransaction->securityTokenId_);
+				.parameter("SecurityToken", securityTokenId);
 			return;
 		}
 		if (secureChannelKey->isExpiredSecurechannelKey()) {
 			securitySettings.secureChannelKeys().removeExpiredSecureChannelKeys();
 			Log(Debug, "opc ua secure channel send message error, because security token expired")
 				.parameter("ChannelId", *secureChannel)
-				.parameter("SecurityToken", secureChannelTransaction->securityTokenId_);
+				.parameter("SecurityToken", securityTokenId);
 			return;
 		}
 

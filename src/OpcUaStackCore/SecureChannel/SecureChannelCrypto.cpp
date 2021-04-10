@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -898,13 +898,14 @@ namespace OpcUaStackCore
 		OpcUaStatusCode statusCode;
 
 		auto& securitySettings = secureChannel->securitySettings();
+		auto securityTokenId = securitySettings.secureChannelKeys().actServerSecurityToken();
 		auto messageHeader = &secureChannel->messageHeader_;
 
 		// create plain text buffer (with signature at end of buffer)
 		boost::asio::streambuf streambuf;
 		std::iostream os(&streambuf);
 		messageHeader->opcUaBinaryEncode(os, true);
-		OpcUaNumber::opcUaBinaryEncode(os, secureChannel->secureChannelTransaction_->securityTokenId_);
+		OpcUaNumber::opcUaBinaryEncode(os, securityTokenId);
 
 		uint32_t plainTextLen = streambuf.size() + secureChannel->recvBuffer_.size();
 		MemoryBuffer plainText(plainTextLen);

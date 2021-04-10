@@ -1,5 +1,5 @@
 /*
-   Copyright 2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2020-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -69,6 +69,8 @@ namespace OpcUaStackCore
 		~SecureChannelKeys(void);
 
 		uint32_t actSecurityToken(void);
+		void actServerSecurityToken(uint32_t actServerSecurityToken);
+		uint32_t actServerSecurityToken(void);
 		SecureChannelKey::SPtr createSecureChannelKey(uint32_t liveTime, uint32_t securityToken = 0);
 		SecureChannelKey::SPtr getSecureChannelKey(uint32_t securityToken);
 		bool delSecureChannelKey(uint32_t securityToken);
@@ -77,6 +79,7 @@ namespace OpcUaStackCore
 
 	  private:
 		uint32_t actSecurityToken_ = 0;
+		uint32_t actServerSecurityToken_ = 0;
 		SecureChannelKey::Map secureChannelKeyMap_;
 	};
 

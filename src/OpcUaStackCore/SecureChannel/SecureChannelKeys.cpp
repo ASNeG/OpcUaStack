@@ -1,5 +1,5 @@
 /*
-   Copyright 2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2020-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -123,6 +123,18 @@ namespace OpcUaStackCore
 	SecureChannelKeys::actSecurityToken(void)
 	{
 		return actSecurityToken_;
+	}
+
+	void
+	SecureChannelKeys::actServerSecurityToken(uint32_t actServerSecurityToken)
+	{
+		actServerSecurityToken_ = actServerSecurityToken;
+	}
+
+	uint32_t
+	SecureChannelKeys::actServerSecurityToken(void)
+	{
+		return actServerSecurityToken_;
 	}
 
 	SecureChannelKey::SPtr
