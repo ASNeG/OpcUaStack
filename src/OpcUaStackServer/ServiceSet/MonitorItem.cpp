@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -27,10 +27,6 @@ namespace OpcUaStackServer
 
 	MonitorItem::MonitorItem(void)
 	: monitorItemId_(MonitorItemId::monitorItemId())
-	, samplingInterval_(100)
-	, queSize_(0)
-	, discardOldest_(false)
-	, clientHandle_(0)
 	, monitorItemList_()
 	, baseNodeClass_()
 	, attribute_(nullptr)
@@ -100,7 +96,10 @@ namespace OpcUaStackServer
 	}
 
 	OpcUaStatusCode 
-	MonitorItem::receive(BaseNodeClass::SPtr baseNodeClass, MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest)
+	MonitorItem::receive(
+		BaseNodeClass::SPtr baseNodeClass,
+		MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest
+	)
 	{
 		baseNodeClass_ = baseNodeClass;
 		monitoredItemCreateRequest_ = monitoredItemCreateRequest;
@@ -125,7 +124,7 @@ namespace OpcUaStackServer
 			return BadNodeIdUnknown;
 		}
 
-		MonitoredItemNotification::SPtr monitoredItemNotification = boost::make_shared<MonitoredItemNotification>();
+		auto monitoredItemNotification = boost::make_shared<MonitoredItemNotification>();
 		if (attribute_->exist() == false) {
 			Log(Debug, "read value error, because value not exist")
 				.parameter("Node", monitoredItemCreateRequest->itemToMonitor().nodeId())
@@ -170,14 +169,14 @@ namespace OpcUaStackServer
 	SampleResult 
 	MonitorItem::sample(void)
 	{
-		BaseNodeClass::SPtr baseNodeClass = baseNodeClass_.lock();
+		auto baseNodeClass = baseNodeClass_.lock();
 
 		if (baseNodeClass.get() == nullptr) {
 			// base node class no longer exist. Generate final notification if necessary
 			if (dataValue_.statusCode() == BadNodeClassInvalid) return NodeNoLongerExist;
 
 			// insert notification into queue
-			MonitoredItemNotification::SPtr monitoredItemNotification = boost::make_shared<MonitoredItemNotification>();
+			auto monitoredItemNotification = boost::make_shared<MonitoredItemNotification>();
 			monitoredItemNotification->value().statusCode(BadNodeClassInvalid);
 			monitorItemListPushBack(monitoredItemNotification);
 			return NodeNoLongerExist;
@@ -185,10 +184,10 @@ namespace OpcUaStackServer
 
 		boost::shared_lock<boost::shared_mutex> lock(baseNodeClass->mutex());
 
-		// check wheater an event schould be generated
+		// check whether an event should be generated
 		if (!AttributeAccess::trigger(dataValue_, *attribute_)) return Ok; 
 		
-		MonitoredItemNotification::SPtr monitoredItemNotification = boost::make_shared<MonitoredItemNotification>();
+		auto monitoredItemNotification = boost::make_shared<MonitoredItemNotification>();
 		if (!AttributeAccess::copy(*attribute_, monitoredItemNotification->value())) {
 			// data value is not available
 			if (dataValue_.statusCode() == BadDataUnavailable) return Ok;
