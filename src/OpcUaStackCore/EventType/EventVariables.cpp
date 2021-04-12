@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -114,8 +114,7 @@ namespace OpcUaStackCore
 	bool
 	EventVariables::registerEventVariable(const std::string& variableName, OpcUaBuildInType buildInType)
 	{
-		EventVariableMap::iterator it;
-		it = eventVariableMap_.find(variableName);
+		auto it = eventVariableMap_.find(variableName);
 		if (it != eventVariableMap_.end()) {
 			return false;
 		}
@@ -128,8 +127,7 @@ namespace OpcUaStackCore
 	bool
 	EventVariables::deregisterEventVariable(const std::string& variableName)
 	{
-		EventVariableMap::iterator it;
-		it = eventVariableMap_.find(variableName);
+		auto it = eventVariableMap_.find(variableName);
 		if (it == eventVariableMap_.end()) {
 			return true;
 		}
@@ -144,8 +142,7 @@ namespace OpcUaStackCore
 			return false;
 		}
 
-		EventVariableMap::iterator it;
-		it = eventVariableMap_.find(variableName);
+		auto it = eventVariableMap_.find(variableName);
 		if (it == eventVariableMap_.end()) {
 			return false;
 		}
@@ -161,8 +158,7 @@ namespace OpcUaStackCore
 	bool
 	EventVariables::getValue(const std::string& variableName, OpcUaVariant::SPtr& variable)
 	{
-		EventVariableMap::iterator it;
-		it = eventVariableMap_.find(variableName);
+		auto it = eventVariableMap_.find(variableName);
 		if (it == eventVariableMap_.end()) {
 			variable.reset();
 			return false;
@@ -175,10 +171,8 @@ namespace OpcUaStackCore
 	OpcUaVariant::SPtr
 	EventVariables::get(OpcUaQualifiedName::SPtr& browseName, EventResult::Code& resultCode)
 	{
-		EventVariableMap::iterator it;
-
 		resultCode = EventResult::Success;
-		for (it = eventVariableMap_.begin(); it != eventVariableMap_.end(); it++) {
+		for (auto it = eventVariableMap_.begin(); it != eventVariableMap_.end(); it++) {
 			if (*browseName == OpcUaQualifiedName(it->first, namespaceIndex_)) {
 				OpcUaVariant::SPtr variant;
 				if (it->second.variable_.get() == nullptr) {
@@ -204,14 +198,13 @@ namespace OpcUaStackCore
 			std::string browseNameString = "";
 			uint16_t namespaceIndex;
 
-			std::list<OpcUaQualifiedName::SPtr>::iterator it;
-			for (it = browseNameList.begin(); it != browseNameList.end(); it++) {
+			for (auto it = browseNameList.begin(); it != browseNameList.end(); it++) {
 				if (browseNameString != "") browseNameString.append("_");
 				else namespaceIndex = (*it)->namespaceIndex();
 				browseNameString.append((*it)->name().toStdString());
 			}
 
-			OpcUaQualifiedName::SPtr browseName = boost::make_shared<OpcUaQualifiedName>(browseNameString, namespaceIndex);
+			auto browseName = boost::make_shared<OpcUaQualifiedName>(browseNameString, namespaceIndex);
 			variant = get(browseName, resultCode);
 
 			if (resultCode == EventResult::Success) {

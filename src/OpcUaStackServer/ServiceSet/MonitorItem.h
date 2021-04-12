@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -67,10 +67,10 @@ namespace OpcUaStackServer
 		bool dataChange(OpcUaStackCore::MonitoredItemNotification::SPtr monitoredItemNotiication, Attribute* attribute);
 
 		uint32_t monitorItemId_;
-		uint32_t samplingInterval_;
-		uint32_t queSize_;
-		bool discardOldest_;
-		uint32_t clientHandle_;
+		uint32_t samplingInterval_ = 100;
+		uint32_t queSize_ = 0;
+		bool discardOldest_ = false;
+		uint32_t clientHandle_ = 0;
 
 		OpcUaStackCore::MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest_;
 		MonitorItemList monitorItemList_;
