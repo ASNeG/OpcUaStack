@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -1514,18 +1514,18 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	AttributeBase::setDataTypeSync(OpcUaNodeId& dataType)
+	AttributeBase::setDataTypeSync(const OpcUaNodeId& dataType)
 	{
 		boost::unique_lock<boost::shared_mutex> lock(mutex_);
 		return setDataType(dataType);
 	}
 
 	bool
-	AttributeBase::setDataType(OpcUaNodeId& dataType)
+	AttributeBase::setDataType(const OpcUaNodeId& dataType)
 	{
 		if (!isPartDataType()) return false;
 		DataTypeAttribute* attr = reinterpret_cast<DataTypeAttribute*>(dataTypeAttribute());
-		dataType.copyTo(attr->data());
+		const_cast<OpcUaNodeId*>(&dataType)->copyTo(attr->data());
 		attr->exist(true);
 		return true;
 	}

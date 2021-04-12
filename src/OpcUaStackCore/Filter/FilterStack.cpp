@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -108,7 +108,7 @@ namespace OpcUaStackCore
         ContentFilterElement::SPtr el;
         contentFilter.elements().get(idx, el);
 
-    	OpcUaStatusCodeArray::SPtr operandStatuses = boost::make_shared<OpcUaStatusCodeArray>();
+    	auto operandStatuses = boost::make_shared<OpcUaStatusCodeArray>();
     	operandStatuses->resize(el->filterOperands().size());
 
         std::vector<FilterNode::SPtr> args;
@@ -123,6 +123,8 @@ namespace OpcUaStackCore
             switch (typeId)
             {
             	case OpcUaId_LiteralOperand:
+            	case OpcUaId_LiteralOperand_Encoding_DefaultBinary:
+            	case OpcUaId_LiteralOperand_Encoding_DefaultXml:
             	{
             		OpcUaVariant value = operand->parameter<LiteralOperand>()->value();
             		args.push_back(boost::make_shared<LiteralFilterNode>(value));
@@ -131,6 +133,8 @@ namespace OpcUaStackCore
             		break;
             	}
             	case OpcUaId_ElementOperand:
+            	case OpcUaId_ElementOperand_Encoding_DefaultBinary:
+            	case OpcUaId_ElementOperand_Encoding_DefaultXml:
             	{
             		FilterNode::SPtr operatorNode;
             		uint32_t operatorIdx = operand->parameter<ElementOperand>()->index();
@@ -152,6 +156,8 @@ namespace OpcUaStackCore
             		break;
             	}
             	case OpcUaId_AttributeOperand:
+            	case OpcUaId_AttributeOperand_Encoding_DefaultBinary:
+            	case OpcUaId_AttributeOperand_Encoding_DefaultXml:
             	{
             	    AttributeOperand::SPtr attributeOperand = operand->parameter<AttributeOperand>();
             	    AttributeFilterNode::SPtr attributeNode(new AttributeFilterNode(
@@ -168,6 +174,8 @@ namespace OpcUaStackCore
             		break;
             	}
             	case OpcUaId_SimpleAttributeOperand:
+            	case OpcUaId_SimpleAttributeOperand_Encoding_DefaultBinary:
+            	case OpcUaId_SimpleAttributeOperand_Encoding_DefaultXml:
             	{
             	    SimpleAttributeOperand::SPtr simpleAttributeOperand = operand->parameter<SimpleAttributeOperand>();
             	    SimpleAttributeFilterNode::SPtr simpleAttributeNode(new SimpleAttributeFilterNode(

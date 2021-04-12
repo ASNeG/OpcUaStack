@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -89,7 +89,7 @@ namespace OpcUaStackServer
 		// create event filter result
 		//EventFilterResult::SPtr eventFilterResult = monitoredItemCreateResult->filterResult().parameter<EventFilterResult>(OpcUaId_EventFilterResult_Encoding_DefaultBinary);
 
-		EventFilterResult::SPtr eventFilterResult = boost::make_shared<EventFilterResult>();
+		auto eventFilterResult = boost::make_shared<EventFilterResult>();
 
 		// select clause
 		SimpleAttributeOperandArray& selectClauses = eventFilter->selectClauses();
@@ -155,7 +155,7 @@ namespace OpcUaStackServer
 	}
 
 	void
-	EventItem::fireEvent(EventBase::SPtr eventBase)
+	EventItem::fireEvent(EventBase::SPtr& eventBase)
 	{
 		boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
 		BaseEventType::SPtr baseEventType = boost::static_pointer_cast<BaseEventType>(eventBase);
@@ -177,7 +177,7 @@ namespace OpcUaStackServer
 			OpcUaByteString byteString;
 			byteString.value((char*)&time, sizeof(boost::posix_time::ptime));
 
-			OpcUaVariant::SPtr variant = boost::make_shared<OpcUaVariant>();
+			auto variant = boost::make_shared<OpcUaVariant>();
 			variant->setValue(byteString);
 
 			baseEventType->eventId(variant);
@@ -205,21 +205,21 @@ namespace OpcUaStackServer
 		}
 
 		// set receive time if necessary
-		if (baseEventType->time().get() == nullptr) {
+		if (baseEventType->receiveTime().get() == nullptr) {
 			OpcUaVariant::SPtr variant = boost::make_shared<OpcUaVariant>();
 			variant->setValue(OpcUaDateTime(now));
 			baseEventType->receiveTime(variant);
 		}
 
 		// set message if necessary
-		if (baseEventType->time().get() == nullptr) {
+		if (baseEventType->message().get() == nullptr) {
 			OpcUaVariant::SPtr variant = boost::make_shared<OpcUaVariant>();
 			variant->setValue(OpcUaLocalizedText("", browseName_.name().toStdString()));
 			baseEventType->message(variant);
 		}
 
 		// set severity if necessary
-		if (baseEventType->time().get() == nullptr) {
+		if (baseEventType->severity().get() == nullptr) {
 			OpcUaVariant::SPtr variant = boost::make_shared<OpcUaVariant>();
 			variant->setValue((OpcUaUInt16)100);
 			baseEventType->severity(variant);
@@ -240,7 +240,7 @@ namespace OpcUaStackServer
 		}
 
 		// process where clause
-		EventFieldList::SPtr eventFieldList = boost::make_shared<EventFieldList>();
+		auto eventFieldList = boost::make_shared<EventFieldList>();
 		eventFieldList->clientHandle() = clientHandle_;
 		eventFieldList->eventFields().resize(selectClauses_.size());
 
@@ -258,7 +258,11 @@ namespace OpcUaStackServer
 			}
 
 			// get variant value from event
-			OpcUaNodeId typeId = simpleAttributeOperand->typeDefinitionId();
+			auto typeId = simpleAttributeOperand->typeDefinitionId();
+			if (typeId == OpcUaNodeId(0)) {
+				typeId = OpcUaNodeId(2041);
+			}
+
 			OpcUaVariant::SPtr value;
 			EventResult::Code resultCode = eventBase->get(
 				typeId,
