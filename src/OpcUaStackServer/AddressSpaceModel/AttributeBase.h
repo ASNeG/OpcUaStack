@@ -47,8 +47,8 @@ namespace OpcUaStackServer
 		//
 		virtual Attribute* nodeIdAttribute(void);
 		bool unsetNodeId(void);
-		bool setNodeIdSync(OpcUaStackCore::OpcUaNodeId& nodeId);
-		bool setNodeId(OpcUaStackCore::OpcUaNodeId& nodeId);
+		bool setNodeIdSync(const OpcUaStackCore::OpcUaNodeId& nodeId);
+		bool setNodeId(const OpcUaStackCore::OpcUaNodeId& nodeId);
 		bool getNodeIdSync(OpcUaStackCore::OpcUaNodeId& nodeId);
 		bool getNodeId(OpcUaStackCore::OpcUaNodeId& nodeId);
 		bool isPartNodeId(void);
@@ -60,8 +60,8 @@ namespace OpcUaStackServer
 		//
 		virtual Attribute* nodeClassAttribute(void);
 		bool unsetNodeClass(void);
-		bool setNodeClassSync(OpcUaStackCore::NodeClass::Enum& nodeClass);
-		bool setNodeClass(OpcUaStackCore::NodeClass::Enum& nodeClass);
+		bool setNodeClassSync(const OpcUaStackCore::NodeClass::Enum& nodeClass);
+		bool setNodeClass(const OpcUaStackCore::NodeClass::Enum& nodeClass);
 		bool getNodeClassSync(OpcUaStackCore::NodeClass::Enum& nodeClass);
 		bool getNodeClass(OpcUaStackCore::NodeClass::Enum& nodeClass);
 		bool isPartNodeClass(void);
@@ -73,8 +73,8 @@ namespace OpcUaStackServer
 		//
 		virtual Attribute* browseNameAttribute(void);
 		bool unsetBrowseName(void);
-		bool setBrowseNameSync(OpcUaStackCore::OpcUaQualifiedName& browseName);
-		bool setBrowseName(OpcUaStackCore::OpcUaQualifiedName& browseName);
+		bool setBrowseNameSync(const OpcUaStackCore::OpcUaQualifiedName& browseName);
+		bool setBrowseName(const OpcUaStackCore::OpcUaQualifiedName& browseName);
 		bool getBrowseNameSync(OpcUaStackCore::OpcUaQualifiedName& browseName);
 		bool getBrowseName(OpcUaStackCore::OpcUaQualifiedName& browseName);
 		bool isPartBrowseName(void);
@@ -99,8 +99,8 @@ namespace OpcUaStackServer
 		//
 		virtual Attribute* descriptionAttribute(void);
 		bool unsetDescription(void);
-		bool setDescriptionSync(OpcUaStackCore::OpcUaLocalizedText& displayName);
-		bool setDescription(OpcUaStackCore::OpcUaLocalizedText& displayName);
+		bool setDescriptionSync(const OpcUaStackCore::OpcUaLocalizedText& displayName);
+		bool setDescription(const OpcUaStackCore::OpcUaLocalizedText& displayName);
 		bool getDescriptionSync(OpcUaStackCore::OpcUaLocalizedText& displayName);
 		bool getDescription(OpcUaStackCore::OpcUaLocalizedText& displayName);
 		bool isPartDescription(void);
@@ -112,8 +112,8 @@ namespace OpcUaStackServer
 		//
 		virtual Attribute* writeMaskAttribute(void);
 		bool unsetWriteMask(void);
-		bool setWriteMaskSync(OpcUaStackCore::OpcUaUInt32 writeMask);
-		bool setWriteMask(OpcUaStackCore::OpcUaUInt32 writeMask);
+		bool setWriteMaskSync(const OpcUaStackCore::OpcUaUInt32 writeMask);
+		bool setWriteMask(const OpcUaStackCore::OpcUaUInt32 writeMask);
 		bool getWriteMaskSync(OpcUaStackCore::OpcUaUInt32& writeMask);
 		bool getWriteMask(OpcUaStackCore::OpcUaUInt32& writeMask);
 		bool isPartWriteMask(void);
@@ -125,8 +125,8 @@ namespace OpcUaStackServer
 		//
 		virtual Attribute* userWriteMaskAttribute(void);
 		bool unsetUserWriteMask(void);
-		bool setUserWriteMaskSync(OpcUaStackCore::OpcUaUInt32 writeMask);
-		bool setUserWriteMask(OpcUaStackCore::OpcUaUInt32 writeMask);
+		bool setUserWriteMaskSync(const OpcUaStackCore::OpcUaUInt32 writeMask);
+		bool setUserWriteMask(const OpcUaStackCore::OpcUaUInt32 writeMask);
 		bool getUserWriteMaskSync(OpcUaStackCore::OpcUaUInt32& writeMask);
 		bool getUserWriteMask(OpcUaStackCore::OpcUaUInt32& writeMask);
 		bool isPartUserWriteMask(void);
@@ -138,8 +138,8 @@ namespace OpcUaStackServer
 		//
 		virtual Attribute* isAbstractAttribute(void);
 		bool unsetIsAbstract(void);
-		bool setIsAbstractSync(OpcUaStackCore::OpcUaBoolean& isAbstract);
-		bool setIsAbstract(OpcUaStackCore::OpcUaBoolean& isAbstract);
+		bool setIsAbstractSync(const OpcUaStackCore::OpcUaBoolean& isAbstract);
+		bool setIsAbstract(const OpcUaStackCore::OpcUaBoolean& isAbstract);
 		bool getIsAbstractSync(OpcUaStackCore::OpcUaBoolean& isAbstract);
 		bool getIsAbstract(OpcUaStackCore::OpcUaBoolean& isAbstract);
 		bool isPartIsAbstract(void);
@@ -151,8 +151,8 @@ namespace OpcUaStackServer
 		//
 		virtual Attribute* symmetricAttribute(void);
 		bool unsetSymmetric(void);
-		bool setSymmetricSync(OpcUaStackCore::OpcUaBoolean& isAbstract);
-		bool setSymmetric(OpcUaStackCore::OpcUaBoolean& isAbstract);
+		bool setSymmetricSync(const OpcUaStackCore::OpcUaBoolean& isAbstract);
+		bool setSymmetric(const OpcUaStackCore::OpcUaBoolean& isAbstract);
 		bool getSymmetricSync(OpcUaStackCore::OpcUaBoolean& isAbstract);
 		bool getSymmetric(OpcUaStackCore::OpcUaBoolean& isAbstract);
 		bool isPartSymmetric(void);
@@ -164,8 +164,8 @@ namespace OpcUaStackServer
 		//
 		virtual Attribute* inverseNameAttribute(void);
 		bool unsetInverseName(void);
-		bool setInverseNameSync(OpcUaStackCore::OpcUaLocalizedText& inverseName);
-		bool setInverseName(OpcUaStackCore::OpcUaLocalizedText& inverseName);
+		bool setInverseNameSync(const OpcUaStackCore::OpcUaLocalizedText& inverseName);
+		bool setInverseName(const OpcUaStackCore::OpcUaLocalizedText& inverseName);
 		bool getInverseNameSync(OpcUaStackCore::OpcUaLocalizedText& inverseName);
 		bool getInverseName(OpcUaStackCore::OpcUaLocalizedText& inverseName);
 		bool isPartInverseName(void);
@@ -177,8 +177,8 @@ namespace OpcUaStackServer
 		//
 		virtual Attribute* containsNoLoopsAttribute(void);
 		bool unsetContainsNoLoops(void);
-		bool setContainsNoLoopsSync(OpcUaStackCore::OpcUaBoolean& containsNoLoops);
-		bool setContainsNoLoops(OpcUaStackCore::OpcUaBoolean& containsNoLoops);
+		bool setContainsNoLoopsSync(const OpcUaStackCore::OpcUaBoolean& containsNoLoops);
+		bool setContainsNoLoops(const OpcUaStackCore::OpcUaBoolean& containsNoLoops);
 		bool getContainsNoLoopsSync(OpcUaStackCore::OpcUaBoolean& containsNoLoops);
 		bool getContainsNoLoops(OpcUaStackCore::OpcUaBoolean& containsNoLoops);
 		bool isPartContainsNoLoops(void);
@@ -190,8 +190,8 @@ namespace OpcUaStackServer
 		//
 		virtual Attribute* eventNotifierAttribute(void);
 		bool unsetEventNotifier(void);
-		bool setEventNotifierSync(OpcUaStackCore::OpcUaByte eventNotifier);
-		bool setEventNotifier(OpcUaStackCore::OpcUaByte eventNotifier);
+		bool setEventNotifierSync(const OpcUaStackCore::OpcUaByte eventNotifier);
+		bool setEventNotifier(const OpcUaStackCore::OpcUaByte eventNotifier);
 		bool getEventNotifierSync(OpcUaStackCore::OpcUaByte& eventNotifier);
 		bool getEventNotifier(OpcUaStackCore::OpcUaByte& eventNotifier);
 		bool isPartEventNotifier(void);
@@ -229,8 +229,8 @@ namespace OpcUaStackServer
 		//
 		virtual Attribute* valueRankAttribute(void);
 		bool unsetValueRank(void);
-		bool setValueRankSync(OpcUaStackCore::OpcUaInt32& arrayDimensions);
-		bool setValueRank(OpcUaStackCore::OpcUaInt32& arrayDimensions);
+		bool setValueRankSync(const OpcUaStackCore::OpcUaInt32& arrayDimensions);
+		bool setValueRank(const OpcUaStackCore::OpcUaInt32& arrayDimensions);
 		bool getValueRankSync(OpcUaStackCore::OpcUaInt32& arrayDimensions);
 		bool getValueRank(OpcUaStackCore::OpcUaInt32& arrayDimensions);
 		bool isPartValueRank(void);
@@ -242,8 +242,8 @@ namespace OpcUaStackServer
 		//
 		virtual Attribute* arrayDimensionsAttribute(void);
 		bool unsetArrayDimensions(void);
-		bool setArrayDimensionsSync(OpcUaStackCore::OpcUaUInt32Array& arrayDimensions);
-		bool setArrayDimensions(OpcUaStackCore::OpcUaUInt32Array& arrayDimensions);
+		bool setArrayDimensionsSync(const OpcUaStackCore::OpcUaUInt32Array& arrayDimensions);
+		bool setArrayDimensions(const OpcUaStackCore::OpcUaUInt32Array& arrayDimensions);
 		bool getArrayDimensionsSync(OpcUaStackCore::OpcUaUInt32Array& arrayDimensions);
 		bool getArrayDimensions(OpcUaStackCore::OpcUaUInt32Array& arrayDimensions);
 		bool isPartArrayDimensions(void);
@@ -255,8 +255,8 @@ namespace OpcUaStackServer
 		//
 		virtual Attribute* accessLevelAttribute(void);
 		bool unsetAccessLevel(void);
-		bool setAccessLevelSync(OpcUaStackCore::OpcUaByte& accessLevel);
-		bool setAccessLevel(OpcUaStackCore::OpcUaByte& accessLevel);
+		bool setAccessLevelSync(const OpcUaStackCore::OpcUaByte& accessLevel);
+		bool setAccessLevel(const OpcUaStackCore::OpcUaByte& accessLevel);
 		bool getAccessLevelSync(OpcUaStackCore::OpcUaByte& accessLevel);
 		bool getAccessLevel(OpcUaStackCore::OpcUaByte& accessLevel);
 		bool isPartAccessLevel(void);
@@ -268,8 +268,8 @@ namespace OpcUaStackServer
 		//
 		virtual Attribute* userAccessLevelAttribute(void);
 		bool unsetUserAccessLevel(void);
-		bool setUserAccessLevelSync(OpcUaStackCore::OpcUaByte& userAccessLevel);
-		bool setUserAccessLevel(OpcUaStackCore::OpcUaByte& userAccessLevel);
+		bool setUserAccessLevelSync(const OpcUaStackCore::OpcUaByte& userAccessLevel);
+		bool setUserAccessLevel(const OpcUaStackCore::OpcUaByte& userAccessLevel);
 		bool getUserAccessLevelSync(OpcUaStackCore::OpcUaByte& userAccessLevel);
 		bool getUserAccessLevel(OpcUaStackCore::OpcUaByte& userAccessLevel);
 		bool isPartUserAccessLevel(void);
@@ -281,8 +281,8 @@ namespace OpcUaStackServer
 		//
 		virtual Attribute* historizingAttribute(void);
 		bool unsetHistorizing(void);
-		bool setHistorizingSync(OpcUaStackCore::OpcUaBoolean& historizing);
-		bool setHistorizing(OpcUaStackCore::OpcUaBoolean& historizing);
+		bool setHistorizingSync(const OpcUaStackCore::OpcUaBoolean& historizing);
+		bool setHistorizing(const OpcUaStackCore::OpcUaBoolean& historizing);
 		bool getHistorizingSync(OpcUaStackCore::OpcUaBoolean& historizing);
 		bool getHistorizing(OpcUaStackCore::OpcUaBoolean& historizing);
 		bool isPartHistorizing(void);
@@ -294,8 +294,8 @@ namespace OpcUaStackServer
 		//
 		virtual Attribute* executableAttribute(void);
 		bool unsetExecutable(void);
-		bool setExecutableSync(OpcUaStackCore::OpcUaBoolean& executable);
-		bool setExecutable(OpcUaStackCore::OpcUaBoolean& executable);
+		bool setExecutableSync(const OpcUaStackCore::OpcUaBoolean& executable);
+		bool setExecutable(const OpcUaStackCore::OpcUaBoolean& executable);
 		bool getExecutableSync(OpcUaStackCore::OpcUaBoolean& executable);
 		bool getExecutable(OpcUaStackCore::OpcUaBoolean& executable);
 		bool isPartExecutable(void);
@@ -307,8 +307,8 @@ namespace OpcUaStackServer
 		//
 		virtual Attribute* userExecutableAttribute(void);
 		bool unsetUserExecutable(void);
-		bool setUserExecutableSync(OpcUaStackCore::OpcUaBoolean& userExecutable);
-		bool setUserExecutable(OpcUaStackCore::OpcUaBoolean& userExecutable);
+		bool setUserExecutableSync(const OpcUaStackCore::OpcUaBoolean& userExecutable);
+		bool setUserExecutable(const OpcUaStackCore::OpcUaBoolean& userExecutable);
 		bool getUserExecutableSync(OpcUaStackCore::OpcUaBoolean& userExecutable);
 		bool getUserExecutable(OpcUaStackCore::OpcUaBoolean& userExecutable);
 		bool isPartUserExecutable(void);
@@ -320,8 +320,8 @@ namespace OpcUaStackServer
 		//
 		virtual Attribute* minimumSamplingIntervalAttribute(void);
 		bool unsetMinimumSamplingInterval(void);
-		bool setMinimumSamplingIntervalSync(OpcUaStackCore::OpcUaDouble& minimumSamplingInterval);
-		bool setMinimumSamplingInterval(OpcUaStackCore::OpcUaDouble& minimumSamplingInterval);
+		bool setMinimumSamplingIntervalSync(const OpcUaStackCore::OpcUaDouble& minimumSamplingInterval);
+		bool setMinimumSamplingInterval(const OpcUaStackCore::OpcUaDouble& minimumSamplingInterval);
 		bool getMinimumSamplingIntervalSync(OpcUaStackCore::OpcUaDouble& minimumSamplingInterval);
 		bool getMinimumSamplingInterval(OpcUaStackCore::OpcUaDouble& minimumSamplingInterval);
 		bool isPartMinimumSamplingInterval(void);
@@ -333,8 +333,8 @@ namespace OpcUaStackServer
 		//
 		virtual Attribute* dataTypeDefinitionAttribute(void);
 		bool unsetDataTypeDefinition(void);
-		bool setDataTypeDefinitionSync(OpcUaStackCore::DataTypeDefinition& dataTypeDefinition);
-		bool setDataTypeDefinition(OpcUaStackCore::DataTypeDefinition& dataTypeDefinition);
+		bool setDataTypeDefinitionSync(const OpcUaStackCore::DataTypeDefinition& dataTypeDefinition);
+		bool setDataTypeDefinition(const OpcUaStackCore::DataTypeDefinition& dataTypeDefinition);
 		bool getDataTypeDefinitionSync(OpcUaStackCore::DataTypeDefinition& dataTypeDefinition);
 		bool getDataTypeDefinition(OpcUaStackCore::DataTypeDefinition& dataTypeDefinition);
 		bool isPartDataTypeDefinition(void);
@@ -346,8 +346,8 @@ namespace OpcUaStackServer
 		//
 		virtual Attribute* rolePermissionsAttribute(void);
 		bool unsetRolePermissions(void);
-		bool setRolePermissionsSync(OpcUaStackCore::RolePermissionTypeArray& rolePermissions);
-		bool setRolePermissions(OpcUaStackCore::RolePermissionTypeArray& rolePermissions);
+		bool setRolePermissionsSync(const OpcUaStackCore::RolePermissionTypeArray& rolePermissions);
+		bool setRolePermissions(const OpcUaStackCore::RolePermissionTypeArray& rolePermissions);
 		bool getRolePermissionsSync(OpcUaStackCore::RolePermissionTypeArray& rolePermissions);
 		bool getRolePermissions(OpcUaStackCore::RolePermissionTypeArray& rolePermissions);
 		bool isPartRolePermissions(void);
@@ -359,8 +359,8 @@ namespace OpcUaStackServer
 		//
 		virtual Attribute* userRolePermissionsAttribute(void);
 		bool unsetUserRolePermissions(void);
-		bool setUserRolePermissionsSync(OpcUaStackCore::RolePermissionTypeArray& userRolePermissions);
-		bool setUserRolePermissions(OpcUaStackCore::RolePermissionTypeArray& userRolePermissions);
+		bool setUserRolePermissionsSync(const OpcUaStackCore::RolePermissionTypeArray& userRolePermissions);
+		bool setUserRolePermissions(const OpcUaStackCore::RolePermissionTypeArray& userRolePermissions);
 		bool getUserRolePermissionsSync(OpcUaStackCore::RolePermissionTypeArray& userRolePermissions);
 		bool getUserRolePermissions(OpcUaStackCore::RolePermissionTypeArray& userRolePermissions);
 		bool isPartUserRolePermissions(void);

@@ -536,18 +536,18 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	AttributeBase::setNodeIdSync(OpcUaNodeId& nodeId)
+	AttributeBase::setNodeIdSync(const OpcUaNodeId& nodeId)
 	{
 		boost::unique_lock<boost::shared_mutex> lock(mutex_);
 		return setNodeId(nodeId);
 	}
 
 	bool
-	AttributeBase::setNodeId(OpcUaNodeId& nodeId)
+	AttributeBase::setNodeId(const OpcUaNodeId& nodeId)
 	{
 		if (!isPartNodeId()) return false;
 		NodeIdAttribute* attr = reinterpret_cast<NodeIdAttribute*>(nodeIdAttribute());
-		nodeId.copyTo(attr->data());
+		const_cast<OpcUaNodeId*>(&nodeId)->copyTo(attr->data());
 		attr->exist(true);
 		return true;
 	}
@@ -611,14 +611,14 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	AttributeBase::setNodeClassSync(NodeClass::Enum& nodeClass)
+	AttributeBase::setNodeClassSync(const NodeClass::Enum& nodeClass)
 	{
 		boost::unique_lock<boost::shared_mutex> lock(mutex_);
 		return setNodeClass(nodeClass);
 	}
 
 	bool
-	AttributeBase::setNodeClass(NodeClass::Enum& nodeClass)
+	AttributeBase::setNodeClass(const NodeClass::Enum& nodeClass)
 	{
 		if (!isPartNodeClass()) return false;
 		NodeClassAttribute* attr = reinterpret_cast<NodeClassAttribute*>(nodeClassAttribute());
@@ -686,18 +686,18 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	AttributeBase::setBrowseNameSync(OpcUaQualifiedName& browseName)
+	AttributeBase::setBrowseNameSync(const OpcUaQualifiedName& browseName)
 	{
 		boost::unique_lock<boost::shared_mutex> lock(mutex_);
 		return setBrowseName(browseName);
 	}
 
 	bool
-	AttributeBase::setBrowseName(OpcUaQualifiedName& browseName)
+	AttributeBase::setBrowseName(const OpcUaQualifiedName& browseName)
 	{
 		if (!isPartBrowseName()) return false;
 		BrowseNameAttribute* attr = reinterpret_cast<BrowseNameAttribute*>(browseNameAttribute());
-		browseName.copyTo(attr->data());
+		const_cast<OpcUaQualifiedName*>(&browseName)->copyTo(attr->data());
 		attr->exist(true);
 		return true;
 	}
@@ -836,18 +836,18 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	AttributeBase::setDescriptionSync(OpcUaLocalizedText& description)
+	AttributeBase::setDescriptionSync(const OpcUaLocalizedText& description)
 	{
 		boost::unique_lock<boost::shared_mutex> lock(mutex_);
 		return setDescription(description);
 	}
 
 	bool
-	AttributeBase::setDescription(OpcUaLocalizedText& description)
+	AttributeBase::setDescription(const OpcUaLocalizedText& description)
 	{
 		if (!isPartDescription()) return false;
 		DescriptionAttribute* attr = reinterpret_cast<DescriptionAttribute*>(descriptionAttribute());
-		description.copyTo(attr->data());
+		const_cast<OpcUaLocalizedText*>(&description)->copyTo(attr->data());
 		attr->exist(true);
 		return true;
 	}
@@ -911,14 +911,14 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	AttributeBase::setWriteMaskSync(OpcUaUInt32 writeMask)
+	AttributeBase::setWriteMaskSync(const OpcUaUInt32 writeMask)
 	{
 		boost::unique_lock<boost::shared_mutex> lock(mutex_);
 		return setWriteMask(writeMask);
 	}
 
 	bool
-	AttributeBase::setWriteMask(OpcUaUInt32 writeMask)
+	AttributeBase::setWriteMask(const OpcUaUInt32 writeMask)
 	{
 		if (!isPartWriteMask()) return false;
 		WriteMaskAttribute* attr = reinterpret_cast<WriteMaskAttribute*>(writeMaskAttribute());
@@ -986,14 +986,14 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	AttributeBase::setUserWriteMaskSync(OpcUaUInt32 userWriteMask)
+	AttributeBase::setUserWriteMaskSync(const OpcUaUInt32 userWriteMask)
 	{
 		boost::unique_lock<boost::shared_mutex> lock(mutex_);
 		return setUserWriteMask(userWriteMask);
 	}
 
 	bool
-	AttributeBase::setUserWriteMask(OpcUaUInt32 userWriteMask)
+	AttributeBase::setUserWriteMask(const OpcUaUInt32 userWriteMask)
 	{
 		if (!isPartUserWriteMask()) return false;
 		UserWriteMaskAttribute* attr = reinterpret_cast<UserWriteMaskAttribute*>(userWriteMaskAttribute());
@@ -1061,14 +1061,14 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	AttributeBase::setIsAbstractSync(OpcUaBoolean& isAbstract)
+	AttributeBase::setIsAbstractSync(const OpcUaBoolean& isAbstract)
 	{
 		boost::unique_lock<boost::shared_mutex> lock(mutex_);
 		return setIsAbstract(isAbstract);
 	}
 
 	bool
-	AttributeBase::setIsAbstract(OpcUaBoolean& isAbstract)
+	AttributeBase::setIsAbstract(const OpcUaBoolean& isAbstract)
 	{
 		if (!isPartIsAbstract()) return false;
 		IsAbstractAttribute* attr = reinterpret_cast<IsAbstractAttribute*>(isAbstractAttribute());
@@ -1136,14 +1136,14 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	AttributeBase::setSymmetricSync(OpcUaBoolean& symmetric)
+	AttributeBase::setSymmetricSync(const OpcUaBoolean& symmetric)
 	{
 		boost::unique_lock<boost::shared_mutex> lock(mutex_);
 		return setSymmetric(symmetric);
 	}
 
 	bool
-	AttributeBase::setSymmetric(OpcUaBoolean& symmetric)
+	AttributeBase::setSymmetric(const OpcUaBoolean& symmetric)
 	{
 		if (!isPartSymmetric()) return false;
 		SymmetricAttribute* attr = reinterpret_cast<SymmetricAttribute*>(symmetricAttribute());
@@ -1212,18 +1212,18 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	AttributeBase::setInverseNameSync(OpcUaLocalizedText& inverseName)
+	AttributeBase::setInverseNameSync(const OpcUaLocalizedText& inverseName)
 	{
 		boost::unique_lock<boost::shared_mutex> lock(mutex_);
 		return setInverseName(inverseName);
 	}
 
 	bool
-	AttributeBase::setInverseName(OpcUaLocalizedText& inverseName)
+	AttributeBase::setInverseName(const OpcUaLocalizedText& inverseName)
 	{
 		if (!isPartInverseName()) return false;
 		InverseNameAttribute* attr = reinterpret_cast<InverseNameAttribute*>(inverseNameAttribute());
-		inverseName.copyTo(attr->data());
+		const_cast<OpcUaLocalizedText*>(&inverseName)->copyTo(attr->data());
 		attr->exist(true);
 		return true;
 	}
@@ -1288,14 +1288,14 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	AttributeBase::setContainsNoLoopsSync(OpcUaBoolean& containsNoLoops)
+	AttributeBase::setContainsNoLoopsSync(const OpcUaBoolean& containsNoLoops)
 	{
 		boost::unique_lock<boost::shared_mutex> lock(mutex_);
 		return setContainsNoLoops(containsNoLoops);
 	}
 
 	bool
-	AttributeBase::setContainsNoLoops(OpcUaBoolean& containsNoLoops)
+	AttributeBase::setContainsNoLoops(const OpcUaBoolean& containsNoLoops)
 	{
 		if (!isPartContainsNoLoops()) return false;
 		ContainsNoLoopsAttribute* attr = reinterpret_cast<ContainsNoLoopsAttribute*>(containsNoLoopsAttribute());
@@ -1363,14 +1363,14 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	AttributeBase::setEventNotifierSync(OpcUaByte eventNotifier)
+	AttributeBase::setEventNotifierSync(const OpcUaByte eventNotifier)
 	{
 		boost::unique_lock<boost::shared_mutex> lock(mutex_);
 		return setEventNotifier(eventNotifier);
 	}
 
 	bool
-	AttributeBase::setEventNotifier(OpcUaByte eventNotifier)
+	AttributeBase::setEventNotifier(const OpcUaByte eventNotifier)
 	{
 		if (!isPartEventNotifier()) return false;
 		EventNotifierAttribute* attr = reinterpret_cast<EventNotifierAttribute*>(eventNotifierAttribute());
@@ -1589,14 +1589,14 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	AttributeBase::setValueRankSync(OpcUaInt32& valueRank)
+	AttributeBase::setValueRankSync(const OpcUaInt32& valueRank)
 	{
 		boost::unique_lock<boost::shared_mutex> lock(mutex_);
 		return setValueRank(valueRank);
 	}
 
 	bool
-	AttributeBase::setValueRank(OpcUaInt32& valueRank)
+	AttributeBase::setValueRank(const OpcUaInt32& valueRank)
 	{
 		if (!isPartValueRank()) return false;
 		ValueRankAttribute* attr = reinterpret_cast<ValueRankAttribute*>(valueRankAttribute());
@@ -1664,18 +1664,18 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	AttributeBase::setArrayDimensionsSync(OpcUaUInt32Array& arrayDimensions)
+	AttributeBase::setArrayDimensionsSync(const OpcUaUInt32Array& arrayDimensions)
 	{
 		boost::unique_lock<boost::shared_mutex> lock(mutex_);
 		return setArrayDimensions(arrayDimensions);
 	}
 
 	bool
-	AttributeBase::setArrayDimensions(OpcUaUInt32Array& arrayDimensions)
+	AttributeBase::setArrayDimensions(const OpcUaUInt32Array& arrayDimensions)
 	{
 		if (!isPartArrayDimensions()) return false;
 		ArrayDimensionsAttribute* attr = reinterpret_cast<ArrayDimensionsAttribute*>(arrayDimensionsAttribute());
-		arrayDimensions.copyTo(attr->data());
+		const_cast<OpcUaUInt32Array*>(&arrayDimensions)->copyTo(attr->data());
 		attr->exist(true);
 		return true;
 	}
@@ -1739,14 +1739,14 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	AttributeBase::setAccessLevelSync(OpcUaByte& accessLevel)
+	AttributeBase::setAccessLevelSync(const OpcUaByte& accessLevel)
 	{
 		boost::unique_lock<boost::shared_mutex> lock(mutex_);
 		return setAccessLevel(accessLevel);
 	}
 
 	bool
-	AttributeBase::setAccessLevel(OpcUaByte& accessLevel)
+	AttributeBase::setAccessLevel(const OpcUaByte& accessLevel)
 	{
 		if (!isPartAccessLevel()) return false;
 		AccessLevelAttribute* attr = reinterpret_cast<AccessLevelAttribute*>(accessLevelAttribute());
@@ -1814,14 +1814,14 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	AttributeBase::setUserAccessLevelSync(OpcUaByte& userAccessLevel)
+	AttributeBase::setUserAccessLevelSync(const OpcUaByte& userAccessLevel)
 	{
 		boost::unique_lock<boost::shared_mutex> lock(mutex_);
 		return setUserAccessLevel(userAccessLevel);
 	}
 
 	bool
-	AttributeBase::setUserAccessLevel(OpcUaByte& userAccessLevel)
+	AttributeBase::setUserAccessLevel(const OpcUaByte& userAccessLevel)
 	{
 		if (!isPartUserAccessLevel()) return false;
 		UserAccessLevelAttribute* attr = reinterpret_cast<UserAccessLevelAttribute*>(userAccessLevelAttribute());
@@ -1889,14 +1889,14 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	AttributeBase::setHistorizingSync(OpcUaBoolean& historizing)
+	AttributeBase::setHistorizingSync(const OpcUaBoolean& historizing)
 	{
 		boost::unique_lock<boost::shared_mutex> lock(mutex_);
 		return setHistorizing(historizing);
 	}
 
 	bool
-	AttributeBase::setHistorizing(OpcUaBoolean& historizing)
+	AttributeBase::setHistorizing(const OpcUaBoolean& historizing)
 	{
 		if (!isPartHistorizing()) return false;
 		HistorizingAttribute* attr = reinterpret_cast<HistorizingAttribute*>(historizingAttribute());
@@ -1964,14 +1964,14 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	AttributeBase::setExecutableSync(OpcUaBoolean& executable)
+	AttributeBase::setExecutableSync(const OpcUaBoolean& executable)
 	{
 		boost::unique_lock<boost::shared_mutex> lock(mutex_);
 		return setExecutable(executable);
 	}
 
 	bool
-	AttributeBase::setExecutable(OpcUaBoolean& executable)
+	AttributeBase::setExecutable(const OpcUaBoolean& executable)
 	{
 		if (!isPartExecutable()) return false;
 		ExecutableAttribute* attr = reinterpret_cast<ExecutableAttribute*>(executableAttribute());
@@ -2039,14 +2039,14 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	AttributeBase::setUserExecutableSync(OpcUaBoolean& userExecutable)
+	AttributeBase::setUserExecutableSync(const OpcUaBoolean& userExecutable)
 	{
 		boost::unique_lock<boost::shared_mutex> lock(mutex_);
 		return setUserExecutable(userExecutable);
 	}
 
 	bool
-	AttributeBase::setUserExecutable(OpcUaBoolean& userExecutable)
+	AttributeBase::setUserExecutable(const OpcUaBoolean& userExecutable)
 	{
 		if (!isPartUserExecutable()) return false;
 		UserExecutableAttribute* attr = reinterpret_cast<UserExecutableAttribute*>(userExecutableAttribute());
@@ -2114,14 +2114,14 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	AttributeBase::setMinimumSamplingIntervalSync(OpcUaDouble& minimumSamplingInterval)
+	AttributeBase::setMinimumSamplingIntervalSync(const OpcUaDouble& minimumSamplingInterval)
 	{
 		boost::unique_lock<boost::shared_mutex> lock(mutex_);
 		return setMinimumSamplingInterval(minimumSamplingInterval);
 	}
 
 	bool
-	AttributeBase::setMinimumSamplingInterval(OpcUaDouble& minimumSamplingInterval)
+	AttributeBase::setMinimumSamplingInterval(const OpcUaDouble& minimumSamplingInterval)
 	{
 		if (!isPartMinimumSamplingInterval()) return false;
 		MinimumSamplingIntervalAttribute* attr = reinterpret_cast<MinimumSamplingIntervalAttribute*>(minimumSamplingIntervalAttribute());
@@ -2189,18 +2189,18 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	AttributeBase::setDataTypeDefinitionSync(OpcUaStackCore::DataTypeDefinition& dataTypeDefinition)
+	AttributeBase::setDataTypeDefinitionSync(const OpcUaStackCore::DataTypeDefinition& dataTypeDefinition)
 	{
 		boost::unique_lock<boost::shared_mutex> lock(mutex_);
 		return setDataTypeDefinition(dataTypeDefinition);
 	}
 
 	bool
-	AttributeBase::setDataTypeDefinition(OpcUaStackCore::DataTypeDefinition& dataTypeDefinition)
+	AttributeBase::setDataTypeDefinition(const OpcUaStackCore::DataTypeDefinition& dataTypeDefinition)
 	{
 		if (!isPartDataTypeDefinition()) return false;
 		DataTypeDefinitionAttribute* attr = reinterpret_cast<DataTypeDefinitionAttribute*>(dataTypeDefinitionAttribute());
-		attr->data(dataTypeDefinition);
+		attr->data(*const_cast<DataTypeDefinition*>(&dataTypeDefinition));
 		attr->exist(true);
 		return true;
 	}
@@ -2264,18 +2264,18 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	AttributeBase::setRolePermissionsSync(OpcUaStackCore::RolePermissionTypeArray& rolePermissions)
+	AttributeBase::setRolePermissionsSync(const OpcUaStackCore::RolePermissionTypeArray& rolePermissions)
 	{
 		boost::unique_lock<boost::shared_mutex> lock(mutex_);
 		return setRolePermissions(rolePermissions);
 	}
 
 	bool
-	AttributeBase::setRolePermissions(OpcUaStackCore::RolePermissionTypeArray& rolePermissions)
+	AttributeBase::setRolePermissions(const OpcUaStackCore::RolePermissionTypeArray& rolePermissions)
 	{
 		if (!isPartRolePermissions()) return false;
 		RolePermissionsAttribute* attr = reinterpret_cast<RolePermissionsAttribute*>(rolePermissionsAttribute());
-		attr->data(rolePermissions);
+		attr->data(*const_cast<RolePermissionTypeArray*>(&rolePermissions));
 		attr->exist(true);
 		return true;
 	}
@@ -2339,18 +2339,18 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	AttributeBase::setUserRolePermissionsSync(OpcUaStackCore::RolePermissionTypeArray& userRolePermissions)
+	AttributeBase::setUserRolePermissionsSync(const OpcUaStackCore::RolePermissionTypeArray& userRolePermissions)
 	{
 		boost::unique_lock<boost::shared_mutex> lock(mutex_);
 		return setUserRolePermissions(userRolePermissions);
 	}
 
 	bool
-	AttributeBase::setUserRolePermissions(OpcUaStackCore::RolePermissionTypeArray& userRolePermissions)
+	AttributeBase::setUserRolePermissions(const OpcUaStackCore::RolePermissionTypeArray& userRolePermissions)
 	{
 		if (!isPartUserRolePermissions()) return false;
 		RolePermissionsAttribute* attr = reinterpret_cast<RolePermissionsAttribute*>(userRolePermissionsAttribute());
-		attr->data(userRolePermissions);
+		attr->data(*const_cast<RolePermissionTypeArray*>(&userRolePermissions));
 		attr->exist(true);
 		return true;
 	}
