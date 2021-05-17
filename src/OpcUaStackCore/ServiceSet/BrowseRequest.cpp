@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -104,8 +104,8 @@ namespace OpcUaStackCore
 	BrowseRequest::jsonEncodeImpl(boost::property_tree::ptree &pt) const
 	{
 		bool rc = jsonObjectEncode(pt, view_, "View", true);
-		rc &= jsonNumberEncode(pt, requestMaxReferencesPerNode_, "RequestMaxReferencesPerNode");
-		rc &= jsonObjectSPtrEncode(pt, nodesToBrowseArraySPtr_, "NodesToBrowseArray");
+		rc &= jsonNumberEncode(pt, requestMaxReferencesPerNode_, "RequestedMaxReferencesPerNode");
+		rc &= jsonObjectSPtrEncode(pt, nodesToBrowseArraySPtr_, "NodesToBrowse");
 		return rc;
 	}
 
@@ -113,8 +113,8 @@ namespace OpcUaStackCore
 	BrowseRequest::jsonDecodeImpl(const boost::property_tree::ptree &pt)
 	{
 		bool rc = jsonObjectDecode(pt, view_, "View", true);
-		rc &= jsonNumberDecode(pt, requestMaxReferencesPerNode_, "RequestMaxReferencesPerNode");
-		rc &= jsonObjectSPtrDecode(pt, nodesToBrowseArraySPtr_,  "NodesToBrowseArray");
+		rc &= jsonNumberDecode(pt, requestMaxReferencesPerNode_, "RequestedMaxReferencesPerNode");
+		rc &= jsonObjectSPtrDecode(pt, nodesToBrowseArraySPtr_,  "NodesToBrowse");
 		return rc;
 	}
 }
