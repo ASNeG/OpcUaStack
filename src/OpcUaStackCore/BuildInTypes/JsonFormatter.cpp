@@ -1,5 +1,5 @@
 /*
-   Copyright 2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2019-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -94,14 +94,14 @@ namespace OpcUaStackCore
 				return true; // the element can be omitted
 			}
 			else {
-				 Log(Error, std::string(typeid(this).name()) + " json encode error, because mandatory object is null")
+				 Log(Error, std::string(typeid(this).name()) + " json object encode error, because mandatory object is null")
 					.parameter("Element", element);
 				return false;
 			}
 		}
 
 		if (!jsonObjectEncode(pt, *valuePtr.get(), element, optional)) {
-			 Log(Error, std::string(typeid(this).name()) + " json encode error")
+			 Log(Error, std::string(typeid(this).name()) + " json object encode error")
 				.parameter("Element", element);
 			return false;
 		}
@@ -129,7 +129,7 @@ namespace OpcUaStackCore
 	)
 	{
 		if (!valuePtr) {
-			Log(Error, std::string(typeid(this).name()) + " json decoder error, because variable is null")
+			Log(Error, std::string(typeid(this).name()) + " json object decoder error, because variable is null")
 					.parameter("Element", element);
 			return false;
 		}
@@ -138,7 +138,7 @@ namespace OpcUaStackCore
 			if (optional) {
 				return true;  // the element can be omitted
 			} else {
-				Log(Error, std::string(typeid(this).name()) + " json decoder error")
+				Log(Error, std::string(typeid(this).name()) + " json object decoder error")
 						.parameter("Element", element);
 				return false;
 			}
@@ -171,14 +171,14 @@ namespace OpcUaStackCore
 				return true; // the element can be omitted
 			}
 			else {
-				 Log(Error, std::string(typeid(this).name()) + " json encode error, because mandatory object is null")
+				 Log(Error, std::string(typeid(this).name()) + " json object encode error, because mandatory object is null")
 					.parameter("Element", element);
 				return false;
 			}
 		}
 
 		if (!valuePtr.jsonEncode(pt, element)) {
-			 Log(Error, std::string(typeid(this).name()) + " json encode error")
+			 Log(Error, std::string(typeid(this).name()) + " json object encode error")
 				.parameter("Element", element);
 			return false;
 		}
@@ -194,7 +194,7 @@ namespace OpcUaStackCore
 	) const
 	{
 		if (!jsonObjectEncode(pt, valuePtr, element, false)) {
-			Log(Error, std::string(typeid(this).name()) + " json encode error")
+			Log(Error, std::string(typeid(this).name()) + " json object encode error")
 				.parameter("Element", element);
 			return false;
 		}
@@ -213,7 +213,7 @@ namespace OpcUaStackCore
 		auto ptElement = pt.get_child_optional(element);
 		if (!ptElement) {
 			if (!optional) {
-				Log(Error, std::string(typeid(this).name()) + " json decode error, because mandatory object is missing")
+				Log(Error, std::string(typeid(this).name()) + " json object decode error, because mandatory object is missing")
 					.parameter("Element", element);
 				return false;
 			}
@@ -224,7 +224,7 @@ namespace OpcUaStackCore
 		}
 
 		if (!valuePtr.jsonDecode(pt, element)) {
-			Log(Error, std::string(typeid(this).name()) + " json decode errorg")
+			Log(Error, std::string(typeid(this).name()) + " json object decode errorg")
 					.parameter("Element", element);
 				return false;
 		}
@@ -240,7 +240,7 @@ namespace OpcUaStackCore
 	)
 	{
 		if (!jsonObjectDecode(pt, valuePtr, element, false)) {
-			Log(Error, std::string(typeid(this).name()) + " json decode errorg")
+			Log(Error, std::string(typeid(this).name()) + " json object decode errorg")
 				.parameter("Element", element);
 			return false;
 		}
@@ -262,7 +262,7 @@ namespace OpcUaStackCore
 				return true; // the element can be ommitted
 			}
 			else {
-				Log(Error, std::string(typeid(this).name()) + " json encode error, because mandatory array is null")
+				Log(Error, std::string(typeid(this).name()) + " json array encode error, because mandatory array is null")
 					.parameter("Element", element);
 				return false;
 			}
@@ -270,7 +270,7 @@ namespace OpcUaStackCore
 
 		// encode array element
 		if (!jsonArrayEncode(pt, *valuePtr, element, optional)) {
-			Log(Error, std::string(typeid(this).name()) + " json encode error")
+			Log(Error, std::string(typeid(this).name()) + " json array encode error")
 				.parameter("Element", element);
 			return false;
 		}
@@ -286,7 +286,7 @@ namespace OpcUaStackCore
 	) const
 	{
 		if (!jsonArraySPtrEncode(pt, valuePtr, element, false)) {
-			Log(Error, std::string(typeid(this).name()) + " json encode error")
+			Log(Error, std::string(typeid(this).name()) + " json array encode error")
 				.parameter("Element", element);
 			return false;
 		}
@@ -303,7 +303,7 @@ namespace OpcUaStackCore
 	)
 	{
 		if (!jsonArrayDecode(pt, *valuePtr, element, optional)) {
-			Log(Error, std::string(typeid(this).name()) + " json decode error")
+			Log(Error, std::string(typeid(this).name()) + " json array decode error")
 				.parameter("Element", element);
 			return false;
 		}
@@ -319,7 +319,7 @@ namespace OpcUaStackCore
 	)
 	{
 		if (!jsonArraySPtrDecode(pt, valuePtr, element, false)) {
-			Log(Error, std::string(typeid(this).name()) + " json decode error")
+			Log(Error, std::string(typeid(this).name()) + " json array decode error")
 				.parameter("Element", element);
 			return false;
 		}
@@ -341,7 +341,7 @@ namespace OpcUaStackCore
 				return true; // the element can be omitted
 			}
 			else {
-				Log(Error, std::string(typeid(this).name()) + " json encode error, because mandatory array is null")
+				Log(Error, std::string(typeid(this).name()) + " json array encode error, because mandatory array is null")
 					.parameter("Element", element);
 				return false;
 			}
@@ -349,7 +349,7 @@ namespace OpcUaStackCore
 
 		// encode array element
 		if (!jsonArrayEncode(pt, valuePtr, element)) {
-			Log(Error, std::string(typeid(this).name()) + " json encode error")
+			Log(Error, std::string(typeid(this).name()) + " json array encode error")
 				.parameter("Element", element);
 			return false;
 		}
@@ -365,7 +365,7 @@ namespace OpcUaStackCore
 	) const
 	{
 		if (!valuePtr.jsonEncode(pt, element)) {
-			Log(Error, std::string(typeid(this).name()) + " json encode error")
+			Log(Error, std::string(typeid(this).name()) + " json array encode error")
 				.parameter("Element", element);
 			return false;
 		}
@@ -384,7 +384,7 @@ namespace OpcUaStackCore
 		auto ptElement = pt.get_child_optional(element);
 		if (!ptElement) {
 			if (!optional) {
-				Log(Error, std::string(typeid(this).name()) + " json decoder error, because mandatory array is missing")
+				Log(Error, std::string(typeid(this).name()) + " json array decoder error, because mandatory array is missing")
 					.parameter("Element", element);
 				return false;
 			}
@@ -396,7 +396,7 @@ namespace OpcUaStackCore
 
 		// decode array element
 		if (!jsonArrayDecode(pt, valuePtr, element)) {
-			Log(Error, std::string(typeid(this).name()) + " json decoder error")
+			Log(Error, std::string(typeid(this).name()) + " json array decoder error")
 				.parameter("Element", element);
 			return false;
 		}
@@ -412,7 +412,7 @@ namespace OpcUaStackCore
 	)
 	{
 		if (!valuePtr.jsonDecode(pt, element)) {
-			Log(Error, std::string(typeid(this).name()) + " json decoder error")
+			Log(Error, std::string(typeid(this).name()) + " json array decoder error")
 				.parameter("Element", element);
 			return false;
 		}
