@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -106,9 +106,9 @@ namespace OpcUaStackServer
 	void 
 	ViewService::receiveBrowseRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
-		ServiceTransactionBrowse::SPtr trx = boost::static_pointer_cast<ServiceTransactionBrowse>(serviceTransaction);
-		BrowseRequest::SPtr browseRequest = trx->request();
-		BrowseResponse::SPtr browseResponse = trx->response();
+		auto trx = boost::static_pointer_cast<ServiceTransactionBrowse>(serviceTransaction);
+		auto browseRequest = trx->request();
+		auto browseResponse = trx->response();
 
 
 		uint32_t nodes = browseRequest->nodesToBrowse()->size();
@@ -132,7 +132,7 @@ namespace OpcUaStackServer
 			OpcUaStatusCode statusCode = browseNode(browseDescription, referenceDescriptionVec); 
 			browseResult->statusCode(statusCode);
 
-			ReferenceDescriptionArray::SPtr referenceDescriptionArray = boost::make_shared<ReferenceDescriptionArray>();
+			auto referenceDescriptionArray = boost::make_shared<ReferenceDescriptionArray>();
 			referenceDescriptionArray->resize(referenceDescriptionVec.size());
 			browseResult->references(referenceDescriptionArray);
 			for (it = referenceDescriptionVec.begin(); it != referenceDescriptionVec.end(); it++) {
@@ -265,7 +265,10 @@ namespace OpcUaStackServer
 
 	
 	OpcUaStatusCode
-	ViewService::browseNode(BrowseDescription::SPtr& browseDescription, ReferenceDescriptionVec& referenceDescriptionVec)
+	ViewService::browseNode(
+		BrowseDescription::SPtr& browseDescription,
+		ReferenceDescriptionVec& referenceDescriptionVec
+	)
 	{
 		BaseNodeClass::SPtr baseNodeClass = informationModel_->find(*browseDescription->nodeId());
 		if (baseNodeClass.get() == nullptr) {
@@ -300,10 +303,10 @@ namespace OpcUaStackServer
 				continue;
 			}
 
-			ReferenceDescription::SPtr referenceDescription = boost::make_shared<ReferenceDescription>();
+			auto referenceDescription = boost::make_shared<ReferenceDescription>();
 			referenceDescriptionVec.push_back(referenceDescription);
 
-			OpcUaExpandedNodeId::SPtr targetNodeId = boost::make_shared<OpcUaExpandedNodeId>();
+			auto targetNodeId = boost::make_shared<OpcUaExpandedNodeId>();
 			baseNodeClassTarget->nodeId().data().copyTo(*targetNodeId);
 			referenceDescription->expandedNodeId(targetNodeId);
 			referenceTypeNodeId.copyTo(*referenceDescription->referenceTypeId());
