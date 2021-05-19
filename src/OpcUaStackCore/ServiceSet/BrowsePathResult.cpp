@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -85,6 +85,48 @@ namespace OpcUaStackCore
 		rc &= targetArraySPtr_->opcUaBinaryDecode(is);
 
 		return rc;
+	}
+
+	bool
+	BrowsePathResult::jsonEncodeImpl(boost::property_tree::ptree &pt) const
+	{
+		// encode status code
+		if (!jsonNumberEncode(pt, statusCode_, "StatusCode")) {
+			Log(Error, "BrowsePathResult json encode error")
+		        .parameter("Element", "StatusCode");
+			return false;
+		}
+
+		// encode target array
+		if (!targetArraySPtr_->jsonEncode(pt, "Targets")) {
+			Log(Error, "BrowsePathResult json encode error")
+		        .parameter("Element", "Targets");
+			return false;
+		}
+
+		return true;
+	}
+
+	bool
+	BrowsePathResult::jsonDecodeImpl(const boost::property_tree::ptree &pt)
+	{
+		// decode status code
+		uint32_t tmp;
+		if (!jsonNumberDecode(pt, tmp, "StatusCode")) {
+			Log(Error, "BrowsePathResult json decode error")
+		        .parameter("Element", "StatusCode");
+			return false;
+		}
+		statusCode_ = (OpcUaStatusCode)tmp;
+
+		// decode target array
+		if (!targetArraySPtr_->jsonDecode(pt, "Targets")) {
+			Log(Error, "BrowsePathResult json decode error")
+		        .parameter("Element", "Targets");
+			return false;
+		}
+
+		return true;
 	}
 
 }

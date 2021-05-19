@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -51,8 +51,8 @@ namespace OpcUaStackCore
 		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
 
 	  protected:
-		bool jsonEncodeImpl(boost::property_tree::ptree &pt) const { return false; }
-		bool jsonDecodeImpl(const boost::property_tree::ptree &pt) { return false; }
+		virtual bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
+		virtual bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override;
 
 	  private:
 		OpcUaStatusCode statusCode_;
