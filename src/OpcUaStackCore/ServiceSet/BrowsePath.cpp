@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -91,6 +91,46 @@ namespace OpcUaStackCore
 		rc &= relativePath_.opcUaBinaryDecode(is);
 
 		return rc;
+	}
+
+	bool
+	BrowsePath::jsonEncodeImpl(boost::property_tree::ptree &pt) const
+	{
+		// encode starting node
+		if (!startingNodeSPtr_->jsonEncode(pt, "StartingNode")) {
+			Log(Error, "BrowsePath json encode error")
+		        .parameter("Element", "StartingNode");
+			return false;
+		}
+
+		// encode relative paths
+		if (!relativePath_.jsonEncode(pt, "RelativePath")) {
+			Log(Error, "BrowsePath json encode error")
+		        .parameter("Element", "RelativePaths");
+			return false;
+		}
+
+		return true;
+	}
+
+	bool
+	BrowsePath::jsonDecodeImpl(const boost::property_tree::ptree &pt)
+	{
+		// decode starting node
+		if (!startingNodeSPtr_->jsonDecode(pt, "StartingNode")) {
+			Log(Error, "BrowsePath json decode error")
+		        .parameter("Element", "StartingNode");
+			return false;
+		}
+
+		// decode relative paths
+		if (!relativePath_.jsonDecode(pt, "RelativePath")) {
+			Log(Error, "BrowsePath json decode error")
+		        .parameter("Element", "RelativePaths");
+			return false;
+		}
+
+		return true;
 	}
 
 }

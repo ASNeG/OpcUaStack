@@ -1,5 +1,5 @@
 /*
-   Copyright 2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2019-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -94,7 +94,7 @@ namespace OpcUaStackCore
         {
             if (!optional || value != defaultValue) {
                 if (!JsonNumber::jsonEncode(pt, value, element)) {
-                    Log(Error, std::string(typeid(this).name()) + " json encoder error")
+                    Log(Error, std::string(typeid(this).name()) + " json number encoder error")
                             .parameter("Element", element);
 
                     return false;
@@ -122,7 +122,7 @@ namespace OpcUaStackCore
         	auto ptElement = pt.get_child_optional(element);
         	if (!ptElement) {
          		if (!optional) {
-            			Log(Error, std::string(typeid(this).name()) + " json decoder error, because mandatory number is missing")
+            			Log(Error, std::string(typeid(this).name()) + " json number decoder error, because mandatory number is missing")
         			    	.parameter("Element", element);
             			return false;
             		}
@@ -133,7 +133,7 @@ namespace OpcUaStackCore
         	}
 
             if (!JsonNumber::jsonDecode(pt, value, element)) {
-       			Log(Error, std::string(typeid(this).name()) + " json decoder error, because variable format error")
+       			Log(Error, std::string(typeid(this).name()) + " json number decoder error, because variable format error")
     			    	.parameter("Element", element);
         			return false;
             	return false;
