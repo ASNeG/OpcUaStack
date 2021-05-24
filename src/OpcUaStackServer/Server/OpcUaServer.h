@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -52,6 +52,9 @@ namespace OpcUaStackServer
 		OpcUaStackCore::CryptoManager::SPtr& cryptoManager(void);
 
 	  private:
+		void createThreadPool(void);
+		void createMessageBus(void);
+
 		bool readInformationModel(void);
 		bool writeInformationModel(const std::string& nodeSetFileName, std::vector<std::string>& namespaceUris);
 		bool initInformationModel(void);

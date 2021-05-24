@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -78,7 +78,11 @@ namespace OpcUaServer
 	{
 		// startup application
 		server_.reloadIf(this);
+
+		Log(Debug, "startup server");
 		if (!server_.startup(configFileName_)) return false;
+
+		Log(Debug, "start server");
 		if (!server_.start()) return false;
 		
 		// application loop
@@ -97,6 +101,8 @@ namespace OpcUaServer
 			stopLoop();
 		}
 		while (running_) {
+
+			// The reload flag ist set. We want to restart the server
 			if (reload_) {
 				processReload();
 				reload_ = false;
@@ -142,6 +148,8 @@ namespace OpcUaServer
 	void
 	ServerLoop::reload(void)
 	{
+		// We want to restart the server. For this we have to set the reload flag.
+		// The main loop will check the reload flag.
 		Log(Debug, "reload application server");
 		reload_ = true;
 	}
@@ -149,16 +157,22 @@ namespace OpcUaServer
 	void
 	ServerLoop::processReload(void)
 	{
+		// shutdown server
+		Log(Debug, "stop server");
 		server_.stop();
+		Log(Debug, "shutdown server");
 		server_.shutdown();
 		Config::destroy();
 		Log(Debug, "shutdown application server complete");
 
 		boost::this_thread::sleep(boost::posix_time::seconds(5));
 
+		// startup server
 		Log(Debug, "startup application server");
 		startup();
+		Log(Debug, "startup server");
 		server_.startup(configFileName_);
+		Log(Debug, "start server");
 		server_.start();
 	}
 

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -40,17 +40,30 @@ namespace OpcUaStackServer
 	, cryptoManager_()
 	{
 		// create thread pool
-		ioThread_ = boost::make_shared<IOThread>();
-		ioThread_->numberThreads(2);
-		ioThread_->name("Srv");
+		createThreadPool();
 
 		// create message bus
-		messageBus_ = boost::make_shared<MessageBus>();
-		messageBus_->debugLogging(true); // FIXME: add parameter to configuration file or rework logging
+		createMessageBus();
 	}
 
 	OpcUaServer::~OpcUaServer(void)
 	{
+	}
+
+	void
+	OpcUaServer::createThreadPool(void)
+	{
+		// create thread pool
+		ioThread_ = boost::make_shared<IOThread>();
+		ioThread_->numberThreads(2);
+		ioThread_->name("Srv");
+	}
+
+	void
+	OpcUaServer::createMessageBus(void)
+	{
+		messageBus_ = boost::make_shared<MessageBus>();
+		messageBus_->debugLogging(true); // FIXME: add parameter to configuration file or rework logging
 	}
 
 	InformationModel::SPtr 
