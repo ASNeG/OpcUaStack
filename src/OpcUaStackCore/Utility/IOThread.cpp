@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -74,6 +74,12 @@ namespace OpcUaStackCore
 	void
 	IOThread::name(const std::string& name)
 	{
+		// check io service
+		if (ioService_.get() == nullptr) {
+			ioService_ = boost::make_shared<IOService>();
+		}
+
+		// set name
 		name_ = name;
 		ioService_->name(name_);
 	}

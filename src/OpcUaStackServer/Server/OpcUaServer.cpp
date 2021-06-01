@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -40,17 +40,30 @@ namespace OpcUaStackServer
 	, cryptoManager_()
 	{
 		// create thread pool
-		ioThread_ = boost::make_shared<IOThread>();
-		ioThread_->numberThreads(2);
-		ioThread_->name("Srv");
+		createThreadPool();
 
 		// create message bus
-		messageBus_ = boost::make_shared<MessageBus>();
-		messageBus_->debugLogging(true); // FIXME: add parameter to configuration file or rework logging
+		createMessageBus();
 	}
 
 	OpcUaServer::~OpcUaServer(void)
 	{
+	}
+
+	void
+	OpcUaServer::createThreadPool(void)
+	{
+		// create thread pool
+		ioThread_ = boost::make_shared<IOThread>();
+		ioThread_->numberThreads(2);
+		ioThread_->name("Srv");
+	}
+
+	void
+	OpcUaServer::createMessageBus(void)
+	{
+		messageBus_ = boost::make_shared<MessageBus>();
+		messageBus_->debugLogging(true); // FIXME: add parameter to configuration file or rework logging
 	}
 
 	InformationModel::SPtr 
@@ -75,6 +88,12 @@ namespace OpcUaStackServer
 	OpcUaServer::startup(void)
 	{
 		bool rc = true;
+
+		// create session manager
+		sessionManager_ = boost::make_shared<SessionManager>();
+
+		// create service manager
+		serviceManager_ = boost::make_shared<ServiceManager>();
 
 		Log(Info, "init thread pool");
 		rc = rc && initOpcUaServer();
@@ -122,6 +141,12 @@ namespace OpcUaStackServer
 		Log(Info, "shutdown ioThread");
 		ioThread_->shutdown();
 
+		// delete session manager
+		sessionManager_.reset();
+
+		// delete service manager
+		serviceManager_.reset();
+
 		return true;
 	}
 
@@ -144,7 +169,7 @@ namespace OpcUaStackServer
 
 		// startup opc ua stack
 		Log(Info, "start opc ua server stack");
-		if (!sessionManager_.startup()) {
+		if (!sessionManager_->startup()) {
 			Log(Error, "server session manager start failed");
 			return false;
 		}
@@ -157,7 +182,7 @@ namespace OpcUaStackServer
 	{
 		// shutdown opc ua stack
 		Log(Info, "shutdown session manager");
-		sessionManager_.shutdown();
+		sessionManager_->shutdown();
 
 		// shutdown application
 		Log(Info, "shutdown application");
@@ -173,7 +198,7 @@ namespace OpcUaStackServer
 	ServiceManager&
 	OpcUaServer::serviceManager(void)
 	{
-		return serviceManager_;
+		return *serviceManager_.get();
 	}
 
 	CryptoManager::SPtr&
@@ -409,19 +434,19 @@ namespace OpcUaStackServer
 	bool
 	OpcUaServer::initServiceManager(void)
 	{
-		serviceManager_.ioThread(ioThread_);
-		serviceManager_.messageBus(messageBus_);
-		serviceManager_.endpointDescriptionSet(endpointDescriptionSet_);
-		serviceManager_.cryptoManager(cryptoManager_);
+		serviceManager_->ioThread(ioThread_);
+		serviceManager_->messageBus(messageBus_);
+		serviceManager_->endpointDescriptionSet(endpointDescriptionSet_);
+		serviceManager_->cryptoManager(cryptoManager_);
 
-		if (!serviceManager_.initService(sessionManager_)) {
+		if (!serviceManager_->initService(sessionManager_)) {
 			Log log(Error, "init service manager error");
 			return false;
 		}
 
-		serviceManager_.informationModel(informationModel_);
+		serviceManager_->informationModel(informationModel_);
 
-		if (!serviceManager_.init()) {
+		if (!serviceManager_->init()) {
 			Log log(Error, "init service manager error");
 			return false;
 		}
@@ -431,7 +456,7 @@ namespace OpcUaStackServer
 	bool
 	OpcUaServer::shutdownServiceManager(void)
 	{
-		serviceManager_.shutdown();
+		serviceManager_->shutdown();
 		return true;
 	}
 
@@ -439,11 +464,11 @@ namespace OpcUaStackServer
 	OpcUaServer::initSessionManager(void)
 	{
 		// initialize session manager
-		sessionManager_.ioThread(ioThread_.get());
-		sessionManager_.messageBus(messageBus_);
-		sessionManager_.endpointDescriptionSet(endpointDescriptionSet_);
-		sessionManager_.cryptoManager(cryptoManager_);
-		sessionManager_.config(&config());
+		sessionManager_->ioThread(ioThread_.get());
+		sessionManager_->messageBus(messageBus_);
+		sessionManager_->endpointDescriptionSet(endpointDescriptionSet_);
+		sessionManager_->cryptoManager(cryptoManager_);
+		sessionManager_->config(&config());
 
 		return true;
 	}

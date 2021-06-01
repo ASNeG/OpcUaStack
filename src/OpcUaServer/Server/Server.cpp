@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -107,6 +107,10 @@ namespace OpcUaServer
 
 			applicationLibrary->applicationIf()->config(config_);
 		}
+
+		// create discovery client instance
+		discoveryClient_ = boost::make_shared<DiscoveryClient>();
+
 		return true;
 	}
 
@@ -122,10 +126,10 @@ namespace OpcUaServer
 		opcuaServer_.start();
 
 		// start discovery client
-		discoveryClient_.cryptoManager(opcuaServer_.cryptoManager());
-		discoveryClient_.ioThread(opcuaServer_.ioThread());
-		discoveryClient_.messageBus(opcuaServer_.messageBus());
-		if (!discoveryClient_.startup(*config_)) {
+		discoveryClient_->cryptoManager(opcuaServer_.cryptoManager());
+		discoveryClient_->ioThread(opcuaServer_.ioThread());
+		discoveryClient_->messageBus(opcuaServer_.messageBus());
+		if (!discoveryClient_->startup(*config_)) {
 			return false;
 		}
 
@@ -142,7 +146,7 @@ namespace OpcUaServer
 		Log(Info, "receive stop signal...");
 
 		// shutdown discovery client
-		discoveryClient_.shutdown();
+		discoveryClient_->shutdown();
 
 		// stop opc ua server
 		opcuaServer_.stop();
@@ -169,6 +173,9 @@ namespace OpcUaServer
 
 		// shutdown opc ua server
 		opcuaServer_.shutdown();
+
+		// remove discovery client
+		discoveryClient_.reset();
 	}
 
 	bool 
