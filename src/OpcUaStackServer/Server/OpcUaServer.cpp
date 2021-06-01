@@ -92,6 +92,9 @@ namespace OpcUaStackServer
 		// create session manager
 		sessionManager_ = boost::make_shared<SessionManager>();
 
+		// create service manager
+		serviceManager_ = boost::make_shared<ServiceManager>();
+
 		Log(Info, "init thread pool");
 		rc = rc && initOpcUaServer();
 
@@ -140,6 +143,9 @@ namespace OpcUaStackServer
 
 		// delete session manager
 		sessionManager_.reset();
+
+		// delete service manager
+		serviceManager_.reset();
 
 		return true;
 	}
@@ -192,7 +198,7 @@ namespace OpcUaStackServer
 	ServiceManager&
 	OpcUaServer::serviceManager(void)
 	{
-		return serviceManager_;
+		return *serviceManager_.get();
 	}
 
 	CryptoManager::SPtr&
@@ -428,19 +434,19 @@ namespace OpcUaStackServer
 	bool
 	OpcUaServer::initServiceManager(void)
 	{
-		serviceManager_.ioThread(ioThread_);
-		serviceManager_.messageBus(messageBus_);
-		serviceManager_.endpointDescriptionSet(endpointDescriptionSet_);
-		serviceManager_.cryptoManager(cryptoManager_);
+		serviceManager_->ioThread(ioThread_);
+		serviceManager_->messageBus(messageBus_);
+		serviceManager_->endpointDescriptionSet(endpointDescriptionSet_);
+		serviceManager_->cryptoManager(cryptoManager_);
 
-		if (!serviceManager_.initService(sessionManager_)) {
+		if (!serviceManager_->initService(sessionManager_)) {
 			Log log(Error, "init service manager error");
 			return false;
 		}
 
-		serviceManager_.informationModel(informationModel_);
+		serviceManager_->informationModel(informationModel_);
 
-		if (!serviceManager_.init()) {
+		if (!serviceManager_->init()) {
 			Log log(Error, "init service manager error");
 			return false;
 		}
@@ -450,7 +456,7 @@ namespace OpcUaStackServer
 	bool
 	OpcUaServer::shutdownServiceManager(void)
 	{
-		serviceManager_.shutdown();
+		serviceManager_->shutdown();
 		return true;
 	}
 

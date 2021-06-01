@@ -73,7 +73,7 @@ namespace OpcUaStackServer
 		OpcUaStackCore::MessageBus::SPtr messageBus_ = nullptr;
 		OpcUaStackCore::CryptoManager::SPtr cryptoManager_ = nullptr;
 
-		ServiceManager serviceManager_;
+		ServiceManager::SPtr serviceManager_;
 		InformationModel::SPtr informationModel_;
 		SessionManager::SPtr sessionManager_;
 		ApplicationManager applicationManager_;
