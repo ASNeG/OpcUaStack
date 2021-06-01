@@ -75,7 +75,7 @@ namespace OpcUaStackServer
 
 		ServiceManager serviceManager_;
 		InformationModel::SPtr informationModel_;
-		SessionManager sessionManager_;
+		SessionManager::SPtr sessionManager_;
 		ApplicationManager applicationManager_;
 		ServerInfo serverInfo_;
 

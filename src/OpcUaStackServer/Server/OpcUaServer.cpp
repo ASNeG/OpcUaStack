@@ -89,6 +89,9 @@ namespace OpcUaStackServer
 	{
 		bool rc = true;
 
+		// create session manager
+		sessionManager_ = boost::make_shared<SessionManager>();
+
 		Log(Info, "init thread pool");
 		rc = rc && initOpcUaServer();
 
@@ -135,6 +138,9 @@ namespace OpcUaStackServer
 		Log(Info, "shutdown ioThread");
 		ioThread_->shutdown();
 
+		// delete session manager
+		sessionManager_.reset();
+
 		return true;
 	}
 
@@ -157,7 +163,7 @@ namespace OpcUaStackServer
 
 		// startup opc ua stack
 		Log(Info, "start opc ua server stack");
-		if (!sessionManager_.startup()) {
+		if (!sessionManager_->startup()) {
 			Log(Error, "server session manager start failed");
 			return false;
 		}
@@ -170,7 +176,7 @@ namespace OpcUaStackServer
 	{
 		// shutdown opc ua stack
 		Log(Info, "shutdown session manager");
-		sessionManager_.shutdown();
+		sessionManager_->shutdown();
 
 		// shutdown application
 		Log(Info, "shutdown application");
@@ -452,11 +458,11 @@ namespace OpcUaStackServer
 	OpcUaServer::initSessionManager(void)
 	{
 		// initialize session manager
-		sessionManager_.ioThread(ioThread_.get());
-		sessionManager_.messageBus(messageBus_);
-		sessionManager_.endpointDescriptionSet(endpointDescriptionSet_);
-		sessionManager_.cryptoManager(cryptoManager_);
-		sessionManager_.config(&config());
+		sessionManager_->ioThread(ioThread_.get());
+		sessionManager_->messageBus(messageBus_);
+		sessionManager_->endpointDescriptionSet(endpointDescriptionSet_);
+		sessionManager_->cryptoManager(cryptoManager_);
+		sessionManager_->config(&config());
 
 		return true;
 	}

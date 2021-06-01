@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -313,7 +313,7 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	ServiceManager::initService(SessionManager& sessionManager)
+	ServiceManager::initService(SessionManager::SPtr& sessionManager)
 	{
 		initServerInfoService();
 		initAttributeService();
@@ -326,29 +326,29 @@ namespace OpcUaStackServer
 		initDiscoveryService();
 		initApplicationService();
 
-		sessionManager.getEndpointRequestCallback(
+		sessionManager->getEndpointRequestCallback(
 			[this](OpcUaStackCore::RequestHeader::SPtr& requestHeader,
 				   OpcUaStackCore::SecureChannelTransaction::SPtr secureChannelTransaction) {
 				discoveryService_->getEndpointRequest(requestHeader, secureChannelTransaction);
 		    }
 		);
 
-		sessionManager.findServersRequestCallback(
+		sessionManager->findServersRequestCallback(
 			[this](OpcUaStackCore::RequestHeader::SPtr& requestHeader,
 				   OpcUaStackCore::SecureChannelTransaction::SPtr secureChannelTransaction) {
 				discoveryService_->findServersRequest(requestHeader, secureChannelTransaction);
 		    }
 		);
 
-		sessionManager.registerServerRequestCallback(
+		sessionManager->registerServerRequestCallback(
 			[this](OpcUaStackCore::RequestHeader::SPtr& requestHeader,
 				   OpcUaStackCore::SecureChannelTransaction::SPtr secureChannelTransaction) {
 				discoveryService_->registerServerRequest(requestHeader, secureChannelTransaction);
 		    }
 		);
 
-		sessionManager.transactionManager(transactionManager_);
-		sessionManager.forwardGlobalSync(forwardGlobalSync_);
+		sessionManager->transactionManager(transactionManager_);
+		sessionManager->forwardGlobalSync(forwardGlobalSync_);
 
 		return true;
 	}
