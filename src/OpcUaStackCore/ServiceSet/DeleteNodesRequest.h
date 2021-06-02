@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,6 +19,7 @@
 #define __OpcUaStackCore_DeleteNodesRequest_h__
 
 #include <stdint.h>
+#include "OpcUaStackCore/BuildInTypes/JsonFormatter.h"
 #include "OpcUaStackCore/SecureChannel/RequestHeader.h"
 #include "OpcUaStackCore/StandardDataTypes/DeleteNodesItem.h"
 
@@ -27,6 +28,7 @@ namespace OpcUaStackCore
 
 	class DLLEXPORT DeleteNodesRequest
 	: public Object
+	, public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<DeleteNodesRequest> SPtr;
@@ -43,6 +45,10 @@ namespace OpcUaStackCore
 		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
 		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
 		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
+
+	  protected:
+	    bool jsonEncodeImpl(boost::property_tree::ptree &pt) const { return false; }
+	    bool jsonDecodeImpl(const boost::property_tree::ptree &pt) { return false; }
 
 	  private:
 		DeleteNodesItemArray::SPtr deleteNodesItemArraySPtr_;
