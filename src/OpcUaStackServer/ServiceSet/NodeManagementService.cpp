@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -17,9 +17,11 @@
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/Base/Log.h"
-#include "OpcUaStackCore/StandardDataTypes/ObjectAttributes.h"
 #include "OpcUaStackServer/ServiceSet/NodeManagementService.h"
+#include "OpcUaStackCore/StandardDataTypes/ObjectAttributes.h"
+#include "OpcUaStackCore/StandardDataTypes/VariableAttributes.h"
 #include "OpcUaStackServer/AddressSpaceModel/ObjectNodeClass.h"
+#include "OpcUaStackServer/AddressSpaceModel/VariableNodeClass.h"
 
 using namespace OpcUaStackCore;
 
@@ -104,9 +106,9 @@ namespace OpcUaStackServer
 	NodeManagementService::receiveAddNodesRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
 		OpcUaStatusCode statusCode = Success;
-		ServiceTransactionAddNodes::SPtr trx = boost::static_pointer_cast<ServiceTransactionAddNodes>(serviceTransaction);
-		AddNodesRequest::SPtr addNodesRequest = trx->request();
-		AddNodesResponse::SPtr addNodesResponse = trx->response();
+		auto trx = boost::static_pointer_cast<ServiceTransactionAddNodes>(serviceTransaction);
+		auto addNodesRequest = trx->request();
+		auto addNodesResponse = trx->response();
 
 		uint32_t size = addNodesRequest->nodesToAdd()->size();
 		addNodesResponse->results()->resize(size);
@@ -116,7 +118,7 @@ namespace OpcUaStackServer
 			.parameter("NumberNodes", size);
 
 		for (uint32_t idx=0; idx<size; idx++) {
-			AddNodesResult::SPtr addNodesResult = boost::make_shared<AddNodesResult>();
+			auto addNodesResult = boost::make_shared<AddNodesResult>();
 			addNodesResponse->results()->set(idx, addNodesResult);
 			
 			AddNodesItem::SPtr addNodesItem;
@@ -176,22 +178,24 @@ namespace OpcUaStackServer
 		parentNodeId.nodeIdValue(addNodesItem->parentNodeId().nodeIdValue());
 
 		// find parent node
-		BaseNodeClass::SPtr parentBaseNodeClass = informationModel_->find(parentNodeId);
+		auto parentBaseNodeClass = informationModel_->find(parentNodeId);
 		if (parentBaseNodeClass.get() == nullptr) {
 			return BadParentNodeIdInvalid;
 		}
 
 		// create hierarchical reference
-		rc = parentBaseNodeClass->referenceItemMap().add(
-			addNodesItem->referenceTypeId(),
-			true,
-			*baseNodeClass->getNodeId()
-		);
-		if (!rc) return BadReferenceTypeIdInvalid;
-
+		boost::unique_lock<boost::shared_mutex> lock1(baseNodeClass->mutex());
 		rc = baseNodeClass->referenceItemMap().add(
 			addNodesItem->referenceTypeId(),
 			false,
+			*parentBaseNodeClass->getNodeId()
+		);
+		if (!rc) return BadReferenceTypeIdInvalid;
+
+		boost::unique_lock<boost::shared_mutex> lock2(parentBaseNodeClass->mutex());
+		rc = parentBaseNodeClass->referenceItemMap().add(
+			addNodesItem->referenceTypeId(),
+			true,
 			*baseNodeClass->getNodeId()
 		);
 		if (!rc) return BadReferenceTypeIdInvalid;
@@ -217,8 +221,14 @@ namespace OpcUaStackServer
 	{
 		switch (addNodesItem->nodeClass().enumeration())
 		{
-			case NodeClass::EnumObject: return addNodeObject(pos, addNodesItem, addNodesResult);
+			case NodeClass::EnumObject:
+			{
+				return addNodeObject(pos, addNodesItem, addNodesResult);
+			}
 			case NodeClass::EnumVariable:
+			{
+				return addNodeVariable(pos, addNodesItem, addNodesResult);
+			}
 			case NodeClass::EnumMethod:
 			case NodeClass::EnumObjectType:
 			case NodeClass::EnumVariableType:
@@ -274,7 +284,7 @@ namespace OpcUaStackServer
 	)
 	{
 		OpcUaStatusCode statusCode;
-		ObjectNodeClass::SPtr objectNodeClass = boost::make_shared<ObjectNodeClass>();
+		auto objectNodeClass = boost::make_shared<ObjectNodeClass>();
 
 		// set base attributes
 		statusCode = addBaseNodeClass(pos, objectNodeClass, addNodesItem, addNodesResult);
@@ -289,7 +299,7 @@ namespace OpcUaStackServer
 			addNodesResult->statusCode(BadInvalidArgument);
 			return Success;
 		}
-		ObjectAttributes::SPtr objectAttributes = addNodesItem->nodeAttributes().parameter<ObjectAttributes>(); 
+		auto objectAttributes = addNodesItem->nodeAttributes().parameter<ObjectAttributes>();
 
 		// set additional object attributes
 		objectNodeClass->setDisplayName(objectAttributes->displayName());
@@ -300,6 +310,60 @@ namespace OpcUaStackServer
 
 		// added node and reference
 		statusCode = addNodeAndReference(objectNodeClass, addNodesItem);
+		addNodesResult->statusCode(statusCode);
+
+		return Success;
+	}
+
+	OpcUaStatusCode
+	NodeManagementService::addNodeVariable(
+		uint32_t pos,
+		AddNodesItem::SPtr addNodesItem,
+		AddNodesResult::SPtr addNodesResult
+	)
+	{
+		OpcUaStatusCode statusCode;
+		auto variableNodeClass = boost::make_shared<VariableNodeClass>();
+
+		// set base attributes
+		statusCode = addBaseNodeClass(pos, variableNodeClass, addNodesItem, addNodesResult);
+		if (statusCode != Success) return statusCode;
+
+		// get object attributes
+		if (addNodesItem->nodeAttributes().parameterTypeId().nodeId<uint32_t>() != OpcUaId_VariableAttributes) {
+			Log(Error, "invalid attribute type")
+				.parameter("Pos", pos)
+				.parameter("BrowseName", addNodesItem->browseName())
+				.parameter("AttributeType", addNodesItem->nodeAttributes().parameterTypeId().nodeId<uint32_t>());
+			addNodesResult->statusCode(BadInvalidArgument);
+			return Success;
+		}
+		auto variableAttributes = addNodesItem->nodeAttributes().parameter<VariableAttributes>();
+
+		// create data value
+		OpcUaDataValue dataValue;
+		OpcUaDateTime now(boost::posix_time::microsec_clock::universal_time());
+		variableAttributes->value().copyTo(*dataValue.variant().get());
+		dataValue.serverTimestamp(now);
+		dataValue.sourceTimestamp(now);
+
+		// set additional object attributes
+		variableNodeClass->setDisplayName(variableAttributes->displayName());
+		variableNodeClass->setDescription(variableAttributes->description());
+		variableNodeClass->setWriteMask(variableAttributes->writeMask());
+		variableNodeClass->setUserWriteMask(variableAttributes->userWriteMask());
+
+		variableNodeClass->setValue(dataValue);
+		variableNodeClass->setDataType(variableAttributes->dataType());
+		variableNodeClass->setValueRank(variableAttributes->valueRank());
+		variableNodeClass->setArrayDimensions(variableAttributes->arrayDimensions());
+		variableNodeClass->setAccessLevel(variableAttributes->accessLevel());
+		variableNodeClass->setUserAccessLevel(variableAttributes->userAccessLevel());
+		variableNodeClass->setMinimumSamplingInterval(variableAttributes->minimumSamplingInterval());
+		variableNodeClass->setHistorizing(variableAttributes->historizing());
+
+		// added node and reference
+		statusCode = addNodeAndReference(variableNodeClass, addNodesItem);
 		addNodesResult->statusCode(statusCode);
 
 		return Success;
