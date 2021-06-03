@@ -1,6 +1,7 @@
 #include "unittest.h"
 #include "OpcUaStackCore/Core/Core.h"
 #include "OpcUaStackCore/StandardDataTypes/ObjectAttributes.h"
+#include "OpcUaStackCore/StandardDataTypes/VariableAttributes.h"
 #include "OpcUaStackClient/CryptoManagerTest.h"
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
 
@@ -32,8 +33,6 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_NodeManagement_AddObjectNode,
 {
 	Core core;
 	ServiceSetManager serviceSetManager;
-
-	core.init();
 
 	//
 	// init certificate and crypto manager
@@ -87,8 +86,8 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_NodeManagement_AddObjectNode,
 	// base attributes
 	objectAttributes->displayName().set("de", "NodeManagementFolder");
 	objectAttributes->description().set("de", "test folder");
-	objectAttributes->writeMask() = 3;
-	objectAttributes->userWriteMask() = 3;
+	objectAttributes->writeMask() = 0;
+	objectAttributes->userWriteMask() = 0;
 	// object specific attributes
 	objectAttributes->eventNotifier() = false;
 
@@ -105,6 +104,8 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_NodeManagement_AddObjectNode,
 	AddNodesResponse::SPtr res = trx->response();
 	BOOST_REQUIRE(trx->statusCode() == Success);
 	BOOST_REQUIRE(res->results()->size() == 1);
+	BOOST_REQUIRE((*res->results().get())[0]->statusCode() == Success);
+
 
 	// disconnect secure channel
 	cond_.condition(1,0);
@@ -113,6 +114,96 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_NodeManagement_AddObjectNode,
 	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
 }
 
+BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_NodeManagement_AddVariableNode, GValueFixture)
+{
+	Core core;
+	ServiceSetManager serviceSetManager;
+
+	//
+	// init certificate and crypto manager
+	//
+	auto cryptoManager = CryptoManagerTest::getInstance();
+	BOOST_REQUIRE(cryptoManager.get() != nullptr);
+
+	// set secure channel configuration
+	SessionServiceConfig sessionServiceConfig;
+	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
+	sessionServiceConfig.secureChannelClient_->cryptoManager(cryptoManager);
+	sessionServiceConfig.session_->sessionName(REAL_SESSION_NAME);
+	sessionServiceConfig.sessionServiceChangeHandler_ =
+		[this] (SessionBase& session, SessionServiceStateId sessionState) {
+			if (sessionState == SessionServiceStateId::Established ||
+				sessionState == SessionServiceStateId::Disconnected) {
+				sessionState_ = sessionState;
+				cond_.sendEvent();
+			}
+		};
+
+	// create session
+	auto sessionService = serviceSetManager.sessionService(sessionServiceConfig);
+	BOOST_REQUIRE(sessionService.get() != nullptr);
+
+	// connect secure channel
+	cond_.condition(1,0);
+	sessionService->asyncConnect();
+	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
+
+	// create nodeManagement service
+	NodeManagementServiceConfig nodeManagementServiceConfig;
+	auto nodeManagementService = serviceSetManager.nodeManagementService(sessionService, nodeManagementServiceConfig);
+	BOOST_REQUIRE(nodeManagementService.get() != nullptr);
+
+	// create object node
+	auto trx = boost::make_shared<ServiceTransactionAddNodes>();
+	auto req = trx->request();
+
+	auto addNodesItem = boost::make_shared<AddNodesItem>();
+	addNodesItem->parentNodeId().set("NodeManagementFolder", 1);
+	addNodesItem->referenceTypeId().set(OpcUaId_HasComponent);
+	addNodesItem->requestedNewNodeId().set("VariableNode", 1);
+	addNodesItem->browseName().set("VariableNode", 1);
+	addNodesItem->nodeClass() = NodeClass::EnumVariable;
+	addNodesItem->typeDefinition().set(OpcUaId_BaseVariableType);
+
+	auto variableAttributes = addNodesItem->nodeAttributes().parameter<VariableAttributes>(OpcUaNodeId(OpcUaId_VariableAttributes));
+	BOOST_REQUIRE(variableAttributes.get() != nullptr);
+	// base attributes
+	variableAttributes->displayName().set("de", "VariableNode");
+	variableAttributes->description().set("de", "test variable");
+	variableAttributes->writeMask() = 0;
+	variableAttributes->userWriteMask() = 0;
+	// object specific attributes
+	variableAttributes->value().set((uint32_t)1234);
+	variableAttributes->dataType().set(OpcUaId_UInt32);
+	variableAttributes->valueRank() = 0;
+	variableAttributes->arrayDimensions();
+	variableAttributes->accessLevel() = 3;
+	variableAttributes->userAccessLevel() = 3;
+	variableAttributes->minimumSamplingInterval() = 1000;
+	variableAttributes->historizing() = false;
+
+	req->nodesToAdd()->set(addNodesItem);
+
+	cond_.condition(1,0);
+	trx->resultHandler(
+		[this](ServiceTransactionAddNodes::SPtr& trx) {
+			cond_.conditionValueDec();
+		}
+	);
+	nodeManagementService->asyncSend(trx);
+	cond_.waitForCondition(1000);
+	AddNodesResponse::SPtr res = trx->response();
+	BOOST_REQUIRE(trx->statusCode() == Success);
+	BOOST_REQUIRE(res->results()->size() == 1);
+	BOOST_REQUIRE((*res->results().get())[0]->statusCode() == Success);
+
+	// disconnect secure channel
+	cond_.condition(1,0);
+	sessionService->asyncDisconnect();
+	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
+}
 
 BOOST_AUTO_TEST_SUITE_END()
 
