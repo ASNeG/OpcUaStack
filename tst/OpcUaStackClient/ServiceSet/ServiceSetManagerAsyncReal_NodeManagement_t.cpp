@@ -154,7 +154,7 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_NodeManagement_AddVariableNod
 	auto nodeManagementService = serviceSetManager.nodeManagementService(sessionService, nodeManagementServiceConfig);
 	BOOST_REQUIRE(nodeManagementService.get() != nullptr);
 
-	// create object node
+	// create variable node
 	auto trx = boost::make_shared<ServiceTransactionAddNodes>();
 	auto req = trx->request();
 
