@@ -54,6 +54,7 @@ namespace OpcUaStackServer
 		void receiveDeleteReferencesRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 
 		OpcUaStackCore::OpcUaStatusCode addNodeAndReference(
+			uint32_t pos,
 			BaseNodeClass::SPtr baseNodeClass,
 			OpcUaStackCore::AddNodesItem::SPtr& addNodesItem
 		);

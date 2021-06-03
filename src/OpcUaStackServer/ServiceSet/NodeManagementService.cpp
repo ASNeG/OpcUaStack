@@ -88,6 +88,8 @@ namespace OpcUaStackServer
 				receiveDeleteReferencesRequest(serviceTransaction);
 				break;
 			default:
+				Log(Debug, "receive invalid request type identifier")
+					.parameter("RequestTypeId", serviceTransaction->nodeTypeRequest().nodeId<uint32_t>());
 				serviceTransaction->statusCode(BadInternalError);
 				sendAnswer(serviceTransaction);
 		}
@@ -194,6 +196,7 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	OpcUaStatusCode 
 	NodeManagementService::addNodeAndReference(
+		uint32_t pos,
 		BaseNodeClass::SPtr baseNodeClass,
 		AddNodesItem::SPtr& addNodesItem
 	)
@@ -208,12 +211,16 @@ namespace OpcUaStackServer
 		// check if node already exist
 		auto nodeClass = informationModel_->find(*baseNodeClass->getNodeId());
 		if (nodeClass.get() != nullptr) {
+			Log(Debug, "add node and reference error, because node already exist")
+				.parameter("NodeId", *baseNodeClass->getNodeId());
 			return BadNodeIdExists;
 		}
 
 		// find parent node
 		auto parentBaseNodeClass = informationModel_->find(parentNodeId);
 		if (parentBaseNodeClass.get() == nullptr) {
+			Log(Debug, "add node and reference error, because parent node already exist")
+				.parameter("NodeId", parentNodeId);
 			return BadParentNodeIdInvalid;
 		}
 
@@ -224,7 +231,11 @@ namespace OpcUaStackServer
 			false,
 			*parentBaseNodeClass->getNodeId()
 		);
-		if (!rc) return BadReferenceTypeIdInvalid;
+		if (!rc) {
+			Log(Debug, "add node and reference error, because add reference item error")
+				.parameter("NodeId", *baseNodeClass->getNodeId());
+			return BadReferenceTypeIdInvalid;
+		}
 
 		boost::unique_lock<boost::shared_mutex> lock2(parentBaseNodeClass->mutex());
 		rc = parentBaseNodeClass->referenceItemMap().add(
@@ -232,9 +243,20 @@ namespace OpcUaStackServer
 			true,
 			*baseNodeClass->getNodeId()
 		);
-		if (!rc) return BadReferenceTypeIdInvalid;
+		if (!rc) {
+			Log(Debug, "add node and reference error, because add inverse reference item error")
+				.parameter("NodeId", *baseNodeClass->getNodeId());
+			return BadReferenceTypeIdInvalid;
+		}
 
-		return Success;
+		// add type reference to node
+		OpcUaNodeId nodeType;
+		nodeType.nodeIdValue(addNodesItem->typeDefinition().nodeIdValue());
+		nodeType.namespaceIndex(addNodesItem->typeDefinition().namespaceIndex());
+		baseNodeClass->referenceItemMap().add(ReferenceType_HasTypeDefinition, true, nodeType);
+
+		// add node to information model
+		return addNode(pos, baseNodeClass);
 	}
 
 	OpcUaStatusCode
@@ -296,16 +318,6 @@ namespace OpcUaStackServer
 		AddNodesResult::SPtr addNodesResult
 	)
 	{
-		//
-		// M - NodeId
-		// M - NodeClass
-		// M - BrowseName
-		// M - DisplayName
-		// O - Description
-		// O - WriteMask
-		// O - UserWriteMask
-		//
-
 		OpcUaNodeId nodeId;
 		nodeId.namespaceIndex(addNodesItem->requestedNewNodeId().namespaceIndex());
 		nodeId.nodeIdValue(addNodesItem->requestedNewNodeId().nodeIdValue());
@@ -345,12 +357,13 @@ namespace OpcUaStackServer
 		// set additional object attributes
 		objectNodeClass->setDisplayName(objectAttributes->displayName());
 		objectNodeClass->setDescription(objectAttributes->description());
-		objectNodeClass->setEventNotifier(objectAttributes->eventNotifier());
 		objectNodeClass->setWriteMask(objectAttributes->writeMask());
 		objectNodeClass->setUserWriteMask(objectAttributes->userWriteMask());
 
+		objectNodeClass->setEventNotifier(objectAttributes->eventNotifier());
+
 		// added node and reference
-		statusCode = addNodeAndReference(objectNodeClass, addNodesItem);
+		statusCode = addNodeAndReference(pos, objectNodeClass, addNodesItem);
 		addNodesResult->statusCode(statusCode);
 
 		return Success;
@@ -404,7 +417,7 @@ namespace OpcUaStackServer
 		variableNodeClass->setHistorizing(variableAttributes->historizing());
 
 		// added node and reference
-		statusCode = addNodeAndReference(variableNodeClass, addNodesItem);
+		statusCode = addNodeAndReference(pos, variableNodeClass, addNodesItem);
 		addNodesResult->statusCode(statusCode);
 
 		return Success;
