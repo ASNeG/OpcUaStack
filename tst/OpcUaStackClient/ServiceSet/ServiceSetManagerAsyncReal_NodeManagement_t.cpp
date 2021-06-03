@@ -205,6 +205,83 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_NodeManagement_AddVariableNod
 	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
 }
 
+BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_NodeManagement_DeleteNode, GValueFixture)
+{
+	Core core;
+	ServiceSetManager serviceSetManager;
+
+	//
+	// init certificate and crypto manager
+	//
+	auto cryptoManager = CryptoManagerTest::getInstance();
+	BOOST_REQUIRE(cryptoManager.get() != nullptr);
+
+	// set secure channel configuration
+	SessionServiceConfig sessionServiceConfig;
+	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
+	sessionServiceConfig.secureChannelClient_->cryptoManager(cryptoManager);
+	sessionServiceConfig.session_->sessionName(REAL_SESSION_NAME);
+	sessionServiceConfig.sessionServiceChangeHandler_ =
+		[this] (SessionBase& session, SessionServiceStateId sessionState) {
+			if (sessionState == SessionServiceStateId::Established ||
+				sessionState == SessionServiceStateId::Disconnected) {
+				sessionState_ = sessionState;
+				cond_.sendEvent();
+			}
+		};
+
+	// create session
+	auto sessionService = serviceSetManager.sessionService(sessionServiceConfig);
+	BOOST_REQUIRE(sessionService.get() != nullptr);
+
+	// connect secure channel
+	cond_.condition(1,0);
+	sessionService->asyncConnect();
+	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
+
+	// delete nodeManagement service
+	NodeManagementServiceConfig nodeManagementServiceConfig;
+	auto nodeManagementService = serviceSetManager.nodeManagementService(sessionService, nodeManagementServiceConfig);
+	BOOST_REQUIRE(nodeManagementService.get() != nullptr);
+
+	// delete node
+	auto trx = boost::make_shared<ServiceTransactionDeleteNodes>();
+	auto req = trx->request();
+
+	auto deleteNodesItem1 = boost::make_shared<DeleteNodesItem>();
+	deleteNodesItem1->nodeId().set("VariableNode", 1);
+	deleteNodesItem1->deleteTargetReferences() = true;
+
+	auto deleteNodesItem2 = boost::make_shared<DeleteNodesItem>();
+	deleteNodesItem2->nodeId().set("NodeManagementFolder", 1);
+	deleteNodesItem2->deleteTargetReferences() = true;
+
+	req->nodesToDelete()->resize(2);
+	req->nodesToDelete()->set(0, deleteNodesItem1);
+	req->nodesToDelete()->set(1, deleteNodesItem2);
+
+	cond_.condition(1,0);
+	trx->resultHandler(
+		[this](ServiceTransactionDeleteNodes::SPtr& trx) {
+			cond_.conditionValueDec();
+		}
+	);
+	nodeManagementService->asyncSend(trx);
+	cond_.waitForCondition(1000);
+	DeleteNodesResponse::SPtr res = trx->response();
+	BOOST_REQUIRE(trx->statusCode() == Success);
+	BOOST_REQUIRE(res->results()->size() == 2);
+	BOOST_REQUIRE((*res->results().get())[0]->statusCode() == Success);
+	BOOST_REQUIRE((*res->results().get())[1]->statusCode() == Success);
+
+	// disconnect secure channel
+	cond_.condition(1,0);
+	sessionService->asyncDisconnect();
+	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 
 #endif

@@ -171,11 +171,6 @@ namespace OpcUaStackServer
 
 		serviceTransaction->statusCode(statusCode);
 		sendAnswer(serviceTransaction);
-
-
-		// FIXME:
-		serviceTransaction->statusCode(BadInternalError);
-		sendAnswer(serviceTransaction);
 	}
 
 	void 
@@ -439,7 +434,7 @@ namespace OpcUaStackServer
 	{
 		// find node to delete
 		auto baseNodeClass = informationModel_->find(deleteNodesItem->nodeId());
-		if (baseNodeClass.get() != nullptr) {
+		if (baseNodeClass.get() == nullptr) {
 			Log(Debug, "delete node error, because node not exist")
 				.parameter("NodeId", deleteNodesItem->nodeId());
 			deleteNodesResult->statusCode(BadNodeIdUnknown);
