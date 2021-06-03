@@ -47,8 +47,8 @@ namespace OpcUaStackCore
 		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
 
 	  protected:
-	    bool jsonEncodeImpl(boost::property_tree::ptree &pt) const { return false; }
-	    bool jsonDecodeImpl(const boost::property_tree::ptree &pt) { return false; }
+	    bool jsonEncodeImpl(boost::property_tree::ptree &pt) const;
+	    bool jsonDecodeImpl(const boost::property_tree::ptree &pt);
 
 	  private:
 		DeleteNodesItemArray::SPtr deleteNodesItemArraySPtr_;

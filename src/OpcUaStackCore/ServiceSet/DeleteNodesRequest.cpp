@@ -61,4 +61,24 @@ namespace OpcUaStackCore
 		return deleteNodesItemArraySPtr_->opcUaBinaryDecode(is);
 	}
 
+	bool
+	DeleteNodesRequest::jsonEncodeImpl(boost::property_tree::ptree &pt) const
+	{
+		bool rc = true;
+
+		rc = rc & jsonArraySPtrEncode(pt, deleteNodesItemArraySPtr_, "NodesToDelte");
+
+		return rc;
+	}
+
+	bool
+	DeleteNodesRequest::jsonDecodeImpl(const boost::property_tree::ptree &pt)
+	{
+		bool rc = true;
+
+		rc = rc & jsonArraySPtrDecode(pt, deleteNodesItemArraySPtr_, "NodesToDelete");
+
+		return rc;
+	}
+
 }

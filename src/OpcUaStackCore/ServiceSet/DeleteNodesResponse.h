@@ -47,8 +47,8 @@ namespace OpcUaStackCore
 		bool opcUaBinaryDecode(std::istream& is);
 
 	  protected:
-	    bool jsonEncodeImpl(boost::property_tree::ptree &pt) const { return false; }
-	    bool jsonDecodeImpl(const boost::property_tree::ptree &pt) { return false; }
+	    bool jsonEncodeImpl(boost::property_tree::ptree &pt) const;
+	    bool jsonDecodeImpl(const boost::property_tree::ptree &pt);
 
 	  private:
 		  DeleteNodesResultArray::SPtr deleteNodesResultArraySPtr_;

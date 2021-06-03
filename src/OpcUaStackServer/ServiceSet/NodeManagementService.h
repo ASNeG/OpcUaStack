@@ -66,6 +66,11 @@ namespace OpcUaStackServer
 			OpcUaStackCore::AddNodesItem::SPtr addNodesItem,
 			OpcUaStackCore::AddNodesResult::SPtr addNodesResult
 		);
+		OpcUaStackCore::OpcUaStatusCode deleteNode(
+			uint32_t pos,
+			OpcUaStackCore::DeleteNodesItem::SPtr deleteNodesItem,
+			OpcUaStackCore::DeleteNodesResult::SPtr deleteNodesResult
+		);
 		OpcUaStackCore::OpcUaStatusCode addBaseNodeClass(
 			uint32_t pos,
 			BaseNodeClass::SPtr baseNodeClass,

@@ -17,11 +17,12 @@
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/Base/Log.h"
-#include "OpcUaStackServer/ServiceSet/NodeManagementService.h"
 #include "OpcUaStackCore/StandardDataTypes/ObjectAttributes.h"
 #include "OpcUaStackCore/StandardDataTypes/VariableAttributes.h"
+#include "OpcUaStackServer/ServiceSet/NodeManagementService.h"
 #include "OpcUaStackServer/AddressSpaceModel/ObjectNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/VariableNodeClass.h"
+#include "OpcUaStackServer/InformationModel/InformationModelAccess.h"
 
 using namespace OpcUaStackCore;
 
@@ -143,6 +144,33 @@ namespace OpcUaStackServer
 	void 
 	NodeManagementService::receiveDeleteNodesRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
+		OpcUaStatusCode statusCode = Success;
+		auto trx = boost::static_pointer_cast<ServiceTransactionDeleteNodes>(serviceTransaction);
+		auto deleteNodesRequest = trx->request();
+		auto deleteNodesResponse = trx->response();
+
+		uint32_t size = deleteNodesRequest->nodesToDelete()->size();
+		deleteNodesResponse->results()->resize(size);
+
+		Log(Debug, "node management service delete nodes request")
+			.parameter("Trx", serviceTransaction->transactionId())
+			.parameter("NumberNodes", size);
+
+		for (uint32_t idx=0; idx<size; idx++) {
+			auto deleteNodesResult = boost::make_shared<DeleteNodesResult>();
+			deleteNodesResponse->results()->set(idx, deleteNodesResult);
+
+			DeleteNodesItem::SPtr deleteNodesItem;
+			deleteNodesRequest->nodesToDelete()->get(idx, deleteNodesItem);
+
+			statusCode = deleteNode(idx, deleteNodesItem, deleteNodesResult);
+			if (statusCode != Success) break;
+		}
+
+		serviceTransaction->statusCode(statusCode);
+		sendAnswer(serviceTransaction);
+
+
 		// FIXME:
 		serviceTransaction->statusCode(BadInternalError);
 		sendAnswer(serviceTransaction);
@@ -176,6 +204,12 @@ namespace OpcUaStackServer
 		OpcUaNodeId parentNodeId;
 		parentNodeId.namespaceIndex(addNodesItem->parentNodeId().namespaceIndex());
 		parentNodeId.nodeIdValue(addNodesItem->parentNodeId().nodeIdValue());
+
+		// check if node already exist
+		auto nodeClass = informationModel_->find(*baseNodeClass->getNodeId());
+		if (nodeClass.get() != nullptr) {
+			return BadNodeIdExists;
+		}
 
 		// find parent node
 		auto parentBaseNodeClass = informationModel_->find(parentNodeId);
@@ -216,6 +250,13 @@ namespace OpcUaStackServer
 		return Success;
 	}
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// add node functions
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	OpcUaStatusCode 
 	NodeManagementService::addNode(uint32_t pos, AddNodesItem::SPtr addNodesItem, AddNodesResult::SPtr addNodesResult)
 	{
@@ -365,6 +406,72 @@ namespace OpcUaStackServer
 		// added node and reference
 		statusCode = addNodeAndReference(variableNodeClass, addNodesItem);
 		addNodesResult->statusCode(statusCode);
+
+		return Success;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// delete node functions
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	OpcUaStackCore::OpcUaStatusCode
+	NodeManagementService::deleteNode(
+		uint32_t pos,
+		OpcUaStackCore::DeleteNodesItem::SPtr deleteNodesItem,
+		OpcUaStackCore::DeleteNodesResult::SPtr deleteNodesResult
+	)
+	{
+		// find node to delete
+		auto baseNodeClass = informationModel_->find(deleteNodesItem->nodeId());
+		if (baseNodeClass.get() != nullptr) {
+			Log(Debug, "delete node error, because node not exist")
+				.parameter("NodeId", deleteNodesItem->nodeId());
+			deleteNodesResult->statusCode(BadNodeIdUnknown);
+			return Success;
+		}
+
+		if (deleteNodesItem->deleteTargetReferences() == true) {
+			// delete all references
+			InformationModelAccess ima(informationModel_);
+			if (!ima.remove(deleteNodesItem->nodeId())) {
+				Log(Debug, "delete node error, because remove command failed")
+					.parameter("NodeId", deleteNodesItem->nodeId());
+				deleteNodesResult->statusCode(BadUnexpectedError);
+				return Success;
+			}
+		}
+		else {
+			// delete only the references for which the node to delete is the source
+			InformationModelAccess ima(informationModel_);
+			BaseNodeClass::Vec parentBaseNodeClassVec;
+			if (!ima.getParentHierarchically(baseNodeClass, parentBaseNodeClassVec)) {
+				Log(Debug, "delete node error, because get parent command failed")
+					.parameter("NodeId", deleteNodesItem->nodeId());
+				deleteNodesResult->statusCode(BadUnexpectedError);
+				return Success;
+			}
+
+			for (auto parentNodeClass : parentBaseNodeClassVec) {
+				for (auto referenceItem : parentNodeClass->referenceItemMap()) {
+					if (referenceItem->nodeId_ == deleteNodesItem->nodeId()) {
+						parentNodeClass->referenceItemMap().remove(referenceItem->typeId_, referenceItem);
+					}
+				}
+			}
+
+			// delete node id
+			if (informationModel_->remove(deleteNodesItem->nodeId()) == true) {
+				Log(Debug, "delete node error, because remove command failed")
+					.parameter("NodeId", deleteNodesItem->nodeId());
+				deleteNodesResult->statusCode(BadNodeIdUnknown);
+			}
+			else {
+				deleteNodesResult->statusCode(Success);
+			}
+		}
 
 		return Success;
 	}

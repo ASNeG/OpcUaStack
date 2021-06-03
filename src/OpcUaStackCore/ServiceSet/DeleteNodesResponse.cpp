@@ -87,4 +87,26 @@ namespace OpcUaStackCore
 		return rc;
 	}
 
+    bool
+	DeleteNodesResponse::jsonEncodeImpl(boost::property_tree::ptree &pt) const
+    {
+		 bool rc = true;
+
+		 rc = rc & jsonArraySPtrEncode(pt,  deleteNodesResultArraySPtr_, "Results");
+		 rc = rc & jsonObjectSPtrEncode(pt, diagnosticInfoArraySPtr_, "DiagnosticInfos");
+
+		 return true;
+    }
+
+    bool
+	DeleteNodesResponse::jsonDecodeImpl(const boost::property_tree::ptree &pt)
+    {
+		 bool rc = true;
+
+		 rc = rc & jsonArraySPtrDecode(pt,  deleteNodesResultArraySPtr_, "Results");
+		 rc = rc & jsonObjectSPtrDecode(pt, diagnosticInfoArraySPtr_, "DiagnosticInfos");
+
+		 return true;
+    }
+
 }
