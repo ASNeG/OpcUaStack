@@ -71,6 +71,14 @@ pipeline {
       sh 'docker ps -a'
       sh 'docker cp $(docker ps -a -q -f "name=asneg-demo${BUILD_TAG}"):/var/log/OpcUaStack/ASNeG-Demo/OpcUaServer.log . || true'
       archiveArtifacts artifacts: 'OpcUaServer.log', fingerprint: true
+      sh 'docker cp $(docker ps -a -q -f "name=asneg-demo${BUILD_TAG}"):/OpcUaStack/build_tst_Release/core_results.xml . || true'
+      archiveArtifacts artifacts: 'core_results.xml', fingerprint: true
+      sh 'docker cp $(docker ps -a -q -f "name=asneg-demo${BUILD_TAG}"):/OpcUaStack/build_tst_Release/server_results.xml . || true'
+      archiveArtifacts artifacts: 'server_results.xml', fingerprint: true
+      sh 'docker cp $(docker ps -a -q -f "name=asneg-demo${BUILD_TAG}"):/OpcUaStack/build_tst_Release/client_results.xml . || true'
+      archiveArtifacts artifacts: 'client_results.xml', fingerprint: true
+      sh 'docker cp $(docker ps -a -q -f "name=asneg-demo${BUILD_TAG}"):/OpcUaStack/build_tst_Release/pubsub_results.xml . || true'
+      archiveArtifacts artifacts: 'pubsub_results.xml', fingerprint: true
       sh 'docker-compose run -w /OpcUaStack/build_tst_Release stack cat core_results.xml > core_results.xml || true'
       sh 'docker-compose run -w /OpcUaStack/build_tst_Release stack cat server_results.xml > server_results.xml || true'
       sh 'docker-compose run -w /OpcUaStack/build_tst_Release stack cat client_results.xml > client_results.xml || true'
