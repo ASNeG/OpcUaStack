@@ -298,7 +298,8 @@ namespace OpcUaStackServer
 			{
 				Log(Error, "invalid node class")
 					.parameter("Pos", pos)
-					.parameter("BrowseName", addNodesItem->browseName());
+					.parameter("BrowseName", addNodesItem->browseName())
+					.parameter("NodeClass", addNodesItem->nodeClass().enumeration());
 				addNodesResult->statusCode(BadInternalError);
 			}
 		}
