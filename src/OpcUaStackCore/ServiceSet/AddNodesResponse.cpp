@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -84,5 +84,27 @@ namespace OpcUaStackCore
 
 		return rc;
 	}
+
+	 bool
+	 AddNodesResponse::jsonEncodeImpl(boost::property_tree::ptree &pt) const
+	 {
+		 bool rc = true;
+
+		 rc = rc & jsonArraySPtrEncode(pt,  addNodesResultArraySPtr_, "Results");
+		 rc = rc & jsonObjectSPtrEncode(pt, diagnosticInfoArraySPtr_, "DiagnosticInfos");
+
+		 return true;
+	 }
+
+	 bool
+	 AddNodesResponse::jsonDecodeImpl(const boost::property_tree::ptree &pt)
+	 {
+		 bool rc = true;
+
+		 rc = rc & jsonArraySPtrDecode(pt,  addNodesResultArraySPtr_, "Results");
+		 rc = rc & jsonObjectSPtrDecode(pt, diagnosticInfoArraySPtr_, "DiagnosticInfos");
+
+		 return true;
+	 }
 
 }

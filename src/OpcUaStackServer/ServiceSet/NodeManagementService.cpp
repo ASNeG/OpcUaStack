@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,8 +18,11 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/StandardDataTypes/ObjectAttributes.h"
+#include "OpcUaStackCore/StandardDataTypes/VariableAttributes.h"
 #include "OpcUaStackServer/ServiceSet/NodeManagementService.h"
 #include "OpcUaStackServer/AddressSpaceModel/ObjectNodeClass.h"
+#include "OpcUaStackServer/AddressSpaceModel/VariableNodeClass.h"
+#include "OpcUaStackServer/InformationModel/InformationModelAccess.h"
 
 using namespace OpcUaStackCore;
 
@@ -85,6 +88,8 @@ namespace OpcUaStackServer
 				receiveDeleteReferencesRequest(serviceTransaction);
 				break;
 			default:
+				Log(Debug, "receive invalid request type identifier")
+					.parameter("RequestTypeId", serviceTransaction->nodeTypeRequest().nodeId<uint32_t>());
 				serviceTransaction->statusCode(BadInternalError);
 				sendAnswer(serviceTransaction);
 		}
@@ -104,9 +109,9 @@ namespace OpcUaStackServer
 	NodeManagementService::receiveAddNodesRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
 		OpcUaStatusCode statusCode = Success;
-		ServiceTransactionAddNodes::SPtr trx = boost::static_pointer_cast<ServiceTransactionAddNodes>(serviceTransaction);
-		AddNodesRequest::SPtr addNodesRequest = trx->request();
-		AddNodesResponse::SPtr addNodesResponse = trx->response();
+		auto trx = boost::static_pointer_cast<ServiceTransactionAddNodes>(serviceTransaction);
+		auto addNodesRequest = trx->request();
+		auto addNodesResponse = trx->response();
 
 		uint32_t size = addNodesRequest->nodesToAdd()->size();
 		addNodesResponse->results()->resize(size);
@@ -116,7 +121,7 @@ namespace OpcUaStackServer
 			.parameter("NumberNodes", size);
 
 		for (uint32_t idx=0; idx<size; idx++) {
-			AddNodesResult::SPtr addNodesResult = boost::make_shared<AddNodesResult>();
+			auto addNodesResult = boost::make_shared<AddNodesResult>();
 			addNodesResponse->results()->set(idx, addNodesResult);
 			
 			AddNodesItem::SPtr addNodesItem;
@@ -141,8 +146,30 @@ namespace OpcUaStackServer
 	void 
 	NodeManagementService::receiveDeleteNodesRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
-		// FIXME:
-		serviceTransaction->statusCode(BadInternalError);
+		OpcUaStatusCode statusCode = Success;
+		auto trx = boost::static_pointer_cast<ServiceTransactionDeleteNodes>(serviceTransaction);
+		auto deleteNodesRequest = trx->request();
+		auto deleteNodesResponse = trx->response();
+
+		uint32_t size = deleteNodesRequest->nodesToDelete()->size();
+		deleteNodesResponse->results()->resize(size);
+
+		Log(Debug, "node management service delete nodes request")
+			.parameter("Trx", serviceTransaction->transactionId())
+			.parameter("NumberNodes", size);
+
+		for (uint32_t idx=0; idx<size; idx++) {
+			auto deleteNodesResult = boost::make_shared<DeleteNodesResult>();
+			deleteNodesResponse->results()->set(idx, deleteNodesResult);
+
+			DeleteNodesItem::SPtr deleteNodesItem;
+			deleteNodesRequest->nodesToDelete()->get(idx, deleteNodesItem);
+
+			statusCode = deleteNode(idx, deleteNodesItem, deleteNodesResult);
+			if (statusCode != Success) break;
+		}
+
+		serviceTransaction->statusCode(statusCode);
 		sendAnswer(serviceTransaction);
 	}
 
@@ -164,6 +191,7 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	OpcUaStatusCode 
 	NodeManagementService::addNodeAndReference(
+		uint32_t pos,
 		BaseNodeClass::SPtr baseNodeClass,
 		AddNodesItem::SPtr& addNodesItem
 	)
@@ -175,28 +203,55 @@ namespace OpcUaStackServer
 		parentNodeId.namespaceIndex(addNodesItem->parentNodeId().namespaceIndex());
 		parentNodeId.nodeIdValue(addNodesItem->parentNodeId().nodeIdValue());
 
+		// check if node already exist
+		auto nodeClass = informationModel_->find(*baseNodeClass->getNodeId());
+		if (nodeClass.get() != nullptr) {
+			Log(Debug, "add node and reference error, because node already exist")
+				.parameter("NodeId", *baseNodeClass->getNodeId());
+			return BadNodeIdExists;
+		}
+
 		// find parent node
-		BaseNodeClass::SPtr parentBaseNodeClass = informationModel_->find(parentNodeId);
+		auto parentBaseNodeClass = informationModel_->find(parentNodeId);
 		if (parentBaseNodeClass.get() == nullptr) {
+			Log(Debug, "add node and reference error, because parent node already exist")
+				.parameter("NodeId", parentNodeId);
 			return BadParentNodeIdInvalid;
 		}
 
 		// create hierarchical reference
+		boost::unique_lock<boost::shared_mutex> lock1(baseNodeClass->mutex());
+		rc = baseNodeClass->referenceItemMap().add(
+			addNodesItem->referenceTypeId(),
+			false,
+			*parentBaseNodeClass->getNodeId()
+		);
+		if (!rc) {
+			Log(Debug, "add node and reference error, because add reference item error")
+				.parameter("NodeId", *baseNodeClass->getNodeId());
+			return BadReferenceTypeIdInvalid;
+		}
+
+		boost::unique_lock<boost::shared_mutex> lock2(parentBaseNodeClass->mutex());
 		rc = parentBaseNodeClass->referenceItemMap().add(
 			addNodesItem->referenceTypeId(),
 			true,
 			*baseNodeClass->getNodeId()
 		);
-		if (!rc) return BadReferenceTypeIdInvalid;
+		if (!rc) {
+			Log(Debug, "add node and reference error, because add inverse reference item error")
+				.parameter("NodeId", *baseNodeClass->getNodeId());
+			return BadReferenceTypeIdInvalid;
+		}
 
-		rc = baseNodeClass->referenceItemMap().add(
-			addNodesItem->referenceTypeId(),
-			false,
-			*baseNodeClass->getNodeId()
-		);
-		if (!rc) return BadReferenceTypeIdInvalid;
+		// add type reference to node
+		OpcUaNodeId nodeType;
+		nodeType.nodeIdValue(addNodesItem->typeDefinition().nodeIdValue());
+		nodeType.namespaceIndex(addNodesItem->typeDefinition().namespaceIndex());
+		baseNodeClass->referenceItemMap().add(ReferenceType_HasTypeDefinition, true, nodeType);
 
-		return Success;
+		// add node to information model
+		return addNode(pos, baseNodeClass);
 	}
 
 	OpcUaStatusCode
@@ -212,13 +267,26 @@ namespace OpcUaStackServer
 		return Success;
 	}
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// add node functions
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	OpcUaStatusCode 
 	NodeManagementService::addNode(uint32_t pos, AddNodesItem::SPtr addNodesItem, AddNodesResult::SPtr addNodesResult)
 	{
 		switch (addNodesItem->nodeClass().enumeration())
 		{
-			case NodeClass::EnumObject: return addNodeObject(pos, addNodesItem, addNodesResult);
+			case NodeClass::EnumObject:
+			{
+				return addNodeObject(pos, addNodesItem, addNodesResult);
+			}
 			case NodeClass::EnumVariable:
+			{
+				return addNodeVariable(pos, addNodesItem, addNodesResult);
+			}
 			case NodeClass::EnumMethod:
 			case NodeClass::EnumObjectType:
 			case NodeClass::EnumVariableType:
@@ -230,7 +298,8 @@ namespace OpcUaStackServer
 			{
 				Log(Error, "invalid node class")
 					.parameter("Pos", pos)
-					.parameter("BrowseName", addNodesItem->browseName());
+					.parameter("BrowseName", addNodesItem->browseName())
+					.parameter("NodeClass", addNodesItem->nodeClass().enumeration());
 				addNodesResult->statusCode(BadInternalError);
 			}
 		}
@@ -245,16 +314,6 @@ namespace OpcUaStackServer
 		AddNodesResult::SPtr addNodesResult
 	)
 	{
-		//
-		// M - NodeId
-		// M - NodeClass
-		// M - BrowseName
-		// M - DisplayName
-		// O - Description
-		// O - WriteMask
-		// O - UserWriteMask
-		//
-
 		OpcUaNodeId nodeId;
 		nodeId.namespaceIndex(addNodesItem->requestedNewNodeId().namespaceIndex());
 		nodeId.nodeIdValue(addNodesItem->requestedNewNodeId().nodeIdValue());
@@ -274,7 +333,7 @@ namespace OpcUaStackServer
 	)
 	{
 		OpcUaStatusCode statusCode;
-		ObjectNodeClass::SPtr objectNodeClass = boost::make_shared<ObjectNodeClass>();
+		auto objectNodeClass = boost::make_shared<ObjectNodeClass>();
 
 		// set base attributes
 		statusCode = addBaseNodeClass(pos, objectNodeClass, addNodesItem, addNodesResult);
@@ -289,18 +348,139 @@ namespace OpcUaStackServer
 			addNodesResult->statusCode(BadInvalidArgument);
 			return Success;
 		}
-		ObjectAttributes::SPtr objectAttributes = addNodesItem->nodeAttributes().parameter<ObjectAttributes>(); 
+		auto objectAttributes = addNodesItem->nodeAttributes().parameter<ObjectAttributes>();
 
 		// set additional object attributes
 		objectNodeClass->setDisplayName(objectAttributes->displayName());
 		objectNodeClass->setDescription(objectAttributes->description());
-		objectNodeClass->setEventNotifier(objectAttributes->eventNotifier());
 		objectNodeClass->setWriteMask(objectAttributes->writeMask());
 		objectNodeClass->setUserWriteMask(objectAttributes->userWriteMask());
 
+		objectNodeClass->setEventNotifier(objectAttributes->eventNotifier());
+
 		// added node and reference
-		statusCode = addNodeAndReference(objectNodeClass, addNodesItem);
+		statusCode = addNodeAndReference(pos, objectNodeClass, addNodesItem);
 		addNodesResult->statusCode(statusCode);
+
+		return Success;
+	}
+
+	OpcUaStatusCode
+	NodeManagementService::addNodeVariable(
+		uint32_t pos,
+		AddNodesItem::SPtr addNodesItem,
+		AddNodesResult::SPtr addNodesResult
+	)
+	{
+		OpcUaStatusCode statusCode;
+		auto variableNodeClass = boost::make_shared<VariableNodeClass>();
+
+		// set base attributes
+		statusCode = addBaseNodeClass(pos, variableNodeClass, addNodesItem, addNodesResult);
+		if (statusCode != Success) return statusCode;
+
+		// get object attributes
+		if (addNodesItem->nodeAttributes().parameterTypeId().nodeId<uint32_t>() != OpcUaId_VariableAttributes) {
+			Log(Error, "invalid attribute type")
+				.parameter("Pos", pos)
+				.parameter("BrowseName", addNodesItem->browseName())
+				.parameter("AttributeType", addNodesItem->nodeAttributes().parameterTypeId().nodeId<uint32_t>());
+			addNodesResult->statusCode(BadInvalidArgument);
+			return Success;
+		}
+		auto variableAttributes = addNodesItem->nodeAttributes().parameter<VariableAttributes>();
+
+		// create data value
+		OpcUaDataValue dataValue;
+		OpcUaDateTime now(boost::posix_time::microsec_clock::universal_time());
+		variableAttributes->value().copyTo(*dataValue.variant().get());
+		dataValue.serverTimestamp(now);
+		dataValue.sourceTimestamp(now);
+
+		// set additional object attributes
+		variableNodeClass->setDisplayName(variableAttributes->displayName());
+		variableNodeClass->setDescription(variableAttributes->description());
+		variableNodeClass->setWriteMask(variableAttributes->writeMask());
+		variableNodeClass->setUserWriteMask(variableAttributes->userWriteMask());
+
+		variableNodeClass->setValue(dataValue);
+		variableNodeClass->setDataType(variableAttributes->dataType());
+		variableNodeClass->setValueRank(variableAttributes->valueRank());
+		variableNodeClass->setArrayDimensions(variableAttributes->arrayDimensions());
+		variableNodeClass->setAccessLevel(variableAttributes->accessLevel());
+		variableNodeClass->setUserAccessLevel(variableAttributes->userAccessLevel());
+		variableNodeClass->setMinimumSamplingInterval(variableAttributes->minimumSamplingInterval());
+		variableNodeClass->setHistorizing(variableAttributes->historizing());
+
+		// added node and reference
+		statusCode = addNodeAndReference(pos, variableNodeClass, addNodesItem);
+		addNodesResult->statusCode(statusCode);
+
+		return Success;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// delete node functions
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	OpcUaStackCore::OpcUaStatusCode
+	NodeManagementService::deleteNode(
+		uint32_t pos,
+		OpcUaStackCore::DeleteNodesItem::SPtr deleteNodesItem,
+		OpcUaStackCore::DeleteNodesResult::SPtr deleteNodesResult
+	)
+	{
+		// find node to delete
+		auto baseNodeClass = informationModel_->find(deleteNodesItem->nodeId());
+		if (baseNodeClass.get() == nullptr) {
+			Log(Debug, "delete node error, because node not exist")
+				.parameter("NodeId", deleteNodesItem->nodeId());
+			deleteNodesResult->statusCode(BadNodeIdUnknown);
+			return Success;
+		}
+
+		if (deleteNodesItem->deleteTargetReferences() == true) {
+			// delete all references
+			InformationModelAccess ima(informationModel_);
+			if (!ima.remove(deleteNodesItem->nodeId())) {
+				Log(Debug, "delete node error, because remove command failed")
+					.parameter("NodeId", deleteNodesItem->nodeId());
+				deleteNodesResult->statusCode(BadUnexpectedError);
+				return Success;
+			}
+		}
+		else {
+			// delete only the references for which the node to delete is the source
+			InformationModelAccess ima(informationModel_);
+			BaseNodeClass::Vec parentBaseNodeClassVec;
+			if (!ima.getParentHierarchically(baseNodeClass, parentBaseNodeClassVec)) {
+				Log(Debug, "delete node error, because get parent command failed")
+					.parameter("NodeId", deleteNodesItem->nodeId());
+				deleteNodesResult->statusCode(BadUnexpectedError);
+				return Success;
+			}
+
+			for (auto parentNodeClass : parentBaseNodeClassVec) {
+				for (auto referenceItem : parentNodeClass->referenceItemMap()) {
+					if (referenceItem->nodeId_ == deleteNodesItem->nodeId()) {
+						parentNodeClass->referenceItemMap().remove(referenceItem->typeId_, referenceItem);
+					}
+				}
+			}
+
+			// delete node id
+			if (informationModel_->remove(deleteNodesItem->nodeId()) == true) {
+				Log(Debug, "delete node error, because remove command failed")
+					.parameter("NodeId", deleteNodesItem->nodeId());
+				deleteNodesResult->statusCode(BadNodeIdUnknown);
+			}
+			else {
+				deleteNodesResult->statusCode(Success);
+			}
+		}
 
 		return Success;
 	}

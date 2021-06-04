@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -54,6 +54,7 @@ namespace OpcUaStackServer
 		void receiveDeleteReferencesRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 
 		OpcUaStackCore::OpcUaStatusCode addNodeAndReference(
+			uint32_t pos,
 			BaseNodeClass::SPtr baseNodeClass,
 			OpcUaStackCore::AddNodesItem::SPtr& addNodesItem
 		);
@@ -66,6 +67,11 @@ namespace OpcUaStackServer
 			OpcUaStackCore::AddNodesItem::SPtr addNodesItem,
 			OpcUaStackCore::AddNodesResult::SPtr addNodesResult
 		);
+		OpcUaStackCore::OpcUaStatusCode deleteNode(
+			uint32_t pos,
+			OpcUaStackCore::DeleteNodesItem::SPtr deleteNodesItem,
+			OpcUaStackCore::DeleteNodesResult::SPtr deleteNodesResult
+		);
 		OpcUaStackCore::OpcUaStatusCode addBaseNodeClass(
 			uint32_t pos,
 			BaseNodeClass::SPtr baseNodeClass,
@@ -73,6 +79,11 @@ namespace OpcUaStackServer
 			OpcUaStackCore::AddNodesResult::SPtr addNodesResult
 		);
 		OpcUaStackCore::OpcUaStatusCode addNodeObject(
+			uint32_t pos,
+			OpcUaStackCore::AddNodesItem::SPtr addNodesItem,
+			OpcUaStackCore::AddNodesResult::SPtr addNodesResult
+		);
+		OpcUaStackCore::OpcUaStatusCode addNodeVariable(
 			uint32_t pos,
 			OpcUaStackCore::AddNodesItem::SPtr addNodesItem,
 			OpcUaStackCore::AddNodesResult::SPtr addNodesResult

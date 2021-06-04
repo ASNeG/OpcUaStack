@@ -373,6 +373,14 @@ namespace OpcUaStackCore
 		bool get(T& value);
 		bool pop_back(void);
 
+		T& operator [](int idx) {
+			return valueArray_[idx];
+		}
+
+		T operator [](int idx) const {
+			return valueArray_[idx];
+		}
+
 		OpcUaArray<T, CODER>& operator=(const OpcUaArray<T, CODER>& other);
 		OpcUaArray<T, CODER>& operator=(const std::vector<T>& other);
 		OpcUaArray<T, CODER>& operator=(const T& other);
