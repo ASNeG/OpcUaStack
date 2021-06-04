@@ -16,6 +16,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_NodeManagement_)
 	std::cout << "ServiceSetManagerSyncReal_NodeManagement_t" << std::endl;
 }
 
+#if 0
 BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_NodeManagement_AddObjectNode)
 {
 	ServiceSetManager serviceSetManager;
@@ -207,6 +208,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_NodeManagement_DeleteNodes)
 	// disconnect secure channel
 	BOOST_REQUIRE(sessionService->syncDisconnect() == Success);
 }
+#endif
 
 BOOST_AUTO_TEST_SUITE_END()
 
