@@ -1,5 +1,5 @@
 /*
-   Copyright 2019-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2019-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -123,16 +123,17 @@ namespace OpcUaStackClient
 		createSessionRequest.clientDescription(sessionConfig_->applicationDescription());
 		createSessionRequest.endpointUrl(secureChannelClientConfig_->endpointUrl());
 		createSessionRequest.sessionName(sessionConfig_->sessionName());
-		createSessionRequest.clientNonce((OpcUaStackCore::OpcUaByte*)"\000", 1);
 		createSessionRequest.requestSessionTimeout(sessionConfig_->sessionTimeout());
 		createSessionRequest.maxResponseMessageSize(sessionConfig_->maxResponseMessageSize());
 
-		// added client certificate chain and client nonce to create session request
+		// added client nonce to create session request
+		for (uint32_t idx=0; idx<32; idx++) {
+			clientNonce_[idx] = (rand() / 256);
+		}
+		createSessionRequest.clientNonce((const OpcUaByte*)clientNonce_, 32);
+
+		// added client certificate chain to create session request
 		if (!securitySettings.ownCertificateChain().empty()) {
-			for (uint32_t idx=0; idx<32; idx++) {
-				clientNonce_[idx] = (rand() / 256);
-			}
-			createSessionRequest.clientNonce((const OpcUaByte*)clientNonce_, 32);
 			securitySettings.ownCertificateChain().toByteString(createSessionRequest.clientCertificate());
 		}
 
