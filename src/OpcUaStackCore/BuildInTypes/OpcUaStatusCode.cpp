@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -39,7 +39,9 @@ namespace OpcUaStackCore
 		initial();
 		StatusCodeMap::iterator it = shortStatusCodeMap_.find(statusCode);
 		if (it == shortStatusCodeMap_.end()) {
-			return "";
+			std::stringstream ss;
+			ss << statusCode;
+			return ss.str();
 		}
 		return it->second;
 	}
@@ -50,7 +52,9 @@ namespace OpcUaStackCore
 		initial();
 		StatusCodeMap::iterator it = longStatusCodeMap_.find(statusCode);
 		if (it == longStatusCodeMap_.end()) {
-			return "";
+			std::stringstream ss;
+			ss << statusCode;
+			return ss.str();
 		}
 		return it->second;
 	}
@@ -59,7 +63,7 @@ namespace OpcUaStackCore
 	OpcUaStatusCodeMap::statusCode(const std::string& statusCodeString)
 	{
 		initial();
-		StatusCodeReverseMap::iterator it = reverseStatusCodeMap_.find(statusCodeString);
+		auto it = reverseStatusCodeMap_.find(statusCodeString);
 		if (it == reverseStatusCodeMap_.end()) {
 			return BadStatusCodeUnknown;
 		}
@@ -70,7 +74,7 @@ namespace OpcUaStackCore
 	OpcUaStatusCodeMap::exist(OpcUaStatusCode statusCode)
 	{
 		initial();
-		StatusCodeMap::iterator it = longStatusCodeMap_.find(statusCode);
+		auto it = longStatusCodeMap_.find(statusCode);
 		if (it == longStatusCodeMap_.end()) return false;
 		return true;
 	}

@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -79,7 +79,7 @@ namespace OpcUaStackCore
 		OpcUaVariant& targetVariant 		// target variant data
 	)
 	{
-		OpcUaBuildInType sourceType = sourceVariant.variantType();
+		auto sourceType = sourceVariant.variantType();
 
 		switch (conversionType(sourceType, targetType))
 		{
@@ -105,7 +105,11 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaTypeConversion::cast(OpcUaVariant& sourceVariant, OpcUaBuildInType targetType, OpcUaVariant& targetVariant)
+	OpcUaTypeConversion::cast(
+		OpcUaVariant& sourceVariant,
+		OpcUaBuildInType targetType,
+		OpcUaVariant& targetVariant
+	)
 	{
 		if (sourceVariant.isArray()) {
 			Log(LogLevel::Warning, "array conversion is not supported");
