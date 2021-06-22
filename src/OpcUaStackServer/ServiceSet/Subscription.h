@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -57,14 +57,14 @@ namespace OpcUaStackServer
 		void maxKeepAliveCount(uint32_t maxKeepAliveCount);
 		void ioThread(OpcUaStackCore::IOThread* ioThread);
 		void strand(boost::shared_ptr<boost::asio::io_service::strand>& strand);
-		void informationModel(InformationModel::SPtr informationModel);
+		void informationModel(InformationModel::SPtr& informationModel);
 		void forwardGlobalSync(ForwardGlobalSync::SPtr& forwardGlobalSync);
 		OpcUaStackCore::OpcUaStatusCode receiveAcknowledgement(uint32_t acknowledgmentNumber);
 
-		void retransmissionQueue(OpcUaStackCore::SubscriptionAcknowledgement::SPtr subscriptionAcknowledgement);
-		void retransmissionQueue(OpcUaStackCore::PublishResponse::SPtr publishResponse);
+		void retransmissionQueue(OpcUaStackCore::SubscriptionAcknowledgement::SPtr& subscriptionAcknowledgement);
+		void retransmissionQueue(OpcUaStackCore::PublishResponse::SPtr& publishResponse);
 
-		PublishResult publish(OpcUaStackCore::ServiceTransactionPublish::SPtr trx);
+		PublishResult publish(OpcUaStackCore::ServiceTransactionPublish::SPtr& trx);
 		uint32_t publishPre(void);
 
 		// monitored item
@@ -77,7 +77,7 @@ namespace OpcUaStackServer
 		OpcUaStackCore::SlotTimerElement::SPtr slotTimerElement(void);
 
 	  private:
-		void createKeepalive(OpcUaStackCore::ServiceTransactionPublish::SPtr trx);
+		void createKeepalive(OpcUaStackCore::ServiceTransactionPublish::SPtr& trx);
 
 		static uint32_t uniqueSubscriptionId(void);
 		static boost::mutex mutex_;

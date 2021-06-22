@@ -97,8 +97,8 @@ namespace OpcUaStackServer
 
 	OpcUaStatusCode 
 	MonitorItem::receive(
-		BaseNodeClass::SPtr baseNodeClass,
-		MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest
+		BaseNodeClass::SPtr& baseNodeClass,
+		MonitoredItemCreateRequest::SPtr& monitoredItemCreateRequest
 	)
 	{
 		baseNodeClass_ = baseNodeClass;
@@ -173,7 +173,9 @@ namespace OpcUaStackServer
 
 		if (baseNodeClass.get() == nullptr) {
 			// base node class no longer exist. Generate final notification if necessary
-			if (dataValue_.statusCode() == BadNodeClassInvalid) return NodeNoLongerExist;
+			if (dataValue_.statusCode() == BadNodeClassInvalid) {
+				return NodeNoLongerExist;
+			}
 
 			// insert notification into queue
 			auto monitoredItemNotification = boost::make_shared<MonitoredItemNotification>();
@@ -185,27 +187,34 @@ namespace OpcUaStackServer
 		boost::shared_lock<boost::shared_mutex> lock(baseNodeClass->mutex());
 
 		// check whether an event should be generated
-		if (!AttributeAccess::trigger(dataValue_, *attribute_)) return Ok; 
-		
+		if (!AttributeAccess::trigger(dataValue_, *attribute_)) {
+			return Ok;
+		}
+
 		auto monitoredItemNotification = boost::make_shared<MonitoredItemNotification>();
 		if (!AttributeAccess::copy(*attribute_, monitoredItemNotification->value())) {
 			// data value is not available
-			if (dataValue_.statusCode() == BadDataUnavailable) return Ok;
+			if (dataValue_.statusCode() == BadDataUnavailable) {
+				return Ok;
+			}
 
 			// insert notification
 			monitoredItemNotification->value().statusCode(BadDataUnavailable);
 			monitorItemListPushBack(monitoredItemNotification);
 			return Ok;
 		}
+		AttributeAccess::copy(*attribute_, dataValue_);
+		lock.unlock();
 
 		// insert notification
-		AttributeAccess::copy(*attribute_, dataValue_);
 		monitorItemListPushBack(monitoredItemNotification);
 		return Ok;
 	}
 
 	void 
-	MonitorItem::monitorItemListPushBack(MonitoredItemNotification::SPtr monitoredItemNotification)
+	MonitorItem::monitorItemListPushBack(
+		MonitoredItemNotification::SPtr& monitoredItemNotification
+	)
 	{
 		uint32_t actQueueSize = monitorItemList_.size();
 

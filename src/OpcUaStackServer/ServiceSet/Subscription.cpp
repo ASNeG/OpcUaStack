@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -98,7 +98,7 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	Subscription::informationModel(InformationModel::SPtr informationModel)
+	Subscription::informationModel(InformationModel::SPtr& informationModel)
 	{
 		monitorManager_.informationModel(informationModel);
 	}
@@ -124,42 +124,48 @@ namespace OpcUaStackServer
 	}
 
 	PublishResult 
-	Subscription::publish(ServiceTransactionPublish::SPtr trx)
+	Subscription::publish(ServiceTransactionPublish::SPtr& trx)
 	{
 		if (trx.get() == NULL) {
 			actLifetimeCount_--;
 
-			if (actLifetimeCount_ == 0) return SubscriptionTimeout;
+			// check subscription timeout
+			if (actLifetimeCount_ == 0) {
+				return SubscriptionTimeout;
+			}
 
-			if (actMaxKeepAliveCount_ == 0) return NothingTodo;
+			// check keepalive count
+			if (actMaxKeepAliveCount_ == 0) {
+				return NothingTodo;
+			}
 
 			// calculate keepalive count
 			actMaxKeepAliveCount_--;
-			if (actMaxKeepAliveCount_ == 0) return NeedAttention;
+			if (actMaxKeepAliveCount_ == 0) {
+				return NeedAttention;
+			}
 
 			return NothingTodo;
 		}
 
-		// check lifetime counter
+		// set lifetime counter
 		actLifetimeCount_ = lifetimeCount_;
-
-		OpcUaExtensibleParameter::SPtr extensibleParameter;
-		OpcUaStatusCode statusCode;
 
 		//
 		// handle event notification
 		//
-		extensibleParameter = boost::make_shared<OpcUaExtensibleParameter>();
+		auto extensibleParameter = boost::make_shared<OpcUaExtensibleParameter>();
 		extensibleParameter->parameterTypeId().nodeId(OpcUaId_EventNotificationList_Encoding_DefaultBinary);
-		EventNotificationList::SPtr eventNotificationList = extensibleParameter->parameter<EventNotificationList>();
-		statusCode = monitorManager_.receive(eventNotificationList->events());
+		auto eventNotificationList = extensibleParameter->parameter<EventNotificationList>();
+
+		auto statusCode = monitorManager_.receive(eventNotificationList->events());
 		if (eventNotificationList->events().size() > 0) {
 			actMaxKeepAliveCount_ = maxKeepAliveCount_;
 
 			uint32_t sequencenumber = acknowledgementManager_.nextSequenceNumber();
 			acknowledgementManager_.addNotification(sequencenumber, extensibleParameter);
 
-			PublishResponse::SPtr publishResponse = trx->response();
+			auto publishResponse = trx->response();
 			publishResponse->notificationMessage()->notificationData().set(0, extensibleParameter);
 			publishResponse->notificationMessage()->publishTime().dateTime(boost::posix_time::microsec_clock::local_time());
 			publishResponse->notificationMessage()->sequenceNumber() = sequencenumber;
@@ -167,7 +173,9 @@ namespace OpcUaStackServer
 			publishResponse->moreNotifications(false);
 			acknowledgementManager_.availableSequenceNumbers(publishResponse->availableSequenceNumbers());
 
-			if (statusCode == BadOutOfMemory) return NeedAttention;
+			if (statusCode == BadOutOfMemory) {
+				return NeedAttention;
+			}
 			return SendPublish;
 		}
 
@@ -176,7 +184,7 @@ namespace OpcUaStackServer
 		//
 		extensibleParameter = boost::make_shared<OpcUaExtensibleParameter>();
 		extensibleParameter->parameterTypeId().nodeId(OpcUaId_DataChangeNotification_Encoding_DefaultBinary);
-		DataChangeNotification::SPtr dataChangeNotification = extensibleParameter->parameter<DataChangeNotification>();
+		auto dataChangeNotification = extensibleParameter->parameter<DataChangeNotification>();
 		
 		statusCode = monitorManager_.receive(dataChangeNotification->monitoredItems());
 		if (dataChangeNotification->monitoredItems().size() > 0) {
@@ -185,7 +193,7 @@ namespace OpcUaStackServer
 			uint32_t sequencenumber = acknowledgementManager_.nextSequenceNumber();
 			acknowledgementManager_.addNotification(sequencenumber, extensibleParameter);
 
-			PublishResponse::SPtr publishResponse = trx->response();
+			auto publishResponse = trx->response();
 			publishResponse->notificationMessage()->notificationData().set(0, extensibleParameter);
 			publishResponse->notificationMessage()->publishTime().dateTime(boost::posix_time::microsec_clock::local_time());
 			publishResponse->notificationMessage()->sequenceNumber() = sequencenumber;
@@ -197,9 +205,7 @@ namespace OpcUaStackServer
 			return SendPublish;
 		}
 
-		//
 		// check keepalive counter
-		//
 		actMaxKeepAliveCount_--;
 		if (actMaxKeepAliveCount_ == 0) {
 			actMaxKeepAliveCount_  = maxKeepAliveCount_;
@@ -212,11 +218,9 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	Subscription::createKeepalive(ServiceTransactionPublish::SPtr trx)
+	Subscription::createKeepalive(ServiceTransactionPublish::SPtr& trx)
 	{
-		PublishRequest::SPtr publishRequest = trx->request();
-		PublishResponse::SPtr publishResponse = trx->response();
-		ServiceTransaction::SPtr serviceTransaction = trx;
+		auto publishResponse = trx->response();
 
 		uint32_t sequencenumber = acknowledgementManager_.nextSequenceNumber(true);
 
@@ -228,19 +232,18 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	Subscription::retransmissionQueue(SubscriptionAcknowledgement::SPtr subscriptionAcknowledgement)
+	Subscription::retransmissionQueue(SubscriptionAcknowledgement::SPtr& subscriptionAcknowledgement)
 	{
 		retransmissionQueue_.erase(subscriptionAcknowledgement->sequenceNumber());
 	}
 		
 	void 
-	Subscription::retransmissionQueue(PublishResponse::SPtr publishResponse)
+	Subscription::retransmissionQueue(PublishResponse::SPtr& publishResponse)
 	{
 		publishResponse->availableSequenceNumbers()->resize(retransmissionQueue_.size());
 
 		uint32_t idx = 0;
-		RetransmissionQueue::iterator it;
-		for (it=retransmissionQueue_.begin(); it!=retransmissionQueue_.end(); it++) {
+		for (auto it=retransmissionQueue_.begin(); it!=retransmissionQueue_.end(); it++) {
 			publishResponse->availableSequenceNumbers()->set(idx, it->first);
 			idx++;
 		}
