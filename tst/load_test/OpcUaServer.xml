@@ -1,0 +1,194 @@
+<!--
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+
+   Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
+   Datei nur in Übereinstimmung mit der Lizenz erlaubt.
+   Eine Kopie der Lizenz erhalten Sie auf http://www.apache.org/licenses/LICENSE-2.0.
+
+   Sofern nicht gemäß geltendem Recht vorgeschrieben oder schriftlich vereinbart,
+   erfolgt die Bereitstellung der im Rahmen der Lizenz verbreiteten Software OHNE
+   GEWÄHR ODER VORBEHALTE – ganz gleich, ob ausdrücklich oder stillschweigend.
+
+   Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
+   im Rahmen der Lizenz finden Sie in der Lizenz.
+
+   Autor: Kai Huebl (kai@huebl-sgh.de)
+-->
+
+<OpcUaServer>
+
+  <Logging>
+    <FileLogger>
+      <LogFileName>@CONF_DIR@/../../../var/log/OpcUaStack/ASNeG-Demo/OpcUaServer.log</LogFileName>
+      <MaxLogFileNumber>20</MaxLogFileNumber>
+      <MaxLogFileSize>5000000</MaxLogFileSize>
+      <LogLevel>Debug</LogLevel>
+    </FileLogger>
+    
+    <Log4cxxLogger>
+    </Log4cxxLogger>
+    
+    <SecureChannelLog>0</SecureChannelLog>
+    
+  </Logging>
+  
+  <DiscoveryServer>
+      <DiscoveryUrl>opc.tcp://localhost:4840</DiscoveryUrl>
+      <RegisterInterval>40000</RegisterInterval>
+  </DiscoveryServer>
+  
+  <Endpoints>
+    <EndpointDescription>
+	  <EndpointUrl>opc.tcp://@HOSTNAME@:8889</EndpointUrl>
+	  <ApplicationUri>urn:@HOSTNAME@:ASNeG:ASNeG-Demo</ApplicationUri>
+	  <ProductUri>urn:ASNeG:ASNeG-Demo</ProductUri>
+	  <ApplicationName>ASNeG-Demo</ApplicationName>
+	  <DiscoveryUrl>opc.tcp://@HOSTNAME@:8889</DiscoveryUrl>	
+	  <GatewayServerUri></GatewayServerUri>
+	  
+	  <SecuritySetting>
+	    <SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#None</SecurityPolicyUri>
+	    <MessageSecurityMode>None</MessageSecurityMode>
+	  </SecuritySetting>
+	  <SecuritySetting>
+	    <SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15</SecurityPolicyUri>
+	    <MessageSecurityMode>SignAndEncrypt</MessageSecurityMode>
+	  </SecuritySetting>
+	  <SecuritySetting>
+	    <SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#Basic256</SecurityPolicyUri>
+	    <MessageSecurityMode>SignAndEncrypt</MessageSecurityMode>
+	  </SecuritySetting>
+	  <SecuritySetting>
+	    <SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#Basic256Sha256</SecurityPolicyUri>
+	    <MessageSecurityMode>SignAndEncrypt</MessageSecurityMode>
+	  </SecuritySetting>
+	  
+	  <UserTokenPolicy>
+	    <PolicyId>anonymous</PolicyId>
+	    <TokenType>Anonymous</TokenType>
+	    <SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#None</SecurityPolicyUri>
+	  </UserTokenPolicy>
+	  <UserTokenPolicy>
+	    <PolicyId>OpcUaStack2</PolicyId>
+	    <TokenType>Username</TokenType>
+	    <SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#Basic256</SecurityPolicyUri>
+	  </UserTokenPolicy>
+	  <UserTokenPolicy>
+	    <PolicyId>OpcUaStack2-1</PolicyId>
+	    <TokenType>Username</TokenType>
+	    <SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#None</SecurityPolicyUri>
+	  </UserTokenPolicy>
+	  	  <UserTokenPolicy>
+	    <PolicyId>OpcUaStack3</PolicyId>
+	    <TokenType>Username</TokenType>
+	    <SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15</SecurityPolicyUri>
+	  </UserTokenPolicy>
+	  <UserTokenPolicy>
+	    <PolicyId>OpcUaStack4</PolicyId>
+	    <TokenType>IssuedToken</TokenType>
+	    <SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#Basic256</SecurityPolicyUri>
+	  </UserTokenPolicy>
+	  <UserTokenPolicy>
+	    <PolicyId>OpcUaStack5</PolicyId>
+	    <TokenType>IssuedToken</TokenType>
+	    <SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15</SecurityPolicyUri>
+	  </UserTokenPolicy>
+	  <UserTokenPolicy>
+	    <PolicyId>OpcUaStack6</PolicyId>
+	    <TokenType>Certificate</TokenType>
+	    <SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#Basic256</SecurityPolicyUri>
+	  </UserTokenPolicy>
+	  <UserTokenPolicy>
+	    <PolicyId>OpcUaStack7</PolicyId>
+	    <TokenType>Certificate</TokenType>
+	    <SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15</SecurityPolicyUri>
+	  </UserTokenPolicy>
+	  <TransportProfileUri>http://opcfoundation.org/UA-Profile/Transport/uatcp-uasc-uabinary</TransportProfileUri>
+	  <SecurityLevel>0</SecurityLevel>
+	</EndpointDescription>
+  </Endpoints>
+  
+  <ServerInfo>
+      <ServerUri>urn:@HOSTNAME@:ASNeG:ASNeG-Demo</ServerUri>
+      <ServerName>ASNeG-Demo@@HOSTNAME@</ServerName>
+  </ServerInfo>
+  
+  <Server>
+      <ServerThreadPool>
+          <Name>ThrSrv</Name>
+          <NumberThreads>8</NumberThreads>
+      </ServerThreadPool>
+  </Server>
+
+  <ApplicationCertificate>
+  
+      <Folder>
+          <CertificateTrustListLocation>@CONF_DIR@/pki/trusted/certs/</CertificateTrustListLocation>
+          <CertificateRevocationListLocation>@CONF_DIR@/pki/trusted/crl/</CertificateRevocationListLocation>
+          <IssuersCertificatesLocation>@CONF_DIR@/pki/issuers/certs/</IssuersCertificatesLocation>
+          <IssuersRevocationListLocation>@CONF_DIR@/pki/issuers/crl/</IssuersRevocationListLocation>
+          <CertificateRejectListLocation>@CONF_DIR@/pki/reject/certs/</CertificateRejectListLocation>
+      </Folder>
+  
+      <Files>
+          <ApplicationCertificateFile>@CONF_DIR@/pki/own/certs/ASNeG-Demo.der</ApplicationCertificateFile>
+          <PrivateKeyFile>@CONF_DIR@/pki/own/private/ASNeG-Demo.pem</PrivateKeyFile>
+      </Files>
+      
+      <CertificateSettings>
+          <GenerateCertificate>true</GenerateCertificate>
+          
+          <CommonName>ASNeG-Demo</CommonName>		
+          <DomainComponent>127.0.0.1</DomainComponent>	
+          <Organization>ASNeG</Organization>
+          <OrganizationUnit>OPC UA Service Department</OrganizationUnit>
+          <Locality>Neukirchen</Locality>
+          <State>Hessen</State>
+          <Country>DE</Country>
+          <YearsValidFor>5</YearsValidFor>
+          <KeyLength>2048</KeyLength>
+          <CertificateType>RsaSha256</CertificateType>
+          <IPAddress>127.0.0.1</IPAddress>
+          <DNSName>@HOSTNAME@</DNSName>
+          <EMail>info@ASNeG.de</EMail>
+      </CertificateSettings>
+      
+  </ApplicationCertificate>
+  
+  <Applications>
+    <Application>
+      <Name>ASNeG-Demo</Name>  
+      <Library>ASNeG-Demo</Library>
+      <Config>@CONF_DIR@/ApplicationDemoModel.xml</Config>
+      
+      <ApplThreadPool>
+          <Name>ThrDemo</Name>
+          <NumberThreads>4</NumberThreads>
+      </ApplThreadPool>
+      
+    </Application>
+  </Applications>
+  
+  
+  <InformationModel>
+    <NodeSetFile>@CONF_DIR@/Opc.Ua.NodeSet2.xml</NodeSetFile>
+    <NodeSetFile>@CONF_DIR@/Opc.Ua.NodeSet.ASNeGServer.xml</NodeSetFile>
+    <NodeSetFile>@CONF_DIR@/Opc.Ua.NodeSetTest.xml</NodeSetFile>
+    <NodeSetFile>@CONF_DIR@/Opc.Ua.NodeSetTestLib.xml</NodeSetFile>
+    <NodeSetFile>@CONF_DIR@/Opc.Ua.NodeSetTestLibClientServer.xml</NodeSetFile>
+    <NodeSetFile>@CONF_DIR@/Opc.Ua.NodeSet.Camera.xml</NodeSetFile>
+    <NodeSetFile>@CONF_DIR@/Opc.Ua.NodeSet.Function.xml</NodeSetFile>
+    <NodeSetFile>@CONF_DIR@/Opc.Ua.NodeSet.Complex.xml</NodeSetFile>
+    <NodeSetFile>@CONF_DIR@/Opc.Ua.NodeSet.StructureExample.xml</NodeSetFile>
+    <NodeSetFile>@CONF_DIR@/Opc.Ua.NodeSet.Service.xml</NodeSetFile>
+    <NodeSetFile>@CONF_DIR@/Opc.Ua.NodeSet.Alarm.xml</NodeSetFile>
+    <NodeSetFile>@CONF_DIR@/Opc.Ua.NodeSet.Auth.xml</NodeSetFile>
+    <NodeSetFile>@CONF_DIR@/Opc.Ua.NodeSet.HistoricalAccess.xml</NodeSetFile>
+    <NodeSetFile>@CONF_DIR@/TestStatusCode.OpcUaNodeSet.xml</NodeSetFile>
+    <NodeSetFile>@CONF_DIR@/Event.OpcUaNodeSet.xml</NodeSetFile>
+    <NodeSetFile>@CONF_DIR@/Opc.Ua.NodeSet2.Part14.xml</NodeSetFile>
+    <NodeSetFile>@CONF_DIR@/Opc.Ua.NodeSet.Generator.xml</NodeSetFile>
+
+  </InformationModel>
+
+</OpcUaServer>

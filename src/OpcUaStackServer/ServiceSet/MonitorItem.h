@@ -40,13 +40,18 @@ namespace OpcUaStackServer
 	: public OpcUaStackCore::Object
 	{
 	  public:
-		typedef boost::shared_ptr<MonitorItem> SPtr;
+		using SPtr = boost::shared_ptr<MonitorItem>;
 
 		MonitorItem(void);
 		~MonitorItem(void);
 
-		OpcUaStackCore::OpcUaStatusCode receive(BaseNodeClass::SPtr baseNodeClass, OpcUaStackCore::MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest);
-		OpcUaStackCore::OpcUaStatusCode receive(OpcUaStackCore::MonitoredItemNotificationArray& monitoredItemNotificationArray);
+		OpcUaStackCore::OpcUaStatusCode receive(
+			BaseNodeClass::SPtr& baseNodeClass,
+			OpcUaStackCore::MonitoredItemCreateRequest::SPtr& monitoredItemCreateRequest
+		);
+		OpcUaStackCore::OpcUaStatusCode receive(
+			OpcUaStackCore::MonitoredItemNotificationArray& monitoredItemNotificationArray
+		);
 
 		uint32_t monitorItemId(void);
 		uint32_t samplingInterval(void);
@@ -63,8 +68,9 @@ namespace OpcUaStackServer
 		SampleResult sample(void);
 
 	  private:
-		void monitorItemListPushBack(OpcUaStackCore::MonitoredItemNotification::SPtr monitoredItemNotification);
-		bool dataChange(OpcUaStackCore::MonitoredItemNotification::SPtr monitoredItemNotiication, Attribute* attribute);
+		void monitorItemListPushBack(
+			OpcUaStackCore::MonitoredItemNotification::SPtr& monitoredItemNotification
+		);
 
 		uint32_t monitorItemId_;
 		uint32_t samplingInterval_ = 100;

@@ -29,7 +29,6 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_NodeManagement_)
 	std::cout << "ServiceSetManagerAsyncReal_NodeManagement_t" << std::endl;
 }
 
-#if 0
 BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_NodeManagement_AddObjectNode, GValueFixture)
 {
 	Core core;
@@ -282,7 +281,6 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_NodeManagement_DeleteNode, GV
 	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
 }
-#endif
 
 BOOST_AUTO_TEST_SUITE_END()
 

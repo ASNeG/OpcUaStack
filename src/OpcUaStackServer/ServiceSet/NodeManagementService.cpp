@@ -340,7 +340,8 @@ namespace OpcUaStackServer
 		if (statusCode != Success) return statusCode;
 
 		// get object attributes 
-		if (addNodesItem->nodeAttributes().parameterTypeId().nodeId<uint32_t>() != OpcUaId_ObjectAttributes) {
+		if (addNodesItem->nodeAttributes().parameterTypeId().nodeId<uint32_t>() != OpcUaId_ObjectAttributes &&
+			addNodesItem->nodeAttributes().parameterTypeId().nodeId<uint32_t>() != OpcUaId_ObjectAttributes_Encoding_DefaultBinary) {
 			Log(Error, "invalid attribute type")
 				.parameter("Pos", pos)
 				.parameter("BrowseName", addNodesItem->browseName())
@@ -380,7 +381,8 @@ namespace OpcUaStackServer
 		if (statusCode != Success) return statusCode;
 
 		// get object attributes
-		if (addNodesItem->nodeAttributes().parameterTypeId().nodeId<uint32_t>() != OpcUaId_VariableAttributes) {
+		if (addNodesItem->nodeAttributes().parameterTypeId().nodeId<uint32_t>() != OpcUaId_VariableAttributes &&
+			addNodesItem->nodeAttributes().parameterTypeId().nodeId<uint32_t>() != OpcUaId_VariableAttributes_Encoding_DefaultBinary) {
 			Log(Error, "invalid attribute type")
 				.parameter("Pos", pos)
 				.parameter("BrowseName", addNodesItem->browseName())
