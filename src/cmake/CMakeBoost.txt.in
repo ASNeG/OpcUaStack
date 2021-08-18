@@ -23,7 +23,7 @@ add_definitions(-DBOOST_ALL_DYN_LINK)
 find_package(
     Boost 
     "@BOOST_VERSION_MAJOR@.@BOOST_VERSION_MINOR@" 
-    COMPONENTS system unit_test_framework filesystem thread date_time chrono regex 
+    COMPONENTS system unit_test_framework filesystem thread date_time chrono regex program_options
     REQUIRED
 )
 
@@ -47,5 +47,7 @@ message(STATUS "  chrono debug library: ${Boost_CHRONO_LIBRARY_DEBUG}")
 message(STATUS "  chrono release library: ${Boost_CHRONO_LIBRARY_RELEASE}")
 message(STATUS "  regex debug library: ${Boost_REGEX_LIBRARY_DEBUG}")
 message(STATUS "  regex release library: ${Boost_REGEX_LIBRARY_RELEASE}")
+message(STATUS "  program_options debug library: ${Boost_PROGRAM_OPTIONS_LIBRARY_DEBUG}")
+message(STATUS "  program_options release library: ${Boost_PROGRAM_OPTIONS_RELEASE}")
 message(STATUS "  libraries: ${Boost_LIBRARIES}")
 
