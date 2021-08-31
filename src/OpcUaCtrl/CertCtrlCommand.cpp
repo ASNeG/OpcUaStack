@@ -1,5 +1,5 @@
 /*
-   Copyright 2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2020-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -123,27 +123,31 @@ namespace OpcUaCtrl
 		std::stringstream ss;
 
 		// read all files from certificate trust directory
-		boost::filesystem::path certDirectoryTrust(applicationInfo->certDirectoryTrust_);
-		for ( auto filenameIt : boost::filesystem::directory_iterator(certDirectoryTrust) ) {
-			// show only application certificates
-			if (!isApplCertificate(filenameIt.path().string())) {
-				continue;
-			}
+		if (boost::filesystem::exists(applicationInfo->certDirectoryTrust_)) {
+			boost::filesystem::path certDirectoryTrust(applicationInfo->certDirectoryTrust_);
+			for ( auto filenameIt : boost::filesystem::directory_iterator(certDirectoryTrust) ) {
+				// show only application certificates
+				if (!isApplCertificate(filenameIt.path().string())) {
+					continue;
+				}
 
-			// show certificate
-			showCertificateInfo(ss, filenameIt.path().string(), "Trusted");
+				// show certificate
+				showCertificateInfo(ss, filenameIt.path().string(), "Trusted");
+			}
 		}
 
 		// read all files from certificate revocation directory
-		boost::filesystem::path certDirectoryRevocation(applicationInfo->certDirectoryRevocation_);
-		for ( auto filenameIt : boost::filesystem::directory_iterator(certDirectoryRevocation) ) {
-			// show only issuer certificates
-			if (!isApplCertificate(filenameIt.path().string())) {
-				continue;
-			}
+		if (boost::filesystem::exists(applicationInfo->certDirectoryRevocation_)) {
+			boost::filesystem::path certDirectoryRevocation(applicationInfo->certDirectoryRevocation_);
+			for ( auto filenameIt : boost::filesystem::directory_iterator(certDirectoryRevocation) ) {
+				// show only issuer certificates
+				if (!isApplCertificate(filenameIt.path().string())) {
+					continue;
+				}
 
-			// show certificate
-			showCertificateInfo(ss, filenameIt.path().string(), "Untrusted");
+				// show certificate
+				showCertificateInfo(ss, filenameIt.path().string(), "Untrusted");
+			}
 		}
 
 		if (!ss.str().empty()) {
@@ -303,34 +307,38 @@ namespace OpcUaCtrl
 		if (certificateId == "all") {
 
 			// find and delete all application certificates in trusted directory
-			for (auto& entry : boost::filesystem::directory_iterator(applicationInfo->certDirectoryTrust_)) {
-				// remove only application certificates
-				if (!isApplCertificate(entry.path().string())) {
-					continue;
-				}
+			if (boost::filesystem::exists(applicationInfo->certDirectoryTrust_)) {
+				for (auto& entry : boost::filesystem::directory_iterator(applicationInfo->certDirectoryTrust_)) {
+					// remove only application certificates
+					if (!isApplCertificate(entry.path().string())) {
+						continue;
+					}
 
-				// delete application certificate
-				std::vector<std::string> cmdLine = commandLine;
-				cmdLine[4] = entry.path().stem().string();
-				auto rc = del(cmdLine);
-				if (rc != 0) {
-					return rc;
+					// delete application certificate
+					std::vector<std::string> cmdLine = commandLine;
+					cmdLine[4] = entry.path().stem().string();
+					auto rc = del(cmdLine);
+					if (rc != 0) {
+						return rc;
+					}
 				}
 			}
 
 			// find and delete all issuer certificates in revocation list directory
-			for (auto& entry : boost::filesystem::directory_iterator(applicationInfo->certDirectoryRevocation_)) {
-				// remove only application certificates
-				if (!isApplCertificate(entry.path().string())) {
-					continue;
-				}
+			if (boost::filesystem::exists(applicationInfo->certDirectoryRevocation_)) {
+				for (auto& entry : boost::filesystem::directory_iterator(applicationInfo->certDirectoryRevocation_)) {
+					// remove only application certificates
+					if (!isApplCertificate(entry.path().string())) {
+						continue;
+					}
 
-				// delete application certificate
-				std::vector<std::string> cmdLine = commandLine;
-				cmdLine[4] = entry.path().stem().string();
-				auto rc = del(cmdLine);
-				if (rc != 0) {
-					return rc;
+					// delete application certificate
+					std::vector<std::string> cmdLine = commandLine;
+					cmdLine[4] = entry.path().stem().string();
+					auto rc = del(cmdLine);
+					if (rc != 0) {
+						return rc;
+					}
 				}
 			}
 

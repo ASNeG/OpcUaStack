@@ -1,5 +1,5 @@
 /*
-   Copyright 2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2020-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -123,27 +123,31 @@ namespace OpcUaCtrl
 		std::stringstream ss;
 
 		// read all files from issuer trust directory
-		boost::filesystem::path issuerDirectoryTrust(applicationInfo->issuerDirectoryTrust_);
-		for ( auto filenameIt : boost::filesystem::directory_iterator(issuerDirectoryTrust) ) {
-			// show only issuer certificates
-			if (!isIssuerCertificate(filenameIt.path().string())) {
-				continue;
-			}
+		if (boost::filesystem::exists(applicationInfo->issuerDirectoryTrust_)) {
+			boost::filesystem::path issuerDirectoryTrust(applicationInfo->issuerDirectoryTrust_);
+			for ( auto filenameIt : boost::filesystem::directory_iterator(issuerDirectoryTrust) ) {
+				// show only issuer certificates
+				if (!isIssuerCertificate(filenameIt.path().string())) {
+					continue;
+				}
 
-			// show certificate
-			showCertificateInfo(ss, filenameIt.path().string(), "Trusted");
+				// show certificate
+				showCertificateInfo(ss, filenameIt.path().string(), "Trusted");
+			}
 		}
 
 		// read all files from issuer revocation directory
-		boost::filesystem::path issuerDirectoryRevocation(applicationInfo->issuerDirectoryRevocation_);
-		for ( auto filenameIt : boost::filesystem::directory_iterator(issuerDirectoryRevocation) ) {
-			// show only issuer certificates
-			if (!isIssuerCertificate(filenameIt.path().string())) {
-				continue;
-			}
+		if (boost::filesystem::exists(applicationInfo->issuerDirectoryRevocation_)) {
+			boost::filesystem::path issuerDirectoryRevocation(applicationInfo->issuerDirectoryRevocation_);
+			for ( auto filenameIt : boost::filesystem::directory_iterator(issuerDirectoryRevocation) ) {
+				// show only issuer certificates
+				if (!isIssuerCertificate(filenameIt.path().string())) {
+					continue;
+				}
 
-			// show certificate
-			showCertificateInfo(ss, filenameIt.path().string(), "Untrusted");
+				// show certificate
+				showCertificateInfo(ss, filenameIt.path().string(), "Untrusted");
+			}
 		}
 
 		if (!ss.str().empty()) {
@@ -303,22 +307,26 @@ namespace OpcUaCtrl
 		if (certificateId == "all") {
 
 			// find and delete all issuer certificates in trusted directory
-			for (auto& entry : boost::filesystem::directory_iterator(applicationInfo->issuerDirectoryTrust_)) {
-				std::vector<std::string> cmdLine = commandLine;
-				cmdLine[4] = entry.path().stem().string();
-				auto rc = del(cmdLine);
-				if (rc != 0) {
-					return rc;
+			if (boost::filesystem::exists(applicationInfo->certDirectoryTrust_)) {
+				for (auto& entry : boost::filesystem::directory_iterator(applicationInfo->issuerDirectoryTrust_)) {
+					std::vector<std::string> cmdLine = commandLine;
+					cmdLine[4] = entry.path().stem().string();
+					auto rc = del(cmdLine);
+					if (rc != 0) {
+						return rc;
+					}
 				}
 			}
 
 			// find and delete all issuer certificates in revocation list directory
-			for (auto& entry : boost::filesystem::directory_iterator(applicationInfo->issuerDirectoryRevocation_)) {
-				std::vector<std::string> cmdLine = commandLine;
-				cmdLine[4] = entry.path().stem().string();
-				auto rc = del(cmdLine);
-				if (rc != 0) {
-					return rc;
+			if (boost::filesystem::exists(applicationInfo->issuerDirectoryRevocation_)) {
+				for (auto& entry : boost::filesystem::directory_iterator(applicationInfo->issuerDirectoryRevocation_)) {
+					std::vector<std::string> cmdLine = commandLine;
+					cmdLine[4] = entry.path().stem().string();
+					auto rc = del(cmdLine);
+					if (rc != 0) {
+						return rc;
+					}
 				}
 			}
 
