@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -778,7 +778,8 @@ namespace OpcUaStackServer
 			req->displayName(),
 			req->parentNodeId(),
 			req->referenceTypeNodeId(),
-			variableBase
+			variableBase,
+			&req->nodeIdMap()
 		);
 
 		trx->statusCode(result);
@@ -794,13 +795,14 @@ namespace OpcUaStackServer
 		auto objectBase = boost::static_pointer_cast<ObjectBase>(req->objectInstance());
 
 		ObjectInstanceBuilder objectInstanceBuilder;
-		OpcUaStatusCode result = objectInstanceBuilder.createObjectInstance(
+		auto result = objectInstanceBuilder.createObjectInstance(
 			informationModel_,
 			req->namespaceName(),
 			req->displayName(),
 			req->parentNodeId(),
 			req->referenceTypeNodeId(),
-			objectBase
+			objectBase,
+			&req->nodeIdMap()
 		);
 
 		trx->statusCode(result);

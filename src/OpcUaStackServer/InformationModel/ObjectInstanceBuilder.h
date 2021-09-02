@@ -1,5 +1,5 @@
 /*
-   Copyright 2019-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2019-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -33,7 +33,9 @@ namespace OpcUaStackServer
 	class DLLEXPORT ObjectInstanceBuilder
 	{
 	  public:
-		typedef boost::shared_ptr<ObjectInstanceBuilder> SPtr;
+		using SPtr = boost::shared_ptr<ObjectInstanceBuilder>;
+		using ObjectNodeClassMap = std::map<std::string, ObjectNodeClass::SPtr>;
+		using NodeIdMap = std::map<std::string, OpcUaStackCore::OpcUaNodeId>;
 
 		ObjectInstanceBuilder(void);
 		~ObjectInstanceBuilder(void);
@@ -44,7 +46,8 @@ namespace OpcUaStackServer
 			const OpcUaStackCore::OpcUaLocalizedText& displayName,
 			const OpcUaStackCore::OpcUaNodeId& parentNodeId,
 			const OpcUaStackCore::OpcUaNodeId& referenceTypeNodeId,
-			const ObjectBase::SPtr& objectBase
+			const ObjectBase::SPtr& objectBase,
+			NodeIdMap* nodeIdMap = nullptr
 		);
 
 	  private:
@@ -76,7 +79,8 @@ namespace OpcUaStackServer
 		uint16_t namespaceIndex_;
 		ObjectBase::SPtr objectBase_;
 
-		std::map<std::string, ObjectNodeClass::SPtr> objectNodeClassMap_;
+		ObjectNodeClassMap objectNodeClassMap_;
+		NodeIdMap* nodeIdMap_ = nullptr;
 	};
 
 }

@@ -1,5 +1,5 @@
 /*
-   Copyright 2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2019-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -47,11 +47,13 @@ namespace OpcUaStackServer
 		const OpcUaLocalizedText& displayName,
 		OpcUaNodeId& parentNodeId,
 		OpcUaNodeId& referenceTypeNodeId,
-		VariableBase::SPtr& variableBase
+		VariableBase::SPtr& variableBase,
+		NodeIdMap* nodeIdMap
 	)
 	{
 		informationModel_ = informationModel;
 		variableBase_ = variableBase;
+		nodeIdMap_ = nodeIdMap;
 
 		// get namespace index
 		if (!getNamespaceIndex(namespaceName)) {
@@ -255,7 +257,18 @@ namespace OpcUaStackServer
 		// create variable instance
 		InformationModelAccess ima;
 		ima.informationModel(informationModel_);
+
 		OpcUaNodeId nodeId = ima.createUniqueNodeId(namespaceIndex_);
+		if (nodeIdMap_ != nullptr) {
+			auto itNodeId = nodeIdMap_->find(variableName);
+			if (itNodeId != nodeIdMap_->end()) {
+				nodeId = itNodeId->second;
+				if (nodeId.namespaceIndex() == 0) {
+					nodeId.namespaceIndex(namespaceIndex_);
+				}
+			}
+		}
+
 		switch (*baseNodeTemplate->getNodeClass())
 		{
 			case NodeClass::EnumVariable:

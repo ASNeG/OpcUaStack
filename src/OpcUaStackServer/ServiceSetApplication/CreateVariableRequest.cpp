@@ -1,5 +1,5 @@
 /*
-   Copyright 2019-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2019-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -102,6 +102,38 @@ namespace OpcUaStackServer
 	CreateVariableRequest::variableInstance(void)
     {
     	return variableInstance_;
+    }
+
+    bool
+	CreateVariableRequest::addNodeId(const std::string& nodeName, const OpcUaStackCore::OpcUaNodeId& nodeId)
+    {
+    	// check if entry already exist in node id map
+    	if (nodeIdMap_.find(nodeName) != nodeIdMap_.end()) {
+    		return false;
+    	}
+
+    	// add entry to node id map
+    	nodeIdMap_.insert(std::make_pair(nodeName, nodeId));
+
+    	return true;
+    }
+
+    bool
+	CreateVariableRequest::getNodeId(const std::string& nodeName, OpcUaStackCore::OpcUaNodeId& nodeId)
+    {
+    	auto it = nodeIdMap_.find(nodeName);
+    	if (it == nodeIdMap_.end()) {
+    		return false;
+    	}
+
+    	nodeId = it->second;
+    	return true;
+    }
+
+    CreateVariableRequest::NodeIdMap&
+	CreateVariableRequest::nodeIdMap(void)
+    {
+    	return nodeIdMap_;
     }
 
 	bool

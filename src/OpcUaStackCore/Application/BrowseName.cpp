@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -34,9 +34,7 @@ namespace OpcUaStackCore
 
 		if (browseName.pathNames_.get() == nullptr) return;
 		pathNames_->resize(browseName.pathNames_->size());
-		for (uint32_t idx=0; idx < browseName.pathNames_->size(); idx++) {
-			OpcUaQualifiedName::SPtr pathElement;
-			browseName.pathNames_->get(idx, pathElement);
+		for (auto pathElement : *browseName.pathNames_) {
 			pathNames_->push_back(pathElement);
 		}
 	}
@@ -48,6 +46,16 @@ namespace OpcUaStackCore
 	, pathNames_(boost::make_shared<OpcUaQualifiedNameArray>())
 	{
 		set(nodeId);
+	}
+
+	BrowseName::BrowseName(
+		const OpcUaNodeId& nodeId,
+		std::initializer_list<const OpcUaQualifiedName> pathElementList
+	)
+	: nodeId_()
+	, pathNames_(boost::make_shared<OpcUaQualifiedNameArray>())
+	{
+		set(nodeId, pathElementList);
 	}
 
 	BrowseName::BrowseName(
@@ -155,16 +163,26 @@ namespace OpcUaStackCore
 	void
 	BrowseName::set(
 		const OpcUaNodeId& nodeId,
+		std::initializer_list<const OpcUaQualifiedName> list
+	)
+	{
+		pathNames_->resize(list.size());
+		nodeId_ = nodeId;
+
+		for (auto pathElement : list) {
+			auto newPathElement = boost::make_shared<OpcUaQualifiedName>();
+			const_cast<OpcUaQualifiedName*>(&pathElement)->copyTo(*newPathElement);
+			pathNames_->push_back(newPathElement);
+		}
+	}
+
+	void
+	BrowseName::set(
+		const OpcUaNodeId& nodeId,
 		const OpcUaQualifiedName& pathElement
 	)
 	{
-		pathNames_->resize(1);
-		nodeId_ = nodeId;
-
-		OpcUaQualifiedName::SPtr element;
-		element = boost::make_shared<OpcUaQualifiedName>();
-		const_cast<OpcUaQualifiedName*>(&pathElement)->copyTo(*element);
-		pathNames_->push_back(element);
+		set(nodeId, {pathElement});
 	}
 
 	void
@@ -174,18 +192,7 @@ namespace OpcUaStackCore
 		const OpcUaQualifiedName& pathElement2
 	)
 	{
-		pathNames_->resize(2);
-		nodeId_ = nodeId;
-
-		OpcUaQualifiedName::SPtr element;
-
-		element = boost::make_shared<OpcUaQualifiedName>();
-		const_cast<OpcUaQualifiedName*>(&pathElement1)->copyTo(*element);
-		pathNames_->push_back(element);
-
-		element = boost::make_shared<OpcUaQualifiedName>();
-		const_cast<OpcUaQualifiedName*>(&pathElement2)->copyTo(*element);
-		pathNames_->push_back(element);
+		set(nodeId, {pathElement1, pathElement2});
 	}
 
 	void
@@ -196,22 +203,7 @@ namespace OpcUaStackCore
 		const OpcUaQualifiedName& pathElement3
 	)
 	{
-		pathNames_->resize(3);
-		nodeId_ = nodeId;
-
-		OpcUaQualifiedName::SPtr element;
-
-		element = boost::make_shared<OpcUaQualifiedName>();
-		const_cast<OpcUaQualifiedName*>(&pathElement1)->copyTo(*element);
-		pathNames_->push_back(element);
-
-		element = boost::make_shared<OpcUaQualifiedName>();
-		const_cast<OpcUaQualifiedName*>(&pathElement2)->copyTo(*element);
-		pathNames_->push_back(element);
-
-		element = boost::make_shared<OpcUaQualifiedName>();
-		const_cast<OpcUaQualifiedName*>(&pathElement3)->copyTo(*element);
-		pathNames_->push_back(element);
+		set(nodeId, {pathElement1, pathElement2, pathElement3});
 	}
 
 	void
@@ -223,26 +215,7 @@ namespace OpcUaStackCore
 		const OpcUaQualifiedName& pathElement4
 	)
 	{
-		pathNames_->resize(4);
-		nodeId_ = nodeId;
-
-		OpcUaQualifiedName::SPtr element;
-
-		element = boost::make_shared<OpcUaQualifiedName>();
-		const_cast<OpcUaQualifiedName*>(&pathElement1)->copyTo(*element);
-		pathNames_->push_back(element);
-
-		element = boost::make_shared<OpcUaQualifiedName>();
-		const_cast<OpcUaQualifiedName*>(&pathElement2)->copyTo(*element);
-		pathNames_->push_back(element);
-
-		element = boost::make_shared<OpcUaQualifiedName>();
-		const_cast<OpcUaQualifiedName*>(&pathElement3)->copyTo(*element);
-		pathNames_->push_back(element);
-
-		element = boost::make_shared<OpcUaQualifiedName>();
-		const_cast<OpcUaQualifiedName*>(&pathElement4)->copyTo(*element);
-		pathNames_->push_back(element);
+		set(nodeId, {pathElement1, pathElement2, pathElement3, pathElement4});
 	}
 
 	void
@@ -255,30 +228,7 @@ namespace OpcUaStackCore
 		const OpcUaQualifiedName& pathElement5
 	)
 	{
-		pathNames_->resize(5);
-		nodeId_ = nodeId;
-
-		OpcUaQualifiedName::SPtr element;
-
-		element = boost::make_shared<OpcUaQualifiedName>();
-		const_cast<OpcUaQualifiedName*>(&pathElement1)->copyTo(*element);
-		pathNames_->push_back(element);
-
-		element = boost::make_shared<OpcUaQualifiedName>();
-		const_cast<OpcUaQualifiedName*>(&pathElement2)->copyTo(*element);
-		pathNames_->push_back(element);
-
-		element = boost::make_shared<OpcUaQualifiedName>();
-		const_cast<OpcUaQualifiedName*>(&pathElement3)->copyTo(*element);
-		pathNames_->push_back(element);
-
-		element = boost::make_shared<OpcUaQualifiedName>();
-		const_cast<OpcUaQualifiedName*>(&pathElement4)->copyTo(*element);
-		pathNames_->push_back(element);
-
-		element = boost::make_shared<OpcUaQualifiedName>();
-		const_cast<OpcUaQualifiedName*>(&pathElement5)->copyTo(*element);
-		pathNames_->push_back(element);
+		set(nodeId, {pathElement1, pathElement2, pathElement3, pathElement4, pathElement5});
 	}
 
 	void
@@ -301,9 +251,7 @@ namespace OpcUaStackCore
 	BrowseName::stringId(const std::string& suffix)
 	{
 		std::string id("");
-		for (uint32_t idx = 0; idx < pathNames()->size(); idx++) {
-			OpcUaQualifiedName::SPtr browseName;
-			pathNames()->get(idx, browseName);
+		for (auto browseName : *pathNames()) {
 			if (!id.empty()) id += "_";
 			id += browseName->name().toStdString();
 		}
