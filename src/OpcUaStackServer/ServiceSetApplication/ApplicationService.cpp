@@ -778,7 +778,8 @@ namespace OpcUaStackServer
 			req->displayName(),
 			req->parentNodeId(),
 			req->referenceTypeNodeId(),
-			variableBase
+			variableBase,
+			&req->nodeIdMap()
 		);
 
 		trx->statusCode(result);

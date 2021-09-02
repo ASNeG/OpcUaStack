@@ -1,5 +1,5 @@
 /*
-   Copyright 2019-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2019-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -28,7 +28,8 @@ namespace OpcUaStackServer
 	: public OpcUaStackCore::Object
 	{
 	  public:
-		typedef boost::shared_ptr<CreateVariableRequest> SPtr;
+		using SPtr = boost::shared_ptr<CreateVariableRequest>;
+		using NodeIdMap = std::map<std::string, OpcUaStackCore::OpcUaNodeId>;
 
 		CreateVariableRequest(void);
 		virtual ~CreateVariableRequest(void);
@@ -43,6 +44,9 @@ namespace OpcUaStackServer
 		OpcUaStackCore::OpcUaNodeId& referenceTypeNodeId(void);
         void variableInstance(Object::SPtr& variableInstance);
         Object::SPtr& variableInstance(void);
+        bool addNodeId(const std::string& nodeName, const OpcUaStackCore::OpcUaNodeId& nodeId);
+        bool getNodeId(const std::string& nodeName, OpcUaStackCore::OpcUaNodeId& nodeId);
+        CreateVariableRequest::NodeIdMap& nodeIdMap(void);
 
 		bool opcUaBinaryEncode(std::ostream& os) const;
 		bool opcUaBinaryDecode(std::istream& is);
@@ -53,6 +57,7 @@ namespace OpcUaStackServer
 		OpcUaStackCore::OpcUaNodeId parentNodeId_;
 		OpcUaStackCore::OpcUaNodeId referenceTypeNodeId_;
 		Object::SPtr variableInstance_;
+		NodeIdMap nodeIdMap_;
 	};
 
 }

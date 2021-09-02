@@ -1,5 +1,5 @@
 /*
-   Copyright 2019-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2019-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -30,7 +30,8 @@ namespace OpcUaStackServer
 	class DLLEXPORT VariableInstanceBuilder
 	{
 	  public:
-		typedef boost::shared_ptr<VariableInstanceBuilder> SPtr;
+		using SPtr = boost::shared_ptr<VariableInstanceBuilder>;
+		using NodeIdMap = std::map<std::string, OpcUaStackCore::OpcUaNodeId>;
 
 		VariableInstanceBuilder(void);
 		~VariableInstanceBuilder(void);
@@ -41,7 +42,8 @@ namespace OpcUaStackServer
 			const OpcUaStackCore::OpcUaLocalizedText& displayName,
 			OpcUaStackCore::OpcUaNodeId& parentNodeId,
 			OpcUaStackCore::OpcUaNodeId& referenceTypeNodeId,
-			VariableBase::SPtr& variableBase
+			VariableBase::SPtr& variableBase,
+			NodeIdMap* nodeIdMap = nullptr
 		);
 
 	  private:
@@ -62,6 +64,7 @@ namespace OpcUaStackServer
 		std::set<std::string> variableNameSet_;
 		uint16_t namespaceIndex_;
 		VariableBase::SPtr variableBase_;
+		NodeIdMap* nodeIdMap_ = nullptr;
 	};
 
 }
