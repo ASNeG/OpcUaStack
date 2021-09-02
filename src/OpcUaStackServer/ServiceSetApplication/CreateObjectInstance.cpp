@@ -1,5 +1,5 @@
 /*
-   Copyright 2019-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2019-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -115,6 +115,17 @@ namespace OpcUaStackServer
 	}
 
 	bool
+	CreateObjectInstance::addNodeId(const std::string& nodeName, const OpcUaStackCore::OpcUaNodeId& nodeId)
+	{
+		if (nodeIdMap_.find(nodeName) != nodeIdMap_.end()) {
+			return false;
+		}
+
+		nodeIdMap_.insert(std::make_pair(nodeName, nodeId));
+		return true;
+	}
+
+	bool
 	CreateObjectInstance::query(ApplicationServiceIf* applicationServiceIf)
 	{
 		resultCode_ = Success;
@@ -126,6 +137,10 @@ namespace OpcUaStackServer
 		trx->request()->parentNodeId(parentNodeId_);
 		trx->request()->referenceTypeNodeId(referenceTypeNodeId_);
 		trx->request()->objectInstance(objectInstance_);
+
+		for (auto nodeIdElementIt : nodeIdMap_) {
+			trx->request()->addNodeId(nodeIdElementIt.first, nodeIdElementIt.second);
+		}
 
 		// send query to application service
 		applicationServiceIf->sendSync(trx);

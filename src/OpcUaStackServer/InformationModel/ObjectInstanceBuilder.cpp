@@ -49,11 +49,13 @@ namespace OpcUaStackServer
 		const OpcUaLocalizedText& displayName,
 		const OpcUaNodeId& parentNodeId,
 		const OpcUaNodeId& referenceTypeNodeId,
-		const ObjectBase::SPtr& objectBase
+		const ObjectBase::SPtr& objectBase,
+		NodeIdMap* nodeIdMap
 	)
 	{
 		informationModel_ = informationModel;
 		objectBase_ = objectBase;
+		nodeIdMap_ = nodeIdMap;
 
 		// get namespace index for the new object instance
 		if (!getNamespaceIndex(namespaceName)) {
@@ -134,6 +136,7 @@ namespace OpcUaStackServer
 			return objectNodeClass;
 		}
 
+		// create object node
 		BrowseName browseName(objectTypeNodeId);
 		browseName.pathNames()->resize(10);
 		auto objectNodeClass = createNodeAndClilds(parentNodeId, objectTypeBaseNode, browseName);
@@ -278,28 +281,38 @@ namespace OpcUaStackServer
 
 		// create object name
 		std::string objectName;
-		for (uint32_t idx = 0; idx < browsePath.pathNames()->size(); idx++) {
-			OpcUaQualifiedName::SPtr browseName;
-			browsePath.pathNames()->get(idx, browseName);
+		for (auto browseName : *browsePath.pathNames()) {
 			if (!objectName.empty()) objectName += "_";
 			objectName += browseName->name().toStdString();
 		}
 		if (!objectName.empty()) objectName += "_";
 		objectName += "Object";
 
-		// check if variable node already exist
+		// check if object node already exist
 		auto it = objectNodeClassMap_.find(objectName);
 		if (it != objectNodeClassMap_.end()) return it->second;
 
 		// create object instance
 		InformationModelAccess ima;
 		ima.informationModel(informationModel_);
-		OpcUaNodeId nodeId = ima.createUniqueNodeId(namespaceIndex_);
+
+		OpcUaNodeId nodeId;
+		nodeId = ima.createUniqueNodeId(namespaceIndex_);
+		if (nodeIdMap_ != nullptr) {
+			auto itNodeId = nodeIdMap_->find(objectName);
+			if (itNodeId != nodeIdMap_->end()) {
+				nodeId = itNodeId->second;
+				if (nodeId.namespaceIndex() == 0) {
+					nodeId.namespaceIndex(namespaceIndex_);
+				}
+			}
+		}
 
 		switch (*baseNodeTemplate->getNodeClass())
 		{
 			case NodeClass::EnumObject:
 			{
+				// get type definition node and check if type definition node exist
 				OpcUaNodeId typeDefintionNode;
 				baseNodeTemplate->referenceItemMap().getHasTypeDefinition(typeDefintionNode);
 
@@ -312,6 +325,7 @@ namespace OpcUaStackServer
 					return objectNode;
 				}
 
+				// create object instance and add type references
 				auto objectNode0 = boost::static_pointer_cast<ObjectNodeClass>(baseNodeTemplate);
 				objectNode = boost::make_shared<ObjectNodeClass>(nodeId, *objectNode0.get());
 
@@ -376,9 +390,7 @@ namespace OpcUaStackServer
 		// create variable variable name
 		bool serverVariableExist = true;
 		std::string variableName;
-		for (uint32_t idx = 0; idx < browsePath.pathNames()->size(); idx++) {
-			OpcUaQualifiedName::SPtr browseName;
-			browsePath.pathNames()->get(idx, browseName);
+		for (auto browseName : *browsePath.pathNames()) {
 			if (!variableName.empty()) variableName += "_";
 			variableName += browseName->name().toStdString();
 
@@ -407,7 +419,19 @@ namespace OpcUaStackServer
 		// create variable instance
 		InformationModelAccess ima;
 		ima.informationModel(informationModel_);
-		OpcUaNodeId nodeId = ima.createUniqueNodeId(namespaceIndex_);
+
+		OpcUaNodeId nodeId;
+		nodeId = ima.createUniqueNodeId(namespaceIndex_);
+		if (nodeIdMap_ != nullptr) {
+			auto itNodeId = nodeIdMap_->find(variableName);
+			if (itNodeId != nodeIdMap_->end()) {
+				nodeId = itNodeId->second;
+				if (nodeId.namespaceIndex() == 0) {
+					nodeId.namespaceIndex(namespaceIndex_);
+				}
+			}
+		}
+
 		switch (*baseNodeTemplate->getNodeClass())
 		{
 			case NodeClass::EnumVariable:
@@ -485,7 +509,18 @@ namespace OpcUaStackServer
 		// create object instance
 		InformationModelAccess ima;
 		ima.informationModel(informationModel_);
-		auto nodeId = ima.createUniqueNodeId(namespaceIndex_);
+
+		OpcUaNodeId nodeId;
+		nodeId = ima.createUniqueNodeId(namespaceIndex_);
+		if (nodeIdMap_ != nullptr) {
+			auto itNodeId = nodeIdMap_->find(methodName);
+			if (itNodeId != nodeIdMap_->end()) {
+				nodeId = itNodeId->second;
+				if (nodeId.namespaceIndex() == 0) {
+					nodeId.namespaceIndex(namespaceIndex_);
+				}
+			}
+		}
 
 		auto methodNode0 = boost::static_pointer_cast<MethodNodeClass>(baseNodeTemplate);
 		methodNode = boost::make_shared<MethodNodeClass>(nodeId, *methodNode0.get());
