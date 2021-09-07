@@ -99,6 +99,18 @@ namespace OpcUaStackCore
 		return SecurityPolicy::str2Enum(ownSecurityPolicyUri_.toString());
 	}
 
+	void
+	SecureChannelSecuritySettings::ownSecurityMode(MessageSecurityMode::Enum ownSecurityMode)
+	{
+		ownSecurityMode_ = ownSecurityMode;
+	}
+
+	MessageSecurityMode::Enum
+	SecureChannelSecuritySettings::ownSecurityMode(void)
+	{
+		return ownSecurityMode_;
+	}
+
 	CertificateChain&
 	SecureChannelSecuritySettings::ownCertificateChain(void)
 	{

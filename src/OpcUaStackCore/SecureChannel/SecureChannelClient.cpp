@@ -88,6 +88,9 @@ namespace OpcUaStackCore
 		// get security settings
 		auto& securitySettings = secureChannel->securitySettings_;
 
+		//securitySettings.ownSecurityPolicy(config->securityPolicy());
+		//securitySettings.ownSecurityMode(config->securityMode());
+
 		// get crypto base and store own security policy uri
 		auto cryptoBase = cryptoManager()->get(secureChannelClientConfig->securityPolicy());
 		if (!cryptoBase) {
@@ -238,10 +241,10 @@ namespace OpcUaStackCore
 		secureChannel->sendBufferSize_ = config->sendBufferSize();
 		secureChannel->maxMessageSize_ = config->maxMessageSize();
 		secureChannel->maxChunkCount_ = config->maxChunkCount();
-		secureChannel->securityMode_ = config->securityMode();
 		secureChannel->endpointUrl_ = config->endpointUrl();
 
 		securitySettings.ownSecurityPolicy(config->securityPolicy());
+		securitySettings.ownSecurityMode(config->securityMode());
 
 		// get ip address from hostname
 		Url url(config->endpointUrl());
@@ -347,6 +350,8 @@ namespace OpcUaStackCore
 		// The opc ua client sends a open secure channel request to the server.
 		//
 
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
+
 		Log(Info, "receive acknowledge")
 			.parameter("ChannelId", *secureChannel)
 			.parameter("Address", secureChannel->partner_.address().to_string())
@@ -366,7 +371,7 @@ namespace OpcUaStackCore
 		OpenSecureChannelRequest openSecureChannelRequest;
 		openSecureChannelRequest.clientProtocolVersion(0);
 		openSecureChannelRequest.requestType(RT_ISSUE);
-		openSecureChannelRequest.securityMode(secureChannel->securityMode_);
+		openSecureChannelRequest.securityMode(securitySettings.ownSecurityMode());
 		openSecureChannelRequest.clientNonce(clientNonce, 1);
 		openSecureChannelRequest.requestedLifetime(renewTimeout_);
 
@@ -378,12 +383,14 @@ namespace OpcUaStackCore
 	void
 	SecureChannelClient::renewSecurityToken(SecureChannel* secureChannel)
 	{
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
+
 		OpcUaByte clientNonce[1];
 		clientNonce[0] = 0x00;
 		OpenSecureChannelRequest openSecureChannelRequest;
 		openSecureChannelRequest.clientProtocolVersion(0);
 		openSecureChannelRequest.requestType(RT_RENEW);
-		openSecureChannelRequest.securityMode(secureChannel->securityMode_);
+		openSecureChannelRequest.securityMode(securitySettings.ownSecurityMode());
 		openSecureChannelRequest.clientNonce(clientNonce, 1);
 		openSecureChannelRequest.requestedLifetime(300000);
 

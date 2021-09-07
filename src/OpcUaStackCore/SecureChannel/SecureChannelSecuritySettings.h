@@ -47,6 +47,8 @@ namespace OpcUaStackCore
 		const OpcUaByteString& ownSecurityPolicyUri(void);
 		void ownSecurityPolicy(SecurityPolicy::Enum ownSecurityPolicy);
 		SecurityPolicy::Enum ownSecurityPolicy(void);
+		void ownSecurityMode(MessageSecurityMode::Enum ownSecurityMode);
+		MessageSecurityMode::Enum ownSecurityMode(void);
 		CertificateChain& ownCertificateChain(void);
 		MemoryBuffer& ownNonce(void);
 		//SecurityKeySet& ownSecurityKeySet(void);
@@ -67,7 +69,7 @@ namespace OpcUaStackCore
 
 		OpcUaByteString ownCertificateThumbprint_;
 		OpcUaByteString ownSecurityPolicyUri_;
-		//MessageSecurityMode::Enum securityMode_ = SecurityPolicy::EnumNone;
+		MessageSecurityMode::Enum ownSecurityMode_ = MessageSecurityMode::EnumNone;
 		CertificateChain ownCertificateChain_;
 		MemoryBuffer ownNonce_;
 
