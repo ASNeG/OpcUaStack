@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -75,10 +75,28 @@ namespace OpcUaStackCore
 		return ownCertificateThumbprint_;
 	}
 
-	OpcUaByteString&
+	void
+	SecureChannelSecuritySettings::ownSecurityPolicyUri(const OpcUaByteString& ownSecurityPolicyUri)
+	{
+		ownSecurityPolicyUri_ = ownSecurityPolicyUri;
+	}
+
+	const OpcUaByteString&
 	SecureChannelSecuritySettings::ownSecurityPolicyUri(void)
 	{
 		return ownSecurityPolicyUri_;
+	}
+
+	void
+	SecureChannelSecuritySettings::ownSecurityPolicy(SecurityPolicy::Enum ownSecurityPolicy)
+	{
+		ownSecurityPolicyUri_ = SecurityPolicy::enum2Str(ownSecurityPolicy);
+	}
+
+	SecurityPolicy::Enum
+	SecureChannelSecuritySettings::ownSecurityPolicy(void)
+	{
+		return SecurityPolicy::str2Enum(ownSecurityPolicyUri_.toString());
 	}
 
 	CertificateChain&

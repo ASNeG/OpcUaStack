@@ -98,7 +98,7 @@ namespace OpcUaStackCore
 			return nullptr;
 		}
 		securitySettings.cryptoBase(cryptoBase);
-		securitySettings.ownSecurityPolicyUri() = cryptoManager()->securityPolicy(secureChannelClientConfig->securityPolicy());
+		securitySettings.ownSecurityPolicyUri(cryptoManager()->securityPolicy(secureChannelClientConfig->securityPolicy()));
 
 		// get and check own certificate chain
 		if (secureChannelClientConfig->securityMode() == MessageSecurityMode::EnumSign ||
@@ -228,6 +228,8 @@ namespace OpcUaStackCore
 	void
 	SecureChannelClient::connect(SecureChannel* secureChannel)
 	{
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
+
 		SecureChannelClientConfig::SPtr config;
 		config = boost::static_pointer_cast<SecureChannelClientConfig>(secureChannel->config_);
 
@@ -237,8 +239,9 @@ namespace OpcUaStackCore
 		secureChannel->maxMessageSize_ = config->maxMessageSize();
 		secureChannel->maxChunkCount_ = config->maxChunkCount();
 		secureChannel->securityMode_ = config->securityMode();
-		secureChannel->securityPolicy_ = config->securityPolicy();
 		secureChannel->endpointUrl_ = config->endpointUrl();
+
+		securitySettings.ownSecurityPolicy(config->securityPolicy());
 
 		// get ip address from hostname
 		Url url(config->endpointUrl());

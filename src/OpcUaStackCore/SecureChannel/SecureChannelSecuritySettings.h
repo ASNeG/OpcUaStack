@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -43,7 +43,10 @@ namespace OpcUaStackCore
 		bool isOwnEncryptionEnabled(void);
 		bool isOwnSignatureEnabled(void);
 		OpcUaByteString& ownCertificateThumbprint(void);
-		OpcUaByteString& ownSecurityPolicyUri(void);
+		void ownSecurityPolicyUri(const OpcUaByteString& ownSecurityPolicyUri);
+		const OpcUaByteString& ownSecurityPolicyUri(void);
+		void ownSecurityPolicy(SecurityPolicy::Enum ownSecurityPolicy);
+		SecurityPolicy::Enum ownSecurityPolicy(void);
 		CertificateChain& ownCertificateChain(void);
 		MemoryBuffer& ownNonce(void);
 		//SecurityKeySet& ownSecurityKeySet(void);
@@ -64,6 +67,7 @@ namespace OpcUaStackCore
 
 		OpcUaByteString ownCertificateThumbprint_;
 		OpcUaByteString ownSecurityPolicyUri_;
+		//MessageSecurityMode::Enum securityMode_ = SecurityPolicy::EnumNone;
 		CertificateChain ownCertificateChain_;
 		MemoryBuffer ownNonce_;
 

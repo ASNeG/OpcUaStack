@@ -373,11 +373,11 @@ namespace OpcUaStackCore
 		}
 
 		// set security policy uri
-		securitySettings.ownSecurityPolicyUri() = securitySettings.endpointDescription()->securityPolicyUri();
-		auto ownSecurityPolicy = SecurityPolicy::str2Enum(securitySettings.endpointDescription()->securityPolicyUri().toStdString());
+		OpcUaByteString securityPolicyUri(securitySettings.endpointDescription()->securityPolicyUri().toStdString());
+		securitySettings.ownSecurityPolicyUri(securityPolicyUri);
 
 		// check partner certificate if necessary
-		if (ownSecurityPolicy != SecurityPolicy::EnumNone && securitySettings.isPartnerSignatureEnabled()) {
+		if (securitySettings.ownSecurityPolicy() != SecurityPolicy::EnumNone && securitySettings.isPartnerSignatureEnabled()) {
 			Log(Error, "server does not accept empty partner certificate from client")
 				.parameter("ChannelId", *secureChannel)
 			    .parameter("LocalEndpoint", secureChannel->local_)
@@ -395,7 +395,7 @@ namespace OpcUaStackCore
 		}
 
 		// check own certificate if necessary
-		if (ownSecurityPolicy != SecurityPolicy::EnumNone) {
+		if (securitySettings.ownSecurityPolicy() != SecurityPolicy::EnumNone) {
 			Log(Error, "server does not accept empty own certificate")
 				.parameter("ChannelId", *secureChannel)
 			    .parameter("LocalEndpoint", secureChannel->local_)

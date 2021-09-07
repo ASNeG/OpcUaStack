@@ -148,7 +148,6 @@ namespace OpcUaStackCore
 		std::string endpointUrl_;
 
 		MessageSecurityMode::Enum securityMode_;
-		SecurityPolicy::Enum securityPolicy_;
 
 		Object::SPtr handle_;
 		static OpcUaUInt32 gChannelId_;
