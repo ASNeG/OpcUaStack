@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -374,10 +374,36 @@ namespace OpcUaStackCore
 
 		// set security policy uri
 		securitySettings.ownSecurityPolicyUri() = securitySettings.endpointDescription()->securityPolicyUri();
+		auto ownSecurityPolicy = SecurityPolicy::str2Enum(securitySettings.endpointDescription()->securityPolicyUri().toStdString());
+
+		// check partner certificate if necessary
+		if (ownSecurityPolicy != SecurityPolicy::EnumNone && securitySettings.isPartnerSignatureEnabled()) {
+			Log(Error, "server does not accept empty partner certificate from client")
+				.parameter("ChannelId", *secureChannel)
+			    .parameter("LocalEndpoint", secureChannel->local_)
+				.parameter("PartnerEndpont", secureChannel->partner_)
+				.parameter("PartnerPolicyUri", securitySettings.partnerSecurityPolicyUri().toString())
+				.parameter("OwnPolicyUri", securitySettings.ownSecurityPolicyUri().toString());
+			secureChannel->socket().cancel();
+			secureChannel->state_ = SecureChannel::S_CloseSecureChannel;
+			return;
+		}
 
 		// check if partner certificate exist - get own certificate
 		if (securitySettings.isPartnerSignatureEnabled()) {
 			securitySettings.ownCertificateChain() = cryptoManager()->applicationCertificate()->certificateChain();
+		}
+
+		// check own certificate if necessary
+		if (ownSecurityPolicy != SecurityPolicy::EnumNone) {
+			Log(Error, "server does not accept empty own certificate")
+				.parameter("ChannelId", *secureChannel)
+			    .parameter("LocalEndpoint", secureChannel->local_)
+				.parameter("PartnerEndpont", secureChannel->partner_)
+				.parameter("OwnPolicyUri", securitySettings.ownSecurityPolicyUri().toString());
+			secureChannel->socket().cancel();
+			secureChannel->state_ = SecureChannel::S_CloseSecureChannel;
+			return;
 		}
 
 		// set partner certificate thumbprint and check partner certificate chain
