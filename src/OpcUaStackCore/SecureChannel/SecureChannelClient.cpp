@@ -99,13 +99,20 @@ namespace OpcUaStackCore
 		}
 		securitySettings.cryptoBase(cryptoBase);
 		securitySettings.ownSecurityPolicyUri() = cryptoManager()->securityPolicy(secureChannelClientConfig->securityPolicy());
-		// FIXME: todo - we must check the own security policy uri.
 
-		// get own certificate chain
+		// get and check own certificate chain
 		if (secureChannelClientConfig->securityMode() == MessageSecurityMode::EnumSign ||
 			secureChannelClientConfig->securityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
+			// we need a certificate or a certificate chain
 			securitySettings.ownCertificateChain() = cryptoManager()->applicationCertificate()->certificateChain();
-			// FIXME: todo - we must check the own certificate chain
+			if (securitySettings.ownCertificateChain().empty()) {
+				Log(Error, "own certificate chain invalid invalid")
+					.parameter("ChannelId", *secureChannel)
+					.parameter("EndpointUrl", secureChannelClientConfig->endpointUrl())
+					.parameter("SecurityPolicy", secureChannelClientConfig->securityPolicy())
+					.parameter("SecurityMode", MessageSecurityMode::enum2Str(secureChannelClientConfig->securityMode()));
+				return nullptr;
+			}
 		}
 
 		if (secureChannelClientConfig->securityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
