@@ -87,9 +87,8 @@ namespace OpcUaStackCore
 
 		// get security settings
 		auto& securitySettings = secureChannel->securitySettings_;
-
-		//securitySettings.ownSecurityPolicy(config->securityPolicy());
-		//securitySettings.ownSecurityMode(config->securityMode());
+		securitySettings.ownSecurityPolicy(secureChannelClientConfig->securityPolicy());
+		securitySettings.ownSecurityMode(secureChannelClientConfig->securityMode());
 
 		// get crypto base and store own security policy uri
 		auto cryptoBase = cryptoManager()->get(secureChannelClientConfig->securityPolicy());
@@ -101,11 +100,10 @@ namespace OpcUaStackCore
 			return nullptr;
 		}
 		securitySettings.cryptoBase(cryptoBase);
-		securitySettings.ownSecurityPolicyUri(cryptoManager()->securityPolicy(secureChannelClientConfig->securityPolicy()));
 
 		// get and check own certificate chain
-		if (secureChannelClientConfig->securityMode() == MessageSecurityMode::EnumSign ||
-			secureChannelClientConfig->securityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
+		if (securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSign ||
+			securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
 			// we need a certificate or a certificate chain
 			securitySettings.ownCertificateChain() = cryptoManager()->applicationCertificate()->certificateChain();
 			if (securitySettings.ownCertificateChain().empty()) {
@@ -118,7 +116,7 @@ namespace OpcUaStackCore
 			}
 		}
 
-		if (secureChannelClientConfig->securityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
+		if (securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
 
 			// get partner certificate chain and calculate thumbprint
 
@@ -242,9 +240,6 @@ namespace OpcUaStackCore
 		secureChannel->maxMessageSize_ = config->maxMessageSize();
 		secureChannel->maxChunkCount_ = config->maxChunkCount();
 		secureChannel->endpointUrl_ = config->endpointUrl();
-
-		securitySettings.ownSecurityPolicy(config->securityPolicy());
-		securitySettings.ownSecurityMode(config->securityMode());
 
 		// get ip address from hostname
 		Url url(config->endpointUrl());
@@ -399,7 +394,10 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannelClient::handleRecvOpenSecureChannelResponse(SecureChannel* secureChannel, OpenSecureChannelResponse& openSecureChannelResponse)
+	SecureChannelClient::handleRecvOpenSecureChannelResponse(
+		SecureChannel* secureChannel,
+		OpenSecureChannelResponse& openSecureChannelResponse
+	)
 	{
 		//
 		// The opc ua client receives a open secure channel response from the server.

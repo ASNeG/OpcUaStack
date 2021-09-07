@@ -56,7 +56,12 @@ namespace OpcUaStackCore
 		bool isPartnerEncryptionEnabled(void);
 		bool isPartnerSignatureEnabled(void);
 		OpcUaByteString& partnerCertificateThumbprint(void);
-		OpcUaByteString& partnerSecurityPolicyUri(void);
+		void partnerSecurityPolicyUri(const OpcUaByteString& partnerSecurityPolicyUri);
+		const OpcUaByteString& partnerSecurityPolicyUri(void);
+		void partnerSecurityPolicy(SecurityPolicy::Enum ownSecurityPolicy);
+		SecurityPolicy::Enum partnerSecurityPolicy(void);
+		void partnerSecurityMode(MessageSecurityMode::Enum partnerSecurityMode);
+		MessageSecurityMode::Enum partnerSecurityMode(void);
 		CertificateChain& partnerCertificateChain(void);
 		MemoryBuffer& partnerNonce(void);
 		//SecurityKeySet& partnerSecurityKeySet(void);
@@ -75,6 +80,7 @@ namespace OpcUaStackCore
 
 		OpcUaByteString partnerCertificateThumbprint_;
 		OpcUaByteString partnerSecurityPolicyUri_;
+		MessageSecurityMode::Enum partnerSecurityMode_ = MessageSecurityMode::EnumNone;
 		CertificateChain partnerCertificateChain_;
 		MemoryBuffer partnerNonce_;
 	};

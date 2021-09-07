@@ -141,10 +141,40 @@ namespace OpcUaStackCore
 		return partnerCertificateThumbprint_;
 	}
 
-	OpcUaByteString&
+	void
+	SecureChannelSecuritySettings::partnerSecurityPolicyUri(const OpcUaByteString& partnerSecurityPolicyUri)
+	{
+		partnerSecurityPolicyUri_ = partnerSecurityPolicyUri;
+	}
+
+	const OpcUaByteString&
 	SecureChannelSecuritySettings::partnerSecurityPolicyUri(void)
 	{
 		return partnerSecurityPolicyUri_;
+	}
+
+	void
+	SecureChannelSecuritySettings::partnerSecurityPolicy(SecurityPolicy::Enum partnerSecurityPolicy)
+	{
+		partnerSecurityPolicyUri_ = SecurityPolicy::enum2Str(partnerSecurityPolicy);
+	}
+
+	SecurityPolicy::Enum
+	SecureChannelSecuritySettings::partnerSecurityPolicy(void)
+	{
+		return SecurityPolicy::str2Enum(partnerSecurityPolicyUri_.toString());
+	}
+
+	void
+	SecureChannelSecuritySettings::partnerSecurityMode(MessageSecurityMode::Enum partnerSecurityMode)
+	{
+		partnerSecurityMode_ = partnerSecurityMode;
+	}
+
+	MessageSecurityMode::Enum
+	SecureChannelSecuritySettings::partnerSecurityMode(void)
+	{
+		return partnerSecurityMode_;
 	}
 
 	CertificateChain&

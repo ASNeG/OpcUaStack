@@ -446,9 +446,10 @@ namespace OpcUaStackCore
 		}
 
 		// decode secure header from client
+		OpcUaByteString partnerSecurityPolicyUri;
 		resultCode = SecurityHeader::opcUaBinaryDecode(
 			is,
-			secureSettings.partnerSecurityPolicyUri(),
+			partnerSecurityPolicyUri,
 			secureSettings.partnerCertificateChain(),
 			secureSettings.ownCertificateThumbprint()
 		);
@@ -460,6 +461,7 @@ namespace OpcUaStackCore
 			closeChannel(secureChannel, true);
 			return;
 		}
+		secureSettings.partnerSecurityPolicyUri(partnerSecurityPolicyUri);
 
 		// handle security
 		if (secureReceivedOpenSecureChannelRequest(secureChannel) != Success) {
@@ -719,12 +721,14 @@ namespace OpcUaStackCore
 
 		// decode security header
 		SecureChannelSecuritySettings& secureSettings = secureChannel->securitySettings();
+		OpcUaByteString partnerSecurityPolicyUri;
 		SecurityHeader::opcUaBinaryDecode(
 			is,
-			secureSettings.partnerSecurityPolicyUri(),
+			partnerSecurityPolicyUri,
 			secureSettings.partnerCertificateChain(),
 			secureSettings.ownCertificateThumbprint()
 		);
+		secureSettings.partnerSecurityPolicyUri(partnerSecurityPolicyUri);
 
 		// handle security
 		if (secureReceivedOpenSecureChannelResponse(secureChannel) != Success) {
