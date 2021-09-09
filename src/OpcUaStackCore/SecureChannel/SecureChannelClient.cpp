@@ -85,15 +85,24 @@ namespace OpcUaStackCore
 		auto secureChannel = new SecureChannel(ioThread_);
 		secureChannel->config_ = secureChannelClientConfig;
 
-		// get security settings
+		// get security settings and check security settings
 		auto& securitySettings = secureChannel->securitySettings_;
 		securitySettings.ownSecurityPolicy(secureChannelClientConfig->securityPolicy());
 		securitySettings.ownSecurityMode(secureChannelClientConfig->securityMode());
+		if (securitySettings.ownSecurityMode() != MessageSecurityMode::EnumNone &&
+			securitySettings.ownSecurityPolicy() == SecurityPolicy::EnumNone) {
+			Log(Error, "security policy invalid")
+				.parameter("ChannelId", *secureChannel)
+				.parameter("EndpointUrl", secureChannelClientConfig->endpointUrl())
+				.parameter("SecurityPolicy", secureChannelClientConfig->securityPolicy())
+				.parameter("SecurityMode", securitySettings.ownSecurityMode());
+			return nullptr;
+		}
 
 		// get crypto base and store own security policy uri
 		auto cryptoBase = cryptoManager()->get(secureChannelClientConfig->securityPolicy());
 		if (!cryptoBase) {
-			Log(Error, "security policy invalid")
+			Log(Error, "security policy unknown")
 				.parameter("ChannelId", *secureChannel)
 				.parameter("EndpointUrl", secureChannelClientConfig->endpointUrl())
 				.parameter("SecurityPolicy", secureChannelClientConfig->securityPolicy());
@@ -101,7 +110,8 @@ namespace OpcUaStackCore
 		}
 		securitySettings.cryptoBase(cryptoBase);
 
-		// get and check own certificate chain
+		// get and check own certificate or certificate chain. The own certificate is transferred
+		// to the partner. The partner uses the certificate to check the signature.
 		if (securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSign ||
 			securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
 			// we need a certificate or a certificate chain

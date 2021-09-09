@@ -215,13 +215,15 @@ namespace OpcUaStackCore
 		auto& securitySettings = secureChannel->securitySettings();
 
 		// check if encryption or signature is enabled
-		if (!securitySettings.isOwnEncryptionEnabled() && !securitySettings.isOwnSignatureEnabled()) {
+		if (securitySettings.ownSecurityPolicy() == SecurityPolicy::EnumNone &&
+			securitySettings.ownSecurityMode() == MessageSecurityMode::EnumNone) {
 			encryptedText.swap(plainText);
 			return Success;
 		}
 
 		// sign send open secure channel request
-		if (securitySettings.isOwnSignatureEnabled()) {
+		if (securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSign ||
+			securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
 			statusCode = signSendOpenSecureChannelRequest(plainText, secureChannel);
 			if (statusCode != Success) {
 				return statusCode;
@@ -229,7 +231,7 @@ namespace OpcUaStackCore
 		}
 
 		// encrypt send open secure channel request
-		if (securitySettings.isOwnEncryptionEnabled()) {
+		if (securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
 			statusCode = encryptSendOpenSecureChannelRequest(plainText, encryptedText, secureChannel);
 			if (statusCode != Success) {
 				return statusCode;
