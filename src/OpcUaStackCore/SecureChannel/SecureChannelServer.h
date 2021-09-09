@@ -52,6 +52,7 @@ namespace OpcUaStackCore
 		//- SecureChannelBase -------------------------------------------------
 		void handleDisconnect(SecureChannel* secureChannel);
 		void handleRecvHello(SecureChannel* secureChannel, HelloMessage& hello);
+		bool findEndpoint(SecureChannel* secureChannel) override;
 		void handleRecvOpenSecureChannelRequest(SecureChannel* secureChannel, OpcUaUInt32 channelId, OpenSecureChannelRequest& openSecureChannelRequest);
 		void handleRecvCloseSecureChannelRequest(SecureChannel* secureChannel, uint32_t channelId);
 		void handleRecvMessageRequest(SecureChannel* secureChannel);

@@ -59,12 +59,11 @@ namespace OpcUaStackCore
 		auto& securitySettings = secureChannel->securitySettings();
 
 		// check if encryption or signature is enabled
-		// if receiver certificate thumprint exist -> encryption is enabled
-		// if sender certificate exist             -> signature is enabled
 		if (!securitySettings.isPartnerEncryptionEnabled() && !securitySettings.isPartnerSignatureEnabled()) {
 			return Success;
 		}
 
+#if 0
 		// find crypto base
 		auto cryptoBase = cryptoManager_->get(securitySettings.partnerSecurityPolicyUri().toString());
 		if (cryptoBase.get() == nullptr) {
@@ -74,6 +73,7 @@ namespace OpcUaStackCore
 		}
 		cryptoBase->isLogging(secureChannel->isLogging_);
 		securitySettings.cryptoBase(cryptoBase);
+#endif
 
 		// decrypt received open secure channel request
 		// if receiver certificate thumprint exist -> encryption is enabled

@@ -463,6 +463,15 @@ namespace OpcUaStackCore
 		}
 		secureSettings.partnerSecurityPolicyUri(partnerSecurityPolicyUri);
 
+		// find endpoint for security policy
+		if (!findEndpoint(secureChannel)) {
+			Log(Debug, "opc ua secure channel endpoint error")
+				.parameter("ChannelId", *secureChannel);
+
+			closeChannel(secureChannel, true);
+			return;
+		}
+
 		// handle security
 		if (secureReceivedOpenSecureChannelRequest(secureChannel) != Success) {
 			Log(Debug, "opc ua secure channel decrypt received message error")
@@ -509,6 +518,7 @@ namespace OpcUaStackCore
 			closeChannel(secureChannel, true);
 			return;
 		}
+		secureSettings.partnerSecurityMode(openSecureChannelRequest.securityMode());
 
 		consumeAll(secureChannel->recvBuffer_);
 
@@ -534,6 +544,16 @@ namespace OpcUaStackCore
 		);
 
 		asyncRead(secureChannel);
+	}
+
+	bool
+	SecureChannelBase::findEndpoint(
+		SecureChannel* secureChannel
+	)
+	{
+		Log(Error, "opc ua secure channel error, because findEndpoint not implemented")
+			.parameter("ChannelId", *secureChannel);
+		return false;
 	}
 
 	void

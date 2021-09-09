@@ -128,7 +128,9 @@ namespace OpcUaStackCore
 
 		if (securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
 
-			// get partner certificate chain and calculate thumbprint
+			// get partner certificate chain and calculate thumbprint. The partner certificate
+			// is used to encrypt the message. The thumbprint of the partner certificate is
+			// transferred to the partner.
 
 			if (secureChannelClientConfig->certificateChain().empty()) {
 

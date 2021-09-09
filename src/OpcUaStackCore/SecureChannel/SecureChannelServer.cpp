@@ -337,6 +337,55 @@ namespace OpcUaStackCore
 		asyncWriteAcknowledge(secureChannel, acknowledge);
 	}
 
+	bool
+	SecureChannelServer::findEndpoint(SecureChannel* secureChannel)
+	{
+		// get server configuration and security settings
+		auto secureChannelServerConfig = boost::static_pointer_cast<SecureChannelServerConfig>(secureChannel->config_);
+		auto& securitySettings = secureChannel->securitySettings();
+
+		// find endpoint description in server configuration
+		securitySettings.endpointDescription().reset();
+		for (auto endpointDescription : *secureChannelServerConfig->endpointDescriptionArray().get()) {
+			if (securitySettings.partnerSecurityPolicyUri().toString() == endpointDescription->securityPolicyUri().toStdString()) {
+				securitySettings.endpointDescription() = endpointDescription;
+				break;
+			}
+		}
+		if (securitySettings.endpointDescription().get() == nullptr) {
+			Log(Error, "server does not accept policy uri from client")
+				.parameter("ChannelId", *secureChannel)
+			    .parameter("LocalEndpoint", secureChannel->local_)
+				.parameter("PartnerEndpont", secureChannel->partner_)
+				.parameter("PolicyUri", securitySettings.partnerSecurityPolicyUri().toString());
+			return false;
+		}
+
+		// set security policy
+		securitySettings.ownSecurityPolicyUri(securitySettings.partnerSecurityPolicyUri().toString());
+
+		// set policy mode
+		securitySettings.ownSecurityMode(securitySettings.endpointDescription()->securityMode().enumeration());
+
+		// get crypto base
+		auto cryptoBase = cryptoManager()->get(securitySettings.ownSecurityPolicy());
+		if (!cryptoBase) {
+			Log(Error, "security policy unknown")
+				.parameter("ChannelId", *secureChannel)
+			    .parameter("LocalEndpoint", secureChannel->local_)
+				.parameter("PartnerEndpont", secureChannel->partner_)
+				.parameter("SecurityPolicy", securitySettings.ownSecurityPolicy());
+			return false;
+		}
+		securitySettings.cryptoBase(cryptoBase);
+
+		// sign:
+
+		// encrypt:
+
+		return true;
+	}
+
 	void
 	SecureChannelServer::handleRecvOpenSecureChannelRequest(
 		SecureChannel* secureChannel,
@@ -353,6 +402,7 @@ namespace OpcUaStackCore
 		auto secureChannelServerConfig = boost::static_pointer_cast<SecureChannelServerConfig>(secureChannel->config_);
 		auto& securitySettings = secureChannel->securitySettings();
 
+#if 0
 		// find endpoint description in server configuration
 		securitySettings.endpointDescription().reset();
 		for (auto endpointDescription : *secureChannelServerConfig->endpointDescriptionArray().get()) {
@@ -375,6 +425,10 @@ namespace OpcUaStackCore
 		// set security policy uri
 		OpcUaByteString securityPolicyUri(securitySettings.endpointDescription()->securityPolicyUri().toStdString());
 		securitySettings.ownSecurityPolicyUri(securityPolicyUri);
+
+		// set policy mode
+		securitySettings.ownSecurityMode(securitySettings.endpointDescription()->securityMode().enumeration());
+#endif
 
 		// check partner certificate if necessary
 		if (securitySettings.ownSecurityPolicy() != SecurityPolicy::EnumNone && securitySettings.isPartnerSignatureEnabled()) {
