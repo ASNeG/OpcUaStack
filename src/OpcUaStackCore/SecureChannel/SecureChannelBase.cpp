@@ -751,6 +751,15 @@ namespace OpcUaStackCore
 		);
 		secureSettings.partnerSecurityPolicyUri(partnerSecurityPolicyUri);
 
+		// find endpoint for security policy
+		if (!findEndpoint(secureChannel)) {
+			Log(Debug, "opc ua secure channel endpoint error")
+				.parameter("ChannelId", *secureChannel);
+
+			closeChannel(secureChannel, true);
+			return;
+		}
+
 		// handle security
 		if (secureReceivedOpenSecureChannelResponse(secureChannel) != Success) {
 			Log(Debug, "opc ua secure channel decrypt received message error")

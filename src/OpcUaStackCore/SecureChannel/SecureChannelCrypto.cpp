@@ -450,10 +450,12 @@ namespace OpcUaStackCore
 		auto& securitySettings = secureChannel->securitySettings();
 
 		// check if encryption or signature is enabled
-		if (!securitySettings.isPartnerEncryptionEnabled() && securitySettings.isPartnerSignatureEnabled()) {
+		if (securitySettings.ownSecurityMode() != MessageSecurityMode::EnumSign &&
+			securitySettings.ownSecurityMode() != MessageSecurityMode::EnumSignAndEncrypt) {
 			return Success;
 		}
 
+#if 0
 		// find crypto base
 		auto cryptoBase = cryptoManager_->get(securitySettings.partnerSecurityPolicyUri().toString());
 		if (cryptoBase.get() == nullptr) {
@@ -463,9 +465,10 @@ namespace OpcUaStackCore
 		}
 		cryptoBase->isLogging(secureChannel->isLogging_);
 		securitySettings.cryptoBase(cryptoBase);
+#endif
 
 		// decrypt received open secure channel request
-		if (securitySettings.isPartnerEncryptionEnabled()) {
+		if (securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
 			statusCode = decryptReceivedOpenSecureResponse(secureChannel);
 			if (statusCode != Success) {
 				return statusCode;
@@ -473,7 +476,8 @@ namespace OpcUaStackCore
 		}
 
 		// verify signature
-		if (securitySettings.isPartnerSignatureEnabled()) {
+		if (securitySettings.ownSecurityMode() != MessageSecurityMode::EnumSign ||
+			securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSignAndEncrypt ) {
 			statusCode = verifyReceivedOpenSecureResponse(secureChannel);
 			if (statusCode != Success) {
 				return statusCode;
@@ -601,12 +605,14 @@ namespace OpcUaStackCore
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
 
 		// check if encryption or signature is enabled
-		if (!securitySettings.isOwnEncryptionEnabled() && !securitySettings.isOwnSignatureEnabled()) {
+		if (securitySettings.ownSecurityMode() != MessageSecurityMode::EnumSign &&
+			securitySettings.ownSecurityMode() != MessageSecurityMode::EnumSignAndEncrypt) {
 			encryptedText.swap(plainText);
 			return Success;
 		}
 
-		if (securitySettings.isOwnSignatureEnabled()) {
+		if (securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSign ||
+			securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
 			statusCode = signSendOpenSecureChannelResponse(plainText, secureChannel);
 			if (statusCode != Success) {
 				return statusCode;
@@ -614,7 +620,7 @@ namespace OpcUaStackCore
 		}
 
 		// encrypt send open secure channel response
-		if (securitySettings.isOwnEncryptionEnabled()) {
+		if (securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
 			statusCode = encryptSendOpenSecureChannelResponse(plainText, encryptedText, secureChannel);
 			if (statusCode != Success) {
 				return statusCode;
@@ -835,12 +841,13 @@ namespace OpcUaStackCore
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
 
 		// check if encryption or signature is enabled
-		if (!securitySettings.isPartnerEncryptionEnabled() && !securitySettings.isPartnerSignatureEnabled()) {
+		if (securitySettings.ownSecurityMode() != MessageSecurityMode::EnumSign &&
+			securitySettings.ownSecurityMode() != MessageSecurityMode::EnumSignAndEncrypt) {
 			return Success;
 		}
 
 		// decrypt received message request
-		if (securitySettings.isPartnerEncryptionEnabled()) {
+		if (securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
 			statusCode = decryptReceivedMessage(secureChannel, secureChannelKey);
 			if (statusCode != Success) {
 				return statusCode;
@@ -848,7 +855,8 @@ namespace OpcUaStackCore
 		}
 
 		// verify signature
-		if (securitySettings.isPartnerSignatureEnabled()) {
+		if (securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSign ||
+			securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
 			statusCode = verifyReceivedMessage(secureChannel, secureChannelKey);
 			if (statusCode != Success) {
 				return statusCode;
@@ -953,12 +961,14 @@ namespace OpcUaStackCore
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
 
 		// check if encryption or signature is enabled
-		if (!securitySettings.isOwnEncryptionEnabled() && !securitySettings.isOwnSignatureEnabled()) {
+		if (securitySettings.ownSecurityMode() != MessageSecurityMode::EnumSign &&
+			securitySettings.ownSecurityMode() != MessageSecurityMode::EnumSignAndEncrypt) {
 			encryptedText.swap(plainText);
 			return Success;
 		}
 
-		if (securitySettings.isOwnSignatureEnabled()) {
+		if (securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSign ||
+			securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
 			statusCode = signSendMessageRequest(plainText, secureChannel, secureChannelKey);
 			if (statusCode != Success) {
 				return statusCode;
@@ -966,7 +976,7 @@ namespace OpcUaStackCore
 		}
 
 		// encrypt send open secure channel response
-		if (securitySettings.isOwnEncryptionEnabled()) {
+		if (securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
 			statusCode = encryptSendMessageRequest(plainText, encryptedText, secureChannel, secureChannelKey);
 			if (statusCode != Success) {
 				return statusCode;
@@ -1151,12 +1161,13 @@ namespace OpcUaStackCore
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
 
 		// check if encryption or signature is enabled
-		if (!securitySettings.isPartnerEncryptionEnabled() && !securitySettings.isPartnerSignatureEnabled()) {
+		if (securitySettings.ownSecurityMode() != MessageSecurityMode::EnumSign &&
+			securitySettings.ownSecurityMode() != MessageSecurityMode::EnumSignAndEncrypt) {
 			return Success;
 		}
 
 		// decrypt received message request
-		if (securitySettings.isPartnerEncryptionEnabled()) {
+		if (securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
 			statusCode = decryptReceivedMessageResponse(secureChannel, secureChannelKey);
 			if (statusCode != Success) {
 				return statusCode;
@@ -1164,7 +1175,8 @@ namespace OpcUaStackCore
 		}
 
 		// verify signature
-		if (securitySettings.isPartnerSignatureEnabled()) {
+		if (securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSign ||
+			securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
 			statusCode = verifyReceivedMessageResponse(secureChannel, secureChannelKey);
 			if (statusCode != Success) {
 				return statusCode;
