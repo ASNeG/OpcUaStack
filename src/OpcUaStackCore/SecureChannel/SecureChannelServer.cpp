@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -337,6 +337,144 @@ namespace OpcUaStackCore
 		asyncWriteAcknowledge(secureChannel, acknowledge);
 	}
 
+	bool
+	SecureChannelServer::findEndpoint(SecureChannel* secureChannel)
+	{
+		// get server configuration and security settings
+		auto secureChannelServerConfig = boost::static_pointer_cast<SecureChannelServerConfig>(secureChannel->config_);
+		auto& securitySettings = secureChannel->securitySettings();
+
+		// find endpoint description in server configuration
+		securitySettings.endpointDescription().reset();
+		for (auto endpointDescription : *secureChannelServerConfig->endpointDescriptionArray().get()) {
+			if (securitySettings.partnerSecurityPolicyUri().toString() == endpointDescription->securityPolicyUri().toStdString()) {
+				securitySettings.endpointDescription() = endpointDescription;
+				break;
+			}
+		}
+		if (securitySettings.endpointDescription().get() == nullptr) {
+			Log(Error, "server does not accept policy uri from client")
+				.parameter("ChannelId", *secureChannel)
+			    .parameter("LocalEndpoint", secureChannel->local_)
+				.parameter("PartnerEndpont", secureChannel->partner_)
+				.parameter("PolicyUri", securitySettings.partnerSecurityPolicyUri().toString());
+			return false;
+		}
+
+		// set security policy
+		securitySettings.ownSecurityPolicyUri(securitySettings.partnerSecurityPolicyUri().toString());
+
+		// set policy mode
+		securitySettings.ownSecurityMode(securitySettings.endpointDescription()->securityMode().enumeration());
+
+		// get crypto base
+		auto cryptoBase = cryptoManager()->get(securitySettings.ownSecurityPolicy());
+		if (!cryptoBase) {
+			Log(Error, "security policy unknown")
+				.parameter("ChannelId", *secureChannel)
+			    .parameter("LocalEndpoint", secureChannel->local_)
+				.parameter("PartnerEndpont", secureChannel->partner_)
+				.parameter("SecurityPolicy", securitySettings.ownSecurityPolicy());
+			return false;
+		}
+		cryptoBase->isLogging(secureChannel->isLogging_);
+		securitySettings.cryptoBase(cryptoBase);
+
+		// sign:
+		// The client partner creates a signature with the private client key and
+		// transfers the client certificate or client certificate chain to the server.
+		if (securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSign ||
+			securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
+
+			// The client certificate must be exist in the request
+			if (securitySettings.partnerCertificateChain().empty()) {
+				Log(Error, "client certificate chain empty in open secure channel request")
+					.parameter("ChannelId", *secureChannel)
+				    .parameter("LocalEndpoint", secureChannel->local_)
+					.parameter("PartnerEndpont", secureChannel->partner_)
+					.parameter("PolicyUri", securitySettings.partnerSecurityPolicyUri().toString());
+				return false;
+			}
+
+			// validate client certificate
+			Log(Debug, "validate partner certificate chain")
+				.parameter("NumberCerts", securitySettings.partnerCertificateChain().size());
+
+			ValidateCertificate validateCertificate;
+			validateCertificate.certificateManager(cryptoManager()->certificateManager());
+			//validateCertificate.hostname(endpointUrl.host());
+			//validateCertificate.uri(secureChannelClientConfig->applicationUri());
+
+			auto statusCode = validateCertificate.validateCertificate(
+				securitySettings.partnerCertificateChain()
+			);
+
+			if (statusCode != Success) {
+
+				// on error we save the certificate in the reject folder.
+
+				auto certificate = securitySettings.partnerCertificateChain().getCertificate();
+				std::string certFileName = certificate->thumbPrint().toHexString() + ".der";
+				boost::filesystem::path rejectFilePath(cryptoManager()->certificateManager()->certificateRejectListLocation() + "/" + certFileName);
+				cryptoManager()->certificateManager()->writeCertificate(
+					rejectFilePath.string(),
+					*certificate.get()
+				);
+
+				Log(Error, "client certificate not trusted")
+					.parameter("ChannelId", *secureChannel)
+				    .parameter("LocalEndpoint", secureChannel->local_)
+					.parameter("PartnerEndpont", secureChannel->partner_)
+					.parameter("PolicyUri", securitySettings.partnerSecurityPolicyUri().toString());
+
+				// send error message and close secure channel
+				asyncWriteMessageError(
+					secureChannel,
+					BadCertificateUntrusted,
+					OpcUaStatusCodeMap::shortString(BadCertificateUntrusted)
+				);
+				return false;
+			}
+		}
+
+		// encrypt:
+		// The client encrypt the message with the public key of the server and transfers
+		// the thumbprint of the server certificate to the server.
+		if (securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
+
+			// we need a certificate or a certificate chain
+			securitySettings.ownCertificateChain() = cryptoManager()->applicationCertificate()->certificateChain();
+			if (securitySettings.ownCertificateChain().empty()) {
+				Log(Error, "own certificate chain empty")
+					.parameter("ChannelId", *secureChannel);
+				return false;
+			}
+
+			// The server certificate thumbprint must be exist in the request
+			if (!securitySettings.ownCertificateThumbprint().exist()) {
+				Log(Error, "server certificate thumbprint empty in open secure channel request")
+					.parameter("ChannelId", *secureChannel)
+				    .parameter("LocalEndpoint", secureChannel->local_)
+					.parameter("PartnerEndpont", secureChannel->partner_)
+					.parameter("PolicyUri", securitySettings.partnerSecurityPolicyUri().toString());
+				return false;
+			}
+
+			// Validate server certificate thumbprint
+			auto thumbprint = securitySettings.ownCertificateChain().getCertificate()->thumbPrint();
+			if (securitySettings.ownCertificateThumbprint() != thumbprint) {
+				Log(Error, "server certificate thumbprint invalid in open secure channel request")
+					.parameter("ChannelId", *secureChannel)
+				    .parameter("LocalEndpoint", secureChannel->local_)
+					.parameter("PartnerEndpont", secureChannel->partner_)
+					.parameter("PolicyUri", securitySettings.partnerSecurityPolicyUri().toString());
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	void
 	SecureChannelServer::handleRecvOpenSecureChannelRequest(
 		SecureChannel* secureChannel,
@@ -353,6 +491,7 @@ namespace OpcUaStackCore
 		auto secureChannelServerConfig = boost::static_pointer_cast<SecureChannelServerConfig>(secureChannel->config_);
 		auto& securitySettings = secureChannel->securitySettings();
 
+#if 0
 		// find endpoint description in server configuration
 		securitySettings.endpointDescription().reset();
 		for (auto endpointDescription : *secureChannelServerConfig->endpointDescriptionArray().get()) {
@@ -373,15 +512,45 @@ namespace OpcUaStackCore
 		}
 
 		// set security policy uri
-		securitySettings.ownSecurityPolicyUri() = securitySettings.endpointDescription()->securityPolicyUri();
+		OpcUaByteString securityPolicyUri(securitySettings.endpointDescription()->securityPolicyUri().toStdString());
+		securitySettings.ownSecurityPolicyUri(securityPolicyUri);
+
+		// set policy mode
+		securitySettings.ownSecurityMode(securitySettings.endpointDescription()->securityMode().enumeration());
+
+		// check partner certificate if necessary
+		if (securitySettings.ownSecurityPolicy() != SecurityPolicy::EnumNone && !securitySettings.isPartnerSignatureEnabled()) {
+			Log(Error, "server does not accept empty partner certificate from client")
+				.parameter("ChannelId", *secureChannel)
+			    .parameter("LocalEndpoint", secureChannel->local_)
+				.parameter("PartnerEndpont", secureChannel->partner_)
+				.parameter("PartnerPolicyUri", securitySettings.partnerSecurityPolicyUri().toString())
+				.parameter("OwnPolicyUri", securitySettings.ownSecurityPolicyUri().toString());
+			secureChannel->socket().cancel();
+			secureChannel->state_ = SecureChannel::S_CloseSecureChannel;
+			return;
+		}
 
 		// check if partner certificate exist - get own certificate
 		if (securitySettings.isPartnerSignatureEnabled()) {
 			securitySettings.ownCertificateChain() = cryptoManager()->applicationCertificate()->certificateChain();
 		}
 
+		// check own certificate if necessary
+		if (securitySettings.ownSecurityPolicy() != SecurityPolicy::EnumNone && securitySettings.ownCertificateChain().empty()) {
+			Log(Error, "server does not accept empty own certificate")
+				.parameter("ChannelId", *secureChannel)
+			    .parameter("LocalEndpoint", secureChannel->local_)
+				.parameter("PartnerEndpont", secureChannel->partner_)
+				.parameter("OwnPolicyUri", securitySettings.ownSecurityPolicyUri().toString());
+			secureChannel->socket().cancel();
+			secureChannel->state_ = SecureChannel::S_CloseSecureChannel;
+			return;
+		}
+#endif
+
 		// set partner certificate thumbprint and check partner certificate chain
-		if (securitySettings.isPartnerEncryptionEnabled()) {
+		if (securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
 			assert(securitySettings.partnerCertificateChain().getCertificate().get() != nullptr);
 
 			auto thumbPrint = securitySettings.partnerCertificateChain().getCertificate()->thumbPrint();
@@ -389,7 +558,7 @@ namespace OpcUaStackCore
 		}
 
 		// handle partner nonce
-		if (securitySettings.isPartnerEncryptionEnabled()) {
+		if (securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
 			char* buf;
 			int32_t len;
 			openSecureChannelRequest.clientNonce((OpcUaByte**)&buf, &len);
@@ -402,8 +571,8 @@ namespace OpcUaStackCore
 			}
 		}
 
-		// create own nonce
-		if (securitySettings.isOwnEncryptionEnabled()) {
+		// create server nonce
+		if (securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
 			uint32_t keyLen = securitySettings.cryptoBase()->symmetricKeyLen();
 			securitySettings.ownNonce().resize(keyLen);
 
@@ -430,7 +599,7 @@ namespace OpcUaStackCore
 		// The own security key set and the partner security key set are now
 		// created.
 		//
-		if (securitySettings.isPartnerEncryptionEnabled() && securitySettings.isOwnEncryptionEnabled()) {
+		if (securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
 			OpcUaStatusCode statusCode = securitySettings.cryptoBase()->deriveChannelKeyset(
 				securitySettings.partnerNonce(),
 				securitySettings.ownNonce(),
@@ -498,7 +667,7 @@ namespace OpcUaStackCore
 		//
 		// start security checks
 		//
-
+#if 0
 		// validate client certificate chain
 		if (securitySettings.isPartnerEncryptionEnabled()) {
 			Log(Debug, "validate partner certificate chain")
@@ -540,6 +709,7 @@ namespace OpcUaStackCore
 				return;
 			}
 		}
+#endif
 
 		// create open secure channel response
 		openSecureChannelResponse->securityToken()->channelId(secureChannel->channelId_);

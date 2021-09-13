@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -85,32 +85,52 @@ namespace OpcUaStackCore
 		auto secureChannel = new SecureChannel(ioThread_);
 		secureChannel->config_ = secureChannelClientConfig;
 
-		// get security settings
+		// get security settings and check security settings
 		auto& securitySettings = secureChannel->securitySettings_;
+		securitySettings.ownSecurityPolicy(secureChannelClientConfig->securityPolicy());
+		securitySettings.ownSecurityMode(secureChannelClientConfig->securityMode());
+		if (securitySettings.ownSecurityMode() != MessageSecurityMode::EnumNone &&
+			securitySettings.ownSecurityPolicy() == SecurityPolicy::EnumNone) {
+			Log(Error, "security policy invalid")
+				.parameter("ChannelId", *secureChannel)
+				.parameter("EndpointUrl", secureChannelClientConfig->endpointUrl())
+				.parameter("SecurityPolicy", secureChannelClientConfig->securityPolicy())
+				.parameter("SecurityMode", securitySettings.ownSecurityMode());
+			return nullptr;
+		}
 
 		// get crypto base and store own security policy uri
 		auto cryptoBase = cryptoManager()->get(secureChannelClientConfig->securityPolicy());
 		if (!cryptoBase) {
-			Log(Error, "security policy invalid")
+			Log(Error, "security policy unknown")
 				.parameter("ChannelId", *secureChannel)
 				.parameter("EndpointUrl", secureChannelClientConfig->endpointUrl())
 				.parameter("SecurityPolicy", secureChannelClientConfig->securityPolicy());
 			return nullptr;
 		}
 		securitySettings.cryptoBase(cryptoBase);
-		securitySettings.ownSecurityPolicyUri() = cryptoManager()->securityPolicy(secureChannelClientConfig->securityPolicy());
-		// FIXME: todo - we must check the own security policy uri.
 
-		// get own certificate chain
-		if (secureChannelClientConfig->securityMode() == MessageSecurityMode::EnumSign ||
-			secureChannelClientConfig->securityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
+		// get and check own certificate or certificate chain. The own certificate is transferred
+		// to the partner. The partner uses the certificate to check the signature.
+		if (securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSign ||
+			securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
+			// we need a certificate or a certificate chain
 			securitySettings.ownCertificateChain() = cryptoManager()->applicationCertificate()->certificateChain();
-			// FIXME: todo - we must check the own certificate chain
+			if (securitySettings.ownCertificateChain().empty()) {
+				Log(Error, "own certificate chain empty")
+					.parameter("ChannelId", *secureChannel)
+					.parameter("EndpointUrl", secureChannelClientConfig->endpointUrl())
+					.parameter("SecurityPolicy", secureChannelClientConfig->securityPolicy())
+					.parameter("SecurityMode", MessageSecurityMode::enum2Str(secureChannelClientConfig->securityMode()));
+				return nullptr;
+			}
 		}
 
-		if (secureChannelClientConfig->securityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
+		if (securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
 
-			// get partner certificate chain and calculate thumbprint
+			// get partner certificate chain and calculate thumbprint. The partner certificate
+			// is used to encrypt the message. The thumbprint of the partner certificate is
+			// transferred to the partner.
 
 			if (secureChannelClientConfig->certificateChain().empty()) {
 
@@ -221,6 +241,8 @@ namespace OpcUaStackCore
 	void
 	SecureChannelClient::connect(SecureChannel* secureChannel)
 	{
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
+
 		SecureChannelClientConfig::SPtr config;
 		config = boost::static_pointer_cast<SecureChannelClientConfig>(secureChannel->config_);
 
@@ -229,8 +251,6 @@ namespace OpcUaStackCore
 		secureChannel->sendBufferSize_ = config->sendBufferSize();
 		secureChannel->maxMessageSize_ = config->maxMessageSize();
 		secureChannel->maxChunkCount_ = config->maxChunkCount();
-		secureChannel->securityMode_ = config->securityMode();
-		secureChannel->securityPolicy_ = config->securityPolicy();
 		secureChannel->endpointUrl_ = config->endpointUrl();
 
 		// get ip address from hostname
@@ -327,12 +347,17 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannelClient::handleRecvAcknowledge(SecureChannel* secureChannel, AcknowledgeMessage& acknowledge)
+	SecureChannelClient::handleRecvAcknowledge(
+		SecureChannel* secureChannel,
+		AcknowledgeMessage& acknowledge
+	)
 	{
 		//
 		// The opc ua client receives a Acknowledge request from the opc ua server.
 		// The opc ua client sends a open secure channel request to the server.
 		//
+
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
 
 		Log(Info, "receive acknowledge")
 			.parameter("ChannelId", *secureChannel)
@@ -353,7 +378,7 @@ namespace OpcUaStackCore
 		OpenSecureChannelRequest openSecureChannelRequest;
 		openSecureChannelRequest.clientProtocolVersion(0);
 		openSecureChannelRequest.requestType(RT_ISSUE);
-		openSecureChannelRequest.securityMode(secureChannel->securityMode_);
+		openSecureChannelRequest.securityMode(securitySettings.ownSecurityMode());
 		openSecureChannelRequest.clientNonce(clientNonce, 1);
 		openSecureChannelRequest.requestedLifetime(renewTimeout_);
 
@@ -365,12 +390,14 @@ namespace OpcUaStackCore
 	void
 	SecureChannelClient::renewSecurityToken(SecureChannel* secureChannel)
 	{
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
+
 		OpcUaByte clientNonce[1];
 		clientNonce[0] = 0x00;
 		OpenSecureChannelRequest openSecureChannelRequest;
 		openSecureChannelRequest.clientProtocolVersion(0);
 		openSecureChannelRequest.requestType(RT_RENEW);
-		openSecureChannelRequest.securityMode(secureChannel->securityMode_);
+		openSecureChannelRequest.securityMode(securitySettings.ownSecurityMode());
 		openSecureChannelRequest.clientNonce(clientNonce, 1);
 		openSecureChannelRequest.requestedLifetime(300000);
 
@@ -378,8 +405,64 @@ namespace OpcUaStackCore
 		asyncWriteOpenSecureChannelRequest(secureChannel, openSecureChannelRequest);
 	}
 
+	bool
+	SecureChannelClient::findEndpoint(SecureChannel* secureChannel)
+	{
+		// get security settings
+		auto& securitySettings = secureChannel->securitySettings();
+
+		// sign:
+		// The server partner creates a signature with the private server key and
+		// transfers the server certificate or server certificate chain to the client.
+		if (securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSign ||
+			securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
+
+			// The server certificate must be exist in the request
+			if (securitySettings.partnerCertificateChain().empty()) {
+				Log(Error, "server certificate chain empty in open secure channel response")
+					.parameter("ChannelId", *secureChannel)
+				    .parameter("LocalEndpoint", secureChannel->local_)
+					.parameter("PartnerEndpont", secureChannel->partner_)
+					.parameter("PolicyUri", securitySettings.partnerSecurityPolicyUri().toString());
+				return false;
+			}
+		}
+
+		// encrypt:
+		// The server encrypt the message with the public key of the client and transfers
+		// the thumbprint of the client certificate to the client.
+		if (securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
+
+			// The client certificate thumbprint must be exist in the request
+			if (!securitySettings.ownCertificateThumbprint().exist()) {
+				Log(Error, "client certificate thumbprint empty in open secure channel response")
+					.parameter("ChannelId", *secureChannel)
+				    .parameter("LocalEndpoint", secureChannel->local_)
+					.parameter("PartnerEndpont", secureChannel->partner_)
+					.parameter("PolicyUri", securitySettings.partnerSecurityPolicyUri().toString());
+				return false;
+			}
+
+			// Validate client certificate thumbprint
+			auto thumbprint = securitySettings.ownCertificateChain().getCertificate()->thumbPrint();
+			if (securitySettings.ownCertificateThumbprint() != thumbprint) {
+				Log(Error, "client certificate thumbprint invalid in open secure channel response")
+					.parameter("ChannelId", *secureChannel)
+				    .parameter("LocalEndpoint", secureChannel->local_)
+					.parameter("PartnerEndpont", secureChannel->partner_)
+					.parameter("PolicyUri", securitySettings.partnerSecurityPolicyUri().toString());
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	void
-	SecureChannelClient::handleRecvOpenSecureChannelResponse(SecureChannel* secureChannel, OpenSecureChannelResponse& openSecureChannelResponse)
+	SecureChannelClient::handleRecvOpenSecureChannelResponse(
+		SecureChannel* secureChannel,
+		OpenSecureChannelResponse& openSecureChannelResponse
+	)
 	{
 		//
 		// The opc ua client receives a open secure channel response from the server.
@@ -389,7 +472,7 @@ namespace OpcUaStackCore
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
 
 		// handle partner nonce
-		if (securitySettings.isPartnerEncryptionEnabled()) {
+		if (securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
 			char* buf;
 			int32_t len = 0;
 			openSecureChannelResponse.serverNonce((OpcUaByte**)&buf, &len);
@@ -420,7 +503,7 @@ namespace OpcUaStackCore
 		// The own security key set and the partner security key set are now
 		// created.
 		//
-		if (securitySettings.isPartnerEncryptionEnabled() && securitySettings.isOwnEncryptionEnabled()) {
+		if (securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
 			auto statusCode = securitySettings.cryptoBase()->deriveChannelKeyset(
 				securitySettings.ownNonce(),
 				securitySettings.partnerNonce(),

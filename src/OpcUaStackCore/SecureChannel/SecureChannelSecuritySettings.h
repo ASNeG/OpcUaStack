@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -40,18 +40,24 @@ namespace OpcUaStackCore
 
 		SecureChannelKeys& secureChannelKeys(void);
 
-		bool isOwnEncryptionEnabled(void);
-		bool isOwnSignatureEnabled(void);
 		OpcUaByteString& ownCertificateThumbprint(void);
-		OpcUaByteString& ownSecurityPolicyUri(void);
+		void ownSecurityPolicyUri(const OpcUaByteString& ownSecurityPolicyUri);
+		const OpcUaByteString& ownSecurityPolicyUri(void);
+		void ownSecurityPolicy(SecurityPolicy::Enum ownSecurityPolicy);
+		SecurityPolicy::Enum ownSecurityPolicy(void);
+		void ownSecurityMode(MessageSecurityMode::Enum ownSecurityMode);
+		MessageSecurityMode::Enum ownSecurityMode(void);
 		CertificateChain& ownCertificateChain(void);
 		MemoryBuffer& ownNonce(void);
 		//SecurityKeySet& ownSecurityKeySet(void);
 
-		bool isPartnerEncryptionEnabled(void);
-		bool isPartnerSignatureEnabled(void);
 		OpcUaByteString& partnerCertificateThumbprint(void);
-		OpcUaByteString& partnerSecurityPolicyUri(void);
+		void partnerSecurityPolicyUri(const OpcUaByteString& partnerSecurityPolicyUri);
+		const OpcUaByteString& partnerSecurityPolicyUri(void);
+		void partnerSecurityPolicy(SecurityPolicy::Enum ownSecurityPolicy);
+		SecurityPolicy::Enum partnerSecurityPolicy(void);
+		void partnerSecurityMode(MessageSecurityMode::Enum partnerSecurityMode);
+		MessageSecurityMode::Enum partnerSecurityMode(void);
 		CertificateChain& partnerCertificateChain(void);
 		MemoryBuffer& partnerNonce(void);
 		//SecurityKeySet& partnerSecurityKeySet(void);
@@ -64,11 +70,13 @@ namespace OpcUaStackCore
 
 		OpcUaByteString ownCertificateThumbprint_;
 		OpcUaByteString ownSecurityPolicyUri_;
+		MessageSecurityMode::Enum ownSecurityMode_ = MessageSecurityMode::EnumNone;
 		CertificateChain ownCertificateChain_;
 		MemoryBuffer ownNonce_;
 
 		OpcUaByteString partnerCertificateThumbprint_;
 		OpcUaByteString partnerSecurityPolicyUri_;
+		MessageSecurityMode::Enum partnerSecurityMode_ = MessageSecurityMode::EnumNone;
 		CertificateChain partnerCertificateChain_;
 		MemoryBuffer partnerNonce_;
 	};

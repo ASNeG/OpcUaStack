@@ -446,15 +446,26 @@ namespace OpcUaStackCore
 		}
 
 		// decode secure header from client
+		OpcUaByteString partnerSecurityPolicyUri;
 		resultCode = SecurityHeader::opcUaBinaryDecode(
 			is,
-			secureSettings.partnerSecurityPolicyUri(),
+			partnerSecurityPolicyUri,
 			secureSettings.partnerCertificateChain(),
 			secureSettings.ownCertificateThumbprint()
 		);
 
 		if (!resultCode) {
 			Log(Debug, "opc ua secure channel decode security header error")
+				.parameter("ChannelId", *secureChannel);
+
+			closeChannel(secureChannel, true);
+			return;
+		}
+		secureSettings.partnerSecurityPolicyUri(partnerSecurityPolicyUri);
+
+		// find endpoint for security policy
+		if (!findEndpoint(secureChannel)) {
+			Log(Debug, "opc ua secure channel endpoint error")
 				.parameter("ChannelId", *secureChannel);
 
 			closeChannel(secureChannel, true);
@@ -507,6 +518,7 @@ namespace OpcUaStackCore
 			closeChannel(secureChannel, true);
 			return;
 		}
+		secureSettings.partnerSecurityMode(openSecureChannelRequest.securityMode());
 
 		consumeAll(secureChannel->recvBuffer_);
 
@@ -534,6 +546,16 @@ namespace OpcUaStackCore
 		asyncRead(secureChannel);
 	}
 
+	bool
+	SecureChannelBase::findEndpoint(
+		SecureChannel* secureChannel
+	)
+	{
+		Log(Error, "opc ua secure channel error, because findEndpoint not implemented")
+			.parameter("ChannelId", *secureChannel);
+		return false;
+	}
+
 	void
 	SecureChannelBase::handleRecvOpenSecureChannelRequest(
 		SecureChannel* secureChannel,
@@ -554,7 +576,8 @@ namespace OpcUaStackCore
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
 
 		// create client nonce
-		if (secureChannel->securityPolicy_ != SecurityPolicy::EnumNone) {
+		if (securitySettings.ownSecurityPolicy() != SecurityPolicy::EnumNone ||
+			securitySettings.ownSecurityMode() != MessageSecurityMode::EnumNone) {
 			uint32_t keyLen = securitySettings.cryptoBase()->symmetricKeyLen();
 			securitySettings.ownNonce().resize(keyLen);
 
@@ -719,12 +742,23 @@ namespace OpcUaStackCore
 
 		// decode security header
 		SecureChannelSecuritySettings& secureSettings = secureChannel->securitySettings();
+		OpcUaByteString partnerSecurityPolicyUri;
 		SecurityHeader::opcUaBinaryDecode(
 			is,
-			secureSettings.partnerSecurityPolicyUri(),
+			partnerSecurityPolicyUri,
 			secureSettings.partnerCertificateChain(),
 			secureSettings.ownCertificateThumbprint()
 		);
+		secureSettings.partnerSecurityPolicyUri(partnerSecurityPolicyUri);
+
+		// find endpoint for security policy
+		if (!findEndpoint(secureChannel)) {
+			Log(Debug, "opc ua secure channel endpoint error")
+				.parameter("ChannelId", *secureChannel);
+
+			closeChannel(secureChannel, true);
+			return;
+		}
 
 		// handle security
 		if (secureReceivedOpenSecureChannelResponse(secureChannel) != Success) {

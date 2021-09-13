@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -684,7 +684,7 @@ namespace OpcUaStackServer
 		createSessionResponse.serverNonce((const OpcUaByte*)serverNonce_, 32);
 
 		// check certificate if exist
-		if (createSessionRequest.clientCertificate().exist()) {
+		if (securitySettings.ownSecurityPolicy() != SecurityPolicy::EnumNone) {
 			CertificateChain partnerCertificateChain;
 
 			if (!partnerCertificateChain.fromByteString(createSessionRequest.clientCertificate())) {
@@ -716,7 +716,7 @@ namespace OpcUaStackServer
 		cryptoManager_->applicationCertificate()->certificateChain().toByteString(certByteString);
 		createSessionResponse.serverCertificate() = certByteString;
 
-		if (cryptoManager_->applicationCertificate().get() != nullptr && secureChannelTransaction->cryptoBase_.get() != nullptr) {
+		if (securitySettings.ownSecurityPolicy() != SecurityPolicy::EnumNone) {
 
 			// create server signature
 			MemoryBuffer clientCertificate(createSessionRequest.clientCertificate());
@@ -849,7 +849,7 @@ namespace OpcUaStackServer
 		}
 
 		// check client signature
-		if (secureChannelTransaction->cryptoBase_.get() != nullptr) {
+		if (securitySettings.ownSecurityPolicy() != SecurityPolicy::EnumNone) {
 			// Create buffer with all server certificates from server certificate chain.
 			// We need this buffer to validate the signature in the activate session
 			// request.

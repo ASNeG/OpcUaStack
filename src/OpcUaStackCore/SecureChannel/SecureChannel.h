@@ -147,9 +147,6 @@ namespace OpcUaStackCore
 		OpcUaUInt32 maxChunkCount_;
 		std::string endpointUrl_;
 
-		MessageSecurityMode::Enum securityMode_;
-		SecurityPolicy::Enum securityPolicy_;
-
 		Object::SPtr handle_;
 		static OpcUaUInt32 gChannelId_;
 		static uint32_t gId_;

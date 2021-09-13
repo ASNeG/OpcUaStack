@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -47,6 +47,7 @@ namespace OpcUaStackCore
 		//- SecureChannelBase -------------------------------------------------
 		void handleDisconnect(SecureChannel* secureChannel);
 		void handleRecvAcknowledge(SecureChannel* secureChannel, AcknowledgeMessage& acknowledge);
+		bool findEndpoint(SecureChannel* secureChannel) override;
 		void handleRecvOpenSecureChannelResponse(SecureChannel* secureChannel, OpenSecureChannelResponse& openSecureChannelResponse);
 		void handleRecvMessageResponse(SecureChannel* secureChannel);
 		//- SecureChannelBase -------------------------------------------------

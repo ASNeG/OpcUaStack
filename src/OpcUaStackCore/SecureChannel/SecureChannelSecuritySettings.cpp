@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -56,29 +56,46 @@ namespace OpcUaStackCore
 		return secureChannelKeys_;
 	}
 
-	bool
-	SecureChannelSecuritySettings::isOwnEncryptionEnabled(void)
-	{
-		return ownCertificateChain_.size() > 0;
-
-	}
-
-	bool
-	SecureChannelSecuritySettings::isOwnSignatureEnabled(void)
-	{
-		return partnerCertificateThumbprint_.exist();
-	}
-
 	OpcUaByteString&
 	SecureChannelSecuritySettings::ownCertificateThumbprint(void)
 	{
 		return ownCertificateThumbprint_;
 	}
 
-	OpcUaByteString&
+	void
+	SecureChannelSecuritySettings::ownSecurityPolicyUri(const OpcUaByteString& ownSecurityPolicyUri)
+	{
+		ownSecurityPolicyUri_ = ownSecurityPolicyUri;
+	}
+
+	const OpcUaByteString&
 	SecureChannelSecuritySettings::ownSecurityPolicyUri(void)
 	{
 		return ownSecurityPolicyUri_;
+	}
+
+	void
+	SecureChannelSecuritySettings::ownSecurityPolicy(SecurityPolicy::Enum ownSecurityPolicy)
+	{
+		ownSecurityPolicyUri_ = SecurityPolicy::enum2Str(ownSecurityPolicy);
+	}
+
+	SecurityPolicy::Enum
+	SecureChannelSecuritySettings::ownSecurityPolicy(void)
+	{
+		return SecurityPolicy::str2Enum(ownSecurityPolicyUri_.toString());
+	}
+
+	void
+	SecureChannelSecuritySettings::ownSecurityMode(MessageSecurityMode::Enum ownSecurityMode)
+	{
+		ownSecurityMode_ = ownSecurityMode;
+	}
+
+	MessageSecurityMode::Enum
+	SecureChannelSecuritySettings::ownSecurityMode(void)
+	{
+		return ownSecurityMode_;
 	}
 
 	CertificateChain&
@@ -93,28 +110,46 @@ namespace OpcUaStackCore
 		return ownNonce_;
 	}
 
-	bool
-	SecureChannelSecuritySettings::isPartnerEncryptionEnabled(void)
-	{
-		return ownCertificateThumbprint_.exist();
-	}
-
-	bool
-	SecureChannelSecuritySettings::isPartnerSignatureEnabled(void)
-	{
-		return partnerCertificateChain_.size() > 0;
-	}
-
 	OpcUaByteString&
 	SecureChannelSecuritySettings::partnerCertificateThumbprint(void)
 	{
 		return partnerCertificateThumbprint_;
 	}
 
-	OpcUaByteString&
+	void
+	SecureChannelSecuritySettings::partnerSecurityPolicyUri(const OpcUaByteString& partnerSecurityPolicyUri)
+	{
+		partnerSecurityPolicyUri_ = partnerSecurityPolicyUri;
+	}
+
+	const OpcUaByteString&
 	SecureChannelSecuritySettings::partnerSecurityPolicyUri(void)
 	{
 		return partnerSecurityPolicyUri_;
+	}
+
+	void
+	SecureChannelSecuritySettings::partnerSecurityPolicy(SecurityPolicy::Enum partnerSecurityPolicy)
+	{
+		partnerSecurityPolicyUri_ = SecurityPolicy::enum2Str(partnerSecurityPolicy);
+	}
+
+	SecurityPolicy::Enum
+	SecureChannelSecuritySettings::partnerSecurityPolicy(void)
+	{
+		return SecurityPolicy::str2Enum(partnerSecurityPolicyUri_.toString());
+	}
+
+	void
+	SecureChannelSecuritySettings::partnerSecurityMode(MessageSecurityMode::Enum partnerSecurityMode)
+	{
+		partnerSecurityMode_ = partnerSecurityMode;
+	}
+
+	MessageSecurityMode::Enum
+	SecureChannelSecuritySettings::partnerSecurityMode(void)
+	{
+		return partnerSecurityMode_;
 	}
 
 	CertificateChain&

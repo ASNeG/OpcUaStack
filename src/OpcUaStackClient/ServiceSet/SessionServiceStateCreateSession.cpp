@@ -1,5 +1,5 @@
 /*
-   Copyright 2019-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2019-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -141,8 +141,19 @@ namespace OpcUaStackClient
 		//
 		// check server signature
 		//
-		auto clientCertificate = securitySettings.ownCertificateChain().getCertificate();
-		if (clientCertificate.get() != nullptr) {
+		if (securitySettings.ownSecurityPolicy() != SecurityPolicy::EnumNone) {
+			auto clientCertificate = securitySettings.ownCertificateChain().getCertificate();
+			if (clientCertificate.get() == nullptr) {
+				Log(Error, "own certificate empty in create session response; close secure channel")
+					.parameter("SessId", ctx_->id_)
+					.parameter("SecurityPolicy", securitySettings.ownSecurityPolicyUri().toString());
+
+				// close secure channel -
+				ctx_->secureChannelClient_.disconnect(secureChannel);
+
+				return SessionServiceStateId::Error;
+			}
+
 			ctx_->serverNonce_ = createSessionResponse.serverNonce();
 
 			// get server certificate from create session response
@@ -194,11 +205,6 @@ namespace OpcUaStackClient
 
 				return SessionServiceStateId::Error;
 			}
-		}
-
-		// check server certificate from create session response
-		if (securitySettings.isOwnEncryptionEnabled()) {
-
 		}
 
 		Log(Debug, "session recv CreateSessionResponse")

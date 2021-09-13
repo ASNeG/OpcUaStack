@@ -133,7 +133,7 @@ namespace OpcUaStackClient
 		createSessionRequest.clientNonce((const OpcUaByte*)clientNonce_, 32);
 
 		// added client certificate chain to create session request
-		if (!securitySettings.ownCertificateChain().empty()) {
+		if (securitySettings.ownSecurityPolicy() != SecurityPolicy::EnumNone) {
 			securitySettings.ownCertificateChain().toByteString(createSessionRequest.clientCertificate());
 		}
 

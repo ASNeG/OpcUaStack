@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -78,7 +78,9 @@ namespace OpcUaStackCore
 			SecureChannel* secureChannel,
 			SecureChannelTransaction::SPtr secureChannelTransaction
 		);
-		void asyncWriteMessageRequest(SecureChannel* secureChannel);
+		void asyncWriteMessageRequest(
+			SecureChannel* secureChannel
+		);
 		void asyncWriteMessageResponse(
 			SecureChannel* secureChannel,
 			SecureChannelTransaction::SPtr secureChannelTransaction
@@ -100,6 +102,9 @@ namespace OpcUaStackCore
 			SecureChannel* secureChannel,
 			AcknowledgeMessage& acknowledge
 		);
+		virtual bool findEndpoint(
+			SecureChannel* secureChannel
+		);
 		virtual void handleRecvOpenSecureChannelRequest(
 			SecureChannel* secureChannel,
 			OpcUaUInt32 channelId,
@@ -113,8 +118,12 @@ namespace OpcUaStackCore
 			SecureChannel* secureChannel,
 			uint32_t channelId
 		);
-		virtual void handleRecvMessageRequest(SecureChannel* secureChannel);
-		virtual void handleRecvMessageResponse(SecureChannel* secureChannel);
+		virtual void handleRecvMessageRequest(
+			SecureChannel* secureChannel
+		);
+		virtual void handleRecvMessageResponse(
+			SecureChannel* secureChannel
+		);
 
 		void asyncRead(SecureChannel* secureChannel);
 
