@@ -59,25 +59,14 @@ namespace OpcUaStackCore
 		auto& securitySettings = secureChannel->securitySettings();
 
 		// check if encryption or signature is enabled
-		if (!securitySettings.isPartnerEncryptionEnabled() && !securitySettings.isPartnerSignatureEnabled()) {
+		if (securitySettings.ownSecurityMode() != MessageSecurityMode::EnumSign &&
+			securitySettings.ownSecurityMode() != MessageSecurityMode::EnumSignAndEncrypt) {
 			return Success;
 		}
 
-#if 0
-		// find crypto base
-		auto cryptoBase = cryptoManager_->get(securitySettings.partnerSecurityPolicyUri().toString());
-		if (cryptoBase.get() == nullptr) {
-			Log(Error, "crypto base not available for security policy uri")
-				.parameter("SecurityPolicyUri", securitySettings.partnerSecurityPolicyUri().toString());
-			return BadSecurityPolicyRejected;
-		}
-		cryptoBase->isLogging(secureChannel->isLogging_);
-		securitySettings.cryptoBase(cryptoBase);
-#endif
-
 		// decrypt received open secure channel request
 		// if receiver certificate thumprint exist -> encryption is enabled
-		if (securitySettings.isPartnerEncryptionEnabled()) {
+		if (securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
 			statusCode = decryptReceivedOpenSecureChannelRequest(secureChannel);
 			if (statusCode != Success) {
 				return statusCode;
@@ -86,7 +75,8 @@ namespace OpcUaStackCore
 
 		// verify signature
 		// if sender certificate exist -> signature is enabled
-		if (securitySettings.isPartnerSignatureEnabled()) {
+		if (securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSign ||
+			securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
 			Certificate::SPtr partnerCertificate = securitySettings.partnerCertificateChain().getCertificate();
 			statusCode = verifyReceivedOpenSecureChannelRequest(secureChannel);
 			if (statusCode != Success) {
@@ -215,8 +205,8 @@ namespace OpcUaStackCore
 		auto& securitySettings = secureChannel->securitySettings();
 
 		// check if encryption or signature is enabled
-		if (securitySettings.ownSecurityPolicy() == SecurityPolicy::EnumNone &&
-			securitySettings.ownSecurityMode() == MessageSecurityMode::EnumNone) {
+		if (securitySettings.ownSecurityMode() != MessageSecurityMode::EnumSign &&
+			securitySettings.ownSecurityMode() != MessageSecurityMode::EnumSignAndEncrypt) {
 			encryptedText.swap(plainText);
 			return Success;
 		}
@@ -1280,12 +1270,14 @@ namespace OpcUaStackCore
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
 
 		// check if encryption or signature is enabled
-		if (!securitySettings.isOwnEncryptionEnabled() && !securitySettings.isOwnSignatureEnabled()) {
+		if (securitySettings.ownSecurityMode() != MessageSecurityMode::EnumSign &&
+			securitySettings.ownSecurityMode() != MessageSecurityMode::EnumSignAndEncrypt) {
 			encryptedText.swap(plainText);
 			return Success;
 		}
 
-		if (securitySettings.isOwnSignatureEnabled()) {
+		if (securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSign ||
+			securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
 			statusCode = signSendMessageResponse(plainText, secureChannel, secureChannelKey);
 			if (statusCode != Success) {
 				return statusCode;
@@ -1293,7 +1285,7 @@ namespace OpcUaStackCore
 		}
 
 		// encrypt send open secure channel response
-		if (securitySettings.isOwnEncryptionEnabled()) {
+		if (securitySettings.ownSecurityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
 			statusCode = encryptSendMessageResponse(plainText, encryptedText, secureChannel, secureChannelKey);
 			if (statusCode != Success) {
 				return statusCode;

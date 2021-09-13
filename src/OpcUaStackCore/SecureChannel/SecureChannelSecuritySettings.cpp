@@ -56,19 +56,6 @@ namespace OpcUaStackCore
 		return secureChannelKeys_;
 	}
 
-	bool
-	SecureChannelSecuritySettings::isOwnEncryptionEnabled(void)
-	{
-		return ownCertificateChain_.size() > 0;
-
-	}
-
-	bool
-	SecureChannelSecuritySettings::isOwnSignatureEnabled(void)
-	{
-		return partnerCertificateThumbprint_.exist();
-	}
-
 	OpcUaByteString&
 	SecureChannelSecuritySettings::ownCertificateThumbprint(void)
 	{
@@ -121,18 +108,6 @@ namespace OpcUaStackCore
 	SecureChannelSecuritySettings::ownNonce(void)
 	{
 		return ownNonce_;
-	}
-
-	bool
-	SecureChannelSecuritySettings::isPartnerEncryptionEnabled(void)
-	{
-		return ownCertificateThumbprint_.exist();
-	}
-
-	bool
-	SecureChannelSecuritySettings::isPartnerSignatureEnabled(void)
-	{
-		return partnerCertificateChain_.size() > 0;
 	}
 
 	OpcUaByteString&

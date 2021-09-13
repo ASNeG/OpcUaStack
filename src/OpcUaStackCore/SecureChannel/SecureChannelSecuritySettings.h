@@ -40,8 +40,6 @@ namespace OpcUaStackCore
 
 		SecureChannelKeys& secureChannelKeys(void);
 
-		bool isOwnEncryptionEnabled(void);
-		bool isOwnSignatureEnabled(void);
 		OpcUaByteString& ownCertificateThumbprint(void);
 		void ownSecurityPolicyUri(const OpcUaByteString& ownSecurityPolicyUri);
 		const OpcUaByteString& ownSecurityPolicyUri(void);
@@ -53,8 +51,6 @@ namespace OpcUaStackCore
 		MemoryBuffer& ownNonce(void);
 		//SecurityKeySet& ownSecurityKeySet(void);
 
-		bool isPartnerEncryptionEnabled(void);
-		bool isPartnerSignatureEnabled(void);
 		OpcUaByteString& partnerCertificateThumbprint(void);
 		void partnerSecurityPolicyUri(const OpcUaByteString& partnerSecurityPolicyUri);
 		const OpcUaByteString& partnerSecurityPolicyUri(void);

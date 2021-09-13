@@ -207,11 +207,6 @@ namespace OpcUaStackClient
 			}
 		}
 
-		// check server certificate from create session response
-		if (securitySettings.isOwnEncryptionEnabled()) {
-
-		}
-
 		Log(Debug, "session recv CreateSessionResponse")
 		    .parameter("SessId", ctx_->id_)
 		    .parameter("RequestId", trx->requestId_)
