@@ -106,20 +106,23 @@ namespace OpcUaStackServer
 	void 
 	ViewService::receiveBrowseRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
+		// get browse request and browse response from transaction
 		auto trx = boost::static_pointer_cast<ServiceTransactionBrowse>(serviceTransaction);
 		auto browseRequest = trx->request();
 		auto browseResponse = trx->response();
 
-
+		// get number of elements in browse request
 		uint32_t nodes = browseRequest->nodesToBrowse()->size();
 		Log(Debug, "attribute service browse request")
 			.parameter("Trx", serviceTransaction->transactionId())
 			.parameter("NumberNodes", nodes);
 
+		// generate result array
 		BrowseResultArray::SPtr browseResultArray = boost::make_shared<BrowseResultArray>();
 		browseResponse->results(browseResultArray);
 		browseResultArray->resize(nodes);
 
+		// handle each element in browse request
 		for (uint32_t idx = 0; idx < nodes; idx++) {
 			BrowseDescription::SPtr browseDescription;
 			browseRequest->nodesToBrowse()->get(idx, browseDescription);
@@ -129,7 +132,11 @@ namespace OpcUaStackServer
 
 			ReferenceDescriptionVec::iterator it;
 			ReferenceDescriptionVec referenceDescriptionVec;
-			OpcUaStatusCode statusCode = browseNode(browseDescription, referenceDescriptionVec); 
+			OpcUaStatusCode statusCode = browseNode(
+				browseRequest->requestMaxReferencesPerNode(),
+				browseDescription,
+				referenceDescriptionVec
+			);
 			browseResult->statusCode(statusCode);
 
 			auto referenceDescriptionArray = boost::make_shared<ReferenceDescriptionArray>();
@@ -266,35 +273,43 @@ namespace OpcUaStackServer
 	
 	OpcUaStatusCode
 	ViewService::browseNode(
-		BrowseDescription::SPtr& browseDescription,
-		ReferenceDescriptionVec& referenceDescriptionVec
+		uint32_t requestMaxReferencesPerNode,				// IN - max number of references
+		BrowseDescription::SPtr& browseDescription,			// IN - Reference selection criteria
+		ReferenceDescriptionVec& referenceDescriptionVec	// OUT - References found
 	)
 	{
+		// get reference to node id
 		BaseNodeClass::SPtr baseNodeClass = informationModel_->find(*browseDescription->nodeId());
 		if (baseNodeClass.get() == nullptr) {
 			return BadNodeIdUnknown;
 		}
 
+		// the reference map contains all references for the node
 		ReferenceItemMap& referenceItemMap = baseNodeClass->referenceItemMap();
 		Log(Debug, "read references")
 			.parameter("NodeId", baseNodeClass->nodeId())
 			.parameter("References", referenceItemMap.size());
 
+
 		for (const auto& referenceItem : referenceItemMap) {
 			OpcUaNodeId referenceTypeNodeId = referenceItem->typeId_;
 
+			// We only want the forward references
 			if (browseDescription->browseDirection() == BrowseDirection_Forward) {
 				if (!referenceItem->isForward_) continue;
 			}
 
+			// We only want the inverse references
 			if (browseDescription->browseDirection() == BrowseDirection_Inverse) {
 				if (referenceItem->isForward_) continue;
 			}
 
+			// We only want the reference from special reference type
 			if (checkReferenceType(referenceTypeNodeId, browseDescription) != Success) {
 				continue;
 			}
 
+			// Now let's check the reference. Does the target node exist.
 			BaseNodeClass::SPtr baseNodeClassTarget = informationModel_->find(referenceItem->nodeId_);
 			if (baseNodeClassTarget.get() == nullptr) {
 				Log(Debug, "target node not found")
@@ -303,9 +318,11 @@ namespace OpcUaStackServer
 				continue;
 			}
 
+			// create reference description and add reference description to result vector
 			auto referenceDescription = boost::make_shared<ReferenceDescription>();
 			referenceDescriptionVec.push_back(referenceDescription);
 
+			// add attributes to reference descriptions
 			auto targetNodeId = boost::make_shared<OpcUaExpandedNodeId>();
 			baseNodeClassTarget->nodeId().data().copyTo(*targetNodeId);
 			referenceDescription->expandedNodeId(targetNodeId);

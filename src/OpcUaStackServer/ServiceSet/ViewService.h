@@ -52,7 +52,11 @@ namespace OpcUaStackServer
 		void receiveRegisterNodesRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 
 		typedef std::vector<OpcUaStackCore::ReferenceDescription::SPtr> ReferenceDescriptionVec;
-		OpcUaStackCore::OpcUaStatusCode browseNode(OpcUaStackCore::BrowseDescription::SPtr& browseDescription, ReferenceDescriptionVec& referenceDescriptionVec);
+		OpcUaStackCore::OpcUaStatusCode browseNode(
+			uint32_t requestMaxReferencesPerNode,
+			OpcUaStackCore::BrowseDescription::SPtr& browseDescription,
+			ReferenceDescriptionVec& referenceDescriptionVec
+		);
 		OpcUaStackCore::OpcUaStatusCode hashSubtype(BaseNodeClass::SPtr baseNodeClass, OpcUaStackCore::BrowseDescription::SPtr browseDescription, uint32_t hopCounter = 25);
 		OpcUaStackCore::OpcUaStatusCode checkReferenceType(OpcUaStackCore::OpcUaNodeId& referenceTypeNodeId, OpcUaStackCore::BrowseDescription::SPtr& browseDescription);
 		void receiveUnregisterNodesRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
