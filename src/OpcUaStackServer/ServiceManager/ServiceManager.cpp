@@ -25,7 +25,9 @@ namespace OpcUaStackServer
 	ServiceManager::ServiceManager(void)
 	: transactionManager_(boost::make_shared<TransactionManager>())
 	, forwardGlobalSync_(boost::make_shared<ForwardGlobalSync>())
+	, continuationPointManager_(boost::make_shared<OpcUaStackCore::ContinuationPointManager>())
 	{
+		
 	}
 
 	ServiceManager::~ServiceManager(void)
@@ -223,7 +225,8 @@ namespace OpcUaStackServer
 		viewService_ = boost::make_shared<ViewService>(
 			"ViewServiceServer",
 			ioThread_,
-			messageBus_
+			messageBus_,
+			continuationPointManager_
 		);
 		viewService_->forwardGlobalSync(forwardGlobalSync_);
 
@@ -379,7 +382,6 @@ namespace OpcUaStackServer
 	{
 		messageBus_ = messageBus;
 	}
-
 	void
 	ServiceManager::endpointDescriptionSet(EndpointDescriptionSet::SPtr& endpointDescriptionSet)
 	{

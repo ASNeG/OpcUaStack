@@ -32,6 +32,7 @@
 #include "OpcUaStackServer/ServiceSet/DiscoveryService.h"
 #include "OpcUaStackServer/ServiceSetServerInfo/ServerInfoService.h"
 #include "OpcUaStackServer/ServiceSetApplication/ApplicationService.h"
+#include "OpcUaStackCore/ServiceSet/ContinuationPointManager.h"
 
 namespace OpcUaStackServer
 {
@@ -88,6 +89,8 @@ namespace OpcUaStackServer
 		ViewService::SPtr viewService_ = nullptr;
 		ApplicationService::SPtr applicationService_ = nullptr;
 		DiscoveryService::SPtr discoveryService_ = nullptr;
+		OpcUaStackCore::ContinuationPointManager::SPtr continuationPointManager_ = nullptr;
+
 	};
 
 }

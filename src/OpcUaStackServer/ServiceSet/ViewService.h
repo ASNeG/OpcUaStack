@@ -21,9 +21,20 @@
 #include "OpcUaStackCore/ServiceSet/ViewServiceTransaction.h"
 #include "OpcUaStackServer/ServiceSet/ServiceSetBase.h"
 #include "OpcUaStackServer/ServiceSet/ServerServiceBase.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaByteString.h"
+#include "OpcUaStackCore/ServiceSet/ContinuationPointManager.h"
 
 namespace OpcUaStackServer
 {
+    typedef enum
+    {
+        Browse_ReferenceType,
+        Browse_IsForward,
+        Browse_NodeClass,
+        Browse_BrowseName,
+        Browse_DisplayName,
+        Browse_TypeDefinition
+    } BrowseResultMask;
 
 	class DLLEXPORT ViewService 
 	: public ServiceSetBase
@@ -32,15 +43,22 @@ namespace OpcUaStackServer
 	{
 	  public:
 		typedef boost::shared_ptr<ViewService> SPtr;
-
+      
 		ViewService(
 			const std::string& serviceName,
 			OpcUaStackCore::IOThread::SPtr& ioThread,
-			OpcUaStackCore::MessageBus::SPtr& messageBus
+			OpcUaStackCore::MessageBus::SPtr& messageBus,
+			OpcUaStackCore::ContinuationPointManager::SPtr& continuationPointManager_
 		);
 		~ViewService(void);
 
 	  private:
+		//OpcUaStackCore::OpcUaByteString continuationPoint_;
+
+        OpcUaStackCore::ContinuationPoint::SPtr continuationPoint_;
+        OpcUaStackCore::ContinuationPointManager::SPtr continuationPointManger = nullptr;
+		uint32_t sessionId_;
+
 		void receive(
 			const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
 			OpcUaStackCore::Message::SPtr& message
@@ -53,10 +71,10 @@ namespace OpcUaStackServer
 
 		typedef std::vector<OpcUaStackCore::ReferenceDescription::SPtr> ReferenceDescriptionVec;
 		OpcUaStackCore::OpcUaStatusCode browseNode(
-			uint32_t requestMaxReferencesPerNode,
-			OpcUaStackCore::BrowseDescription::SPtr& browseDescription,
-			ReferenceDescriptionVec& referenceDescriptionVec
-		);
+                                       OpcUaStackCore::BrowseDescription::SPtr& browseDescription,
+                                       ReferenceDescriptionVec& referenceDescriptionVec,
+                                       const OpcUaStackCore::OpcUaUInt32 requestedMaxReferencesPerNode
+        ); 
 		OpcUaStackCore::OpcUaStatusCode hashSubtype(BaseNodeClass::SPtr baseNodeClass, OpcUaStackCore::BrowseDescription::SPtr browseDescription, uint32_t hopCounter = 25);
 		OpcUaStackCore::OpcUaStatusCode checkReferenceType(OpcUaStackCore::OpcUaNodeId& referenceTypeNodeId, OpcUaStackCore::BrowseDescription::SPtr& browseDescription);
 		void receiveUnregisterNodesRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
