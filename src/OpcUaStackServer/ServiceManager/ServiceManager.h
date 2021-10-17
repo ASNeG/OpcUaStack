@@ -75,6 +75,8 @@ namespace OpcUaStackServer
 		OpcUaStackCore::MessageBus::SPtr messageBus_ = nullptr;
 		OpcUaStackCore::EndpointDescriptionSet::SPtr endpointDescriptionSet_ = nullptr;
 		OpcUaStackCore::CryptoManager::SPtr cryptoManager_ = nullptr;
+		OpcUaStackCore::ContinuationPointManager::SPtr continuationPointManager_ = nullptr;
+
 
 		ForwardGlobalSync::SPtr forwardGlobalSync_ = nullptr;
 
@@ -89,8 +91,7 @@ namespace OpcUaStackServer
 		ViewService::SPtr viewService_ = nullptr;
 		ApplicationService::SPtr applicationService_ = nullptr;
 		DiscoveryService::SPtr discoveryService_ = nullptr;
-		OpcUaStackCore::ContinuationPointManager::SPtr continuationPointManager_ = nullptr;
-
+		
 	};
 
 }
