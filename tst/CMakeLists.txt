@@ -18,7 +18,7 @@ set(OPENSSL_VERSION_MAJOR "1" CACHE STRING "major version")
 set(OPENSSL_VERSION_MINOR "0" CACHE STRING "minor version")
 set(OPENSSL_VERSION_PATCH "0" CACHE STRING "patch version")
 
-set(OPCUASTACK_INSTALL_PREFIX "/" CACHE PATH "opc ua stack intallation prefix")
+set(OPCUASTACK_INSTALL_PREFIX "/home/upendar25/.ASNeG/" CACHE PATH "opc ua stack intallation prefix" FORCE)
 
 find_package(
     OpenSSL 
@@ -33,7 +33,7 @@ find_package(
 #
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-set(OpcUaStack_INSTALL_DIR "/" CACHE STRING "OpcUaStack installation output directory")
+set(OpcUaStack_INSTALL_DIR "/home/upendar25/.ASNeG/" CACHE STRING "OpcUaStack installation output directory" FORCE)
 
 option(
     USE_OpcUaStackCore

@@ -3,8 +3,6 @@
 namespace OpcUaStackCore
 {
 
-    uint32_t continuationPoint_id = 0;
-
     ContinuationPointManager::ContinuationPointManager(void)
     : ioThread_(), lmutex_(), slotTimerElement_()
     {

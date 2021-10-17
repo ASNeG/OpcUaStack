@@ -167,8 +167,7 @@ namespace OpcUaStackServer
 	void 
 	ViewService::receiveBrowseNextRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
-		// FIXME:
-        Log(Debug, "attribute service browse next request")
+		Log(Debug, "attribute service browse next request")
 			    .parameter("Trx", serviceTransaction->transactionId());
 
         auto trx = boost::static_pointer_cast<ServiceTransactionBrowseNext>(serviceTransaction);
@@ -205,7 +204,7 @@ namespace OpcUaStackServer
             }
         }
 		
-		serviceTransaction->statusCode(BadInternalError);
+		serviceTransaction->statusCode(Success);
 		sendAnswer(serviceTransaction);
 	}
 
@@ -382,30 +381,26 @@ namespace OpcUaStackServer
 				    ReferenceItem::SPtr referenceItem = itp.first->second;
 				    referenceItem->nodeId_.copyTo(*referenceDescription->typeDefinition());
 			    }
-            }
-            
-            
-            if (referenceDescriptionVec.size() > requestedMaxReferencesPerNode) {
-                referenceDescriptionArray->push_back(referenceDescription);
-                break;
-            }
+            }  
+         
+		 	
+			if (requestedMaxReferencesPerNode == 0 || referenceDescriptionVec.size() < requestedMaxReferencesPerNode)
+               	referenceDescriptionVec.push_back(referenceDescription);
             else
-                referenceDescriptionVec.push_back(referenceDescription);
+               	referenceDescriptionArray->push_back(referenceDescription);
 		}
 
+    	if (referenceDescriptionArray->size() > 0) {
+        	OpcUaDateTime currentTime(boost::posix_time::second_clock::local_time());
+        	OpcUaDateTime expirationTime(currentTime.dateTime() + boost::posix_time::seconds(60));
 
-        //ContinuationPoint::SPtr continuationPoint_;
-
-        OpcUaDateTime currentTime(boost::posix_time::second_clock::local_time());
-        OpcUaDateTime expirationTime(currentTime.dateTime() + boost::posix_time::seconds(60));
-
-		continuationPoint_->name = "";
-		continuationPoint_->expireTime = expirationTime;
-		continuationPoint_->sessionId = sessionId_;
-		continuationPoint_->referenceDescriptionArray = referenceDescriptionArray;
+			continuationPoint_->expireTime = expirationTime;
+			continuationPoint_->sessionId = sessionId_;
+			continuationPoint_->referenceDescriptionArray = referenceDescriptionArray;
 
 
-		continuationPointManger->addContinuationPoint(continuationPoint_);
+			continuationPointManger->addContinuationPoint(continuationPoint_);
+		}
         return Success;
 	}
 

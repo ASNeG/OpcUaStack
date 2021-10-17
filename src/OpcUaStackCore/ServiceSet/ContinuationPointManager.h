@@ -45,7 +45,6 @@ namespace OpcUaStackCore
             OpcUaStackCore::SlotTimerElement::SPtr slotTimerElement_ = nullptr;
             OpcUaStackCore::ContinuationPoint::Map continuationPointMap;
             boost::mutex lmutex_;
-            //std::mutex lmutex_;
 
 
         public:
