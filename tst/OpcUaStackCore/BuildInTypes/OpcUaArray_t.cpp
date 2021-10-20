@@ -232,4 +232,36 @@ BOOST_AUTO_TEST_CASE(OpcUaArrayString_iterator)
 	}
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaArray_idx_string)
+{
+	uint32_t idx;
+	OpcUaStringArray array;
+
+	// set 100 array elements
+	array.resize(100);
+	for (idx=0; idx<100; idx++) {
+		std::stringstream strStream;
+		strStream << "String" << idx;
+		OpcUaString::SPtr string = boost::make_shared<OpcUaString>(strStream.str());
+		array[idx] = string;
+	}
+
+	// read 100 array elements
+	for (idx=0; idx<100; idx++) {
+		std::stringstream strStream;
+		strStream << "String" << idx;
+		OpcUaString::SPtr string1 = boost::make_shared<OpcUaString>(strStream.str());
+		OpcUaString::SPtr string2 = array[idx];
+		BOOST_REQUIRE(string1->value() == string2->value());
+	}
+
+	// read 100 array elements
+	for (idx=0; idx<100; idx++) {
+		std::stringstream strStream;
+		strStream << "String" << idx;
+		OpcUaString::SPtr string1 = boost::make_shared<OpcUaString>(strStream.str());
+		BOOST_REQUIRE(string1->value() == array[idx]->value());
+	}
+}
+
 BOOST_AUTO_TEST_SUITE_END()
