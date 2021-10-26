@@ -318,8 +318,8 @@ namespace OpcUaStackServer
 		if (baseNodeClass.get() == nullptr) {
 			return BadNodeIdUnknown;
 		}
-
-        ReferenceDescriptionArray::SPtr referenceDescriptionArray;
+		continuationPoint_ = boost::make_shared<ContinuationPoint>();
+        auto referenceDescriptionArray = boost::make_shared<ReferenceDescriptionArray>();
 
         OpcUaUInt32 resultMask = browseDescription->resultMask();
         
@@ -393,7 +393,8 @@ namespace OpcUaStackServer
     	if (referenceDescriptionArray->size() > 0) {
         	OpcUaDateTime currentTime(boost::posix_time::second_clock::local_time());
         	OpcUaDateTime expirationTime(currentTime.dateTime() + boost::posix_time::seconds(60));
-
+			
+			
 			continuationPoint_->expireTime = expirationTime;
 			continuationPoint_->sessionId = sessionId_;
 			continuationPoint_->referenceDescriptionArray = referenceDescriptionArray;

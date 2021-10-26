@@ -3,20 +3,11 @@
 namespace OpcUaStackCore
 {
 
-    ContinuationPointManager::ContinuationPointManager(void)
-    : ioThread_(), lmutex_(), slotTimerElement_()
+    ContinuationPointManager::ContinuationPointManager(OpcUaStackCore::IOThread::SPtr& ioThread)
+    : ioThread_(ioThread), lmutex_(), slotTimerElement_()
     {
 
-	  	slotTimerElement_ = boost::make_shared<SlotTimerElement>();
-	  	slotTimerElement_->timeoutCallback(
-	  		ioThread_->createStrand(),
-	  		[this](void) {
-	  		    this->checkforExpiredContinuationPoints();
-	  	    }
-	  	);
-	  	slotTimerElement_->expireTime(boost::posix_time::microsec_clock::local_time(), 60000);
-	  	ioThread_->slotTimer()->start(slotTimerElement_);
-    }
+	}
 
     ContinuationPointManager::~ContinuationPointManager(void)
     {
@@ -55,6 +46,8 @@ namespace OpcUaStackCore
                  continuationPointMap.erase(it);
              }
         }
+
+        ioThread_->slotTimer()->start(slotTimerElement_);
     }
     
     void ContinuationPointManager::clearAllContinuationPoints()
@@ -75,6 +68,60 @@ namespace OpcUaStackCore
 
         if (it != continuationPointMap.end())
             continuationPointMap.erase(it);
+    }
+
+
+    bool ContinuationPointManager::startup()
+    {
+        strand_ = ioThread_->createStrand();
+
+        slotTimerElement_ = boost::make_shared<OpcUaStackCore::SlotTimerElement>();
+	  	slotTimerElement_->timeoutCallback(
+	  		strand_,
+	  		[this](void) {
+	  		    this->checkforExpiredContinuationPoints();
+	  	    }
+	  	);
+        slotTimerElement_->expireFromNow(60000);
+	  	
+	  	
+        ioThread_->slotTimer(boost::make_shared<SlotTimer>());
+
+        //OpcUaStackCore::SlotTimer::SPtr tempPtr = ioThread_->slotTimer();
+        //if(tempPtr != nullptr) {
+        ioThread_->slotTimer()->start(slotTimerElement_);
+        //tempPtr->start(slotTimerElement_);
+        //}
+        
+        return true;
+    
+    }
+    bool ContinuationPointManager::shutdown()
+    {
+        if (!strand_->running_in_this_thread()) {
+			// the function was not called by the strand
+
+			std::promise<void> promise;
+			std::future<void> future = promise.get_future();
+
+			strand_->dispatch(
+				[this, &promise]() {
+					shutdown();
+				    promise.set_value();
+			    }
+			);
+
+			future.wait();
+			return true;
+		}
+
+		// stop pixtend timer loop
+		if (slotTimerElement_.get() != nullptr) {
+			ioThread_->slotTimer()->stop(slotTimerElement_);
+			slotTimerElement_.reset();
+		}
+
+		return true;
     }
 
     ContinuationPoint::ContinuationPoint():name{"continuationPoint_"}
