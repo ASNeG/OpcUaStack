@@ -160,6 +160,13 @@ namespace OpcUaStackServer
 			return false;
 		}
 
+		// startup service manager
+		Log(Info, "startup service manager");
+		if (!serviceManager_->startup()) {
+			Log(Error, "server service manager start failed");
+			return false;
+		}
+
 		// startup application
 		Log(Info, "startup application");
 		if (!applicationManager_.startup()) {

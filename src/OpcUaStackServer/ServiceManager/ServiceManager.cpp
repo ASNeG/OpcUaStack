@@ -412,6 +412,12 @@ namespace OpcUaStackServer
 	}
 
 	bool
+	ServiceManager::startup(void)
+	{
+		return true;
+	}
+
+	bool
 	ServiceManager::shutdown(void)
 	{
 		applicationService_->shutdown();

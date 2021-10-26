@@ -54,6 +54,7 @@ namespace OpcUaStackServer
 		void messageBus(OpcUaStackCore::MessageBus::SPtr& messageBus);
 		void cryptoManager(OpcUaStackCore::CryptoManager::SPtr& cryptoManager);
 		bool init(void);
+		bool startup(void);
 		bool shutdown(void);
 
 		ApplicationService::SPtr applicationService(void);
