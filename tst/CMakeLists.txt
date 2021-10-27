@@ -18,7 +18,7 @@ set(OPENSSL_VERSION_MAJOR "1" CACHE STRING "major version")
 set(OPENSSL_VERSION_MINOR "0" CACHE STRING "minor version")
 set(OPENSSL_VERSION_PATCH "0" CACHE STRING "patch version")
 
-set(OPCUASTACK_INSTALL_PREFIX "~/.ASNeG/" CACHE PATH "opc ua stack intallation prefix" FORCE)
+set(OPCUASTACK_INSTALL_PREFIX "/" CACHE PATH "opc ua stack intallation prefix")
 
 find_package(
     OpenSSL 
@@ -33,7 +33,7 @@ find_package(
 #
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-set(OpcUaStack_INSTALL_DIR "~/.ASNeG/" CACHE STRING "OpcUaStack installation output directory" FORCE)
+set(OpcUaStack_INSTALL_DIR "/" CACHE STRING "OpcUaStack installation output directory")
 
 option(
     USE_OpcUaStackCore
