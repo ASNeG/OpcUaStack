@@ -21,48 +21,45 @@
 namespace OpcUaStackCore
 {
 
-    class DLLEXPORT ContinuationPoint:public OpcUaStackCore::Object
+    class DLLEXPORT ContinuationPoint : public OpcUaStackCore::Object
     {
-        public:
-            using SPtr = boost::shared_ptr<ContinuationPoint>;
-            using Map = std::map<OpcUaByteString, ContinuationPoint::SPtr>;
+    public:
+        using SPtr = boost::shared_ptr<ContinuationPoint>;
+        using Map = std::map<OpcUaByteString, ContinuationPoint::SPtr>;
 
-            OpcUaStackCore::OpcUaByteString name;
-            uint32_t sessionId;
-            ReferenceDescriptionArray::SPtr referenceDescriptionArray;
-            OpcUaStackCore::OpcUaDateTime expireTime;
-            
-            
+        OpcUaStackCore::OpcUaByteString name;
+        uint32_t sessionId;
+        ReferenceDescriptionArray::SPtr referenceDescriptionArray;
+        OpcUaStackCore::OpcUaDateTime expireTime;
 
-            ContinuationPoint();
-            ~ContinuationPoint();
-
+        ContinuationPoint();
+        ~ContinuationPoint();
     };
-    class DLLEXPORT ContinuationPointManager:public OpcUaStackCore::Object
+    class DLLEXPORT ContinuationPointManager : public OpcUaStackCore::Object
     {
-        private:
-            OpcUaStackCore::IOThread::SPtr ioThread_ = nullptr;
-            OpcUaStackCore::SlotTimerElement::SPtr slotTimerElement_ = nullptr;
-            OpcUaStackCore::ContinuationPoint::Map continuationPointMap;
-            boost::mutex lmutex_;
+    private:
+        OpcUaStackCore::IOThread::SPtr ioThread_ = nullptr;
+        OpcUaStackCore::SlotTimerElement::SPtr slotTimerElement_ = nullptr;
+        boost::shared_ptr<boost::asio::io_service::strand> strand_ = nullptr;
+        OpcUaStackCore::ContinuationPoint::Map continuationPointMap;
+        boost::mutex lmutex_;
 
+    public:
+        using SPtr = boost::shared_ptr<ContinuationPointManager>;
 
-        public:
-            using SPtr = boost::shared_ptr<ContinuationPointManager>;
-            
+    public:
+        ContinuationPointManager(OpcUaStackCore::IOThread::SPtr &ioThread);
+        virtual ~ContinuationPointManager(void);
+        void addContinuationPoint(OpcUaStackCore::ContinuationPoint::SPtr continuationPoint_);
+        ReferenceDescriptionArray::SPtr find(const OpcUaByteString _continuationPoint);
+        void checkforExpiredContinuationPoints();
+        void clearAllContinuationPoints();
+        void deleteContinuationPoint(const OpcUaByteString &_continuationPoint);
 
-
-        public:
-            ContinuationPointManager(void);
-            virtual ~ContinuationPointManager(void);
-            void addContinuationPoint(OpcUaStackCore::ContinuationPoint::SPtr continuationPoint_);
-            ReferenceDescriptionArray::SPtr find(const OpcUaByteString _continuationPoint);
-            void checkforExpiredContinuationPoints();
-            void clearAllContinuationPoints();
-            void deleteContinuationPoint(const OpcUaByteString& _continuationPoint);
+        bool startup();
+        bool shutdown();
     };
 
-    
 }
 
 #endif

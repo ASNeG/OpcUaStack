@@ -53,7 +53,7 @@ namespace OpcUaStackServer
 		~ViewService(void);
 
 	  private:
-        OpcUaStackCore::ContinuationPoint::SPtr continuationPoint_;
+        OpcUaStackCore::ContinuationPoint::SPtr continuationPoint_ = nullptr;
         OpcUaStackCore::ContinuationPointManager::SPtr continuationPointManger = nullptr;
 		uint32_t sessionId_;
 

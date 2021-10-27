@@ -25,7 +25,6 @@ namespace OpcUaStackServer
 	ServiceManager::ServiceManager(void)
 	: transactionManager_(boost::make_shared<TransactionManager>())
 	, forwardGlobalSync_(boost::make_shared<ForwardGlobalSync>())
-	, continuationPointManager_(boost::make_shared<OpcUaStackCore::ContinuationPointManager>())
 	{
 		
 	}
@@ -318,6 +317,9 @@ namespace OpcUaStackServer
 	bool
 	ServiceManager::initService(SessionManager::SPtr& sessionManager)
 	{
+		continuationPointManager_ = boost::make_shared<OpcUaStackCore::ContinuationPointManager>(ioThread_);
+		continuationPointManager_->startup();
+
 		initServerInfoService();
 		initAttributeService();
 		initMethodService();
@@ -398,6 +400,9 @@ namespace OpcUaStackServer
 	ServiceManager::init(void)
 	{
 		bool rc = true;
+
+		//rc = rc && continuationPointManager_->startup();
+		
 		rc = rc && serverInfoService_->init();
 		rc = rc && attributeService_->init();
 		rc = rc && methodService_->init();
@@ -441,6 +446,8 @@ namespace OpcUaStackServer
 		attributeService_.reset();
 		discoveryService_.reset();
 		serverInfoService_.reset();
+
+		continuationPointManager_->shutdown();
 
 		return true;
 	}
