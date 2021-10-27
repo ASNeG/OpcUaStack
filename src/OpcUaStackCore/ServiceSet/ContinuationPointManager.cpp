@@ -1,3 +1,21 @@
+/*
+   Copyright 2021 Kai Huebl (kai@huebl-sgh.de)
+
+   Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
+   Datei nur in Übereinstimmung mit der Lizenz erlaubt.
+   Eine Kopie der Lizenz erhalten Sie auf http://www.apache.org/licenses/LICENSE-2.0.
+
+   Sofern nicht gemäß geltendem Recht vorgeschrieben oder schriftlich vereinbart,
+   erfolgt die Bereitstellung der im Rahmen der Lizenz verbreiteten Software OHNE
+   GEWÄHR ODER VORBEHALTE – ganz gleich, ob ausdrücklich oder stillschweigend.
+
+   Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
+   im Rahmen der Lizenz finden Sie in der Lizenz.
+
+   Autor: Upendar Reddy Sama (upendarreddysama3@gmail.com)
+
+ */
+
 #include "OpcUaStackCore/ServiceSet/ContinuationPointManager.h"
 
 namespace OpcUaStackCore
@@ -13,22 +31,22 @@ namespace OpcUaStackCore
     {
     }
 
-    void ContinuationPointManager::addContinuationPoint(ContinuationPoint::SPtr continuationPoint_)
+    void ContinuationPointManager::addContinuationPoint(ContinuationPoint::SPtr continuationPoint)
     {
         boost::mutex::scoped_lock getlock(lmutex_);
-        continuationPointMap.emplace(std::make_pair(continuationPoint_->name, continuationPoint_));
+        continuationPointMap_.emplace(std::make_pair(continuationPoint->name_, continuationPoint));
     }
 
     ReferenceDescriptionArray::SPtr
-    ContinuationPointManager::find(const OpcUaByteString _continuationPoint)
+    ContinuationPointManager::find(const OpcUaByteString continuationPoint)
     {
 
         boost::mutex::scoped_lock getlock(lmutex_);
 
         ContinuationPoint::Map::iterator it;
-        it = continuationPointMap.find(_continuationPoint);
+        it = continuationPointMap_.find(continuationPoint);
 
-        if (it != continuationPointMap.end()) return it->second->referenceDescriptionArray;
+        if (it != continuationPointMap_.end()) return it->second->referenceDescriptionArray_;
 
 		ReferenceDescriptionArray::SPtr referenceDescriptionArray;
 		return referenceDescriptionArray;
@@ -39,11 +57,10 @@ namespace OpcUaStackCore
 
         boost::mutex::scoped_lock getlock(lmutex_);
 
-        for (auto it = continuationPointMap.begin(); it != continuationPointMap.end(); ++it) {
-             OpcUaDateTime currentTime(boost::posix_time::second_clock::local_time());
-             if (currentTime.rawDateTime() > it->second->expireTime.rawDateTime()) {
-                
-                 continuationPointMap.erase(it);
+        OpcUaDateTime currentTime(boost::posix_time::second_clock::local_time());
+        for (auto it = continuationPointMap_.begin(); it != continuationPointMap_.end(); ++it) {
+             if (currentTime.rawDateTime() > it->second->expireTime_.rawDateTime()) {
+                 continuationPointMap_.erase(it);
              }
         }
 
@@ -54,20 +71,20 @@ namespace OpcUaStackCore
     {
         
         boost::mutex::scoped_lock getlock(lmutex_);
-        continuationPointMap.clear();
+        continuationPointMap_.clear();
     }
 
 
-    void ContinuationPointManager::deleteContinuationPoint(const OpcUaByteString& _continuationPoint)
+    void ContinuationPointManager::deleteContinuationPoint(const OpcUaByteString& continuationPoint)
     {
         
         boost::mutex::scoped_lock getlock(lmutex_);
 
         ContinuationPoint::Map::iterator it;
-        it = continuationPointMap.find(_continuationPoint);
+        it = continuationPointMap_.find(continuationPoint);
 
-        if (it != continuationPointMap.end())
-            continuationPointMap.erase(it);
+        if (it != continuationPointMap_.end())
+            continuationPointMap_.erase(it);
     }
 
 
@@ -83,15 +100,7 @@ namespace OpcUaStackCore
 	  	    }
 	  	);
         slotTimerElement_->expireFromNow(60000);
-	  	
-	  	
-        ioThread_->slotTimer(boost::make_shared<SlotTimer>());
-
-        //OpcUaStackCore::SlotTimer::SPtr tempPtr = ioThread_->slotTimer();
-        //if(tempPtr != nullptr) {
         ioThread_->slotTimer()->start(slotTimerElement_);
-        //tempPtr->start(slotTimerElement_);
-        //}
         
         return true;
     
@@ -124,12 +133,12 @@ namespace OpcUaStackCore
 		return true;
     }
 
-    ContinuationPoint::ContinuationPoint():name{"continuationPoint_"}
+    ContinuationPoint::ContinuationPoint():name_{"continuationPoint_"}
     {
         
         static uint32_t unique_id = 0;
         // creation of unique id for continuation point
-        name.fromString(name.toString() + std::to_string(unique_id));
+        name_.fromString(name_.toString() + std::to_string(unique_id));
         unique_id++;
     }
     ContinuationPoint::~ContinuationPoint(){}

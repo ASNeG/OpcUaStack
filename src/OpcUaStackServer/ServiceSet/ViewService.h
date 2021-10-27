@@ -13,6 +13,7 @@
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
    Autor: Kai Huebl (kai@huebl-sgh.de)
+          Upendar Reddy Sama (upendarreddysama3@gmail.com)
  */
 
 #ifndef __OpcUaStackServer_ViewService_h__

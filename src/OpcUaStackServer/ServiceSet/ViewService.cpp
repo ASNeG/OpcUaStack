@@ -13,6 +13,7 @@
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
    Autor: Kai Huebl (kai@huebl-sgh.de)
+          Upendar Reddy Sama (upendarreddysama3@gmail.com)
  */
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
@@ -137,7 +138,7 @@ namespace OpcUaStackServer
 			ReferenceDescriptionVec referenceDescriptionVec;
 			OpcUaStatusCode statusCode = browseNode(browseDescription, referenceDescriptionVec, requestMaxReferencesPerNode);
 			browseResult->statusCode(statusCode);
-            browseResult->continuationPoint(continuationPoint_->name);
+            browseResult->continuationPoint(continuationPoint_->name_);
 
 			auto referenceDescriptionArray = boost::make_shared<ReferenceDescriptionArray>();
 			referenceDescriptionArray->resize(referenceDescriptionVec.size());
@@ -395,9 +396,9 @@ namespace OpcUaStackServer
         	OpcUaDateTime expirationTime(currentTime.dateTime() + boost::posix_time::seconds(60));
 			
 			
-			continuationPoint_->expireTime = expirationTime;
-			continuationPoint_->sessionId = sessionId_;
-			continuationPoint_->referenceDescriptionArray = referenceDescriptionArray;
+			continuationPoint_->expireTime_ = expirationTime;
+			continuationPoint_->sessionId_ = sessionId_;
+			continuationPoint_->referenceDescriptionArray_ = referenceDescriptionArray;
 
 
 			continuationPointManger->addContinuationPoint(continuationPoint_);

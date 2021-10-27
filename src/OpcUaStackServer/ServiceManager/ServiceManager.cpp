@@ -13,6 +13,7 @@
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
    Autor: Kai Huebl (kai@huebl-sgh.de)
+          Upendar Reddy Sama (upendarreddysama3@gmail.com)
  */
 
 #include "OpcUaStackServer/ServiceManager/ServiceManager.h"
@@ -317,9 +318,6 @@ namespace OpcUaStackServer
 	bool
 	ServiceManager::initService(SessionManager::SPtr& sessionManager)
 	{
-		continuationPointManager_ = boost::make_shared<OpcUaStackCore::ContinuationPointManager>(ioThread_);
-		continuationPointManager_->startup();
-
 		initServerInfoService();
 		initAttributeService();
 		initMethodService();
@@ -400,8 +398,6 @@ namespace OpcUaStackServer
 	ServiceManager::init(void)
 	{
 		bool rc = true;
-
-		//rc = rc && continuationPointManager_->startup();
 		
 		rc = rc && serverInfoService_->init();
 		rc = rc && attributeService_->init();
@@ -419,6 +415,9 @@ namespace OpcUaStackServer
 	bool
 	ServiceManager::startup(void)
 	{
+		continuationPointManager_ = boost::make_shared<OpcUaStackCore::ContinuationPointManager>(ioThread_);
+		continuationPointManager_->startup();
+
 		return true;
 	}
 
