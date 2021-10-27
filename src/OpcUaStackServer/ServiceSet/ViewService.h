@@ -55,7 +55,7 @@ namespace OpcUaStackServer
 
 	  private:
         OpcUaStackCore::ContinuationPoint::SPtr continuationPoint_ = nullptr;
-        OpcUaStackCore::ContinuationPointManager::SPtr continuationPointManger = nullptr;
+        OpcUaStackCore::ContinuationPointManager::SPtr continuationPointManger_ = nullptr;
 		uint32_t sessionId_;
 
 		void receive(

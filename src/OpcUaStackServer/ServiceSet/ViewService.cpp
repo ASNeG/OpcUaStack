@@ -32,7 +32,7 @@ namespace OpcUaStackServer
 		const std::string& serviceName,
 		OpcUaStackCore::IOThread::SPtr& ioThread,
 		OpcUaStackCore::MessageBus::SPtr& messageBus,
-		OpcUaStackCore::ContinuationPointManager::SPtr& continuationPointManager_
+		OpcUaStackCore::ContinuationPointManager::SPtr& continuationPointManager
 	)
 	:ServerServiceBase()
 	{
@@ -41,7 +41,7 @@ namespace OpcUaStackServer
 		ioThread_ = ioThread.get();
 		strand_ = ioThread->createStrand();
 		messageBus_ = messageBus;
-		continuationPointManger = continuationPointManager_;
+		continuationPointManger_ = continuationPointManager;
 
 		// register message bus receiver
 		MessageBusMemberConfig messageBusMemberConfig;
@@ -178,7 +178,7 @@ namespace OpcUaStackServer
         bool releaseContinuationPoints = browseNextRequest->releaseContinuationPoints();
 
         if (releaseContinuationPoints) {
-            continuationPointManger->clearAllContinuationPoints();
+            continuationPointManger_->clearAllContinuationPoints();
         } else {
 
             OpcUaByteStringArray::SPtr continuationPointArray = browseNextRequest->continuationPoints();
@@ -196,10 +196,10 @@ namespace OpcUaStackServer
 
                 OpcUaByteString::SPtr continuationPoint;
                 if (continuationPointArray->get(idx, continuationPoint)) {
-                     auto referenceDescriptionArray = continuationPointManger->find(*continuationPoint);
+                     auto referenceDescriptionArray = continuationPointManger_->find(*continuationPoint);
                      browseResult->references(referenceDescriptionArray);
 
-                     continuationPointManger->deleteContinuationPoint(*continuationPoint);
+                     continuationPointManger_->deleteContinuationPoint(*continuationPoint);
                 }
 
             }
@@ -401,7 +401,7 @@ namespace OpcUaStackServer
 			continuationPoint_->referenceDescriptionArray_ = referenceDescriptionArray;
 
 
-			continuationPointManger->addContinuationPoint(continuationPoint_);
+			continuationPointManger_->addContinuationPoint(continuationPoint_);
 		}
         return Success;
 	}
