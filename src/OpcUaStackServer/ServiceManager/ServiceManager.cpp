@@ -417,7 +417,6 @@ namespace OpcUaStackServer
 	{
 		continuationPointManager_ = boost::make_shared<OpcUaStackCore::ContinuationPointManager>(ioThread_);
 		continuationPointManager_->startup();
-
 		return true;
 	}
 

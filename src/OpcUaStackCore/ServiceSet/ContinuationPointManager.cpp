@@ -36,7 +36,7 @@ namespace OpcUaStackCore
         boost::mutex::scoped_lock getlock(lmutex_);
         continuationPointMap_.emplace(std::make_pair(continuationPoint->name_, continuationPoint));
     }
-
+/*
     ReferenceDescriptionArray::SPtr
     ContinuationPointManager::find(const OpcUaByteString continuationPoint)
     {
@@ -50,6 +50,35 @@ namespace OpcUaStackCore
 
 		ReferenceDescriptionArray::SPtr referenceDescriptionArray;
 		return referenceDescriptionArray;
+    }
+
+*/
+    ContinuationPoint::SPtr
+    ContinuationPointManager::getContinuationPoint(const OpcUaByteString continuationPointStr)
+    {
+
+        boost::mutex::scoped_lock getlock(lmutex_);
+
+        ContinuationPoint::Map::iterator it;
+        it = continuationPointMap_.find(continuationPointStr);
+
+        if (it != continuationPointMap_.end()) return it->second;
+
+		return nullptr;
+    }
+
+    OpcUaInt32
+    ContinuationPointManager::getRequestMaxReferencesPerNode(const OpcUaByteString continuationPoint)
+    {
+
+        boost::mutex::scoped_lock getlock(lmutex_);
+
+        ContinuationPoint::Map::iterator it;
+        it = continuationPointMap_.find(continuationPoint);
+
+        if (it != continuationPointMap_.end()) return it->second->requestMaxReferencesPerNode_;
+
+		return -1;
     }
 
     void ContinuationPointManager::checkforExpiredContinuationPoints()

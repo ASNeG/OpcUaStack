@@ -42,8 +42,10 @@ namespace OpcUaStackCore
 
         OpcUaStackCore::OpcUaByteString name_;
         uint32_t sessionId_;
-        ReferenceDescriptionArray::SPtr referenceDescriptionArray_;
+        std::list<OpcUaStackCore::ReferenceDescription::SPtr> referenceDescriptionList_;
+        
         OpcUaStackCore::OpcUaDateTime expireTime_;
+        OpcUaUInt32 requestMaxReferencesPerNode_;
 
         ContinuationPoint();
         ~ContinuationPoint();
@@ -64,11 +66,15 @@ namespace OpcUaStackCore
     public:
         ContinuationPointManager(OpcUaStackCore::IOThread::SPtr &ioThread);
         virtual ~ContinuationPointManager(void);
-        void addContinuationPoint(OpcUaStackCore::ContinuationPoint::SPtr continuationPoint_);
-        ReferenceDescriptionArray::SPtr find(const OpcUaByteString _continuationPoint);
+        void addContinuationPoint(OpcUaStackCore::ContinuationPoint::SPtr continuationPoint);
+        
+        ContinuationPoint::SPtr getContinuationPoint(const OpcUaByteString continuationPointStr);
+        OpcUaInt32 getRequestMaxReferencesPerNode(const OpcUaByteString continuationPointStr);
+    
+
         void checkforExpiredContinuationPoints();
         void clearAllContinuationPoints();
-        void deleteContinuationPoint(const OpcUaByteString &_continuationPoint);
+        void deleteContinuationPoint(const OpcUaByteString &_continuationPointStr);
 
         bool startup();
         bool shutdown();
