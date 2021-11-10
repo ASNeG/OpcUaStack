@@ -33,7 +33,7 @@ namespace OpcUaStackServer
 		OpcUaStackCore::IOThread::SPtr &ioThread,
 		OpcUaStackCore::MessageBus::SPtr &messageBus,
 		OpcUaStackCore::ContinuationPointManager::SPtr &continuationPointManager)
-		: ServerServiceBase()
+	: ServerServiceBase()
 	{
 		// set parameter in server service base
 		serviceName_ = serviceName;
@@ -123,8 +123,7 @@ namespace OpcUaStackServer
 		browseResponse->results(browseResultArray);
 		browseResultArray->resize(nodes);
 
-		for (uint32_t idx = 0; idx < nodes; idx++)
-		{
+		for (uint32_t idx = 0; idx < nodes; idx++) {
 			BrowseDescription::SPtr browseDescription;
 			browseRequest->nodesToBrowse()->get(idx, browseDescription);
 
@@ -177,65 +176,61 @@ namespace OpcUaStackServer
 
 		bool releaseContinuationPoints = browseNextRequest->releaseContinuationPoints();
 
-		OpcUaByteStringArray::SPtr continuationPointArray = browseNextRequest->continuationPoints();
-
+		auto continuationPointArray = browseNextRequest->continuationPoints();
 		auto continuationPointsSize = continuationPointArray->size();
 
-		BrowseResultArray::SPtr browseResultArray = boost::make_shared<BrowseResultArray>();
-		browseNextResponse->results(browseResultArray);
+		auto browseResultArray = boost::make_shared<BrowseResultArray>();
 		browseResultArray->resize(static_cast<uint32_t>(continuationPointsSize));
+		browseNextResponse->results(browseResultArray);
 
 		for (size_t idx = 0; idx < continuationPointsSize; ++idx)
 		{
-			BrowseResult::SPtr browseResult = boost::make_shared<BrowseResult>();
+			auto browseResult = boost::make_shared<BrowseResult>();
 			browseResultArray->set(idx, browseResult);
 
 			OpcUaByteString::SPtr continuationPointStr;
-
-			if (continuationPointArray->get(idx, continuationPointStr))
-			{
-				if (!releaseContinuationPoints)
-				{
-					//auto referenceDescriptionArray = continuationPointManger_->find(*continuationPointStr);
-                    
-					auto continuationPoint = continuationPointManger_->getContinuationPoint(*continuationPointStr);
-					
-					if (continuationPoint)
-					{
-						
-						auto referenceDescriptionList = continuationPoint->referenceDescriptionList_;
-						//OpcUaInt32 requestMaxReferencesPerNode = continuationPointManger_->getRequestMaxReferencesPerNode(*continuationPointStr);
-						OpcUaInt32 requestMaxReferencesPerNode = continuationPoint->requestMaxReferencesPerNode_;
-						
-						auto resultReferenceArray = boost::make_shared<ReferenceDescriptionArray>();
-
-						//auto referenceDescriptionArrayTemp = boost::make_shared<ReferenceDescriptionArray>();
-
-
-						for (size_t i = 0; i < requestMaxReferencesPerNode; i++)
-						{
-							if (i < referenceDescriptionList.size()) {
-								resultReferenceArray->push_back(referenceDescriptionList.front());
-								referenceDescriptionList.pop_front();
-							}
-						}
-
-						browseResult->references(resultReferenceArray);
-
-						if (requestMaxReferencesPerNode >= referenceDescriptionList.size())
-							continuationPointManger_->deleteContinuationPoint(*continuationPointStr);
-						else
-							browseResult->continuationPoint(*continuationPointStr);
-						
-					} else {
-						browseResult->statusCode(BadContinuationPointInvalid);
-					}
-				}
-				else
-				{
-					continuationPointManger_->deleteContinuationPoint(*continuationPointStr);
-				}
+			if (!continuationPointArray->get(idx, continuationPointStr)) {
+				browseResult->statusCode(BadContinuationPointInvalid);
+				continue;
 			}
+
+
+			if (releaseContinuationPoints) {
+				continuationPointManger_->deleteContinuationPoint(*continuationPointStr);
+				browseResult->statusCode(Success);
+				continue;
+			}
+
+			auto continuationPoint = continuationPointManger_->getContinuationPoint(*continuationPointStr);
+			if (!continuationPoint) {
+				browseResult->statusCode(BadContinuationPointInvalid);
+				continue;
+			}
+
+			// calculate number of elements in browse result
+			OpcUaInt32 requestMaxReferencesPerNode = continuationPoint->requestMaxReferencesPerNode_;
+			if (requestMaxReferencesPerNode > continuationPoint->referenceDescriptionList_.size()) {
+				requestMaxReferencesPerNode = continuationPoint->referenceDescriptionList_.size();
+			}
+
+			// add reference elements to browse result
+			auto resultReferenceArray = boost::make_shared<ReferenceDescriptionArray>();
+			resultReferenceArray->resize(requestMaxReferencesPerNode);
+			browseResult->references(resultReferenceArray);
+
+			for (size_t i = 0; i < requestMaxReferencesPerNode; i++) {
+				resultReferenceArray->push_back(continuationPoint->referenceDescriptionList_.front());
+				continuationPoint->referenceDescriptionList_.pop_front();
+			}
+
+			// delete continuation point
+			if (continuationPoint->referenceDescriptionList_.size() == 0) {
+				continuationPointManger_->deleteContinuationPoint(*continuationPointStr);
+			}
+			else {
+				browseResult->continuationPoint(*continuationPointStr);
+			}
+
 		}
 
 		serviceTransaction->statusCode(Success);
@@ -353,12 +348,11 @@ namespace OpcUaStackServer
 		ReferenceDescriptionVec &referenceDescriptionVec,
 		const OpcUaUInt32 requestedMaxReferencesPerNode)
 	{
-		BaseNodeClass::SPtr baseNodeClass = informationModel_->find(*browseDescription->nodeId());
+		auto baseNodeClass = informationModel_->find(*browseDescription->nodeId());
 		if (baseNodeClass.get() == nullptr)
 		{
 			return BadNodeIdUnknown;
 		}
-		//auto referenceDescriptionArray = boost::make_shared<ReferenceDescriptionArray>();
        
 	    std::list<OpcUaStackCore::ReferenceDescription::SPtr> referenceDescriptionList;
 
@@ -369,28 +363,24 @@ namespace OpcUaStackServer
 			.parameter("NodeId", baseNodeClass->nodeId())
 			.parameter("References", referenceItemMap.size());
 
-		for (const auto &referenceItem : referenceItemMap)
-		{
+		for (const auto &referenceItem : referenceItemMap) {
 			OpcUaNodeId referenceTypeNodeId = referenceItem->typeId_;
 
-			if (browseDescription->browseDirection() == BrowseDirection_Forward)
-			{
+			if (browseDescription->browseDirection() == BrowseDirection_Forward) {
 				if (!referenceItem->isForward_)
 					continue;
 			}
 
-			if (browseDescription->browseDirection() == BrowseDirection_Inverse)
-			{
+			if (browseDescription->browseDirection() == BrowseDirection_Inverse) {
 				if (referenceItem->isForward_)
 					continue;
 			}
 
-			if (checkReferenceType(referenceTypeNodeId, browseDescription) != Success)
-			{
+			if (checkReferenceType(referenceTypeNodeId, browseDescription) != Success) {
 				continue;
 			}
 
-			BaseNodeClass::SPtr baseNodeClassTarget = informationModel_->find(referenceItem->nodeId_);
+			auto baseNodeClassTarget = informationModel_->find(referenceItem->nodeId_);
 			if (baseNodeClassTarget.get() == nullptr)
 			{
 				Log(Debug, "target node not found")
@@ -407,35 +397,40 @@ namespace OpcUaStackServer
 
 			std::bitset<6> resultMaskBits = resultMask;
 
-			if (resultMaskBits.test(Browse_ReferenceType))
+			if (resultMaskBits.test(Browse_ReferenceType)) {
 				referenceTypeNodeId.copyTo(*referenceDescription->referenceTypeId());
+			}
 
-			if (resultMaskBits.test(Browse_IsForward))
+			if (resultMaskBits.test(Browse_IsForward)) {
 				referenceDescription->isForward(referenceItem->isForward_);
+			}
 
-			if (resultMaskBits.test(Browse_NodeClass))
+			if (resultMaskBits.test(Browse_NodeClass)) {
 				referenceDescription->nodeClass(baseNodeClassTarget->nodeClass().data());
+			}
 
-			if (resultMaskBits.test(Browse_BrowseName))
+			if (resultMaskBits.test(Browse_BrowseName)) {
 				referenceDescription->browseName(baseNodeClassTarget->browseName().data());
+			}
 
-			if (resultMaskBits.test(Browse_DisplayName))
+			if (resultMaskBits.test(Browse_DisplayName)) {
 				referenceDescription->displayName(baseNodeClassTarget->displayName().data());
+			}
 
-			if (resultMaskBits.test(Browse_TypeDefinition))
-			{
+			if (resultMaskBits.test(Browse_TypeDefinition)) {
 				auto itp = baseNodeClassTarget->referenceItemMap().equal_range(*ReferenceTypeMap::hasTypeDefinitionTypeNodeId());
-				if (itp.first != itp.second)
-				{
+				if (itp.first != itp.second) {
 					ReferenceItem::SPtr referenceItem = itp.first->second;
 					referenceItem->nodeId_.copyTo(*referenceDescription->typeDefinition());
 				}
 			}
 
-			if (requestedMaxReferencesPerNode == 0 || referenceDescriptionVec.size() < requestedMaxReferencesPerNode)
+			if (requestedMaxReferencesPerNode == 0 || referenceDescriptionVec.size() < requestedMaxReferencesPerNode) {
 				referenceDescriptionVec.push_back(referenceDescription);
-			else
+			}
+			else {
 				referenceDescriptionList.push_back(referenceDescription);
+			}
 		}
 
 		if (referenceDescriptionList.size() > 0)

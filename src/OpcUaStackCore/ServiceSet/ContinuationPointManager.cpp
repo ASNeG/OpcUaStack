@@ -59,10 +59,11 @@ namespace OpcUaStackCore
 
         boost::mutex::scoped_lock getlock(lmutex_);
 
-        ContinuationPoint::Map::iterator it;
-        it = continuationPointMap_.find(continuationPointStr);
+        auto it = continuationPointMap_.find(continuationPointStr);
 
-        if (it != continuationPointMap_.end()) return it->second;
+        if (it != continuationPointMap_.end()) {
+        	return it->second;
+        }
 
 		return nullptr;
     }
@@ -73,10 +74,11 @@ namespace OpcUaStackCore
 
         boost::mutex::scoped_lock getlock(lmutex_);
 
-        ContinuationPoint::Map::iterator it;
-        it = continuationPointMap_.find(continuationPoint);
+        auto it = continuationPointMap_.find(continuationPoint);
 
-        if (it != continuationPointMap_.end()) return it->second->requestMaxReferencesPerNode_;
+        if (it != continuationPointMap_.end()) {
+        	return it->second->requestMaxReferencesPerNode_;
+        }
 
 		return -1;
     }
@@ -109,11 +111,11 @@ namespace OpcUaStackCore
         
         boost::mutex::scoped_lock getlock(lmutex_);
 
-        ContinuationPoint::Map::iterator it;
-        it = continuationPointMap_.find(continuationPoint);
+        auto it = continuationPointMap_.find(continuationPoint);
 
-        if (it != continuationPointMap_.end())
+        if (it != continuationPointMap_.end()) {
             continuationPointMap_.erase(it);
+        }
     }
 
 
