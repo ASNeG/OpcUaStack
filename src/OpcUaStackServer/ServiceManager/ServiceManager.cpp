@@ -318,6 +318,8 @@ namespace OpcUaStackServer
 	bool
 	ServiceManager::initService(SessionManager::SPtr& sessionManager)
 	{
+		continuationPointManager_ = boost::make_shared<OpcUaStackCore::ContinuationPointManager>(ioThread_);
+
 		initServerInfoService();
 		initAttributeService();
 		initMethodService();
@@ -415,7 +417,6 @@ namespace OpcUaStackServer
 	bool
 	ServiceManager::startup(void)
 	{
-		continuationPointManager_ = boost::make_shared<OpcUaStackCore::ContinuationPointManager>(ioThread_);
 		continuationPointManager_->startup();
 		return true;
 	}

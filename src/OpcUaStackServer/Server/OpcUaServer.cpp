@@ -154,45 +154,33 @@ namespace OpcUaStackServer
 	OpcUaServer::start(void)
 	{
 		Log(Info, "startup ioThread");
-		
 		if (!ioThread_->startup())
 		{
 			Log(Error, "server io thread start failed");
 			return false;
 		}
-        
+
 		// startup service manager
-		Log(Info, "startup service manager");
+		Log(Info, "service manager");
 		if (!serviceManager_->startup()) {
-			Log(Error, "server service manager start failed");
-			return false;
-		}
-		
-		// startup opc ua stack
-		Log(Info, "start opc ua server stack");
-		if (!sessionManager_->startup()) {
-			Log(Error, "server session manager start failed");
+			Log(Error, "service maanger start failed");
 			return false;
 		}
 
-		if (!serviceManager_->initService(sessionManager_)) {
-			Log log(Error, "init service manager error");
-			return false;
-		}
-
-		serviceManager_->informationModel(informationModel_);
-
-		if (!serviceManager_->init()) {
-			Log log(Error, "init service manager error");
-			return false;
-		}
 		// startup application
 		Log(Info, "startup application");
 		if (!applicationManager_.startup()) {
 			Log(Error, "server application manager start failed");
 			return false;
 		}
-		
+
+		// startup opc ua stack
+		Log(Info, "start opc ua server stack");
+		if (!sessionManager_->startup()) {
+			Log(Error, "server session manager start failed");
+			return false;
+		}
+	
 		return true;
 	}
 	
@@ -458,7 +446,7 @@ namespace OpcUaStackServer
 		serviceManager_->endpointDescriptionSet(endpointDescriptionSet_);
 		serviceManager_->cryptoManager(cryptoManager_);
 
-		/*if (!serviceManager_->initService(sessionManager_)) {
+		if (!serviceManager_->initService(sessionManager_)) {
 			Log log(Error, "init service manager error");
 			return false;
 		}
@@ -468,7 +456,7 @@ namespace OpcUaStackServer
 		if (!serviceManager_->init()) {
 			Log log(Error, "init service manager error");
 			return false;
-		}*/
+		}
 		return true;
 	}
 
