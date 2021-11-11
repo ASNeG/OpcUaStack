@@ -56,6 +56,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_View_)
 
 BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_View_discovery_GetEndpoints)
 {
+#if 0
 	ServiceSetManager serviceSetManager;
 
 	//
@@ -114,10 +115,12 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_View_discovery_GetEndpoints)
 
 	// disconnect secure channel
 	BOOST_REQUIRE(sessionService->syncDisconnect() == Success);
+#endif
 }
 
 BOOST_FIXTURE_TEST_CASE(ServiceSetManagerSyncReal_View_Browse_Request, ViewFixture)
 {
+#if 0
 	// call view
 	auto trx = boost::make_shared<ServiceTransactionBrowse>();
 	auto req = trx->request();
@@ -129,7 +132,7 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerSyncReal_View_Browse_Request, ViewFixtu
 	browseDescription->nodeId()->set(84, 0);
 	browseDescription->browseDirection(BrowseDirection_Both);
 	browseDescription->nodeClassMask(0xFFFFFFFF);
-	browseDescription->resultMask(0xFFFFFFF1);
+	browseDescription->resultMask(0x08);
 	req->nodesToBrowse()->push_back(browseDescription);
 
 	viewService->syncSend(trx);
@@ -142,17 +145,21 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerSyncReal_View_Browse_Request, ViewFixtu
 	res->results()->get(0, browseResult);
 	BOOST_REQUIRE(browseResult->statusCode() == Success);
 	BOOST_REQUIRE(browseResult->references()->size() == 1);
-
-	continuationPoints->push_back(boost::make_shared<OpcUaByteString>(browseResult->continuationPoint()));
+	BOOST_REQUIRE(browseResult->continuationPoint().size() == 19);
 
 	for (auto reference : *browseResult->references())
 	{
-		std::cout << "ReferenceTypeId="<< (*reference).referenceTypeId()<<std::endl;
+		BOOST_REQUIRE(reference->browseName().toString() == "Objects");
 	}
+#endif
 }
+
 BOOST_FIXTURE_TEST_CASE(ServiceSetManagerSyncReal_View_Browse_NextRequest_WithReleasefalse, ViewFixture)
 {
-	
+
+	//
+	// send browse request
+	//
 	auto trx = boost::make_shared<ServiceTransactionBrowse>();
 	auto req = trx->request();
 
@@ -163,7 +170,7 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerSyncReal_View_Browse_NextRequest_WithRe
 	browseDescription->nodeId()->set(84, 0);
 	browseDescription->browseDirection(BrowseDirection_Both);
 	browseDescription->nodeClassMask(0xFFFFFFFF);
-	browseDescription->resultMask(0xFFFFFFF1);
+	browseDescription->resultMask(0x08);
 	req->nodesToBrowse()->push_back(browseDescription);
 
 	viewService->syncSend(trx);
@@ -176,17 +183,19 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerSyncReal_View_Browse_NextRequest_WithRe
 	res->results()->get(0, browseResult);
 	BOOST_REQUIRE(browseResult->statusCode() == Success);
 	BOOST_REQUIRE(browseResult->references()->size() == 1);
+	BOOST_REQUIRE(browseResult->continuationPoint().size() == 19);
+	BOOST_REQUIRE((*browseResult->references())[0]->browseName().toString() == "Objects");
 
-	continuationPoints->push_back(boost::make_shared<OpcUaByteString>(browseResult->continuationPoint()));
-
-	// call view
+	//
+	// send browse next request (1)
+	//
 	auto trx_1 = boost::make_shared<ServiceTransactionBrowseNext>();
 	auto req_1 = trx_1->request();
 
-	BOOST_REQUIRE(continuationPoints->size() == 1);
-
+	auto continuationPoint = boost::make_shared<OpcUaByteString>(browseResult->continuationPoint());
 	req_1->releaseContinuationPoints(false);
-	req_1->continuationPoints(continuationPoints);
+	req_1->continuationPoints()->resize(1);
+	req_1->continuationPoints()->push_back(continuationPoint);
 
 	viewService->syncSend(trx_1);
 	BOOST_REQUIRE(trx_1->responseHeader()->serviceResult() == Success);
@@ -197,27 +206,132 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerSyncReal_View_Browse_NextRequest_WithRe
 	BrowseResult::SPtr browseResult_1 = boost::make_shared<BrowseResult>();
 	res_1->results()->get(0, browseResult_1);
 	BOOST_REQUIRE(browseResult_1->statusCode() == Success);
-	BOOST_REQUIRE(browseResult_1->references()->size() > 0);
+	BOOST_REQUIRE(browseResult_1->references()->size() == 1);
+	BOOST_REQUIRE(browseResult_1->continuationPoint().size() == 19);
+	BOOST_REQUIRE((*browseResult_1->references())[0]->browseName().toString() == "Types");
+
+	//
+	// send browse next request (2)
+	//
+	auto trx_2 = boost::make_shared<ServiceTransactionBrowseNext>();
+	auto req_2 = trx_2->request();
+
+	req_2->releaseContinuationPoints(false);
+	req_2->continuationPoints()->resize(1);
+	req_2->continuationPoints()->push_back(continuationPoint);
+
+	viewService->syncSend(trx_2);
+	BOOST_REQUIRE(trx_2->responseHeader()->serviceResult() == Success);
+
+	BrowseNextResponse::SPtr res_2 = trx_2->response();
+	BOOST_REQUIRE(res_2->results()->size() == 1);
+
+	BrowseResult::SPtr browseResult_2 = boost::make_shared<BrowseResult>();
+	res_2->results()->get(0, browseResult_2);
+	BOOST_REQUIRE(browseResult_2->statusCode() == Success);
+	BOOST_REQUIRE(browseResult_2->references()->size() == 1);
+	BOOST_REQUIRE(browseResult_2->continuationPoint().size() == 19);
+	BOOST_REQUIRE((*browseResult_2->references())[0]->browseName().toString() == "Views");
+
+	//
+	// send browse next request (3)
+	//
+	auto trx_3 = boost::make_shared<ServiceTransactionBrowseNext>();
+	auto req_3 = trx_3->request();
+
+	req_3->releaseContinuationPoints(false);
+	req_3->continuationPoints()->resize(1);
+	req_3->continuationPoints()->push_back(continuationPoint);
+
+	viewService->syncSend(trx_3);
+	BOOST_REQUIRE(trx_3->responseHeader()->serviceResult() == Success);
+
+	BrowseNextResponse::SPtr res_3 = trx_3->response();
+	BOOST_REQUIRE(res_3->results()->size() == 1);
+
+	BrowseResult::SPtr browseResult_3 = boost::make_shared<BrowseResult>();
+	res_3->results()->get(0, browseResult_3);
+	BOOST_REQUIRE(browseResult_3->statusCode() == Success);
+	BOOST_REQUIRE(browseResult_3->references()->size() == 1);
+	BOOST_REQUIRE(browseResult_3->continuationPoint().size() == -1);
+	BOOST_REQUIRE((*browseResult_3->references())[0]->browseName().toString() == "FolderType");
 }
 
 BOOST_FIXTURE_TEST_CASE(ServiceSetManagerSyncReal_View_Browse_NextRequest_WithReleasetrue, ViewFixture)
 {
-	// call view
-	auto trx = boost::make_shared<ServiceTransactionBrowseNext>();
+	//
+	// send browse request
+	//
+	auto trx = boost::make_shared<ServiceTransactionBrowse>();
 	auto req = trx->request();
 
-	req->releaseContinuationPoints(true);
+	req->nodesToBrowse()->resize(1);
+	req->requestMaxReferencesPerNode(1);
+
+	BrowseDescription::SPtr browseDescription = boost::make_shared<BrowseDescription>();
+	browseDescription->nodeId()->set(84, 0);
+	browseDescription->browseDirection(BrowseDirection_Both);
+	browseDescription->nodeClassMask(0xFFFFFFFF);
+	browseDescription->resultMask(0x08);
+	req->nodesToBrowse()->push_back(browseDescription);
 
 	viewService->syncSend(trx);
 	BOOST_REQUIRE(trx->responseHeader()->serviceResult() == Success);
 
-	BrowseNextResponse::SPtr res = trx->response();
-	BOOST_REQUIRE(res->results()->size() == 0);
+	BrowseResponse::SPtr res = trx->response();
+	BOOST_REQUIRE(res->results()->size() == 1);
 
 	BrowseResult::SPtr browseResult = boost::make_shared<BrowseResult>();
 	res->results()->get(0, browseResult);
 	BOOST_REQUIRE(browseResult->statusCode() == Success);
-	BOOST_REQUIRE(browseResult->references()->size() == 0);
+	BOOST_REQUIRE(browseResult->references()->size() == 1);
+	BOOST_REQUIRE(browseResult->continuationPoint().size() == 19);
+	BOOST_REQUIRE((*browseResult->references())[0]->browseName().toString() == "Objects");
+
+	//
+	// send browse next request (1)
+	//
+	auto trx_1 = boost::make_shared<ServiceTransactionBrowseNext>();
+	auto req_1 = trx_1->request();
+
+	auto continuationPoint = boost::make_shared<OpcUaByteString>(browseResult->continuationPoint());
+	req_1->releaseContinuationPoints(false);
+	req_1->continuationPoints()->resize(1);
+	req_1->continuationPoints()->push_back(continuationPoint);
+
+	viewService->syncSend(trx_1);
+	BOOST_REQUIRE(trx_1->responseHeader()->serviceResult() == Success);
+
+	BrowseNextResponse::SPtr res_1 = trx_1->response();
+	BOOST_REQUIRE(res_1->results()->size() == 1);
+
+	BrowseResult::SPtr browseResult_1 = boost::make_shared<BrowseResult>();
+	res_1->results()->get(0, browseResult_1);
+	BOOST_REQUIRE(browseResult_1->statusCode() == Success);
+	BOOST_REQUIRE(browseResult_1->references()->size() == 1);
+	BOOST_REQUIRE(browseResult_1->continuationPoint().size() == 19);
+	BOOST_REQUIRE((*browseResult_1->references())[0]->browseName().toString() == "Types");
+
+	//
+	// send browse next request (2) with releaseContinuationPoints is true
+	//
+	auto trx_2 = boost::make_shared<ServiceTransactionBrowseNext>();
+	auto req_2 = trx_2->request();
+
+	req_2->releaseContinuationPoints(true);
+	req_2->continuationPoints()->resize(1);
+	req_2->continuationPoints()->push_back(continuationPoint);
+
+	viewService->syncSend(trx_2);
+	BOOST_REQUIRE(trx_2->responseHeader()->serviceResult() == Success);
+
+	BrowseNextResponse::SPtr res_2 = trx_2->response();
+	BOOST_REQUIRE(res_2->results()->size() == 1);
+
+	BrowseResult::SPtr browseResult_2 = boost::make_shared<BrowseResult>();
+	res_2->results()->get(0, browseResult_2);
+	BOOST_REQUIRE(browseResult_2->statusCode() == Success);
+	BOOST_REQUIRE(browseResult_2->references()->size() == 0);
 }
 
 

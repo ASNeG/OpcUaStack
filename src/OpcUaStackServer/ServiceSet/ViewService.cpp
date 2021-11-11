@@ -135,8 +135,11 @@ namespace OpcUaStackServer
 			OpcUaStatusCode statusCode = browseNode(browseDescription, referenceDescriptionVec, requestMaxReferencesPerNode);
 			browseResult->statusCode(statusCode);
 
-			if (continuationPoint_)
+			if (continuationPoint_) {
+				std::cout << "..." << continuationPoint_->name_ << std::endl;
 				browseResult->continuationPoint(continuationPoint_->name_);
+				continuationPoint_.reset();
+			}
 
 			auto referenceDescriptionArray = boost::make_shared<ReferenceDescriptionArray>();
 			referenceDescriptionArray->resize(referenceDescriptionVec.size());
