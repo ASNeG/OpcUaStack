@@ -36,23 +36,7 @@ namespace OpcUaStackCore
         boost::mutex::scoped_lock getlock(lmutex_);
         continuationPointMap_.emplace(std::make_pair(continuationPoint->name_, continuationPoint));
     }
-/*
-    ReferenceDescriptionArray::SPtr
-    ContinuationPointManager::find(const OpcUaByteString continuationPoint)
-    {
 
-        boost::mutex::scoped_lock getlock(lmutex_);
-
-        ContinuationPoint::Map::iterator it;
-        it = continuationPointMap_.find(continuationPoint);
-
-        if (it != continuationPointMap_.end()) return it->second->referenceDescriptionArray_;
-
-		ReferenceDescriptionArray::SPtr referenceDescriptionArray;
-		return referenceDescriptionArray;
-    }
-
-*/
     ContinuationPoint::SPtr
     ContinuationPointManager::getContinuationPoint(const OpcUaByteString continuationPointStr)
     {
@@ -164,7 +148,8 @@ namespace OpcUaStackCore
 		return true;
     }
 
-    ContinuationPoint::ContinuationPoint():name_{"continuationPoint_"}
+    ContinuationPoint::ContinuationPoint()
+    :name_{"continuationPoint_"}
     {
         
         static uint32_t unique_id = 0;

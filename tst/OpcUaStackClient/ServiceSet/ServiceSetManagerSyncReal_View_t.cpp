@@ -145,7 +145,7 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerSyncReal_View_Browse_Request, ViewFixtu
 	res->results()->get(0, browseResult);
 	BOOST_REQUIRE(browseResult->statusCode() == Success);
 	BOOST_REQUIRE(browseResult->references()->size() == 1);
-	BOOST_REQUIRE(browseResult->continuationPoint().size() == 19);
+	BOOST_REQUIRE(browseResult->continuationPoint().size() >= 19);
 
 	for (auto reference : *browseResult->references())
 	{
@@ -183,7 +183,7 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerSyncReal_View_Browse_NextRequest_WithRe
 	res->results()->get(0, browseResult);
 	BOOST_REQUIRE(browseResult->statusCode() == Success);
 	BOOST_REQUIRE(browseResult->references()->size() == 1);
-	BOOST_REQUIRE(browseResult->continuationPoint().size() == 19);
+	BOOST_REQUIRE(browseResult->continuationPoint().size() >= 19);
 	BOOST_REQUIRE((*browseResult->references())[0]->browseName().toString() == "Objects");
 
 	//
@@ -207,7 +207,7 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerSyncReal_View_Browse_NextRequest_WithRe
 	res_1->results()->get(0, browseResult_1);
 	BOOST_REQUIRE(browseResult_1->statusCode() == Success);
 	BOOST_REQUIRE(browseResult_1->references()->size() == 1);
-	BOOST_REQUIRE(browseResult_1->continuationPoint().size() == 19);
+	BOOST_REQUIRE(browseResult_1->continuationPoint().size() >= 19);
 	BOOST_REQUIRE((*browseResult_1->references())[0]->browseName().toString() == "Types");
 
 	//
@@ -230,7 +230,7 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerSyncReal_View_Browse_NextRequest_WithRe
 	res_2->results()->get(0, browseResult_2);
 	BOOST_REQUIRE(browseResult_2->statusCode() == Success);
 	BOOST_REQUIRE(browseResult_2->references()->size() == 1);
-	BOOST_REQUIRE(browseResult_2->continuationPoint().size() == 19);
+	BOOST_REQUIRE(browseResult_2->continuationPoint().size() >= 19);
 	BOOST_REQUIRE((*browseResult_2->references())[0]->browseName().toString() == "Views");
 
 	//
@@ -285,7 +285,7 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerSyncReal_View_Browse_NextRequest_WithRe
 	res->results()->get(0, browseResult);
 	BOOST_REQUIRE(browseResult->statusCode() == Success);
 	BOOST_REQUIRE(browseResult->references()->size() == 1);
-	BOOST_REQUIRE(browseResult->continuationPoint().size() == 19);
+	BOOST_REQUIRE(browseResult->continuationPoint().size() >= 19);
 	BOOST_REQUIRE((*browseResult->references())[0]->browseName().toString() == "Objects");
 
 	//
@@ -309,7 +309,7 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerSyncReal_View_Browse_NextRequest_WithRe
 	res_1->results()->get(0, browseResult_1);
 	BOOST_REQUIRE(browseResult_1->statusCode() == Success);
 	BOOST_REQUIRE(browseResult_1->references()->size() == 1);
-	BOOST_REQUIRE(browseResult_1->continuationPoint().size() == 19);
+	BOOST_REQUIRE(browseResult_1->continuationPoint().size() >= 19);
 	BOOST_REQUIRE((*browseResult_1->references())[0]->browseName().toString() == "Types");
 
 	//
