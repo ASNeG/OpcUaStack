@@ -22,7 +22,9 @@ namespace OpcUaStackCore
 {
 
     ContinuationPointManager::ContinuationPointManager(OpcUaStackCore::IOThread::SPtr& ioThread)
-    : ioThread_(ioThread), lmutex_(), slotTimerElement_()
+    : ioThread_(ioThread)
+    , lmutex_()
+    , slotTimerElement_()
     {
 
 	}
@@ -69,16 +71,24 @@ namespace OpcUaStackCore
 
     void ContinuationPointManager::checkforExpiredContinuationPoints()
     {
-
         boost::mutex::scoped_lock getlock(lmutex_);
 
-        OpcUaDateTime currentTime(boost::posix_time::second_clock::local_time());
+        std::vector<ContinuationPoint::Map::iterator> itVec;
+
+        // check all continuation points
+        boost::posix_time::ptime currentTime = boost::posix_time:: second_clock::universal_time();
         for (auto it = continuationPointMap_.begin(); it != continuationPointMap_.end(); ++it) {
-             if (currentTime.rawDateTime() > it->second->expireTime_.rawDateTime()) {
-                 continuationPointMap_.erase(it);
+             if (currentTime > it->second->expireTime_) {
+            	 itVec.push_back(it);
              }
         }
 
+        // delete continuation points
+        for (auto it : itVec) {
+        	continuationPointMap_.erase(it);
+        }
+
+        slotTimerElement_->expireFromNow(60000);
         ioThread_->slotTimer()->start(slotTimerElement_);
     }
     

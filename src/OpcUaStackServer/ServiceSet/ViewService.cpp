@@ -132,28 +132,36 @@ namespace OpcUaStackServer
 
 			ReferenceDescriptionVec::iterator it;
 			ReferenceDescriptionVec referenceDescriptionVec;
-			OpcUaStatusCode statusCode = browseNode(browseDescription, referenceDescriptionVec, requestMaxReferencesPerNode);
+			OpcUaStatusCode statusCode = browseNode(
+				browseDescription,
+				referenceDescriptionVec,
+				requestMaxReferencesPerNode
+			);
 			browseResult->statusCode(statusCode);
+			if (statusCode != Success) {
+				continue;
+			}
 
 			if (continuationPoint_) {
-				std::cout << "..." << continuationPoint_->name_ << std::endl;
 				browseResult->continuationPoint(continuationPoint_->name_);
 				continuationPoint_.reset();
 			}
 
-			auto referenceDescriptionArray = boost::make_shared<ReferenceDescriptionArray>();
-			referenceDescriptionArray->resize(referenceDescriptionVec.size());
-			browseResult->references(referenceDescriptionArray);
-			for (it = referenceDescriptionVec.begin(); it != referenceDescriptionVec.end(); it++)
-			{
-				Log(Debug, "reference")
-					.parameter("Trx", serviceTransaction->transactionId())
-					.parameter("SourceNodeId", browseDescription->nodeId())
-					.parameter("TargetNodeId", (*it)->expandedNodeId())
-					.parameter("TargetDisplayName", (*it)->displayName().text())
-					.parameter("ReferenceType", ReferenceTypeMap::nodeIdToString(*(*it)->referenceTypeId()));
+			if (referenceDescriptionVec.size() > 0) {
+				auto referenceDescriptionArray = boost::make_shared<ReferenceDescriptionArray>();
+				referenceDescriptionArray->resize(referenceDescriptionVec.size());
+				browseResult->references(referenceDescriptionArray);
+				for (it = referenceDescriptionVec.begin(); it != referenceDescriptionVec.end(); it++)
+				{
+					Log(Debug, "reference")
+						.parameter("Trx", serviceTransaction->transactionId())
+						.parameter("SourceNodeId", browseDescription->nodeId())
+						.parameter("TargetNodeId", (*it)->expandedNodeId())
+						.parameter("TargetDisplayName", (*it)->displayName().text())
+						.parameter("ReferenceType", ReferenceTypeMap::nodeIdToString(*(*it)->referenceTypeId()));
 
-				referenceDescriptionArray->push_back(*it);
+					referenceDescriptionArray->push_back(*it);
+				}
 			}
 
 			Log(Debug, "attribute service browse request")
@@ -231,6 +239,8 @@ namespace OpcUaStackServer
 				continuationPointManger_->deleteContinuationPoint(*continuationPointStr);
 			}
 			else {
+				continuationPoint->expireTime_ = boost::posix_time::second_clock::universal_time() + boost::posix_time::seconds(60);
+
 				browseResult->continuationPoint(*continuationPointStr);
 			}
 
@@ -440,10 +450,7 @@ namespace OpcUaStackServer
 		{
 			continuationPoint_ = boost::make_shared<ContinuationPoint>();
 
-			OpcUaDateTime currentTime(boost::posix_time::second_clock::local_time());
-			OpcUaDateTime expirationTime(currentTime.dateTime() + boost::posix_time::seconds(60));
-
-			continuationPoint_->expireTime_ = expirationTime;
+			continuationPoint_->expireTime_ = boost::posix_time::second_clock::universal_time() + boost::posix_time::seconds(60);
 			continuationPoint_->sessionId_ = sessionId_;
 			continuationPoint_->referenceDescriptionList_ = referenceDescriptionList;
 			continuationPoint_->requestMaxReferencesPerNode_ = requestedMaxReferencesPerNode;

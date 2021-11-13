@@ -56,7 +56,6 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_View_)
 
 BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_View_discovery_GetEndpoints)
 {
-#if 0
 	ServiceSetManager serviceSetManager;
 
 	//
@@ -115,12 +114,10 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_View_discovery_GetEndpoints)
 
 	// disconnect secure channel
 	BOOST_REQUIRE(sessionService->syncDisconnect() == Success);
-#endif
 }
 
 BOOST_FIXTURE_TEST_CASE(ServiceSetManagerSyncReal_View_Browse_Request, ViewFixture)
 {
-#if 0
 	// call view
 	auto trx = boost::make_shared<ServiceTransactionBrowse>();
 	auto req = trx->request();
@@ -151,7 +148,6 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerSyncReal_View_Browse_Request, ViewFixtu
 	{
 		BOOST_REQUIRE(reference->browseName().toString() == "Objects");
 	}
-#endif
 }
 
 BOOST_FIXTURE_TEST_CASE(ServiceSetManagerSyncReal_View_Browse_NextRequest_WithReleasefalse, ViewFixture)

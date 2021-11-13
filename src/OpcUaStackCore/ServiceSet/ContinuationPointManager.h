@@ -34,7 +34,8 @@
 namespace OpcUaStackCore
 {
 
-    class DLLEXPORT ContinuationPoint : public OpcUaStackCore::Object
+    class DLLEXPORT ContinuationPoint
+	: public OpcUaStackCore::Object
     {
     public:
         using SPtr = boost::shared_ptr<ContinuationPoint>;
@@ -44,7 +45,7 @@ namespace OpcUaStackCore
         uint32_t sessionId_;
         std::list<OpcUaStackCore::ReferenceDescription::SPtr> referenceDescriptionList_;
         
-        OpcUaStackCore::OpcUaDateTime expireTime_;
+        boost::posix_time::ptime expireTime_;
         OpcUaUInt32 requestMaxReferencesPerNode_;
 
         ContinuationPoint();
