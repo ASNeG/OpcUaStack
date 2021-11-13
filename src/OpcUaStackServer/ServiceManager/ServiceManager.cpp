@@ -13,6 +13,7 @@
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
    Autor: Kai Huebl (kai@huebl-sgh.de)
+          Upendar Reddy Sama (upendarreddysama3@gmail.com)
  */
 
 #include "OpcUaStackServer/ServiceManager/ServiceManager.h"
@@ -26,6 +27,7 @@ namespace OpcUaStackServer
 	: transactionManager_(boost::make_shared<TransactionManager>())
 	, forwardGlobalSync_(boost::make_shared<ForwardGlobalSync>())
 	{
+		
 	}
 
 	ServiceManager::~ServiceManager(void)
@@ -223,7 +225,8 @@ namespace OpcUaStackServer
 		viewService_ = boost::make_shared<ViewService>(
 			"ViewServiceServer",
 			ioThread_,
-			messageBus_
+			messageBus_,
+			continuationPointManager_
 		);
 		viewService_->forwardGlobalSync(forwardGlobalSync_);
 
@@ -315,6 +318,8 @@ namespace OpcUaStackServer
 	bool
 	ServiceManager::initService(SessionManager::SPtr& sessionManager)
 	{
+		continuationPointManager_ = boost::make_shared<OpcUaStackCore::ContinuationPointManager>(ioThread_);
+
 		initServerInfoService();
 		initAttributeService();
 		initMethodService();
@@ -379,7 +384,6 @@ namespace OpcUaStackServer
 	{
 		messageBus_ = messageBus;
 	}
-
 	void
 	ServiceManager::endpointDescriptionSet(EndpointDescriptionSet::SPtr& endpointDescriptionSet)
 	{
@@ -396,6 +400,7 @@ namespace OpcUaStackServer
 	ServiceManager::init(void)
 	{
 		bool rc = true;
+		
 		rc = rc && serverInfoService_->init();
 		rc = rc && attributeService_->init();
 		rc = rc && methodService_->init();
@@ -407,6 +412,13 @@ namespace OpcUaStackServer
 		rc = rc && applicationService_->init();
 		rc = rc && discoveryService_->init();
 		return rc;
+	}
+
+	bool
+	ServiceManager::startup(void)
+	{
+		continuationPointManager_->startup();
+		return true;
 	}
 
 	bool
@@ -433,6 +445,8 @@ namespace OpcUaStackServer
 		attributeService_.reset();
 		discoveryService_.reset();
 		serverInfoService_.reset();
+
+		continuationPointManager_->shutdown();
 
 		return true;
 	}

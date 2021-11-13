@@ -13,6 +13,7 @@
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
    Autor: Kai Huebl (kai@huebl-sgh.de)
+          Upendar Reddy Sama (upendarreddysama3@gmail.com)
  */
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
@@ -20,6 +21,7 @@
 #include "OpcUaStackCore/ServiceSet/ViewServiceTransaction.h"
 #include "OpcUaStackServer/ServiceSet/ViewService.h"
 #include "OpcUaStackServer/AddressSpaceModel/AttributeAccess.h"
+#include "OpcUaStackCore/ServiceSet/ContinuationPointManager.h"
 
 using namespace OpcUaStackCore;
 
@@ -27,17 +29,18 @@ namespace OpcUaStackServer
 {
 
 	ViewService::ViewService(
-		const std::string& serviceName,
-		OpcUaStackCore::IOThread::SPtr& ioThread,
-		OpcUaStackCore::MessageBus::SPtr& messageBus
-	)
+		const std::string &serviceName,
+		OpcUaStackCore::IOThread::SPtr &ioThread,
+		OpcUaStackCore::MessageBus::SPtr &messageBus,
+		OpcUaStackCore::ContinuationPointManager::SPtr &continuationPointManager)
 	: ServerServiceBase()
 	{
 		// set parameter in server service base
 		serviceName_ = serviceName;
-		ServerServiceBase::ioThread_ = ioThread.get();
+		ioThread_ = ioThread.get();
 		strand_ = ioThread->createStrand();
 		messageBus_ = messageBus;
+		continuationPointManger_ = continuationPointManager;
 
 		// register message bus receiver
 		MessageBusMemberConfig messageBusMemberConfig;
@@ -46,10 +49,10 @@ namespace OpcUaStackServer
 
 		// activate receiver
 		activateReceiver(
-			[this](const MessageBusMember::WPtr& handleFrom, Message::SPtr& message){
+			[this](const MessageBusMember::WPtr &handleFrom, Message::SPtr &message)
+			{
 				receive(handleFrom, message);
-			}
-		);
+			});
 	}
 
 	ViewService::~ViewService(void)
@@ -59,59 +62,59 @@ namespace OpcUaStackServer
 		messageBus_->deregisterMember(messageBusMember_);
 	}
 
-	void 
+	void
 	ViewService::receive(
-		const OpcUaStackCore::MessageBusMember::WPtr& handleFrom,
-		Message::SPtr& message
-	)
+		const OpcUaStackCore::MessageBusMember::WPtr &handleFrom,
+		Message::SPtr &message)
 	{
 		// We have to remember the sender of the message. This enables us to
 		// send a reply for the received message later
 		auto serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 		serviceTransaction->memberServiceSession(handleFrom);
 
-		switch (serviceTransaction->nodeTypeRequest().nodeId<uint32_t>()) 
+		switch (serviceTransaction->nodeTypeRequest().nodeId<uint32_t>())
 		{
-			case OpcUaId_BrowseRequest_Encoding_DefaultBinary:
-				receiveBrowseRequest(serviceTransaction);
-				break;
-			case OpcUaId_BrowseNextRequest_Encoding_DefaultBinary:
-				receiveBrowseNextRequest(serviceTransaction);
-				break;
-			case OpcUaId_TranslateBrowsePathsToNodeIdsRequest_Encoding_DefaultBinary:
-				receiveTranslateBrowsePathsToNodeIdsRequest(serviceTransaction);
-				break;
-			case OpcUaId_RegisterNodesRequest_Encoding_DefaultBinary:
-				receiveRegisterNodesRequest(serviceTransaction);
-				break;
-			case OpcUaId_UnregisterNodesRequest_Encoding_DefaultBinary:
-				receiveUnregisterNodesRequest(serviceTransaction);
-				break;
-			default:
-				serviceTransaction->statusCode(BadInternalError);
-				sendAnswer(serviceTransaction);
+		case OpcUaId_BrowseRequest_Encoding_DefaultBinary:
+			receiveBrowseRequest(serviceTransaction);
+			break;
+		case OpcUaId_BrowseNextRequest_Encoding_DefaultBinary:
+			receiveBrowseNextRequest(serviceTransaction);
+			break;
+		case OpcUaId_TranslateBrowsePathsToNodeIdsRequest_Encoding_DefaultBinary:
+			receiveTranslateBrowsePathsToNodeIdsRequest(serviceTransaction);
+			break;
+		case OpcUaId_RegisterNodesRequest_Encoding_DefaultBinary:
+			receiveRegisterNodesRequest(serviceTransaction);
+			break;
+		case OpcUaId_UnregisterNodesRequest_Encoding_DefaultBinary:
+			receiveUnregisterNodesRequest(serviceTransaction);
+			break;
+		default:
+			serviceTransaction->statusCode(BadInternalError);
+			sendAnswer(serviceTransaction);
 		}
 	}
 
 	void
-	ViewService::sendAnswer(OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction)
+	ViewService::sendAnswer(OpcUaStackCore::ServiceTransaction::SPtr &serviceTransaction)
 	{
 		messageBus_->messageSend(
 			messageBusMember_,
 			serviceTransaction->memberServiceSession(),
-			serviceTransaction
-		);
+			serviceTransaction);
 	}
 
-	void 
+	void
 	ViewService::receiveBrowseRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
 		auto trx = boost::static_pointer_cast<ServiceTransactionBrowse>(serviceTransaction);
 		auto browseRequest = trx->request();
 		auto browseResponse = trx->response();
 
-
+		sessionId_ = serviceTransaction->sessionId();
 		uint32_t nodes = browseRequest->nodesToBrowse()->size();
+		OpcUaUInt32 requestMaxReferencesPerNode = browseRequest->requestMaxReferencesPerNode();
+
 		Log(Debug, "attribute service browse request")
 			.parameter("Trx", serviceTransaction->transactionId())
 			.parameter("NumberNodes", nodes);
@@ -129,21 +132,36 @@ namespace OpcUaStackServer
 
 			ReferenceDescriptionVec::iterator it;
 			ReferenceDescriptionVec referenceDescriptionVec;
-			OpcUaStatusCode statusCode = browseNode(browseDescription, referenceDescriptionVec); 
+			OpcUaStatusCode statusCode = browseNode(
+				browseDescription,
+				referenceDescriptionVec,
+				requestMaxReferencesPerNode
+			);
 			browseResult->statusCode(statusCode);
+			if (statusCode != Success) {
+				continue;
+			}
 
-			auto referenceDescriptionArray = boost::make_shared<ReferenceDescriptionArray>();
-			referenceDescriptionArray->resize(referenceDescriptionVec.size());
-			browseResult->references(referenceDescriptionArray);
-			for (it = referenceDescriptionVec.begin(); it != referenceDescriptionVec.end(); it++) {
-				Log(Debug, "reference")
-					.parameter("Trx", serviceTransaction->transactionId())
-					.parameter("SourceNodeId", browseDescription->nodeId())
-					.parameter("TargetNodeId", (*it)->expandedNodeId())
-					.parameter("TargetDisplayName", (*it)->displayName().text())
-					.parameter("ReferenceType", ReferenceTypeMap::nodeIdToString(*(*it)->referenceTypeId()));
+			if (continuationPoint_) {
+				browseResult->continuationPoint(continuationPoint_->name_);
+				continuationPoint_.reset();
+			}
 
-				referenceDescriptionArray->push_back(*it);
+			if (referenceDescriptionVec.size() > 0) {
+				auto referenceDescriptionArray = boost::make_shared<ReferenceDescriptionArray>();
+				referenceDescriptionArray->resize(referenceDescriptionVec.size());
+				browseResult->references(referenceDescriptionArray);
+				for (it = referenceDescriptionVec.begin(); it != referenceDescriptionVec.end(); it++)
+				{
+					Log(Debug, "reference")
+						.parameter("Trx", serviceTransaction->transactionId())
+						.parameter("SourceNodeId", browseDescription->nodeId())
+						.parameter("TargetNodeId", (*it)->expandedNodeId())
+						.parameter("TargetDisplayName", (*it)->displayName().text())
+						.parameter("ReferenceType", ReferenceTypeMap::nodeIdToString(*(*it)->referenceTypeId()));
+
+					referenceDescriptionArray->push_back(*it);
+				}
 			}
 
 			Log(Debug, "attribute service browse request")
@@ -157,15 +175,82 @@ namespace OpcUaStackServer
 		sendAnswer(serviceTransaction);
 	}
 
-	void 
+	void
 	ViewService::receiveBrowseNextRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
-		// FIXME:
-		serviceTransaction->statusCode(BadInternalError);
+		Log(Debug, "attribute service browse next request")
+			.parameter("Trx", serviceTransaction->transactionId());
+
+		auto trx = boost::static_pointer_cast<ServiceTransactionBrowseNext>(serviceTransaction);
+		auto browseNextRequest = trx->request();
+		auto browseNextResponse = trx->response();
+
+		bool releaseContinuationPoints = browseNextRequest->releaseContinuationPoints();
+
+		auto continuationPointArray = browseNextRequest->continuationPoints();
+		auto continuationPointsSize = continuationPointArray->size();
+
+		auto browseResultArray = boost::make_shared<BrowseResultArray>();
+		browseResultArray->resize(static_cast<uint32_t>(continuationPointsSize));
+		browseNextResponse->results(browseResultArray);
+
+		for (size_t idx = 0; idx < continuationPointsSize; ++idx)
+		{
+			auto browseResult = boost::make_shared<BrowseResult>();
+			browseResultArray->set(idx, browseResult);
+
+			OpcUaByteString::SPtr continuationPointStr;
+			if (!continuationPointArray->get(idx, continuationPointStr)) {
+				browseResult->statusCode(BadContinuationPointInvalid);
+				continue;
+			}
+
+
+			if (releaseContinuationPoints) {
+				continuationPointManger_->deleteContinuationPoint(*continuationPointStr);
+				browseResult->statusCode(Success);
+				continue;
+			}
+
+			auto continuationPoint = continuationPointManger_->getContinuationPoint(*continuationPointStr);
+			if (!continuationPoint) {
+				browseResult->statusCode(BadContinuationPointInvalid);
+				continue;
+			}
+
+			// calculate number of elements in browse result
+			OpcUaInt32 requestMaxReferencesPerNode = continuationPoint->requestMaxReferencesPerNode_;
+			if (requestMaxReferencesPerNode > continuationPoint->referenceDescriptionList_.size()) {
+				requestMaxReferencesPerNode = continuationPoint->referenceDescriptionList_.size();
+			}
+
+			// add reference elements to browse result
+			auto resultReferenceArray = boost::make_shared<ReferenceDescriptionArray>();
+			resultReferenceArray->resize(requestMaxReferencesPerNode);
+			browseResult->references(resultReferenceArray);
+
+			for (size_t i = 0; i < requestMaxReferencesPerNode; i++) {
+				resultReferenceArray->push_back(continuationPoint->referenceDescriptionList_.front());
+				continuationPoint->referenceDescriptionList_.pop_front();
+			}
+
+			// delete continuation point
+			if (continuationPoint->referenceDescriptionList_.size() == 0) {
+				continuationPointManger_->deleteContinuationPoint(*continuationPointStr);
+			}
+			else {
+				continuationPoint->expireTime_ = boost::posix_time::second_clock::universal_time() + boost::posix_time::seconds(60);
+
+				browseResult->continuationPoint(*continuationPointStr);
+			}
+
+		}
+
+		serviceTransaction->statusCode(Success);
 		sendAnswer(serviceTransaction);
 	}
 
-	void 
+	void
 	ViewService::receiveTranslateBrowsePathsToNodeIdsRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
 		ServiceTransactionTranslateBrowsePathsToNodeIds::SPtr trx = boost::static_pointer_cast<ServiceTransactionTranslateBrowsePathsToNodeIds>(serviceTransaction);
@@ -173,7 +258,8 @@ namespace OpcUaStackServer
 		TranslateBrowsePathsToNodeIdsResponse::SPtr response = trx->response();
 
 		BrowsePathArray::SPtr browsePaths = request->browsePaths();
-		if (browsePaths->size() == 0) {
+		if (browsePaths->size() == 0)
+		{
 			Log(Debug, "no browse path elements exist")
 				.parameter("TransactionId", serviceTransaction->transactionId());
 			serviceTransaction->statusCode(Success);
@@ -183,11 +269,12 @@ namespace OpcUaStackServer
 
 		response->results()->resize(browsePaths->size());
 
-		for (uint32_t idx=0; idx<browsePaths->size(); idx++) {
-
+		for (uint32_t idx = 0; idx < browsePaths->size(); idx++)
+		{
 
 			BrowsePath::SPtr browsePath;
-			if (!browsePaths->get(idx, browsePath)) {
+			if (!browsePaths->get(idx, browsePath))
+			{
 				Log(Debug, "browse paths invalid")
 					.parameter("TransactionId", serviceTransaction->transactionId());
 
@@ -197,20 +284,23 @@ namespace OpcUaStackServer
 			}
 
 			OpcUaNodeId::SPtr actualNode = browsePath->startingNode();
-			RelativePath* relativePath = &browsePath->relativePath();
+			RelativePath *relativePath = &browsePath->relativePath();
 
 			BrowsePathResult::SPtr result = boost::make_shared<BrowsePathResult>();
 			result->statusCode(Success);
 			response->results()->push_back(result);
 
-			if (relativePath->elements().size() == 0) {
+			if (relativePath->elements().size() == 0)
+			{
 				result->statusCode(BadInvalidArgument);
 				continue;
 			}
 
-			for (uint32_t idx=0; idx<relativePath->elements().size(); idx++) {
+			for (uint32_t idx = 0; idx < relativePath->elements().size(); idx++)
+			{
 				RelativePathElement::SPtr relativePathElement;
-				if (!relativePath->elements().get(idx, relativePathElement)) {
+				if (!relativePath->elements().get(idx, relativePathElement))
+				{
 					result->statusCode(BadInvalidArgument);
 					continue;
 				}
@@ -218,9 +308,10 @@ namespace OpcUaStackServer
 				Log(Debug, "TranslateBrowsePathsToNodeId")
 					.parameter("NodeId", *actualNode);
 				Log(Debug, "  --")
-				    .parameter("PathElement", relativePathElement->targetName().toString());
+					.parameter("PathElement", relativePathElement->targetName().toString());
 
-				if (!getNodeFromPathElement(*actualNode, relativePathElement->targetName())) {
+				if (!getNodeFromPathElement(*actualNode, relativePathElement->targetName()))
+				{
 					Log(Debug, "node id not found")
 						.parameter("NodeId", *actualNode)
 						.parameter("PathElement", relativePathElement->targetName().toString());
@@ -229,7 +320,8 @@ namespace OpcUaStackServer
 				}
 			}
 
-			if (result->statusCode() == Success) {
+			if (result->statusCode() == Success)
+			{
 				result->targets()->resize(1);
 
 				BrowsePathTarget::SPtr browsePathTarget = boost::make_shared<BrowsePathTarget>();
@@ -247,7 +339,7 @@ namespace OpcUaStackServer
 		sendAnswer(serviceTransaction);
 	}
 
-	void 
+	void
 	ViewService::receiveRegisterNodesRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
 		// FIXME:
@@ -255,7 +347,7 @@ namespace OpcUaStackServer
 		sendAnswer(serviceTransaction);
 	}
 
-	void 
+	void
 	ViewService::receiveUnregisterNodesRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
 		// FIXME:
@@ -263,40 +355,47 @@ namespace OpcUaStackServer
 		sendAnswer(serviceTransaction);
 	}
 
-	
 	OpcUaStatusCode
 	ViewService::browseNode(
-		BrowseDescription::SPtr& browseDescription,
-		ReferenceDescriptionVec& referenceDescriptionVec
-	)
+		BrowseDescription::SPtr &browseDescription,
+		ReferenceDescriptionVec &referenceDescriptionVec,
+		const OpcUaUInt32 requestedMaxReferencesPerNode)
 	{
-		BaseNodeClass::SPtr baseNodeClass = informationModel_->find(*browseDescription->nodeId());
-		if (baseNodeClass.get() == nullptr) {
+		auto baseNodeClass = informationModel_->find(*browseDescription->nodeId());
+		if (baseNodeClass.get() == nullptr)
+		{
 			return BadNodeIdUnknown;
 		}
+       
+	    std::list<OpcUaStackCore::ReferenceDescription::SPtr> referenceDescriptionList;
 
-		ReferenceItemMap& referenceItemMap = baseNodeClass->referenceItemMap();
+		OpcUaUInt32 resultMask = browseDescription->resultMask();
+
+		ReferenceItemMap &referenceItemMap = baseNodeClass->referenceItemMap();
 		Log(Debug, "read references")
 			.parameter("NodeId", baseNodeClass->nodeId())
 			.parameter("References", referenceItemMap.size());
 
-		for (const auto& referenceItem : referenceItemMap) {
+		for (const auto &referenceItem : referenceItemMap) {
 			OpcUaNodeId referenceTypeNodeId = referenceItem->typeId_;
 
 			if (browseDescription->browseDirection() == BrowseDirection_Forward) {
-				if (!referenceItem->isForward_) continue;
+				if (!referenceItem->isForward_)
+					continue;
 			}
 
 			if (browseDescription->browseDirection() == BrowseDirection_Inverse) {
-				if (referenceItem->isForward_) continue;
+				if (referenceItem->isForward_)
+					continue;
 			}
 
 			if (checkReferenceType(referenceTypeNodeId, browseDescription) != Success) {
 				continue;
 			}
 
-			BaseNodeClass::SPtr baseNodeClassTarget = informationModel_->find(referenceItem->nodeId_);
-			if (baseNodeClassTarget.get() == nullptr) {
+			auto baseNodeClassTarget = informationModel_->find(referenceItem->nodeId_);
+			if (baseNodeClassTarget.get() == nullptr)
+			{
 				Log(Debug, "target node not found")
 					.parameter("NodeId", baseNodeClass->nodeId())
 					.parameter("TargetNodeId", referenceItem->nodeId_);
@@ -304,96 +403,145 @@ namespace OpcUaStackServer
 			}
 
 			auto referenceDescription = boost::make_shared<ReferenceDescription>();
-			referenceDescriptionVec.push_back(referenceDescription);
 
 			auto targetNodeId = boost::make_shared<OpcUaExpandedNodeId>();
 			baseNodeClassTarget->nodeId().data().copyTo(*targetNodeId);
 			referenceDescription->expandedNodeId(targetNodeId);
-			referenceTypeNodeId.copyTo(*referenceDescription->referenceTypeId());
-			referenceDescription->isForward(referenceItem->isForward_);  
-			referenceDescription->displayName(baseNodeClassTarget->displayName().data());
-			referenceDescription->browseName(baseNodeClassTarget->browseName().data());
-			referenceDescription->nodeClass(baseNodeClassTarget->nodeClass().data());
 
-			auto itp = baseNodeClassTarget->referenceItemMap().equal_range(*ReferenceTypeMap::hasTypeDefinitionTypeNodeId());
-			if (itp.first != itp.second) {
-				ReferenceItem::SPtr referenceItem = itp.first->second;
-				referenceItem->nodeId_.copyTo(*referenceDescription->typeDefinition());
+			std::bitset<6> resultMaskBits = resultMask;
+
+			if (resultMaskBits.test(Browse_ReferenceType)) {
+				referenceTypeNodeId.copyTo(*referenceDescription->referenceTypeId());
+			}
+
+			if (resultMaskBits.test(Browse_IsForward)) {
+				referenceDescription->isForward(referenceItem->isForward_);
+			}
+
+			if (resultMaskBits.test(Browse_NodeClass)) {
+				referenceDescription->nodeClass(baseNodeClassTarget->nodeClass().data());
+			}
+
+			if (resultMaskBits.test(Browse_BrowseName)) {
+				referenceDescription->browseName(baseNodeClassTarget->browseName().data());
+			}
+
+			if (resultMaskBits.test(Browse_DisplayName)) {
+				referenceDescription->displayName(baseNodeClassTarget->displayName().data());
+			}
+
+			if (resultMaskBits.test(Browse_TypeDefinition)) {
+				auto itp = baseNodeClassTarget->referenceItemMap().equal_range(*ReferenceTypeMap::hasTypeDefinitionTypeNodeId());
+				if (itp.first != itp.second) {
+					ReferenceItem::SPtr referenceItem = itp.first->second;
+					referenceItem->nodeId_.copyTo(*referenceDescription->typeDefinition());
+				}
+			}
+
+			if (requestedMaxReferencesPerNode == 0 || referenceDescriptionVec.size() < requestedMaxReferencesPerNode) {
+				referenceDescriptionVec.push_back(referenceDescription);
+			}
+			else {
+				referenceDescriptionList.push_back(referenceDescription);
 			}
 		}
 
+		if (referenceDescriptionList.size() > 0)
+		{
+			continuationPoint_ = boost::make_shared<ContinuationPoint>();
+
+			continuationPoint_->expireTime_ = boost::posix_time::second_clock::universal_time() + boost::posix_time::seconds(60);
+			continuationPoint_->sessionId_ = sessionId_;
+			continuationPoint_->referenceDescriptionList_ = referenceDescriptionList;
+			continuationPoint_->requestMaxReferencesPerNode_ = requestedMaxReferencesPerNode;
+
+			continuationPointManger_->addContinuationPoint(continuationPoint_);
+		}
 		return Success;
 	}
 
-	OpcUaStatusCode 
-	ViewService::checkReferenceType(OpcUaNodeId& referenceTypeNodeId, BrowseDescription::SPtr& browseDescription)
+	OpcUaStatusCode
+	ViewService::checkReferenceType(OpcUaNodeId &referenceTypeNodeId, BrowseDescription::SPtr &browseDescription)
 	{
 		OpcUaNodeId nullNodeId;
 		nullNodeId.set(0);
-		if (*browseDescription->referenceTypeId() == nullNodeId) return Success;
+		if (*browseDescription->referenceTypeId() == nullNodeId)
+			return Success;
 
 		OpcUaNodeId allNodeId;
 		allNodeId.set(31);
-		if (*browseDescription->referenceTypeId() == allNodeId) return Success;
+		if (*browseDescription->referenceTypeId() == allNodeId)
+			return Success;
 
 		BaseNodeClass::SPtr baseNodeClass = informationModel_->find(referenceTypeNodeId);
-		if (baseNodeClass.get() == nullptr) {
+		if (baseNodeClass.get() == nullptr)
+		{
 			return BadNotFound;
 		}
-		return hashSubtype(baseNodeClass,  browseDescription);
+		return hashSubtype(baseNodeClass, browseDescription);
 		return Success;
 	}
 
-	OpcUaStatusCode 
+	OpcUaStatusCode
 	ViewService::hashSubtype(BaseNodeClass::SPtr baseNodeClass, BrowseDescription::SPtr browseDescription, uint32_t hopCounter)
 	{
 
-		if (hopCounter == 0) return BadInternalError;
+		if (hopCounter == 0)
+			return BadInternalError;
 
-		if (*browseDescription->referenceTypeId() == baseNodeClass->nodeId().data()) {
+		if (*browseDescription->referenceTypeId() == baseNodeClass->nodeId().data())
+		{
 			return Success;
 		}
 
 		auto it = baseNodeClass->referenceItemMap().equal_range(*ReferenceTypeMap::hasSubtypeTypeNodeId());
-		if (it.first == it.second) {
+		if (it.first == it.second)
+		{
 			return BadNotFound;
 		}
 
-		for (auto itl = it.first; itl != it.second; ++itl) {
-			ReferenceItem::SPtr referenceItem  = itl->second;
+		for (auto itl = it.first; itl != it.second; ++itl)
+		{
+			ReferenceItem::SPtr referenceItem = itl->second;
 
-			if (referenceItem->isForward_) continue;
+			if (referenceItem->isForward_)
+				continue;
 
 			BaseNodeClass::SPtr baseNodeClassTarget = informationModel_->find(referenceItem->nodeId_);
-			if (baseNodeClassTarget.get() == nullptr) {
+			if (baseNodeClassTarget.get() == nullptr)
+			{
 				return BadNodeIdUnknown;
 			}
 
-			return hashSubtype(baseNodeClassTarget, browseDescription, hopCounter-1);
+			return hashSubtype(baseNodeClassTarget, browseDescription, hopCounter - 1);
 		}
 
 		return BadNotFound;
 	}
 
 	bool
-	ViewService::getNodeFromPathElement(OpcUaNodeId& nodeId, OpcUaQualifiedName& pathElement)
+	ViewService::getNodeFromPathElement(OpcUaNodeId &nodeId, OpcUaQualifiedName &pathElement)
 	{
 		BaseNodeClass::SPtr baseNodeClass = informationModel_->find(nodeId);
-		if (baseNodeClass.get() == nullptr) {
+		if (baseNodeClass.get() == nullptr)
+		{
 			return false;
 		}
 
-		ReferenceItemMap& referenceItemMap = baseNodeClass->referenceItemMap();
-		for (auto it = referenceItemMap.begin(); it != referenceItemMap.end(); ++it) {
+		ReferenceItemMap &referenceItemMap = baseNodeClass->referenceItemMap();
+		for (auto it = referenceItemMap.begin(); it != referenceItemMap.end(); ++it)
+		{
 			ReferenceItem::SPtr referenceItem = *it;
 			OpcUaNodeId referenceTypeNodeId = referenceItem->typeId_;
 
 			BaseNodeClass::SPtr baseNodeClassTarget = informationModel_->find(referenceItem->nodeId_);
-			if (baseNodeClassTarget.get() == nullptr) {
+			if (baseNodeClassTarget.get() == nullptr)
+			{
 				continue;
 			}
 
-			if (baseNodeClassTarget->browseName().data() == pathElement) {
+			if (baseNodeClassTarget->browseName().data() == pathElement)
+			{
 				referenceItem->nodeId_.copyTo(nodeId);
 				return true;
 			}

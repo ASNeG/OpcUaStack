@@ -32,6 +32,7 @@
 #include "OpcUaStackServer/ServiceSet/DiscoveryService.h"
 #include "OpcUaStackServer/ServiceSetServerInfo/ServerInfoService.h"
 #include "OpcUaStackServer/ServiceSetApplication/ApplicationService.h"
+#include "OpcUaStackCore/ServiceSet/ContinuationPointManager.h"
 
 namespace OpcUaStackServer
 {
@@ -53,6 +54,7 @@ namespace OpcUaStackServer
 		void messageBus(OpcUaStackCore::MessageBus::SPtr& messageBus);
 		void cryptoManager(OpcUaStackCore::CryptoManager::SPtr& cryptoManager);
 		bool init(void);
+		bool startup(void);
 		bool shutdown(void);
 
 		ApplicationService::SPtr applicationService(void);
@@ -74,6 +76,8 @@ namespace OpcUaStackServer
 		OpcUaStackCore::MessageBus::SPtr messageBus_ = nullptr;
 		OpcUaStackCore::EndpointDescriptionSet::SPtr endpointDescriptionSet_ = nullptr;
 		OpcUaStackCore::CryptoManager::SPtr cryptoManager_ = nullptr;
+		OpcUaStackCore::ContinuationPointManager::SPtr continuationPointManager_ = nullptr;
+
 
 		ForwardGlobalSync::SPtr forwardGlobalSync_ = nullptr;
 
@@ -88,6 +92,7 @@ namespace OpcUaStackServer
 		ViewService::SPtr viewService_ = nullptr;
 		ApplicationService::SPtr applicationService_ = nullptr;
 		DiscoveryService::SPtr discoveryService_ = nullptr;
+		
 	};
 
 }
