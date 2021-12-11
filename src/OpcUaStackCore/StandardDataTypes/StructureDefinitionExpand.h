@@ -52,6 +52,8 @@ namespace OpcUaStackCore
 
 		void copyTo(StructureDefinitionExpand& structureTypeDefinition);
 		bool operator==(const StructureDefinitionExpand& structureTypeDefinition) const;
+		bool operator!=(const StructureDefinitionExpand& value);
+		StructureDefinitionExpand& operator=(const StructureDefinitionExpand& value);
 		friend std::ostream& operator<<(std::ostream& os, const StructureDefinitionExpand& value) {
 			const_cast<StructureDefinitionExpand*>(&value)->out(os);
 			return os;
@@ -59,6 +61,9 @@ namespace OpcUaStackCore
 
 		//- ExtensionObjectBase -----------------------------------------------
 		virtual ExtensionObjectBase::SPtr factory(void) override;
+	    virtual std::string namespaceName(void) override;
+	    virtual std::string typeName(void) override;
+	    virtual OpcUaNodeId typeId(void) override;
 		virtual OpcUaNodeId binaryTypeId(void) override;
 		virtual OpcUaNodeId xmlTypeId(void) override;
 		virtual bool opcUaBinaryEncode(std::ostream& os) const override;
