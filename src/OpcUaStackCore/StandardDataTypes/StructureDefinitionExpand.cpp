@@ -129,6 +129,19 @@ namespace OpcUaStackCore
 			*fields_ == *structureTypeDefinition.fields_;
 	}
 
+	bool
+	StructureDefinitionExpand::operator!=(const StructureDefinitionExpand& value)
+	{
+	    return !this->operator==(value);
+	}
+
+	StructureDefinitionExpand&
+	StructureDefinitionExpand::operator=(const StructureDefinitionExpand& value)
+    {
+	    const_cast<StructureDefinitionExpand*>(&value)->copyTo(*this);
+	    return *this;
+	}
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
@@ -140,6 +153,24 @@ namespace OpcUaStackCore
 	StructureDefinitionExpand::factory(void)
 	{
 		return boost::make_shared<StructureDefinitionExpand>();
+	}
+
+	std::string
+	StructureDefinitionExpand::namespaceName(void)
+	{
+	    return "http://opcfoundation.org/UA/";
+	}
+
+	std::string
+	StructureDefinitionExpand::typeName(void)
+	{
+	    return "StructureDefinition";
+	}
+
+	OpcUaNodeId
+	StructureDefinitionExpand::typeId(void)
+	{
+	    return OpcUaNodeId((OpcUaUInt32)99,0);
 	}
 
 	OpcUaNodeId
