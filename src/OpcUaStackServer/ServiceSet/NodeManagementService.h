@@ -67,6 +67,7 @@ namespace OpcUaStackServer
 			OpcUaStackCore::AddNodesItem::SPtr addNodesItem,
 			OpcUaStackCore::AddNodesResult::SPtr addNodesResult
 		);
+		
 		OpcUaStackCore::OpcUaStatusCode deleteNode(
 			uint32_t pos,
 			OpcUaStackCore::DeleteNodesItem::SPtr deleteNodesItem,
@@ -87,6 +88,36 @@ namespace OpcUaStackServer
 			uint32_t pos,
 			OpcUaStackCore::AddNodesItem::SPtr addNodesItem,
 			OpcUaStackCore::AddNodesResult::SPtr addNodesResult
+		);
+		OpcUaStackCore::OpcUaStatusCode addNodeMethod(
+			uint32_t pos,
+			OpcUaStackCore::AddNodesItem::SPtr addNodesItem,
+			OpcUaStackCore::AddNodesResult::SPtr addNodesResult
+		);
+		OpcUaStackCore::OpcUaStatusCode addNodeObjectType(
+			uint32_t pos,
+			OpcUaStackCore::AddNodesItem::SPtr addNodesItem,
+			OpcUaStackCore::AddNodesResult::SPtr addNodesResult
+		);
+		OpcUaStackCore::OpcUaStatusCode addNodeVariableType(
+			uint32_t pos,
+			OpcUaStackCore::AddNodesItem::SPtr addNodesItem,
+			OpcUaStackCore::AddNodesResult::SPtr addNodesResult
+		);
+		OpcUaStackCore::OpcUaStatusCode addNodeReferenceType(
+			uint32_t pos,
+			OpcUaStackCore::AddNodesItem::SPtr addNodesItem,
+			OpcUaStackCore::AddNodesResult::SPtr addNodesResult
+		);
+		OpcUaStackCore::OpcUaStatusCode addNodeDataType(
+			uint32_t pos,
+			OpcUaStackCore::AddNodesItem::SPtr addNodesItem,
+			OpcUaStackCore::AddNodesResult::SPtr addNodesResult
+		);
+		OpcUaStackCore::OpcUaStatusCode	deleteReference(
+			uint32_t pos,
+			OpcUaStackCore::DeleteReferencesItem::SPtr deleteReferencesItem,
+			OpcUaStackCore::DeleteReferencesResult::SPtr deleteReferencesResult
 		);
 	};
 
