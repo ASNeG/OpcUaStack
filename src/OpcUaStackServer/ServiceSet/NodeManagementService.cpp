@@ -19,10 +19,23 @@
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/StandardDataTypes/ObjectAttributes.h"
 #include "OpcUaStackCore/StandardDataTypes/VariableAttributes.h"
+#include "OpcUaStackCore/StandardDataTypes/MethodAttributes.h"
+#include "OpcUaStackCore/StandardDataTypes/ObjectTypeAttributes.h"
+#include "OpcUaStackCore/StandardDataTypes/VariableTypeAttributes.h"
+#include "OpcUaStackCore/StandardDataTypes/ReferenceTypeAttributes.h"
+#include "OpcUaStackCore/StandardDataTypes/DataTypeAttributes.h"
+#include "OpcUaStackCore/StandardDataTypes/ViewAttributes.h"
 #include "OpcUaStackServer/ServiceSet/NodeManagementService.h"
 #include "OpcUaStackServer/AddressSpaceModel/ObjectNodeClass.h"
+#include "OpcUaStackServer/AddressSpaceModel/MethodNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/VariableNodeClass.h"
+#include "OpcUaStackServer/AddressSpaceModel/ObjectTypeNodeClass.h"
+#include "OpcUaStackServer/AddressSpaceModel/VariableTypeNodeClass.h"
+#include "OpcUaStackServer/AddressSpaceModel/ReferenceTypeNodeClass.h"
+#include "OpcUaStackServer/AddressSpaceModel/DataTypeNodeClass.h"
+#include "OpcUaStackServer/AddressSpaceModel/ViewNodeClass.h"
 #include "OpcUaStackServer/InformationModel/InformationModelAccess.h"
+
 
 using namespace OpcUaStackCore;
 
@@ -138,8 +151,73 @@ namespace OpcUaStackServer
 	void 
 	NodeManagementService::receiveAddReferencesRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
-		// FIXME:
-		serviceTransaction->statusCode(BadInternalError);
+
+		OpcUaStatusCode statusCode = Success;
+		auto trx = boost::static_pointer_cast<ServiceTransactionAddReferences>(serviceTransaction);
+		auto addReferencesRequest  = trx->request();
+		auto addReferencesResponse = trx->response();
+
+		auto referencesToAdd = addReferencesRequest->referencesToAdd();
+		
+		int32_t size = addReferencesRequest->referencesToAdd()->size();
+		addReferencesResponse->results()->resize(size);
+
+		Log(Debug, "node management service add reference request")
+			.parameter("Trx", serviceTransaction->transactionId())
+			.parameter("NumberNodes", size);
+
+		for (uint32_t idx=0; idx<size; idx++) {
+			auto addReferencesResult = boost::make_shared<AddReferencesResult>();
+			addReferencesResponse->results()->set(idx, addReferencesResult);
+			
+			AddReferencesItem::SPtr addReferencesItem;
+			addReferencesRequest->referencesToAdd()->get(idx, addReferencesItem); 
+
+			if(!addReferencesItem->isForward())
+			{
+				Log(Debug, "remote server not supported");
+				addReferencesResult->statusCode(BadReferenceLocalOnly);
+				break;
+			}
+			
+			
+			//Get the target node
+			OpcUaNodeId targetNodeId;
+			targetNodeId.namespaceIndex(addReferencesItem->targetNodeId().namespaceIndex());
+			targetNodeId.nodeIdValue(addReferencesItem->targetNodeId().nodeIdValue());
+			
+			auto targetNodeClass = informationModel_->find(targetNodeId);
+			if (targetNodeClass.get() == nullptr) {
+				Log(Debug, "target node does not exist")
+					.parameter("NodeId", targetNodeId);
+				addReferencesResult->statusCode(BadTargetNodeIdInvalid);
+				break;
+			}
+
+			auto sourceNodeId = addReferencesItem->sourceNodeId();
+
+			auto sourceNodeClass = informationModel_->find(sourceNodeId);
+			if (sourceNodeClass.get() == nullptr) {
+				Log(Debug, "source node does not exist")
+					.parameter("NodeId", sourceNodeId);
+				addReferencesResult->statusCode(BadSourceNodeIdInvalid);
+				break;
+			}
+
+			if (targetNodeClass->nodeClass().data() == addReferencesItem->targetNodeClass().enumeration())
+			{
+				boost::unique_lock<boost::shared_mutex> lock1(sourceNodeClass->mutex());
+				sourceNodeClass->referenceItemMap().add(addReferencesItem->referenceTypeId(), true, targetNodeId);
+				
+				boost::unique_lock<boost::shared_mutex> lock1(targetNodeClass->mutex());
+				targetNodeClass->referenceItemMap().add(addReferencesItem->referenceTypeId(), false, sourceNodeId);
+			} else {
+				addReferencesResult->statusCode(BadNodeClassInvalid);
+				break;
+			}
+		}
+
+		serviceTransaction->statusCode(statusCode);
 		sendAnswer(serviceTransaction);
 	}
 
@@ -176,8 +254,30 @@ namespace OpcUaStackServer
 	void 
 	NodeManagementService::receiveDeleteReferencesRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
-		// FIXME:
-		serviceTransaction->statusCode(BadInternalError);
+		OpcUaStatusCode statusCode = Success;
+		auto trx = boost::static_pointer_cast<ServiceTransactionDeleteReferences>(serviceTransaction);
+		auto deleteReferencesRequest = trx->request();
+		auto deleteReferencesResponse = trx->response();
+
+		uint32_t size = deleteReferencesRequest->referencesToDelete()->size();
+		deleteReferencesResponse->results()->resize(size);
+
+		Log(Debug, "node management service delete references request")
+			.parameter("Trx", serviceTransaction->transactionId())
+			.parameter("NumberReferences", size);
+
+		for (uint32_t idx=0; idx<size; idx++) {
+			auto deleteReferencesResult = boost::make_shared<DeleteReferencesResult>();
+			deleteReferencesResponse->results()->set(idx, deleteReferencesResult);
+
+			DeleteReferencesItem::SPtr deleteReferencesItem;
+			deleteReferencesRequest->referencesToDelete()->get(idx, deleteReferencesItem);
+
+			statusCode = deleteReference(idx, deleteReferencesItem, deleteReferencesResult);
+			if (statusCode != Success) break;
+		}
+
+		serviceTransaction->statusCode(statusCode);
 		sendAnswer(serviceTransaction);
 	}
 
@@ -288,23 +388,42 @@ namespace OpcUaStackServer
 				return addNodeVariable(pos, addNodesItem, addNodesResult);
 			}
 			case NodeClass::EnumMethod:
+			{
+				return addNodeMethod(pos, addNodesItem, addNodesResult);
+			}
 			case NodeClass::EnumObjectType:
+			{
+				return addNodeObjectType(pos, addNodesItem, addNodesResult);
+			}
 			case NodeClass::EnumVariableType:
+			{
+				return addNodeVariableType(pos, addNodesItem, addNodesResult);
+			}
 			case NodeClass::EnumReferenceType:
+			{
+				return addNodeReferenceType(pos, addNodesItem, addNodesResult);
+			}
 			case NodeClass::EnumDataType:
+			{
+				return addNodeDataType(pos, addNodesItem, addNodesResult);
+			}
 			case NodeClass::EnumView:
+			{
+				//return addNodeView(pos, addNodesItem, addNodesResult);
+			}
 			case NodeClass::EnumUnspecified:
 			default:
 			{
-				Log(Error, "invalid node class")
-					.parameter("Pos", pos)
-					.parameter("BrowseName", addNodesItem->browseName())
-					.parameter("NodeClass", addNodesItem->nodeClass().enumeration());
-				addNodesResult->statusCode(BadInternalError);
+					Log(Error, "invalid node class")
+						.parameter("Pos", pos)
+						.parameter("BrowseName", addNodesItem->browseName())
+						.parameter("NodeClass", addNodesItem->nodeClass().enumeration());
+					addNodesResult->statusCode(BadInternalError);
 			}
 		}
 		return Success;
 	}
+// ------------------------------------------------------------------------
 
 	OpcUaStatusCode 
 	NodeManagementService::addBaseNodeClass(
@@ -420,7 +539,215 @@ namespace OpcUaStackServer
 
 		return Success;
 	}
+	OpcUaStackCore::OpcUaStatusCode NodeManagementService::addNodeMethod(
+			uint32_t pos,
+			OpcUaStackCore::AddNodesItem::SPtr addNodesItem,
+			OpcUaStackCore::AddNodesResult::SPtr addNodesResult
+	)
+	{
+		OpcUaStatusCode statusCode;
+		auto methodNodeClass = boost::make_shared<MethodNodeClass>();
 
+		// set base attributes
+		statusCode = addBaseNodeClass(pos, methodNodeClass, addNodesItem, addNodesResult);
+		if (statusCode != Success) return statusCode;
+
+		// get object attributes 
+		if (addNodesItem->nodeAttributes().parameterTypeId().nodeId<uint32_t>() != OpcUaId_MethodAttributes &&
+			addNodesItem->nodeAttributes().parameterTypeId().nodeId<uint32_t>() != OpcUaId_MethodAttributes_Encoding_DefaultBinary) {
+			Log(Error, "invalid attribute type")
+				.parameter("Pos", pos)
+				.parameter("BrowseName", addNodesItem->browseName())
+				.parameter("AttributeType", addNodesItem->nodeAttributes().parameterTypeId().nodeId<uint32_t>());
+			addNodesResult->statusCode(BadInvalidArgument);
+			return Success;
+		}
+		auto methodAttributes = addNodesItem->nodeAttributes().parameter<MethodAttributes>();
+
+		// set additional object attributes
+		methodNodeClass->setDisplayName(methodAttributes->displayName());
+		methodNodeClass->setDescription(methodAttributes->description());
+		methodNodeClass->setWriteMask(methodAttributes->writeMask());
+		methodNodeClass->setUserWriteMask(methodAttributes->userWriteMask());
+
+		methodNodeClass->setExecutable(methodAttributes->executable());
+		methodNodeClass->setUserExecutable(methodAttributes->userExecutable());
+
+		// added node and reference
+		statusCode = addNodeAndReference(pos, methodNodeClass, addNodesItem);
+		addNodesResult->statusCode(statusCode);
+
+		return Success;
+	}
+	OpcUaStackCore::OpcUaStatusCode NodeManagementService::addNodeObjectType(
+			uint32_t pos,
+			OpcUaStackCore::AddNodesItem::SPtr addNodesItem,
+			OpcUaStackCore::AddNodesResult::SPtr addNodesResult
+			)
+	{
+		OpcUaStatusCode statusCode;
+		auto objectTypeNodeClass = boost::make_shared<ObjectTypeNodeClass>();
+
+		// set base attributes
+		statusCode = addBaseNodeClass(pos, objectTypeNodeClass, addNodesItem, addNodesResult);
+		if (statusCode != Success) return statusCode;
+
+		// get object attributes 
+		if (addNodesItem->nodeAttributes().parameterTypeId().nodeId<uint32_t>() != OpcUaId_ObjectTypeAttributes &&
+			addNodesItem->nodeAttributes().parameterTypeId().nodeId<uint32_t>() != OpcUaId_ObjectTypeAttributes_Encoding_DefaultBinary) {
+			Log(Error, "invalid attribute type")
+				.parameter("Pos", pos)
+				.parameter("BrowseName", addNodesItem->browseName())
+				.parameter("AttributeType", addNodesItem->nodeAttributes().parameterTypeId().nodeId<uint32_t>());
+			addNodesResult->statusCode(BadInvalidArgument);
+			return Success;
+		}
+		auto objectTypeAttributes = addNodesItem->nodeAttributes().parameter<ObjectTypeAttributes>();
+
+		// set additional object attributes
+		objectTypeNodeClass->setDisplayName(objectTypeAttributes->displayName());
+		objectTypeNodeClass->setDescription(objectTypeAttributes->description());
+		objectTypeNodeClass->setWriteMask(objectTypeAttributes->writeMask());
+		objectTypeNodeClass->setUserWriteMask(objectTypeAttributes->userWriteMask());
+
+		objectTypeNodeClass->isAbstract() = objectTypeAttributes->isAbstract();
+		
+		// added node and reference
+		statusCode = addNodeAndReference(pos, objectTypeNodeClass, addNodesItem);
+		addNodesResult->statusCode(statusCode);
+		return Success;
+	}
+	OpcUaStackCore::OpcUaStatusCode NodeManagementService::addNodeVariableType(
+			uint32_t pos,
+			OpcUaStackCore::AddNodesItem::SPtr addNodesItem,
+			OpcUaStackCore::AddNodesResult::SPtr addNodesResult
+	)
+	{
+			
+		OpcUaStatusCode statusCode;
+		auto variableTypeNodeClass = boost::make_shared<VariableTypeNodeClass>();
+
+		// set base attributes
+		statusCode = addBaseNodeClass(pos, variableTypeNodeClass, addNodesItem, addNodesResult);
+		if (statusCode != Success) return statusCode;
+
+		// get object attributes 
+		if (addNodesItem->nodeAttributes().parameterTypeId().nodeId<uint32_t>() != OpcUaId_VariableTypeAttributes &&
+			addNodesItem->nodeAttributes().parameterTypeId().nodeId<uint32_t>() != OpcUaId_VariableTypeAttributes_Encoding_DefaultBinary) {
+			Log(Error, "invalid attribute type")
+				.parameter("Pos", pos)
+				.parameter("BrowseName", addNodesItem->browseName())
+				.parameter("AttributeType", addNodesItem->nodeAttributes().parameterTypeId().nodeId<uint32_t>());
+			addNodesResult->statusCode(BadInvalidArgument);
+			return Success;
+		}
+		auto variableTypeAttributes = addNodesItem->nodeAttributes().parameter<VariableTypeAttributes>();
+
+		// set additional object attributes
+		variableTypeNodeClass->setDisplayName(variableTypeAttributes->displayName());
+		variableTypeNodeClass->setDescription(variableTypeAttributes->description());
+		variableTypeNodeClass->setWriteMask(variableTypeAttributes->writeMask());
+		variableTypeNodeClass->setUserWriteMask(variableTypeAttributes->userWriteMask());
+
+		OpcUaDataValue opcuaDatavalue;
+		variableTypeAttributes->value().getValue(opcuaDatavalue);
+		variableTypeNodeClass->setValue(opcuaDatavalue);
+
+		variableTypeNodeClass->setDataType(variableTypeAttributes->dataType());
+		variableTypeNodeClass->setValueRank(variableTypeAttributes->valueRank());
+		variableTypeNodeClass->setArrayDimensions(variableTypeAttributes->arrayDimensions());
+		
+
+		variableTypeNodeClass->isAbstract() = variableTypeAttributes->isAbstract();
+
+		// added node and reference
+		statusCode = addNodeAndReference(pos, variableTypeNodeClass, addNodesItem);
+		addNodesResult->statusCode(statusCode);
+
+		return Success;
+	}
+	OpcUaStackCore::OpcUaStatusCode NodeManagementService::addNodeReferenceType(
+		uint32_t pos,
+		OpcUaStackCore::AddNodesItem::SPtr addNodesItem,
+		OpcUaStackCore::AddNodesResult::SPtr addNodesResult
+	)
+	{	
+		OpcUaStatusCode statusCode;
+		auto referenceTypeNodeClass = boost::make_shared<ReferenceTypeNodeClass>();
+
+		// set base attributes
+		statusCode = addBaseNodeClass(pos, referenceTypeNodeClass, addNodesItem, addNodesResult);
+		if (statusCode != Success) return statusCode;
+
+		// get object attributes 
+		if (addNodesItem->nodeAttributes().parameterTypeId().nodeId<uint32_t>() != OpcUaId_ReferenceTypeAttributes &&
+			addNodesItem->nodeAttributes().parameterTypeId().nodeId<uint32_t>() != OpcUaId_ReferenceTypeAttributes_Encoding_DefaultBinary) {
+			Log(Error, "invalid attribute type")
+				.parameter("Pos", pos)
+				.parameter("BrowseName", addNodesItem->browseName())
+				.parameter("AttributeType", addNodesItem->nodeAttributes().parameterTypeId().nodeId<uint32_t>());
+			addNodesResult->statusCode(BadInvalidArgument);
+			return Success;
+		}
+		auto referenceTypeAttributes = addNodesItem->nodeAttributes().parameter<ReferenceTypeAttributes>();
+
+		// set additional object attributes
+		referenceTypeNodeClass->setDisplayName(referenceTypeAttributes->displayName());
+		referenceTypeNodeClass->setDescription(referenceTypeAttributes->description());
+		referenceTypeNodeClass->setWriteMask(referenceTypeAttributes->writeMask());
+		referenceTypeNodeClass->setUserWriteMask(referenceTypeAttributes->userWriteMask());
+
+		referenceTypeNodeClass->setInverseName(referenceTypeAttributes->inverseName());
+
+		referenceTypeNodeClass->isAbstract() = referenceTypeAttributes->isAbstract();
+		referenceTypeNodeClass->symmetric() =  referenceTypeAttributes->symmetric();
+
+		// added node and reference
+		statusCode = addNodeAndReference(pos, referenceTypeNodeClass, addNodesItem);
+		addNodesResult->statusCode(statusCode);
+		return Success;
+	}
+	OpcUaStackCore::OpcUaStatusCode NodeManagementService::addNodeDataType(
+		uint32_t pos,
+		OpcUaStackCore::AddNodesItem::SPtr addNodesItem,
+		OpcUaStackCore::AddNodesResult::SPtr addNodesResult
+	)
+	{
+		OpcUaStatusCode statusCode;
+		auto dataTypeNodeClass = boost::make_shared<DataTypeNodeClass>();
+
+		// set base attributes
+		statusCode = addBaseNodeClass(pos, dataTypeNodeClass, addNodesItem, addNodesResult);
+		if (statusCode != Success) return statusCode;
+
+		// get object attributes 
+		if (addNodesItem->nodeAttributes().parameterTypeId().nodeId<uint32_t>() != OpcUaId_DataTypeAttributes &&
+			addNodesItem->nodeAttributes().parameterTypeId().nodeId<uint32_t>() != OpcUaId_DataTypeAttributes_Encoding_DefaultBinary) {
+			Log(Error, "invalid attribute type")
+				.parameter("Pos", pos)
+				.parameter("BrowseName", addNodesItem->browseName())
+				.parameter("AttributeType", addNodesItem->nodeAttributes().parameterTypeId().nodeId<uint32_t>());
+			addNodesResult->statusCode(BadInvalidArgument);
+			return Success;
+		}
+		
+		auto dataTypeAttributes = addNodesItem->nodeAttributes().parameter<DataTypeAttributes>();
+
+		// set additional object attributes
+		dataTypeNodeClass->setDisplayName(dataTypeAttributes->displayName());
+		dataTypeNodeClass->setDescription(dataTypeAttributes->description());
+		dataTypeNodeClass->setWriteMask(dataTypeAttributes->writeMask());
+		dataTypeNodeClass->setUserWriteMask(dataTypeAttributes->userWriteMask());
+
+		dataTypeNodeClass->isAbstract() = dataTypeAttributes->isAbstract();
+		
+		//todo: setDataTypeDefinition
+
+		// added node and reference
+		statusCode = addNodeAndReference(pos, dataTypeNodeClass, addNodesItem);
+		addNodesResult->statusCode(statusCode);
+		return Success;
+	}
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
@@ -483,6 +810,55 @@ namespace OpcUaStackServer
 				deleteNodesResult->statusCode(Success);
 			}
 		}
+
+		return Success;
+	}
+
+	OpcUaStackCore::OpcUaStatusCode
+	NodeManagementService::deleteReference(
+		uint32_t pos,
+		OpcUaStackCore::DeleteReferencesItem::SPtr deleteReferencesItem,
+		OpcUaStackCore::DeleteReferencesResult::SPtr deleteReferencesResult
+	)
+	{
+		// find node which contains the reference to be deleted
+		auto baseSourceNodeClass = informationModel_->find(deleteReferencesItem->sourceNodeId());
+		if (baseSourceNodeClass.get() == nullptr) {
+			Log(Debug, "delete reference error, because node not exist")
+				.parameter("NodeId", deleteReferencesItem->sourceNodeId());
+			deleteReferencesResult->statusCode(BadNodeIdUnknown);
+			return Success;
+		}
+
+		for (auto referenceItem : baseSourceNodeClass->referenceItemMap()) {
+			if (referenceItem->typeId_ == deleteReferencesItem->typeId()) {
+				baseSourceNodeClass->referenceItemMap().remove(referenceItem->typeId_, referenceItem);
+			}
+		}
+		
+
+		OpcUaNodeId targetNodeId;
+		targetNodeId.namespaceIndex(deleteReferencesItem->targetNodeId().namespaceIndex());
+		targetNodeId.nodeIdValue(deleteReferencesItem->targetNodeId().nodeIdValue());
+
+		auto targetNodeClass = informationModel_->find(targetNodeId);
+		if (targetNodeClass.get() == nullptr) {
+			Log(Debug, "delete reference error, because target node not exist")
+				.parameter("NodeId", targetNodeId);
+			deleteReferencesResult->statusCode(BadTargetNodeIdInvalid);
+			return Success;
+		}
+
+		if (deleteReferencesItem->deleteBidirectional())
+		{
+			for (auto referenceItem : targetNodeClass->referenceItemMap()) {
+				if (referenceItem->typeId_ == deleteReferencesItem->typeId()) {
+					targetNodeClass->referenceItemMap().remove(referenceItem->typeId_, referenceItem);
+				}
+			}
+		}
+		
+		deleteReferencesResult->statusCode(Success);
 
 		return Success;
 	}

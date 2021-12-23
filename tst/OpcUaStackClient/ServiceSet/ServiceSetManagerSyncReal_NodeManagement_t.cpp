@@ -9,7 +9,45 @@ using namespace OpcUaStackClient;
 
 #ifdef REAL_SERVER
 
-BOOST_AUTO_TEST_SUITE(ServiceSetManagerSyncReal_NodeManagement_)
+struct NodeManagementFixture {
+
+	NodeManagementFixture(){
+		
+		CryptoManager::SPtr cryptoManager = CryptoManagerTest::getInstance();
+		BOOST_REQUIRE(cryptoManager.get() != nullptr);
+
+		// set secure channel configuration
+		SessionServiceConfig sessionServiceConfig;
+		sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
+		sessionServiceConfig.secureChannelClient_->cryptoManager(cryptoManager);
+		sessionServiceConfig.session_->sessionName(REAL_SESSION_NAME);
+
+		// create session
+		sessionService = serviceSetManager.sessionService(sessionServiceConfig);
+		BOOST_REQUIRE(sessionService.get() != nullptr);
+
+		// connect secure channel
+		BOOST_REQUIRE(sessionService->syncConnect() == Success);
+
+		// create nodeManagement service
+		NodeManagementServiceConfig nodeManagementServiceConfig;
+		nodeManagementService = serviceSetManager.nodeManagementService(sessionService, nodeManagementServiceConfig);
+		BOOST_REQUIRE(nodeManagementService.get() != nullptr);
+	}
+
+	~NodeManagementFixture(){
+		// disconnect secure channel
+		BOOST_REQUIRE(sessionService->syncDisconnect() == Success);
+	}
+
+	ServiceSetManager serviceSetManager;
+	SessionService::SPtr sessionService;
+	NodeManagementService::SPtr nodeManagementService;
+
+};
+
+//create fixture and build the code and run these tests first and then write one by one
+BOOST_FIXTURE_TEST_SUITE(ServiceSetManagerSyncReal_NodeManagement_, NodeManagementFixture)
 
 BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_NodeManagement_)
 {
@@ -18,34 +56,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_NodeManagement_)
 
 BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_NodeManagement_AddObjectNode)
 {
-	ServiceSetManager serviceSetManager;
-
-	//
-	// init certificate and crypto manager
-	//
-	CryptoManager::SPtr cryptoManager = CryptoManagerTest::getInstance();
-	BOOST_REQUIRE(cryptoManager.get() != nullptr);
-
-	// set secure channel configuration
-	SessionServiceConfig sessionServiceConfig;
-	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
-	sessionServiceConfig.secureChannelClient_->cryptoManager(cryptoManager);
-	sessionServiceConfig.session_->sessionName(REAL_SESSION_NAME);
-
-	// create session
-	SessionService::SPtr sessionService;
-	sessionService = serviceSetManager.sessionService(sessionServiceConfig);
-	BOOST_REQUIRE(sessionService.get() != nullptr);
-
-	// connect secure channel
-	BOOST_REQUIRE(sessionService->syncConnect() == Success);
-
-	// create nodeManagement service
-	NodeManagementService::SPtr nodeManagementService;
-	NodeManagementServiceConfig nodeManagementServiceConfig;
-	nodeManagementService = serviceSetManager.nodeManagementService(sessionService, nodeManagementServiceConfig);
-	BOOST_REQUIRE(nodeManagementService.get() != nullptr);
-
+	
 	// create object node
 	auto trx = boost::make_shared<ServiceTransactionAddNodes>();
 	auto req = trx->request();
@@ -76,39 +87,10 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_NodeManagement_AddObjectNode)
 	BOOST_REQUIRE(res->results()->size() == 1);
 	BOOST_REQUIRE((*res->results().get())[0]->statusCode() == Success);
 
-	// disconnect secure channel
-	BOOST_REQUIRE(sessionService->syncDisconnect() == Success);
 }
 
 BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_NodeManagement_AddVariableNode)
 {
-	ServiceSetManager serviceSetManager;
-
-	//
-	// init certificate and crypto manager
-	//
-	CryptoManager::SPtr cryptoManager = CryptoManagerTest::getInstance();
-	BOOST_REQUIRE(cryptoManager.get() != nullptr);
-
-	// set secure channel configuration
-	SessionServiceConfig sessionServiceConfig;
-	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
-	sessionServiceConfig.secureChannelClient_->cryptoManager(cryptoManager);
-	sessionServiceConfig.session_->sessionName(REAL_SESSION_NAME);
-
-	// create session
-	SessionService::SPtr sessionService;
-	sessionService = serviceSetManager.sessionService(sessionServiceConfig);
-	BOOST_REQUIRE(sessionService.get() != nullptr);
-
-	// connect secure channel
-	BOOST_REQUIRE(sessionService->syncConnect() == Success);
-
-	// create nodeManagement service
-	NodeManagementService::SPtr nodeManagementService;
-	NodeManagementServiceConfig nodeManagementServiceConfig;
-	nodeManagementService = serviceSetManager.nodeManagementService(sessionService, nodeManagementServiceConfig);
-	BOOST_REQUIRE(nodeManagementService.get() != nullptr);
 
 	// create variable node
 	auto trx = boost::make_shared<ServiceTransactionAddNodes>();
@@ -147,40 +129,11 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_NodeManagement_AddVariableNode)
 	BOOST_REQUIRE(res->results()->size() == 1);
 	BOOST_REQUIRE((*res->results().get())[0]->statusCode() == Success);
 
-	// disconnect secure channel
-	BOOST_REQUIRE(sessionService->syncDisconnect() == Success);
 }
 
 BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_NodeManagement_DeleteNodes)
 {
-	ServiceSetManager serviceSetManager;
-
-	//
-	// init certificate and crypto manager
-	//
-	CryptoManager::SPtr cryptoManager = CryptoManagerTest::getInstance();
-	BOOST_REQUIRE(cryptoManager.get() != nullptr);
-
-	// set secure channel configuration
-	SessionServiceConfig sessionServiceConfig;
-	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
-	sessionServiceConfig.secureChannelClient_->cryptoManager(cryptoManager);
-	sessionServiceConfig.session_->sessionName(REAL_SESSION_NAME);
-
-	// create session
-	SessionService::SPtr sessionService;
-	sessionService = serviceSetManager.sessionService(sessionServiceConfig);
-	BOOST_REQUIRE(sessionService.get() != nullptr);
-
-	// connect secure channel
-	BOOST_REQUIRE(sessionService->syncConnect() == Success);
-
-	// create nodeManagement service
-	NodeManagementService::SPtr nodeManagementService;
-	NodeManagementServiceConfig nodeManagementServiceConfig;
-	nodeManagementService = serviceSetManager.nodeManagementService(sessionService, nodeManagementServiceConfig);
-	BOOST_REQUIRE(nodeManagementService.get() != nullptr);
-
+	
 	// delete node
 	auto trx = boost::make_shared<ServiceTransactionDeleteNodes>();
 	auto req = trx->request();
@@ -203,11 +156,8 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_NodeManagement_DeleteNodes)
 	BOOST_REQUIRE(res->results()->size() == 2);
 	BOOST_REQUIRE((*res->results().get())[0]->statusCode() == Success);
 	BOOST_REQUIRE((*res->results().get())[1]->statusCode() == Success);
-
-	// disconnect secure channel
-	BOOST_REQUIRE(sessionService->syncDisconnect() == Success);
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+BOOST_FIXTURE_TEST_SUITE_END()
 
 #endif
