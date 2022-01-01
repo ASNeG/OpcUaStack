@@ -151,7 +151,6 @@ namespace OpcUaStackServer
 	void 
 	NodeManagementService::receiveAddReferencesRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
-
 		OpcUaStatusCode statusCode = Success;
 		auto trx = boost::static_pointer_cast<ServiceTransactionAddReferences>(serviceTransaction);
 		auto addReferencesRequest  = trx->request();
@@ -180,7 +179,6 @@ namespace OpcUaStackServer
 				break;
 			}
 			
-			
 			//Get the target node
 			OpcUaNodeId targetNodeId;
 			targetNodeId.namespaceIndex(addReferencesItem->targetNodeId().namespaceIndex());
@@ -208,8 +206,6 @@ namespace OpcUaStackServer
 			{
 				boost::unique_lock<boost::shared_mutex> lock1(sourceNodeClass->mutex());
 				sourceNodeClass->referenceItemMap().add(addReferencesItem->referenceTypeId(), true, targetNodeId);
-				
-				boost::unique_lock<boost::shared_mutex> lock1(targetNodeClass->mutex());
 				targetNodeClass->referenceItemMap().add(addReferencesItem->referenceTypeId(), false, sourceNodeId);
 			} else {
 				addReferencesResult->statusCode(BadNodeClassInvalid);
@@ -280,7 +276,6 @@ namespace OpcUaStackServer
 		serviceTransaction->statusCode(statusCode);
 		sendAnswer(serviceTransaction);
 	}
-
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -408,9 +403,6 @@ namespace OpcUaStackServer
 				return addNodeDataType(pos, addNodesItem, addNodesResult);
 			}
 			case NodeClass::EnumView:
-			{
-				//return addNodeView(pos, addNodesItem, addNodesResult);
-			}
 			case NodeClass::EnumUnspecified:
 			default:
 			{
@@ -539,6 +531,7 @@ namespace OpcUaStackServer
 
 		return Success;
 	}
+
 	OpcUaStackCore::OpcUaStatusCode NodeManagementService::addNodeMethod(
 			uint32_t pos,
 			OpcUaStackCore::AddNodesItem::SPtr addNodesItem,
@@ -579,6 +572,7 @@ namespace OpcUaStackServer
 
 		return Success;
 	}
+
 	OpcUaStackCore::OpcUaStatusCode NodeManagementService::addNodeObjectType(
 			uint32_t pos,
 			OpcUaStackCore::AddNodesItem::SPtr addNodesItem,
@@ -617,6 +611,7 @@ namespace OpcUaStackServer
 		addNodesResult->statusCode(statusCode);
 		return Success;
 	}
+
 	OpcUaStackCore::OpcUaStatusCode NodeManagementService::addNodeVariableType(
 			uint32_t pos,
 			OpcUaStackCore::AddNodesItem::SPtr addNodesItem,
@@ -666,6 +661,7 @@ namespace OpcUaStackServer
 
 		return Success;
 	}
+
 	OpcUaStackCore::OpcUaStatusCode NodeManagementService::addNodeReferenceType(
 		uint32_t pos,
 		OpcUaStackCore::AddNodesItem::SPtr addNodesItem,
@@ -707,6 +703,7 @@ namespace OpcUaStackServer
 		addNodesResult->statusCode(statusCode);
 		return Success;
 	}
+
 	OpcUaStackCore::OpcUaStatusCode NodeManagementService::addNodeDataType(
 		uint32_t pos,
 		OpcUaStackCore::AddNodesItem::SPtr addNodesItem,
