@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -86,6 +86,24 @@ namespace OpcUaStackCore
 		return boost::make_shared<EnumDefinitionExpand>();
 	}
 
+    std::string
+    EnumDefinitionExpand::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+
+    std::string
+    EnumDefinitionExpand::typeName(void)
+    {
+    	return "EnumDefinition";
+    }
+
+    OpcUaNodeId
+    EnumDefinitionExpand::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)100,0);
+    }
+
 	OpcUaNodeId
 	EnumDefinitionExpand::binaryTypeId(void)
 	{
@@ -164,6 +182,19 @@ namespace OpcUaStackCore
 	{
 		os << "EnumFields="; enumFields_->out(os);
 	}
+
+    bool
+    EnumDefinitionExpand::operator!=(const EnumDefinitionExpand& value)
+    {
+        return !this->operator==(value);
+    }
+
+    EnumDefinitionExpand&
+    EnumDefinitionExpand::operator=(const EnumDefinitionExpand& value)
+    {
+        const_cast<EnumDefinitionExpand*>(&value)->copyTo(*this);
+        return *this;
+    }
 
 }
 
