@@ -17,11 +17,18 @@
 
    DESCRIPTION:
 
-   The class UDPConnection send and receive UDP packets to an from communication
+   The class UDPConnection send and receive UDP packets to and from communication
    partners via the UDP protocol. Both unicast and multicast addressing are supported.
    The synchronization is implemented with strands.
 
    The communication with the network layer is event based via the message bus.
+
+   Events:
+   1. A network message is received from a writer group via the internal message
+      bus. The network message is sent to the destination endpoint via the UDP
+      endpoint.
+   2. A network message is received via the UDP endpoint. The message is forwared
+      to the associated reader group via the internal message bus.
 
  */
 
@@ -41,13 +48,24 @@ namespace OpcUaStackPubSub
 		typedef boost::shared_ptr<UDPConnection> SPtr;
 
 		UDPConnection(
-			const std::string& serviceName,
+			const std::string& sourceAddress,
+			const std::string& dstAddress,
+			const std::string& readerGroupName,
+			const std::string& connectionName,
 			OpcUaStackCore::IOThread::SPtr& ioThread,
 			OpcUaStackCore::MessageBus::SPtr& messageBus
 		);
 		~UDPConnection(void);
 
+		bool startup(void);
+		bool shutdown(void);
+
 	  private:
+		std::string ownAddress_;				// own endpoint address
+		std::string dstAddress_;				// destination address (unicast or multicast)
+		std::string readerGroupName_;			// name of associated reader group
+
+		OpcUaStackCore::MessageBusMember::WPtr readerGroupBusMember_;
 	};
 
 }

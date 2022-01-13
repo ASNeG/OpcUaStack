@@ -24,14 +24,22 @@ namespace OpcUaStackPubSub
 {
 
 	UDPConnection::UDPConnection(
-		const std::string& serviceName,
+		const std::string& ownAddress,
+		const std::string& dstAddress,
+		const std::string& readerGroupName,
+		const std::string& connectionName,
 		OpcUaStackCore::IOThread::SPtr& ioThread,
 		OpcUaStackCore::MessageBus::SPtr& messageBus
 	)
 	: ServerServiceBase()
 	{
+		// set parameter
+		ownAddress_ = ownAddress;
+		dstAddress_ = dstAddress;
+		readerGroupName_ = readerGroupName;
+
 		// set parameter in server service base
-		serviceName_ = serviceName;
+		serviceName_ = connectionName;
 		ServerServiceBase::ioThread_ = ioThread.get();
 		strand_ = ioThread->createStrand();
 		messageBus_ = messageBus;
@@ -44,6 +52,8 @@ namespace OpcUaStackPubSub
 		// activate receiver
 		activateReceiver(
 			[this](const MessageBusMember::WPtr& handleFrom, Message::SPtr& message){
+				// receive message from internal message bus
+
 				// FIXME: TBD
 			}
 		);
@@ -56,4 +66,28 @@ namespace OpcUaStackPubSub
 		messageBus_->deregisterMember(messageBusMember_);
 	}
 
+	bool
+	UDPConnection::startup(void)
+	{
+		// get reference to writer group from message bus
+		if (!messageBus_->existMember(readerGroupName_)) {
+			Log(Error, "reader group message bus member don't exist")
+				.parameter("ReaderGroupName", readerGroupName_);
+			return false;
+		}
+		readerGroupBusMember_ = messageBus_->getMember(readerGroupName_);
+
+		// open udp endpoint
+		// FIXME: TODO
+
+		return true;
+	}
+
+	bool shutdown(void)
+	{
+		// close udp endpoint
+		// FIXME: TODO
+
+		return true;
+	}
 }
