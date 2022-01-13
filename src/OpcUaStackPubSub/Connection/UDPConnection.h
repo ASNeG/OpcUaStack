@@ -36,6 +36,7 @@
 #define __OpcUaStackPubSub_UDPConnection_h__
 
 #include "OpcUaStackServer/ServiceSet/ServerServiceBase.h"
+#include "OpcUaStackPubSub/Events/NetworkSendEvent.h"
 
 namespace OpcUaStackPubSub
 {
@@ -66,6 +67,8 @@ namespace OpcUaStackPubSub
 		std::string readerGroupName_;			// name of associated reader group
 
 		OpcUaStackCore::MessageBusMember::WPtr readerGroupBusMember_;
+
+		void networkSendEvent(NetworkSendEvent::SPtr& networkSendEvent);
 	};
 
 }

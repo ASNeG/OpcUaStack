@@ -76,6 +76,7 @@ message(STATUS "  library name: ${OPCUASTACK_PUBSUB_LIB_NAME}")
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 file(GLOB INC_OpcUaStackPubSub_Base OpcUaStackPubSub/Base/*.h)
+file(GLOB INC_OpcUaStackPubSub_Events OpcUaStackPubSub/Events/*.h)
 file(GLOB INC_OpcUaStackPubSub_Connection OpcUaStackPubSub/Connection/*.h)
 
 install(
@@ -87,6 +88,13 @@ install(
 install(
     FILES ${INC_OpcUaStackPubSub_Base} 
     DESTINATION ${INSTALL_PREFIX}/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackPubSub/Base
+    COMPONENT headers
+)
+
+
+install(
+    FILES ${INC_OpcUaStackPubSub_Events} 
+    DESTINATION ${INSTALL_PREFIX}/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackPubSub/Events
     COMPONENT headers
 )
 

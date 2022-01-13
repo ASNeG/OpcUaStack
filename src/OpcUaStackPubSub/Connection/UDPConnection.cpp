@@ -54,7 +54,16 @@ namespace OpcUaStackPubSub
 			[this](const MessageBusMember::WPtr& handleFrom, Message::SPtr& message){
 				// receive message from internal message bus
 
-				// FIXME: TBD
+				auto event = boost::static_pointer_cast<Event>(message);
+				switch (event->eventType())
+				{
+					case EventType::NetworkSendEvent:
+					{
+						auto networkSendEvent = boost::static_pointer_cast<NetworkSendEvent>(message);
+						this->networkSendEvent(networkSendEvent);
+						break;
+					}
+				}
 			}
 		);
 	}
@@ -83,11 +92,19 @@ namespace OpcUaStackPubSub
 		return true;
 	}
 
-	bool shutdown(void)
+	bool
+	UDPConnection::shutdown(void)
 	{
 		// close udp endpoint
 		// FIXME: TODO
 
 		return true;
+	}
+
+	void
+	UDPConnection::networkSendEvent(NetworkSendEvent::SPtr& networkSendEvent)
+	{
+		// send the event to the destination endpoint
+		// FIXME: TODO
 	}
 }
