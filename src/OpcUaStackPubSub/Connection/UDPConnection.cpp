@@ -14,7 +14,6 @@
 
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
-
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackPubSub/Connection/UDPConnection.h"
 
@@ -31,7 +30,10 @@ namespace OpcUaStackPubSub
 		OpcUaStackCore::IOThread::SPtr& ioThread,
 		OpcUaStackCore::MessageBus::SPtr& messageBus
 	)
-	: ServerServiceBase()
+	: ServerServiceBase(),
+	  ioservice_(ioThread->ioService()->io_service()),
+	  socket_(ioservice_, udp::endpoint(udp::v4(), 4840)),
+	  streambuf_()
 	{
 		// set parameter
 		ownAddress_ = ownAddress;
@@ -51,7 +53,7 @@ namespace OpcUaStackPubSub
 
 		// activate receiver
 		activateReceiver(
-			[this](const MessageBusMember::WPtr& handleFrom, Message::SPtr& message){
+			[this](const MessageBusMember::WPtr& handleFrom, Message::SPtr& message) {
 				// receive message from internal message bus
 
 				auto event = boost::static_pointer_cast<Event>(message);
@@ -87,8 +89,20 @@ namespace OpcUaStackPubSub
 		readerGroupBusMember_ = messageBus_->getMember(readerGroupName_);
 
 		// open udp endpoint
-		// FIXME: TODO
+		ip::udp::resolver resolver_(ioservice_);
+		ip::udp::resolver::query query(udp::v4(), dstAddress_, "4840");
+		udp::resolver::iterator iter = resolver_.resolve(query);
+		endpoint_ = *iter;
+		
+        boost::asio::streambuf::mutable_buffers_type mutableBuffer = 
+		                     streambuf_.prepare(1024);
 
+		socket_.async_receive_from(mutableBuffer, endpoint_,
+        boost::bind(&UDPConnection::handleUdpRecv, this,
+          boost::asio::placeholders::error,
+          boost::asio::placeholders::bytes_transferred));
+		
+		ioservice_.run();
 		return true;
 	}
 
@@ -96,8 +110,7 @@ namespace OpcUaStackPubSub
 	UDPConnection::shutdown(void)
 	{
 		// close udp endpoint
-		// FIXME: TODO
-
+		socket_.close();
 		return true;
 	}
 
@@ -105,6 +118,18 @@ namespace OpcUaStackPubSub
 	UDPConnection::networkSendEvent(NetworkSendEvent::SPtr& networkSendEvent)
 	{
 		// send the event to the destination endpoint
-		// FIXME: TODO
+		socket_.send_to(networkSendEvent->streamBuf().data(), endpoint_);
+	}
+
+	void
+	UDPConnection::handleUdpRecv(const boost::system::error_code& error,
+      std::size_t bytes_transferred)
+	{
+		//Write the data to readergroup.
+		NetworkRecvEvent::SPtr networkrecvEvent;
+		networkrecvEvent->streamBuf().commit(buffer_copy(networkrecvEvent->streamBuf().prepare(streambuf_.size()),
+											streambuf_.data()));
+	    Message::SPtr message = boost::make_shared<Message>(*networkrecvEvent);
+		messageBus_->messageSend(messageBusMember_, readerGroupBusMember_, message);
 	}
 }

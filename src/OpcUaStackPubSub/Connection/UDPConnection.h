@@ -29,7 +29,6 @@
       endpoint.
    2. A network message is received via the UDP endpoint. The message is forwared
       to the associated reader group via the internal message bus.
-
  */
 
 #ifndef __OpcUaStackPubSub_UDPConnection_h__
@@ -37,6 +36,11 @@
 
 #include "OpcUaStackServer/ServiceSet/ServerServiceBase.h"
 #include "OpcUaStackPubSub/Events/NetworkSendEvent.h"
+#include "OpcUaStackPubSub/Events/NetworkRecvEvent.h"
+#include <boost/asio.hpp>
+
+using namespace boost::asio;
+using boost::asio::ip::udp;
 
 namespace OpcUaStackPubSub
 {
@@ -46,7 +50,7 @@ namespace OpcUaStackPubSub
 	, public OpcUaStackServer::ServerServiceBase
 	{
 	  public:
-		typedef boost::shared_ptr<UDPConnection> SPtr;
+		using SPtr = boost::shared_ptr<UDPConnection>;
 
 		UDPConnection(
 			const std::string& sourceAddress,
@@ -65,10 +69,17 @@ namespace OpcUaStackPubSub
 		std::string ownAddress_;				// own endpoint address
 		std::string dstAddress_;				// destination address (unicast or multicast)
 		std::string readerGroupName_;			// name of associated reader group
+		boost::asio::io_service& ioservice_;
+		ip::udp::endpoint endpoint_;
+		udp::socket socket_;
+		boost::asio::streambuf streambuf_;
+		
 
 		OpcUaStackCore::MessageBusMember::WPtr readerGroupBusMember_;
+		OpcUaStackCore::MessageBusMember::WPtr messageBusMember_;
 
 		void networkSendEvent(NetworkSendEvent::SPtr& networkSendEvent);
+		void handleUdpRecv(const boost::system::error_code& error, std::size_t bytes_transferred);
 	};
 
 }
