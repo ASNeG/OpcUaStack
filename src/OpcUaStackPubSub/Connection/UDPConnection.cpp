@@ -25,20 +25,20 @@ namespace OpcUaStackPubSub
 	UDPConnection::UDPConnection(
 		const std::string& ownAddress,
 		const std::string& dstAddress,
-		const std::string& readerGroupName,
+		const std::string& messageTransportName,
 		const std::string& connectionName,
 		OpcUaStackCore::IOThread::SPtr& ioThread,
 		OpcUaStackCore::MessageBus::SPtr& messageBus
 	)
 	: ServerServiceBase(),
 	  ioservice_(ioThread->ioService()->io_service()),
-	  socket_(ioservice_, udp::endpoint(udp::v4(), 4840)),
+	  socket_(ioservice_, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), 4840)),
 	  streambuf_()
 	{
 		// set parameter
 		ownAddress_ = ownAddress;
 		dstAddress_ = dstAddress;
-		readerGroupName_ = readerGroupName;
+		messageTransportName_ = messageTransportName;
 
 		// set parameter in server service base
 		serviceName_ = connectionName;
@@ -61,7 +61,7 @@ namespace OpcUaStackPubSub
 				{
 					case EventType::NetworkSendEvent:
 					{
-						auto networkSendEvent = boost::static_pointer_cast<NetworkSendEvent>(message);
+						NetworkSendEvent::SPtr networkSendEvent = boost::static_pointer_cast<NetworkSendEvent>(message);
 						this->networkSendEvent(networkSendEvent);
 						break;
 					}
@@ -81,17 +81,17 @@ namespace OpcUaStackPubSub
 	UDPConnection::startup(void)
 	{
 		// get reference to writer group from message bus
-		if (!messageBus_->existMember(readerGroupName_)) {
+		if (!messageBus_->existMember(messageTransportName_)) {
 			Log(Error, "reader group message bus member don't exist")
-				.parameter("ReaderGroupName", readerGroupName_);
+				.parameter("MessageTransportName", messageTransportName_);
 			return false;
 		}
-		readerGroupBusMember_ = messageBus_->getMember(readerGroupName_);
+		readerGroupBusMember_ = messageBus_->getMember(messageTransportName_);
 
 		// open udp endpoint
-		ip::udp::resolver resolver_(ioservice_);
-		ip::udp::resolver::query query(udp::v4(), dstAddress_, "4840");
-		udp::resolver::iterator iter = resolver_.resolve(query);
+		boost::asio::ip::udp::resolver resolver_(ioservice_);
+		boost::asio::ip::udp::resolver::query query(boost::asio::ip::udp::v4(), dstAddress_, "4840");
+		boost::asio::ip::udp::resolver::iterator iter = resolver_.resolve(query);
 		endpoint_ = *iter;
 		
         boost::asio::streambuf::mutable_buffers_type mutableBuffer = 
@@ -125,7 +125,7 @@ namespace OpcUaStackPubSub
 	UDPConnection::handleUdpRecv(const boost::system::error_code& error,
       std::size_t bytes_transferred)
 	{
-		//Write the data to readergroup.
+		// send message to message transport module
 		NetworkRecvEvent::SPtr networkrecvEvent;
 		networkrecvEvent->streamBuf().commit(buffer_copy(networkrecvEvent->streamBuf().prepare(streambuf_.size()),
 											streambuf_.data()));

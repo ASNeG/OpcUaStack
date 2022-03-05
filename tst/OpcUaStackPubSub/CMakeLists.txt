@@ -1,128 +1,36 @@
-cmake_minimum_required(VERSION 2.8.12.2)
-project	(OpcUaStackTest4)
-set(CMAKE_VERBOSE_MAKEFILE ON)
-set (CMAKE_CXX_STANDARD 11)
-
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 #
-# version
-#
+# build 
+# 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-set(OPCUASTACK_VERSION_MAJOR "4" CACHE STRING "major version")
-set(OPCUASTACK_VERSION_MINOR "0" CACHE STRING "minor version")
-set(OPCUASTACK_VERSION_PATCH "0" CACHE STRING "patch version")
-
-set(OPENSSL_VERSION_MAJOR "1" CACHE STRING "major version")
-set(OPENSSL_VERSION_MINOR "0" CACHE STRING "minor version")
-set(OPENSSL_VERSION_PATCH "0" CACHE STRING "patch version")
-
-set(OPCUASTACK_INSTALL_PREFIX "/" CACHE PATH "opc ua stack intallation prefix")
-
-find_package(
-    OpenSSL 
-    "${OPENSSL_VERSION_MAJOR}.${OPENSSL_VERSION_MINOR}.${OPENSSL_VERSION_PATCH}" 
-    REQUIRED
+include_directories(
+    ./
+    ${PROJECT_BINARY_DIR}
+    ../inc/
+	${Boost_INCLUDE_DIRS}
+	${OPENSSL_INCLUDE_DIR}
 )
 
-# -----------------------------------------------------------------------------
-# -----------------------------------------------------------------------------
-#
-# global options
-#
-# -----------------------------------------------------------------------------
-# -----------------------------------------------------------------------------
-set(OpcUaStack_INSTALL_DIR "/" CACHE STRING "OpcUaStack installation output directory")
-
-option(
-    USE_OpcUaStackCore
-    "build opc ua core library"
-    ON
+file(
+	GLOB OpcUaStackPubSubTest_SRC 
+	${PROJECT_SOURCE_DIR}/unittest.cpp
+	${PROJECT_SOURCE_DIR}/OpcUaStackPubSub/*/*.cpp
+)
+add_executable(
+    OpcUaStackPubSubTest
+    ${OpcUaStackPubSubTest_SRC}
+    ${PROJECT_BINARY_DIR}
 )
 
-option(
-    USE_OpcUaStackClient
-    "build opc ua client library"
-    ON
+target_link_libraries(
+    OpcUaStackPubSubTest
+    ${OPCUASTACK_LIBRARY_CORE}
+    ${OPCUASTACK_LIBRARY_CLIENT}
+    ${OPCUASTACK_LIBRARY_SERVER}
+    ${OPCUASTACK_LIBRARY_PUBSUB}
+    ${CMAKE_DL_LIBS}
+    ${pthread}
+    ${Boost_LIBRARIES}
 )
-
-option(
-    USE_OpcUaStackServer
-    "build opc ua server library"
-    ON
-)
-
-option(
-    USE_OpcUaStackPubSub
-    "build opc ua pub sub library"
-    ON
-)
-
-if (TEST_SERVER_URI) 
-  add_definitions(-DREAL_SERVER -DREAL_SERVER_URI="${TEST_SERVER_URI}")
-endif()
-if (SERVER_PKI_PATH) 
-  add_definitions(-DSERVER_PKI_PATH="${SERVER_PKI_PATH}")
-endif()
-
-
-
-#add_definitions(-DBOOST_ALL_DYN_LINK)
-
-if (WIN32)
-    if (MSVC)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
-    endif()
-endif ()
-
-# -----------------------------------------------------------------------------
-# -----------------------------------------------------------------------------
-#
-# boost 
-#
-# -----------------------------------------------------------------------------
-# -----------------------------------------------------------------------------
-include(${OPCUASTACK_INSTALL_PREFIX}/usr/share/cmake/OpcUaStack${OPCUASTACK_VERSION_MAJOR}/CMakeBoost.txt)
-
-
-# -----------------------------------------------------------------------------
-# -----------------------------------------------------------------------------
-#
-# openssl
-#
-# -----------------------------------------------------------------------------
-# -----------------------------------------------------------------------------
-include(${OPCUASTACK_INSTALL_PREFIX}/usr/share/cmake/OpcUaStack${OPCUASTACK_VERSION_MAJOR}/CMakeOpenSSL.txt)
-
-# -----------------------------------------------------------------------------
-# -----------------------------------------------------------------------------
-#
-# opcuastack 
-#
-# -----------------------------------------------------------------------------
-# -----------------------------------------------------------------------------
-include(${OPCUASTACK_INSTALL_PREFIX}/usr/share/cmake/OpcUaStack${OPCUASTACK_VERSION_MAJOR}/CMakeOpcUaStack.txt)
-
-# -----------------------------------------------------------------------------
-# -----------------------------------------------------------------------------
-#
-# build subdirectories
-#
-# -----------------------------------------------------------------------------
-# -----------------------------------------------------------------------------
-if (USE_OpcUaStackCore)
-    include(OpcUaStackCore/CMakeLists.txt) 
-endif ()
-
-if (USE_OpcUaStackClient)
-    include(OpcUaStackClient/CMakeLists.txt) 
-endif ()
-
-if (USE_OpcUaStackServer)
-    include(OpcUaStackServer/CMakeLists.txt) 
-endif ()
-
-if (USE_OpcUaStackPubSub)
-    include(OpcUaStackPubSub/CMakeLists.txt) 
-endif ()

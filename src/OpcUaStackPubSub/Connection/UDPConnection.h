@@ -39,9 +39,6 @@
 #include "OpcUaStackPubSub/Events/NetworkRecvEvent.h"
 #include <boost/asio.hpp>
 
-using namespace boost::asio;
-using boost::asio::ip::udp;
-
 namespace OpcUaStackPubSub
 {
 
@@ -55,7 +52,7 @@ namespace OpcUaStackPubSub
 		UDPConnection(
 			const std::string& sourceAddress,
 			const std::string& dstAddress,
-			const std::string& readerGroupName,
+			const std::string& messageTransportName,
 			const std::string& connectionName,
 			OpcUaStackCore::IOThread::SPtr& ioThread,
 			OpcUaStackCore::MessageBus::SPtr& messageBus
@@ -68,10 +65,10 @@ namespace OpcUaStackPubSub
 	  private:
 		std::string ownAddress_;				// own endpoint address
 		std::string dstAddress_;				// destination address (unicast or multicast)
-		std::string readerGroupName_;			// name of associated reader group
+		std::string messageTransportName_;		// name of associated message transport module
 		boost::asio::io_service& ioservice_;
-		ip::udp::endpoint endpoint_;
-		udp::socket socket_;
+		boost::asio::ip::udp::endpoint endpoint_;
+		boost::asio::ip::udp::socket socket_;
 		boost::asio::streambuf streambuf_;
 		
 
