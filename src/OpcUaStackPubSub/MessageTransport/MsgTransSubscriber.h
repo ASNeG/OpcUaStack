@@ -14,6 +14,14 @@
 
    Autor: Kai Huebl (kai@huebl-sgh.de)
 
+   DESCRIPTION:
+
+   The message transport subscriber module receives a message from the communication
+   module via the internal message bus.The publisher ID is determined from the received
+   message and the assigned network message processor is determined.  The received message
+   is  forwarded to the assigned network message processor module via the internal message
+   bus.
+
  */
 
 #ifndef __OpcUaStackPubSub_MsgTransSubscriber_h__
@@ -40,6 +48,14 @@ namespace OpcUaStackPubSub
 
 		bool startup(void);
 		bool shutdown(void);
+
+		bool registerNetworkMessageProcessor(
+			uint32_t publisherId,								// publisher id
+			const std::string& networkMessageProcessorName		// message bus member name
+		);
+		bool deregisterNetworkMessageProcessor(
+			uint32_t publisherId
+		);
 
 	  private:
 		OpcUaStackCore::IOThread::SPtr ioThread_;	// smart pointer to io thread

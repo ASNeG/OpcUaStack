@@ -14,15 +14,16 @@
 
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
-#include "OpcUaStackCore/Base/Log.h"
-#include "OpcUaStackPubSub/MessageTransport/MsgTransProvider.h"
+
+#include "OpcUaStackPubSub/MessageTransport/MsgTransPublisher.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackPubSub
 {
 
-	MsgTransProvider::MsgTransProvider(
+	MsgTransPublisher::MsgTransPublisher(
+		const std::string& connectionName,
 		const std::string& serviceName,
 		OpcUaStackCore::IOThread::SPtr& ioThread,
 		OpcUaStackCore::MessageBus::SPtr& messageBus
@@ -53,7 +54,7 @@ namespace OpcUaStackPubSub
 		);
 	}
 
-	MsgTransProvider::~MsgTransProvider(void)
+	MsgTransPublisher::~MsgTransPublisher(void)
 	{
 		// deactivate receiver
 		deactivateReceiver();
@@ -61,14 +62,14 @@ namespace OpcUaStackPubSub
 	}
 
 	bool
-	MsgTransProvider::startup(void)
+	MsgTransPublisher::startup(void)
 	{
 		// FIXME: todo
 		return true;
 	}
 
 	bool
-	MsgTransProvider::shutdown(void)
+	MsgTransPublisher::shutdown(void)
 	{
 	// FIXME: todo
 		return true;

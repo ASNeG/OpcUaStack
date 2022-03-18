@@ -74,4 +74,23 @@ namespace OpcUaStackPubSub
 		return true;
 	}
 
+	bool
+	MsgTransSubscriber::registerNetworkMessageProcessor(
+		uint32_t publisherId,								// publisher id
+		const std::string& networkMessageProcessorName		// message bus member name
+	)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	MsgTransSubscriber::deregisterNetworkMessageProcessor(
+		uint32_t publisherId
+	)
+	{
+		// FIXME: todo
+		return true;
+	}
+
 }
