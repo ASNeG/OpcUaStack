@@ -24,24 +24,28 @@ namespace OpcUaStackPubSub
 
 	UDPConnection::UDPConnection(
 		const std::string& ownAddress,
+		uint32_t ownPort,
 		const std::string& dstAddress,
+		uint32_t dstPort,
 		const std::string& messageTransportName,
-		const std::string& connectionName,
+		const std::string& serviceName,
 		OpcUaStackCore::IOThread::SPtr& ioThread,
 		OpcUaStackCore::MessageBus::SPtr& messageBus
 	)
-	: ServerServiceBase(),
-	  ioservice_(ioThread->ioService()->io_service()),
-	  socket_(ioservice_, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), 4840)),
-	  streambuf_()
+	: ServerServiceBase()
+	, ownEndpoint_(boost::asio::ip::address::from_string(ownAddress), ownPort)
+	, dstEndpoint_(boost::asio::ip::address::from_string(dstAddress), dstPort)
 	{
 		// set parameter
+		ioThread_ = ioThread;
 		ownAddress_ = ownAddress;
+		ownPort_ = ownPort;
 		dstAddress_ = dstAddress;
+		dstPort_ = dstPort;
 		messageTransportName_ = messageTransportName;
 
 		// set parameter in server service base
-		serviceName_ = connectionName;
+		serviceName_ = serviceName;
 		ServerServiceBase::ioThread_ = ioThread.get();
 		strand_ = ioThread->createStrand();
 		messageBus_ = messageBus;
@@ -61,8 +65,8 @@ namespace OpcUaStackPubSub
 				{
 					case EventType::NetworkSendEvent:
 					{
-						NetworkSendEvent::SPtr networkSendEvent = boost::static_pointer_cast<NetworkSendEvent>(message);
-						this->networkSendEvent(networkSendEvent);
+						NetworkSendEvent::SPtr event = boost::static_pointer_cast<NetworkSendEvent>(message);
+						this->send(event);
 						break;
 					}
 				}
@@ -86,50 +90,95 @@ namespace OpcUaStackPubSub
 				.parameter("MessageTransportName", messageTransportName_);
 			return false;
 		}
-		readerGroupBusMember_ = messageBus_->getMember(messageTransportName_);
+		messageTransportBusMember_ = messageBus_->getMember(messageTransportName_);
 
-		// open udp endpoint
-		boost::asio::ip::udp::resolver resolver_(ioservice_);
-		boost::asio::ip::udp::resolver::query query(boost::asio::ip::udp::v4(), dstAddress_, "4840");
-		boost::asio::ip::udp::resolver::iterator iter = resolver_.resolve(query);
-		endpoint_ = *iter;
-		
-        boost::asio::streambuf::mutable_buffers_type mutableBuffer = 
-		                     streambuf_.prepare(1024);
+		// open udp server
+		udpServer_.ioThread(ioThread_);
+		udpServer_.endpoint(ownEndpoint_);
+		if (!udpServer_.open()) {
+			Log(Error, "open udp endpoint error")
+				.parameter("Address", ownAddress_)
+				.parameter("Port", ownPort_);
+				return false;
+		}
+		Log(Info, "open udp server")
+			.parameter("Address", ownAddress_)
+			.parameter("Port", ownPort_);
 
-		socket_.async_receive_from(mutableBuffer, endpoint_,
-        boost::bind(&UDPConnection::handleUdpRecv, this,
-          boost::asio::placeholders::error,
-          boost::asio::placeholders::bytes_transferred));
-		
-		ioservice_.run();
+		// receive event
+		recv();
 		return true;
 	}
 
 	bool
 	UDPConnection::shutdown(void)
 	{
-		// close udp endpoint
-		socket_.close();
+		Log(Info, "close udp server")
+			.parameter("Address", ownAddress_)
+			.parameter("Port", ownPort_);
+
+		// close udp server
+		shutdown_ = true;
+		udpServer_.close();
+
+		// wait for the socket to close
+		if (asyncRecvFlag_) {
+			;
+		}
+
 		return true;
 	}
 
 	void
-	UDPConnection::networkSendEvent(NetworkSendEvent::SPtr& networkSendEvent)
+	UDPConnection::send(
+		NetworkSendEvent::SPtr& event
+	)
 	{
 		// send the event to the destination endpoint
-		socket_.send_to(networkSendEvent->streamBuf().data(), endpoint_);
+		udpServer_.sendTo(event->streamBuf(), dstEndpoint_);
 	}
 
 	void
-	UDPConnection::handleUdpRecv(const boost::system::error_code& error,
-      std::size_t bytes_transferred)
+	UDPConnection::recv(void)
 	{
+		asyncRecvFlag_ = true;
+		udpServer_.asyncReceive(
+			strand_,
+			clientRecvBuf,
+			[this](const boost::system::error_code& error, std::size_t bytes_transferred) mutable {
+				recvComplete(error, bytes_transferred);
+			}
+		);
+	}
+
+	void
+	UDPConnection::recvComplete(
+		const boost::system::error_code& error,
+		std::size_t bytes_transferred
+	)
+	{
+		// check error code
+		asyncRecvFlag_ = false;
+		if (error) {
+			if (shutdown_) {
+				return;
+			}
+			Log(Error, "receive udp data error")
+			    .parameter("Address", ownAddress_)
+				.parameter("Port", ownPort_)
+				.parameter("Error", error.message());
+			return;
+		}
+
+		// get received data
+		auto event = boost::make_shared<NetworkRecvEvent>();
+		std::ostream os(&event->streamBuf());
+		os.write(clientRecvBuf.c_array(), bytes_transferred);
+
 		// send message to message transport module
-		NetworkRecvEvent::SPtr networkrecvEvent;
-		networkrecvEvent->streamBuf().commit(buffer_copy(networkrecvEvent->streamBuf().prepare(streambuf_.size()),
-											streambuf_.data()));
-	    Message::SPtr message = boost::make_shared<Message>(*networkrecvEvent);
-		messageBus_->messageSend(messageBusMember_, readerGroupBusMember_, message);
+		messageBus_->messageSend(messageBusMember_, messageTransportBusMember_, event);
+
+		// receive next event
+		recv();
 	}
 }

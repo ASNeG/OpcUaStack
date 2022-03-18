@@ -105,8 +105,9 @@ namespace OpcUaStackCore
 			  strand_ = strand;
 			  recvCompleteCallback_ = recvCompleteCallback;
 
+			  // const MutableBufferSequence& buffers
 			  socket_->async_receive(
-				  buffer,
+				  boost::asio::buffer(buffer),
 				  [this](const boost::system::error_code& error, std::size_t bytes_transfered) {
 				      strand_->dispatch(
 					      [this, error, bytes_transfered](void) {

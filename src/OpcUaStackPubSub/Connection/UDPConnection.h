@@ -24,16 +24,17 @@
    The communication with the network layer is event based via the message bus.
 
    Events:
-   1. A network message is received from a writer group via the internal message
-      bus. The network message is sent to the destination endpoint via the UDP
-      endpoint.
+   1. A network message is received from the message transport module via the
+      internal message bus. The network message is sent to the destination endpoint
+      via the UDP endpoint.
    2. A network message is received via the UDP endpoint. The message is forwared
-      to the associated reader group via the internal message bus.
+      to the message transport module via the internal message bus.
  */
 
 #ifndef __OpcUaStackPubSub_UDPConnection_h__
 #define __OpcUaStackPubSub_UDPConnection_h__
 
+#include "OpcUaStackCore/Network/UDPServer.h"
 #include "OpcUaStackServer/ServiceSet/ServerServiceBase.h"
 #include "OpcUaStackPubSub/Events/NetworkSendEvent.h"
 #include "OpcUaStackPubSub/Events/NetworkRecvEvent.h"
@@ -51,9 +52,11 @@ namespace OpcUaStackPubSub
 
 		UDPConnection(
 			const std::string& sourceAddress,
+			uint32_t ownPort,
 			const std::string& dstAddress,
+			uint32_t dstPort,
 			const std::string& messageTransportName,
-			const std::string& connectionName,
+			const std::string& serviceName,
 			OpcUaStackCore::IOThread::SPtr& ioThread,
 			OpcUaStackCore::MessageBus::SPtr& messageBus
 		);
@@ -63,20 +66,32 @@ namespace OpcUaStackPubSub
 		bool shutdown(void);
 
 	  private:
-		std::string ownAddress_;				// own endpoint address
-		std::string dstAddress_;				// destination address (unicast or multicast)
-		std::string messageTransportName_;		// name of associated message transport module
-		boost::asio::io_service& ioservice_;
-		boost::asio::ip::udp::endpoint endpoint_;
-		boost::asio::ip::udp::socket socket_;
-		boost::asio::streambuf streambuf_;
+		OpcUaStackCore::IOThread::SPtr ioThread_;	// smart pointer to io thread
+		std::string ownAddress_ = "";				// own endpoint address
+		uint32_t ownPort_ = 0;						// own port
+		std::string dstAddress_ = "";				// destination address (unicast or multicast)
+		uint32_t dstPort_ = 0;						// destination port
+		std::string messageTransportName_ = "";		// name of associated message transport module
+
+		boost::asio::ip::udp::endpoint ownEndpoint_; // own endpoint
+		boost::asio::ip::udp::endpoint dstEndpoint_; // destination endpoint
 		
+		OpcUaStackCore::UDPServer udpServer_;
+		boost::array<char, 65535> clientRecvBuf;
+		bool asyncRecvFlag_ = false;
+		bool shutdown_ = false;
 
-		OpcUaStackCore::MessageBusMember::WPtr readerGroupBusMember_;
-		OpcUaStackCore::MessageBusMember::WPtr messageBusMember_;
+		// message transport bus member
+		OpcUaStackCore::MessageBusMember::WPtr messageTransportBusMember_;
 
-		void networkSendEvent(NetworkSendEvent::SPtr& networkSendEvent);
-		void handleUdpRecv(const boost::system::error_code& error, std::size_t bytes_transferred);
+		void send(
+			NetworkSendEvent::SPtr& event
+		);
+		void recv(void);
+		void recvComplete(
+			const boost::system::error_code& error,
+			std::size_t bytes_transferred
+		);
 	};
 
 }
