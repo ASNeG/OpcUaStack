@@ -15,6 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackPubSub/Events/NetworkSendEvent.h"
 #include "OpcUaStackPubSub/MessageTransport/MsgTransPublisher.h"
 
 using namespace OpcUaStackCore;
@@ -49,7 +51,22 @@ namespace OpcUaStackPubSub
 			[this](const MessageBusMember::WPtr& handleFrom, Message::SPtr& message) {
 				// receive message from internal message bus
 
-				// FIXME: todo
+				auto event = boost::static_pointer_cast<Event>(message);
+				switch (event->eventType())
+				{
+					case EventType::NetworkSendEvent:
+					{
+						NetworkSendEvent::SPtr event = boost::static_pointer_cast<NetworkSendEvent>(message);
+						// FIXME: todo
+						break;
+					}
+					default:
+					{
+						Log(Error, "invalid message received in message transport module")
+							.parameter("ServiceName", serviceName_)
+							.parameter("Event", (uint32_t)event->eventType());
+					}
+				}
 			}
 		);
 	}
