@@ -16,37 +16,52 @@
 
    DESCRIPTION:
 
-   The message transport publisher module receives a message from one ore more
-   network message writer groups via the internal message bus. The received message
-   is  forwarded to the assigned communication module via the internal message bus.
+   1. Subscriber Mode:
+      The message transport subscriber module receives a message from the communication
+      module via the internal message bus.The publisher ID is determined from the received
+      message and the assigned network message processor is determined.  The received message
+      is  forwarded to the assigned network message processor module via the internal message
+      bus.
+   2. Publisher Mode
+      The message transport publisher module receives a message from one ore more
+      network message writer groups via the internal message bus. The received message
+      is  forwarded to the assigned communication module via the internal message bus.
 
  */
 
-#ifndef __OpcUaStackPubSub_MsgTransPublisher_h__
-#define __OpcUaStackPubSub_MsgTransPublisher_h__
+#ifndef __OpcUaStackPubSub_MessageTransport_h__
+#define __OpcUaStackPubSub_MessageTransport_h__
 
 #include "OpcUaStackServer/ServiceSet/ServerServiceBase.h"
 
 namespace OpcUaStackPubSub
 {
 
-	class DLLEXPORT MsgTransPublisher
+	class DLLEXPORT MessageTransport
 	: public OpcUaStackCore::Object
 	, public OpcUaStackServer::ServerServiceBase
 	{
 	  public:
-		using SPtr = boost::shared_ptr<MsgTransPublisher>;
+		using SPtr = boost::shared_ptr<MessageTransport>;
 
-		MsgTransPublisher(
+		MessageTransport(
 			const std::string& connectionName,			// message bus member name
 			const std::string& serviceName,
 			OpcUaStackCore::IOThread::SPtr& ioThread,
 			OpcUaStackCore::MessageBus::SPtr& messageBus
 		);
-		~MsgTransPublisher(void);
+		~MessageTransport(void);
 
 		bool startup(void);
 		bool shutdown(void);
+
+		bool registerNetworkMessageProcessor(
+			uint32_t publisherId,								// publisher id
+			const std::string& networkMessageProcessorName		// message bus member name
+		);
+		bool deregisterNetworkMessageProcessor(
+			uint32_t publisherId
+		);
 
 	  private:
 		OpcUaStackCore::IOThread::SPtr ioThread_;	// smart pointer to io thread

@@ -13,17 +13,21 @@
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
    Autor: Kai Huebl (kai@huebl-sgh.de)
+
  */
+
+#include "OpcUaStackPubSub/MessageTransport/MessageTransport.h"
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackPubSub/Events/NetworkSendEvent.h"
 #include "OpcUaStackPubSub/Events/NetworkRecvEvent.h"
-#include "OpcUaStackPubSub/MessageTransport/MsgTransSubscriber.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackPubSub
 {
 
-	MsgTransSubscriber::MsgTransSubscriber(
+	MessageTransport::MessageTransport(
+		const std::string& connectionName,			// message bus member name
 		const std::string& serviceName,
 		OpcUaStackCore::IOThread::SPtr& ioThread,
 		OpcUaStackCore::MessageBus::SPtr& messageBus
@@ -58,6 +62,12 @@ namespace OpcUaStackPubSub
 						// FIXME: todo
 						break;
 					}
+					case EventType::NetworkSendEvent:
+					{
+						NetworkSendEvent::SPtr event = boost::static_pointer_cast<NetworkSendEvent>(message);
+						// FIXME: todo
+						break;
+					}
 					default:
 					{
 						Log(Error, "invalid message received in message transport module")
@@ -69,7 +79,7 @@ namespace OpcUaStackPubSub
 		);
 	}
 
-	MsgTransSubscriber::~MsgTransSubscriber(void)
+	MessageTransport::~MessageTransport(void)
 	{
 		// deactivate receiver
 		deactivateReceiver();
@@ -77,21 +87,21 @@ namespace OpcUaStackPubSub
 	}
 
 	bool
-	MsgTransSubscriber::startup(void)
+	MessageTransport::startup(void)
 	{
 		// FIXME: todo
 		return true;
 	}
 
 	bool
-	MsgTransSubscriber::shutdown(void)
+	MessageTransport::shutdown(void)
 	{
 	// FIXME: todo
 		return true;
 	}
 
 	bool
-	MsgTransSubscriber::registerNetworkMessageProcessor(
+	MessageTransport::registerNetworkMessageProcessor(
 		uint32_t publisherId,								// publisher id
 		const std::string& networkMessageProcessorName		// message bus member name
 	)
@@ -101,7 +111,7 @@ namespace OpcUaStackPubSub
 	}
 
 	bool
-	MsgTransSubscriber::deregisterNetworkMessageProcessor(
+	MessageTransport::deregisterNetworkMessageProcessor(
 		uint32_t publisherId
 	)
 	{
