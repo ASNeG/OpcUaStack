@@ -101,9 +101,13 @@ namespace OpcUaStackPubSub
 				.parameter("Port", ownPort_);
 				return false;
 		}
-		Log(Info, "open udp server")
+		Log(Info, "open udp endpoint")
 			.parameter("Address", ownAddress_)
 			.parameter("Port", ownPort_);
+
+		// set client and server state
+		udpServerState_ = UDPServerState::Running;
+		udpClientState_ = UDPClientState::Running;
 
 		// receive event
 		recv();
@@ -113,19 +117,42 @@ namespace OpcUaStackPubSub
 	bool
 	UDPConnection::shutdown(void)
 	{
-		Log(Info, "close udp server")
+		Log(Info, "close udp endpoint")
 			.parameter("Address", ownAddress_)
 			.parameter("Port", ownPort_);
 
-		// close udp server
-		shutdown_ = true;
-		udpServer_.close();
+		// This function must not be called within the strand of this class.
+		if (strand_->running_in_this_thread()) {
+			Log(Error, "shutdown udp endpoint error, because function is called within strand")
+				.parameter("Address", ownAddress_)
+				.parameter("Port", ownPort_);
+			return false;
+		}
+		auto future = shutdownPromise_.get_future();
+
+		// close udp endpoint
+		std::promise<void> prom;
+		auto fut = prom.get_future();
+		strand_->dispatch(
+			[this, &prom](void) {
+				// set udp client state
+				udpClientState_ = UDPClientState::Off;
+
+				// close udp server socket
+				if (udpServerState_ != UDPServerState::Off) {
+					udpServerState_ = UDPServerState::Shutdown;
+					udpServer_.close();
+				}
+
+				prom.set_value();
+			}
+		);
+		fut.wait();
 
 		// wait for the socket to close
-		if (asyncRecvFlag_) {
-			;
+		if (udpServerState_ != UDPServerState::Off) {
+			future.wait();
 		}
-
 		return true;
 	}
 
@@ -141,7 +168,6 @@ namespace OpcUaStackPubSub
 	void
 	UDPConnection::recv(void)
 	{
-		asyncRecvFlag_ = true;
 		udpServer_.asyncReceive(
 			strand_,
 			clientRecvBuf,
@@ -158,15 +184,16 @@ namespace OpcUaStackPubSub
 	)
 	{
 		// check error code
-		asyncRecvFlag_ = false;
 		if (error) {
-			if (shutdown_) {
-				return;
+			if (udpServerState_ != UDPServerState::Shutdown) {
+				Log(Error, "receive udp data error")
+			    	.parameter("Address", ownAddress_)
+					.parameter("Port", ownPort_)
+					.parameter("Error", error.message());
 			}
-			Log(Error, "receive udp data error")
-			    .parameter("Address", ownAddress_)
-				.parameter("Port", ownPort_)
-				.parameter("Error", error.message());
+
+			udpServerState_ = UDPServerState::Off;
+			shutdownPromise_.set_value();
 			return;
 		}
 

@@ -43,6 +43,19 @@
 namespace OpcUaStackPubSub
 {
 
+	enum class UDPServerState
+	{
+		Off,
+		Running,
+		Shutdown
+	};
+
+	enum class UDPClientState
+	{
+		Off,
+		Running
+	};
+
 	class DLLEXPORT UDPConnection
 	: public OpcUaStackCore::Object
 	, public OpcUaStackServer::ServerServiceBase
@@ -77,9 +90,10 @@ namespace OpcUaStackPubSub
 		boost::asio::ip::udp::endpoint dstEndpoint_; // destination endpoint
 		
 		OpcUaStackCore::UDPServer udpServer_;
+		UDPServerState udpServerState_ = UDPServerState::Off;
+		UDPClientState udpClientState_ = UDPClientState::Off;
 		boost::array<char, 65535> clientRecvBuf;
-		bool asyncRecvFlag_ = false;
-		bool shutdown_ = false;
+		std::promise<void> shutdownPromise_;
 
 		// message transport bus member
 		OpcUaStackCore::MessageBusMember::WPtr messageTransportBusMember_;
