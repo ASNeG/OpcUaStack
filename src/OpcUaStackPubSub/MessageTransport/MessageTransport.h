@@ -65,6 +65,9 @@ namespace OpcUaStackPubSub
 
 	  private:
 		OpcUaStackCore::IOThread::SPtr ioThread_;	// smart pointer to io thread
+		std::string connectionName_;
+		OpcUaStackCore::MessageBusMember::WPtr connectionBusMember_;
+		std::map<uint32_t, std::string> networkMessageProcessorMap_;
 	};
 
 }

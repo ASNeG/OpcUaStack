@@ -17,6 +17,7 @@
  */
 
 #include "OpcUaStackPubSub/MessageTransport/MessageTransport.h"
+#include "OpcUaStackPubSub/NetworkMessage/NetworkMessage.h"
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackPubSub/Events/NetworkSendEvent.h"
 #include "OpcUaStackPubSub/Events/NetworkRecvEvent.h"
@@ -42,6 +43,7 @@ namespace OpcUaStackPubSub
 		ServerServiceBase::ioThread_ = ioThread.get();
 		strand_ = ioThread->createStrand();
 		messageBus_ = messageBus;
+		connectionName_ = connectionName;
 
 		// register message bus receiver
 		MessageBusMemberConfig messageBusMemberConfig;
@@ -50,7 +52,7 @@ namespace OpcUaStackPubSub
 
 		// activate receiver
 		activateReceiver(
-			[this](const MessageBusMember::WPtr& handleFrom, Message::SPtr& message) {
+			[this, &messageBusMemberConfig](const MessageBusMember::WPtr& handleFrom, Message::SPtr& message) {
 				// receive message from internal message bus
 
 				auto event = boost::static_pointer_cast<Event>(message);
@@ -59,13 +61,29 @@ namespace OpcUaStackPubSub
 					case EventType::NetworkRecvEvent:
 					{
 						NetworkRecvEvent::SPtr event = boost::static_pointer_cast<NetworkRecvEvent>(message);
-						// FIXME: todo
+						
+						std::iostream ios(&(event->streamBuf()));
+						NetworkMessage networkMessage;
+						networkMessage.opcUaBinaryDecode(ios);
+
+						auto publisherId = networkMessage.networkMessageHeader()->publisherId();
+
+						auto it = networkMessageProcessorMap_.find(publisherId);
+						if (it != networkMessageProcessorMap_.end()) {
+							auto readerGroupBusMember = messageBus_->registerMember(it->second, messageBusMemberConfig);
+							messageBus_->messageSend(messageBusMember_, readerGroupBusMember, event);
+						} else {
+							Log(Error, "network message processor does not exist for this networkmessage")
+							.parameter("PublisherId", publisherId);
+						}
+						
 						break;
 					}
 					case EventType::NetworkSendEvent:
 					{
+						Log(Info, "Recieved NetworkSendEvent");
 						NetworkSendEvent::SPtr event = boost::static_pointer_cast<NetworkSendEvent>(message);
-						// FIXME: todo
+						messageBus_->messageSend(messageBusMember_, connectionBusMember_, event);
 						break;
 					}
 					default:
@@ -89,14 +107,21 @@ namespace OpcUaStackPubSub
 	bool
 	MessageTransport::startup(void)
 	{
-		// FIXME: todo
+		// get reference to connection from message bus
+		if (!messageBus_->existMember(connectionName_)) {
+			Log(Error, "udp connection message bus member don't exist")
+				.parameter("UdpConnectionName", connectionName_);
+			return false;
+		}
+		connectionBusMember_ = messageBus_->getMember(connectionName_);
+
 		return true;
 	}
 
 	bool
 	MessageTransport::shutdown(void)
 	{
-	// FIXME: todo
+	    // FIXME: todo
 		return true;
 	}
 
@@ -106,7 +131,16 @@ namespace OpcUaStackPubSub
 		const std::string& networkMessageProcessorName		// message bus member name
 	)
 	{
-		// FIXME: todo
+		auto it = networkMessageProcessorMap_.find(publisherId);
+		if (it != networkMessageProcessorMap_.end()) {
+			Log(Error, "register network message processor error, because network message processor d already exist")
+				.parameter("MessageTransport", serviceName_)
+				.parameter("NetworkMessageProcessor PublisherId", publisherId);
+			return false;
+		}
+
+		// add network message processor to map
+		networkMessageProcessorMap_.insert(std::make_pair(publisherId, networkMessageProcessorName));
 		return true;
 	}
 
@@ -115,7 +149,15 @@ namespace OpcUaStackPubSub
 		uint32_t publisherId
 	)
 	{
-		// FIXME: todo
+		auto it = networkMessageProcessorMap_.find(publisherId);
+		if (it == networkMessageProcessorMap_.end()) {
+			Log(Error, "deregister network message processor error, because network message processor does not exist")
+				.parameter("MessageTransport", serviceName_)
+				.parameter("NetworkMessageProcessor PublisherId", publisherId);
+			return false;
+		}
+
+		networkMessageProcessorMap_.erase(it);
 		return true;
 	}
 
