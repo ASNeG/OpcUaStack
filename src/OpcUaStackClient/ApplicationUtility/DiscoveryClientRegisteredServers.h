@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #ifndef __OpcUaStackClient_DiscoveryClientRegisteredServers_h__
@@ -57,8 +57,11 @@ namespace OpcUaStackClient
         //- DiscoveryServiceIf ------------------------------------------------
         virtual void discoveryServiceRegisterServerResponse(ServiceTransactionRegisterServer::SPtr serviceTransactionRegisterServer);
         //- DiscoveryServiceIf ------------------------------------------------
+		void applicationCertificate(const ApplicationCertificate::SPtr &applicationCertificate);
 
-	  public:
+		void cryptoManager(const CryptoManager::SPtr &cryptoManager);
+
+	public:
         void sendDiscoveryServiceRegisterServer(void);
         void deregisterServers(void);
 		void loop(void);
@@ -78,6 +81,9 @@ namespace OpcUaStackClient
 		ServiceSetManager serviceSetManager_;
 		SessionService::SPtr sessionService_;
 		DiscoveryService::SPtr discoveryService_;
+
+		ApplicationCertificate::SPtr applicationCertificate_;
+		CryptoManager::SPtr cryptoManager_;
 	};
 
 }

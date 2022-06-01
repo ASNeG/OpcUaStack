@@ -1,4 +1,46 @@
-Release 3.7.0
+Release 3.8.2
+-----------------------------------------------------------
+
+**Bugs**
+
+* fix depdendecy name of -dev.deb #332, by @ninja777-bg
+* make boost and openssl dependencies strict #333, by @flipback
+
+Release 3.8.1 (2019-12-08)
+------------------------------------------------------------
+
+**Bugs**:
+
+* fix libssl-dev dependency for dev DEB package #314, by @flipback
+* fix defaul endpoint URL #310, by @flipback
+* fix crash of discovery client, #322, by @flipback
+* fix ip address for hostname #317, by @huebl, @flipback
+
+**Documentation**
+
+* improve documentation #241 #264 #318, by @flipback 
+
+Release 3.8.0 (2019-10-14)
+------------------------------------------------------------
+
+**Features**:
+
+* add policy id to session config #168, by @huebl
+* add option -j to build.bat to build on several CPUs on Windows #243, by @flipback
+* add MinGW support #289, by @flipback
+
+**Bugs**:
+
+* fix initializing createAt field in open secure channel response #259, @huebl
+* fix dependence of start\\stop item monitoring on callbacks #133, by @flipback
+* fix overwriting result status in HistoryRead service #182, by @flipback
+* fix reconnect timer crash in session service #302, by @huebl
+
+**Other**:
+
+* integrate CI under Jenkins #234, by @flipback
+
+Release 3.7.0 (2019-04-01)
 ------------------------------------------------------------
 
 **Features**:

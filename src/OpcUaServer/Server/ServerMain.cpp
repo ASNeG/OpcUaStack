@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaServer/Server/Server.h"
 #include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackCore/Utility/Environment.h"
@@ -30,7 +31,7 @@ using namespace OpcUaStackCore;
 int main(int argc, char** argv)
 {
 	OpcUaServer::ServerApplication serverApplication;
-#if WIN32
+#if _WIN32
 	OpcUaServer::WindowsService* service = OpcUaServer::WindowsService::instance();
 #else
 	OpcUaServer::LinuxService* service = OpcUaServer::LinuxService::instance();

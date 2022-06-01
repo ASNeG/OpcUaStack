@@ -18,8 +18,8 @@
 #ifndef __OpcUaStackCore_Utility_h__
 #define __OpcUaStackCore_Utility_h__
 
-#include "boost/asio.hpp"
 #include "OpcUaStackCore/Base/os.h"
+#include "boost/asio.hpp"
 #include "OpcUaStackCore/Base/MemoryBuffer.h"
 #include <ostream>
 #include <iostream>

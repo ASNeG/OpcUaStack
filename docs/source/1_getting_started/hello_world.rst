@@ -25,6 +25,19 @@ Creating the application frame
 At first we need to create the frame of the future application. It is very easy to do with the stack.
 Just type in your console:
 
+For Linux:
+::
+
+    $ export PATH=$PATH:$HOME/.ASNeG/usr/bin
+    $ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/.ASNeG/usr/lib/
+    
+For Windows:
+::
+
+    $ set PATH=%PATH%;C:\ASNeG\usr\lib\
+    $ set PATH=%PATH%;C:\ASNeG\usr\bin\
+    
+And create project:
 ::
 
     $ OpcUaProjectBuilder3 helloworld "My First OPC UA Application" 8888
@@ -203,7 +216,7 @@ On Windows:
 
 ::
 
-	$ build.bat -t local -i path\to\install
+  $ build.bat -t local -i path\to\install
 
 If you've installed the stack locally, you should use option `-s` to point the directory
 with the stack:
@@ -218,7 +231,7 @@ On Windows:
 
 ::
 
-	$ build.bat -t local -i path\to\install -s C:\ASNeG
+  $ build.bat -t local -i path\to\install -s C:\ASNeG
 
 The application will be built as a shared library and copied with its
 configuration into the installation directory.
@@ -230,6 +243,7 @@ On Linux:
 
 ::
 
+    $ export PATH=$PATH:path/to/install/usr/bin
     $ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:path/to/install/usr/lib/
     $ OpcUaServer3 ./etc/OpcUaStack/helloworld/OpcUaServer.xml
 
@@ -238,8 +252,9 @@ On Windows:
 
 ::
 
-    $ set PATH=%PATH%;\path\to\insstall\usr\lib\
-    $ OpcUaServer3 etc\OpcUaStack\helloworld\OpcUaServer.xml
+    $ set PATH=%PATH%;\path\to\install\usr\lib\
+    $ set PATH=%PATH%;\path\to\install\usr\bin\
+    $ OpcUaServer3 CONSOLE path\to\install\etc\OpcUaStack\helloworld\OpcUaServer.xml
 
 
 We need to determine, where the shared library is, by using the environment
@@ -278,7 +293,13 @@ Hello, World!
 
 Now we can make our application do something "useful". Open file
 **src/helloworld/Library/Library.cpp** and place the following code to method
-**startup**:
+**startup** and include at the beginning:
+
+
+.. code-block:: cpp
+
+    #include "OpcUaStackServer/ServiceSetApplication/GetNodeReference.h"
+
 
 .. code-block:: cpp
 

@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #include "OpcUaStackCore/Base/Log.h"
@@ -87,6 +87,8 @@ namespace OpcUaServer
 		discoveryClient_.ioThread(ioThread_);
 		discoveryClient_.discoveryUri(discoveryServerUrl_);
 		discoveryClient_.registerInterval(registerInterval_);
+		discoveryClient_.applicationCertificate(applicationCertificate_);
+		discoveryClient_.cryptoManager(cryptoManager_);
 		discoveryClient_.startup();
 
 		return true;
@@ -239,6 +241,14 @@ namespace OpcUaServer
 		discoveryClient_.addRegisteredServer(applicationName, registeredServer);
 
 		return true;
+	}
+
+	void DiscoveryClient::applicationCertificate(const ApplicationCertificate::SPtr &applicationCertificate) {
+		applicationCertificate_ = applicationCertificate;
+	}
+
+	void DiscoveryClient::cryptoManager(const CryptoManager::SPtr &cryptoManager) {
+		cryptoManager_ = cryptoManager;
 	}
 
 }

@@ -42,9 +42,16 @@ if (WIN32)
     	PROPERTIES OUTPUT_NAME 
     	"OpcUaStackClient${VERSION_MAJOR}"
 	)
-	set(OPCUASTACK_CLIENT_LIB_NAME OpcUaStackClient@VERSION_MAJOR@.lib)
+
+	if (MSVC)
+		set(OPCUASTACK_CLIENT_LIB_NAME OpcUaStackClient${VERSION_MAJOR}.lib)
+	endif()
+
+	if (MINGW)
+		set(OPCUASTACK_CLIENT_LIB_NAME libOpcUaStackClient${VERSION_MAJOR}.dll.a)
+	endif()
 else()
-    set(OPCUASTACK_CLIENT_LIB_NAME libOpcUaStackClient.so.@VERSION_MAJOR@)
+    set(OPCUASTACK_CLIENT_LIB_NAME libOpcUaStackClient.so.${VERSION_MAJOR})
 endif()
 
 message(STATUS "OpcUaStackClient")

@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/BuildInTypes/OpcUaGuid.h"
 #include "OpcUaStackCore/Base/Utility.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaGuid.h"
 
 namespace OpcUaStackCore
 {
@@ -144,7 +144,7 @@ namespace OpcUaStackCore
 		return *this;
 	}
 
-	OpcUaGuid::operator std::string const (void)
+	OpcUaGuid::operator std::string (void) const
 	{
 		std::string str1, str2, str3, str4, str5;
 

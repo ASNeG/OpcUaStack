@@ -31,7 +31,7 @@ namespace OpcUaServer
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-#if WIN32
+#if _WIN32
 
 #include <Windows.h>
 
@@ -64,7 +64,7 @@ namespace OpcUaServer
 		bool get(const std::string& functionName, void **ptr) {
 			message_ = "";
 
-			*ptr = GetProcAddress(handle_, functionName.c_str());
+			*ptr = reinterpret_cast<void*>(GetProcAddress(handle_, functionName.c_str()));
 			if (*ptr == nullptr) {
 				int errorCode = GetLastError();
 				message_ = getLastErrorMessage(errorCode);
