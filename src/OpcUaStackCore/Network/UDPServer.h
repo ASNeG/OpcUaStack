@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2022 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -30,6 +30,8 @@ namespace OpcUaStackCore
 	  public:
 		UDPServer(void);
 		~UDPServer(void);
+
+		using RecvCompleteCallback = std::function<void (const boost::system::error_code& error, std::size_t bytes_transfered)>;
 
 		void ioThread(IOThread::SPtr& ioThread);
 		void endpoint(const boost::asio::ip::udp::endpoint& endpoint);
@@ -81,30 +83,85 @@ namespace OpcUaStackCore
 			  socket_->send_to(buffer, endpoint);
 		  }
 
-		template<typename BUFFER, typename HANDLER>
-		  void asyncReceive(BUFFER& buffer, HANDLER handler)
+		template<typename BUFFER>
+		  void asyncReceive(
+		      BUFFER& buffer,
+			  RecvCompleteCallback recvCompleteCallback
+		  )
 		  {
 			  socket_->async_receive(
 				  buffer,
-				  handler
+				  recvCompleteCallback
 			  );
 		  }
 
-		template<typename BUFFER, typename HANDLER>
-		  void asyncReceiveFrom(BUFFER& buffer, HANDLER handler)
+		template<typename BUFFER>
+		  void asyncReceive(
+			  const boost::shared_ptr<boost::asio::io_service::strand>& strand,
+		      BUFFER& buffer,
+			  RecvCompleteCallback recvCompleteCallback
+		  )
+		  {
+			  strand_ = strand;
+			  recvCompleteCallback_ = recvCompleteCallback;
+
+			  // const MutableBufferSequence& buffers
+			  socket_->async_receive(
+				  boost::asio::buffer(buffer),
+				  [this](const boost::system::error_code& error, std::size_t bytes_transfered) {
+				      strand_->dispatch(
+					      [this, error, bytes_transfered](void) {
+					           recvCompleteCallback_(error, bytes_transfered);
+					      }
+					  );
+			       }
+			  );
+		  }
+
+		template<typename BUFFER>
+		  void asyncReceiveFrom(
+		      BUFFER& buffer,
+			  RecvCompleteCallback recvCompleteCallback
+		  )
 		  {
 			  socket_->async_receive_from(
 				  boost::asio::buffer(buffer),
 				  remoteEndpoint_,
-				  handler
+				  recvCompleteCallback
+			  );
+		  }
+
+		template<typename BUFFER>
+		  void asyncReceiveFrom(
+			  const boost::shared_ptr<boost::asio::io_service::strand>& strand,
+		      BUFFER& buffer,
+			  RecvCompleteCallback recvCompleteCallback
+		  )
+		  {
+			  strand_ = strand;
+			  recvCompleteCallback_ = recvCompleteCallback;
+
+			  socket_->async_receive_from(
+				  boost::asio::buffer(buffer),
+				  remoteEndpoint_,
+				  [this](const boost::system::error_code& error, std::size_t bytes_transfered) {
+				      strand_->dispatch(
+					      [this, error, bytes_transfered](void) {
+					           recvCompleteCallback_(error, bytes_transfered);
+					      }
+					  );
+			       }
 			  );
 		  }
 
 	  private:
 		IOThread::SPtr ioThread_;
+		boost::shared_ptr<boost::asio::io_service::strand> strand_ = nullptr;
 		boost::asio::ip::udp::endpoint remoteEndpoint_;
 		boost::asio::ip::udp::endpoint endpoint_;
 		boost::asio::ip::udp::socket* socket_;
+
+		RecvCompleteCallback recvCompleteCallback_ = nullptr;
 	};
 
 }
