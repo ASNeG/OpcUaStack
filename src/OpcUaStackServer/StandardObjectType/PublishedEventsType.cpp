@@ -38,9 +38,9 @@ namespace OpcUaStackServer
         setServerMethod(extensionFields_AddExtensionField_Method_);
         setServerMethod(extensionFields_RemoveExtensionField_Method_);
         setServerMethod(modifyFieldSelection_Method_);
-        extensionFields_AddExtensionField_Method_->registerMethod(boost::bind(&PublishedEventsType::call_ExtensionFields_AddExtensionField_Method, this, _1));
-        extensionFields_RemoveExtensionField_Method_->registerMethod(boost::bind(&PublishedEventsType::call_ExtensionFields_RemoveExtensionField_Method, this, _1));
-        modifyFieldSelection_Method_->registerMethod(boost::bind(&PublishedEventsType::call_ModifyFieldSelection_Method, this, _1));
+        extensionFields_AddExtensionField_Method_->registerMethod(boost::bind(&PublishedEventsType::call_ExtensionFields_AddExtensionField_Method, this, boost::placeholders::_1));
+        extensionFields_RemoveExtensionField_Method_->registerMethod(boost::bind(&PublishedEventsType::call_ExtensionFields_RemoveExtensionField_Method, this, boost::placeholders::_1));
+        modifyFieldSelection_Method_->registerMethod(boost::bind(&PublishedEventsType::call_ModifyFieldSelection_Method, this, boost::placeholders::_1));
     }
     
     PublishedEventsType::PublishedEventsType(const PublishedEventsType& value)
@@ -66,9 +66,9 @@ namespace OpcUaStackServer
         setServerMethod(extensionFields_AddExtensionField_Method_);
         setServerMethod(extensionFields_RemoveExtensionField_Method_);
         setServerMethod(modifyFieldSelection_Method_);
-        extensionFields_AddExtensionField_Method_->registerMethod(boost::bind(&PublishedEventsType::call_ExtensionFields_AddExtensionField_Method, this, _1));
-        extensionFields_RemoveExtensionField_Method_->registerMethod(boost::bind(&PublishedEventsType::call_ExtensionFields_RemoveExtensionField_Method, this, _1));
-        modifyFieldSelection_Method_->registerMethod(boost::bind(&PublishedEventsType::call_ModifyFieldSelection_Method, this, _1));
+        extensionFields_AddExtensionField_Method_->registerMethod(boost::bind(&PublishedEventsType::call_ExtensionFields_AddExtensionField_Method, this, boost::placeholders::_1));
+        extensionFields_RemoveExtensionField_Method_->registerMethod(boost::bind(&PublishedEventsType::call_ExtensionFields_RemoveExtensionField_Method, this, boost::placeholders::_1));
+        modifyFieldSelection_Method_->registerMethod(boost::bind(&PublishedEventsType::call_ModifyFieldSelection_Method, this, boost::placeholders::_1));
     }
     
     PublishedEventsType::~PublishedEventsType(void)

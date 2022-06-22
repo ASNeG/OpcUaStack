@@ -24,8 +24,8 @@ namespace OpcUaStackServer
         objectTypeNodeId((OpcUaUInt32)15489);
         setServerMethod(addExtensionField_Method_);
         setServerMethod(removeExtensionField_Method_);
-        addExtensionField_Method_->registerMethod(boost::bind(&ExtensionFieldsType::call_AddExtensionField_Method, this, _1));
-        removeExtensionField_Method_->registerMethod(boost::bind(&ExtensionFieldsType::call_RemoveExtensionField_Method, this, _1));
+        addExtensionField_Method_->registerMethod(boost::bind(&ExtensionFieldsType::call_AddExtensionField_Method, this, boost::placeholders::_1));
+        removeExtensionField_Method_->registerMethod(boost::bind(&ExtensionFieldsType::call_RemoveExtensionField_Method, this, boost::placeholders::_1));
     }
     
     ExtensionFieldsType::ExtensionFieldsType(const ExtensionFieldsType& value)
@@ -37,8 +37,8 @@ namespace OpcUaStackServer
         objectTypeNodeId((OpcUaUInt32)15489);
         setServerMethod(addExtensionField_Method_);
         setServerMethod(removeExtensionField_Method_);
-        addExtensionField_Method_->registerMethod(boost::bind(&ExtensionFieldsType::call_AddExtensionField_Method, this, _1));
-        removeExtensionField_Method_->registerMethod(boost::bind(&ExtensionFieldsType::call_RemoveExtensionField_Method, this, _1));
+        addExtensionField_Method_->registerMethod(boost::bind(&ExtensionFieldsType::call_AddExtensionField_Method, this, boost::placeholders::_1));
+        removeExtensionField_Method_->registerMethod(boost::bind(&ExtensionFieldsType::call_RemoveExtensionField_Method, this, boost::placeholders::_1));
     }
     
     ExtensionFieldsType::~ExtensionFieldsType(void)

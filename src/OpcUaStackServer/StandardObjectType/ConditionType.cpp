@@ -86,9 +86,9 @@ namespace OpcUaStackServer
         setServerMethod(addComment_Method_);
         setServerMethod(disable_Method_);
         setServerMethod(enable_Method_);
-        addComment_Method_->registerMethod(boost::bind(&ConditionType::call_AddComment_Method, this, _1));
-        disable_Method_->registerMethod(boost::bind(&ConditionType::call_Disable_Method, this, _1));
-        enable_Method_->registerMethod(boost::bind(&ConditionType::call_Enable_Method, this, _1));
+        addComment_Method_->registerMethod(boost::bind(&ConditionType::call_AddComment_Method, this, boost::placeholders::_1));
+        disable_Method_->registerMethod(boost::bind(&ConditionType::call_Disable_Method, this, boost::placeholders::_1));
+        enable_Method_->registerMethod(boost::bind(&ConditionType::call_Enable_Method, this, boost::placeholders::_1));
     }
     
     ConditionType::ConditionType(const ConditionType& value)
@@ -162,9 +162,9 @@ namespace OpcUaStackServer
         setServerMethod(addComment_Method_);
         setServerMethod(disable_Method_);
         setServerMethod(enable_Method_);
-        addComment_Method_->registerMethod(boost::bind(&ConditionType::call_AddComment_Method, this, _1));
-        disable_Method_->registerMethod(boost::bind(&ConditionType::call_Disable_Method, this, _1));
-        enable_Method_->registerMethod(boost::bind(&ConditionType::call_Enable_Method, this, _1));
+        addComment_Method_->registerMethod(boost::bind(&ConditionType::call_AddComment_Method, this, boost::placeholders::_1));
+        disable_Method_->registerMethod(boost::bind(&ConditionType::call_Disable_Method, this, boost::placeholders::_1));
+        enable_Method_->registerMethod(boost::bind(&ConditionType::call_Enable_Method, this, boost::placeholders::_1));
     }
     
     ConditionType::~ConditionType(void)

@@ -128,10 +128,10 @@ namespace OpcUaStackServer
         setServerMethod(addWriterGroup_Method_);
         setServerMethod(diagnostics_Reset_Method_);
         setServerMethod(removeGroup_Method_);
-        addReaderGroup_Method_->registerMethod(boost::bind(&PubSubConnectionType::call_AddReaderGroup_Method, this, _1));
-        addWriterGroup_Method_->registerMethod(boost::bind(&PubSubConnectionType::call_AddWriterGroup_Method, this, _1));
-        diagnostics_Reset_Method_->registerMethod(boost::bind(&PubSubConnectionType::call_Diagnostics_Reset_Method, this, _1));
-        removeGroup_Method_->registerMethod(boost::bind(&PubSubConnectionType::call_RemoveGroup_Method, this, _1));
+        addReaderGroup_Method_->registerMethod(boost::bind(&PubSubConnectionType::call_AddReaderGroup_Method, this, boost::placeholders::_1));
+        addWriterGroup_Method_->registerMethod(boost::bind(&PubSubConnectionType::call_AddWriterGroup_Method, this, boost::placeholders::_1));
+        diagnostics_Reset_Method_->registerMethod(boost::bind(&PubSubConnectionType::call_Diagnostics_Reset_Method, this, boost::placeholders::_1));
+        removeGroup_Method_->registerMethod(boost::bind(&PubSubConnectionType::call_RemoveGroup_Method, this, boost::placeholders::_1));
     }
     
     PubSubConnectionType::PubSubConnectionType(const PubSubConnectionType& value)
@@ -247,10 +247,10 @@ namespace OpcUaStackServer
         setServerMethod(addWriterGroup_Method_);
         setServerMethod(diagnostics_Reset_Method_);
         setServerMethod(removeGroup_Method_);
-        addReaderGroup_Method_->registerMethod(boost::bind(&PubSubConnectionType::call_AddReaderGroup_Method, this, _1));
-        addWriterGroup_Method_->registerMethod(boost::bind(&PubSubConnectionType::call_AddWriterGroup_Method, this, _1));
-        diagnostics_Reset_Method_->registerMethod(boost::bind(&PubSubConnectionType::call_Diagnostics_Reset_Method, this, _1));
-        removeGroup_Method_->registerMethod(boost::bind(&PubSubConnectionType::call_RemoveGroup_Method, this, _1));
+        addReaderGroup_Method_->registerMethod(boost::bind(&PubSubConnectionType::call_AddReaderGroup_Method, this, boost::placeholders::_1));
+        addWriterGroup_Method_->registerMethod(boost::bind(&PubSubConnectionType::call_AddWriterGroup_Method, this, boost::placeholders::_1));
+        diagnostics_Reset_Method_->registerMethod(boost::bind(&PubSubConnectionType::call_Diagnostics_Reset_Method, this, boost::placeholders::_1));
+        removeGroup_Method_->registerMethod(boost::bind(&PubSubConnectionType::call_RemoveGroup_Method, this, boost::placeholders::_1));
     }
     
     PubSubConnectionType::~PubSubConnectionType(void)

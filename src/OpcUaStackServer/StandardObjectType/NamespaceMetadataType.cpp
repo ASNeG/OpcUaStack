@@ -63,12 +63,12 @@ namespace OpcUaStackServer
         setServerMethod(namespaceFile_Read_Method_);
         setServerMethod(namespaceFile_SetPosition_Method_);
         setServerMethod(namespaceFile_Write_Method_);
-        namespaceFile_Close_Method_->registerMethod(boost::bind(&NamespaceMetadataType::call_NamespaceFile_Close_Method, this, _1));
-        namespaceFile_GetPosition_Method_->registerMethod(boost::bind(&NamespaceMetadataType::call_NamespaceFile_GetPosition_Method, this, _1));
-        namespaceFile_Open_Method_->registerMethod(boost::bind(&NamespaceMetadataType::call_NamespaceFile_Open_Method, this, _1));
-        namespaceFile_Read_Method_->registerMethod(boost::bind(&NamespaceMetadataType::call_NamespaceFile_Read_Method, this, _1));
-        namespaceFile_SetPosition_Method_->registerMethod(boost::bind(&NamespaceMetadataType::call_NamespaceFile_SetPosition_Method, this, _1));
-        namespaceFile_Write_Method_->registerMethod(boost::bind(&NamespaceMetadataType::call_NamespaceFile_Write_Method, this, _1));
+        namespaceFile_Close_Method_->registerMethod(boost::bind(&NamespaceMetadataType::call_NamespaceFile_Close_Method, this, boost::placeholders::_1));
+        namespaceFile_GetPosition_Method_->registerMethod(boost::bind(&NamespaceMetadataType::call_NamespaceFile_GetPosition_Method, this, boost::placeholders::_1));
+        namespaceFile_Open_Method_->registerMethod(boost::bind(&NamespaceMetadataType::call_NamespaceFile_Open_Method, this, boost::placeholders::_1));
+        namespaceFile_Read_Method_->registerMethod(boost::bind(&NamespaceMetadataType::call_NamespaceFile_Read_Method, this, boost::placeholders::_1));
+        namespaceFile_SetPosition_Method_->registerMethod(boost::bind(&NamespaceMetadataType::call_NamespaceFile_SetPosition_Method, this, boost::placeholders::_1));
+        namespaceFile_Write_Method_->registerMethod(boost::bind(&NamespaceMetadataType::call_NamespaceFile_Write_Method, this, boost::placeholders::_1));
     }
     
     /**
@@ -119,12 +119,12 @@ namespace OpcUaStackServer
         setServerMethod(namespaceFile_Read_Method_);
         setServerMethod(namespaceFile_SetPosition_Method_);
         setServerMethod(namespaceFile_Write_Method_);
-        namespaceFile_Close_Method_->registerMethod(boost::bind(&NamespaceMetadataType::call_NamespaceFile_Close_Method, this, _1));
-        namespaceFile_GetPosition_Method_->registerMethod(boost::bind(&NamespaceMetadataType::call_NamespaceFile_GetPosition_Method, this, _1));
-        namespaceFile_Open_Method_->registerMethod(boost::bind(&NamespaceMetadataType::call_NamespaceFile_Open_Method, this, _1));
-        namespaceFile_Read_Method_->registerMethod(boost::bind(&NamespaceMetadataType::call_NamespaceFile_Read_Method, this, _1));
-        namespaceFile_SetPosition_Method_->registerMethod(boost::bind(&NamespaceMetadataType::call_NamespaceFile_SetPosition_Method, this, _1));
-        namespaceFile_Write_Method_->registerMethod(boost::bind(&NamespaceMetadataType::call_NamespaceFile_Write_Method, this, _1));
+        namespaceFile_Close_Method_->registerMethod(boost::bind(&NamespaceMetadataType::call_NamespaceFile_Close_Method, this, boost::placeholders::_1));
+        namespaceFile_GetPosition_Method_->registerMethod(boost::bind(&NamespaceMetadataType::call_NamespaceFile_GetPosition_Method, this, boost::placeholders::_1));
+        namespaceFile_Open_Method_->registerMethod(boost::bind(&NamespaceMetadataType::call_NamespaceFile_Open_Method, this, boost::placeholders::_1));
+        namespaceFile_Read_Method_->registerMethod(boost::bind(&NamespaceMetadataType::call_NamespaceFile_Read_Method, this, boost::placeholders::_1));
+        namespaceFile_SetPosition_Method_->registerMethod(boost::bind(&NamespaceMetadataType::call_NamespaceFile_SetPosition_Method, this, boost::placeholders::_1));
+        namespaceFile_Write_Method_->registerMethod(boost::bind(&NamespaceMetadataType::call_NamespaceFile_Write_Method, this, boost::placeholders::_1));
     }
     
     NamespaceMetadataType::~NamespaceMetadataType(void)

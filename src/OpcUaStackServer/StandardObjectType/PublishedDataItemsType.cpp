@@ -36,10 +36,10 @@ namespace OpcUaStackServer
         setServerMethod(extensionFields_AddExtensionField_Method_);
         setServerMethod(extensionFields_RemoveExtensionField_Method_);
         setServerMethod(removeVariables_Method_);
-        addVariables_Method_->registerMethod(boost::bind(&PublishedDataItemsType::call_AddVariables_Method, this, _1));
-        extensionFields_AddExtensionField_Method_->registerMethod(boost::bind(&PublishedDataItemsType::call_ExtensionFields_AddExtensionField_Method, this, _1));
-        extensionFields_RemoveExtensionField_Method_->registerMethod(boost::bind(&PublishedDataItemsType::call_ExtensionFields_RemoveExtensionField_Method, this, _1));
-        removeVariables_Method_->registerMethod(boost::bind(&PublishedDataItemsType::call_RemoveVariables_Method, this, _1));
+        addVariables_Method_->registerMethod(boost::bind(&PublishedDataItemsType::call_AddVariables_Method, this, boost::placeholders::_1));
+        extensionFields_AddExtensionField_Method_->registerMethod(boost::bind(&PublishedDataItemsType::call_ExtensionFields_AddExtensionField_Method, this, boost::placeholders::_1));
+        extensionFields_RemoveExtensionField_Method_->registerMethod(boost::bind(&PublishedDataItemsType::call_ExtensionFields_RemoveExtensionField_Method, this, boost::placeholders::_1));
+        removeVariables_Method_->registerMethod(boost::bind(&PublishedDataItemsType::call_RemoveVariables_Method, this, boost::placeholders::_1));
     }
     
     PublishedDataItemsType::PublishedDataItemsType(const PublishedDataItemsType& value)
@@ -63,10 +63,10 @@ namespace OpcUaStackServer
         setServerMethod(extensionFields_AddExtensionField_Method_);
         setServerMethod(extensionFields_RemoveExtensionField_Method_);
         setServerMethod(removeVariables_Method_);
-        addVariables_Method_->registerMethod(boost::bind(&PublishedDataItemsType::call_AddVariables_Method, this, _1));
-        extensionFields_AddExtensionField_Method_->registerMethod(boost::bind(&PublishedDataItemsType::call_ExtensionFields_AddExtensionField_Method, this, _1));
-        extensionFields_RemoveExtensionField_Method_->registerMethod(boost::bind(&PublishedDataItemsType::call_ExtensionFields_RemoveExtensionField_Method, this, _1));
-        removeVariables_Method_->registerMethod(boost::bind(&PublishedDataItemsType::call_RemoveVariables_Method, this, _1));
+        addVariables_Method_->registerMethod(boost::bind(&PublishedDataItemsType::call_AddVariables_Method, this, boost::placeholders::_1));
+        extensionFields_AddExtensionField_Method_->registerMethod(boost::bind(&PublishedDataItemsType::call_ExtensionFields_AddExtensionField_Method, this, boost::placeholders::_1));
+        extensionFields_RemoveExtensionField_Method_->registerMethod(boost::bind(&PublishedDataItemsType::call_ExtensionFields_RemoveExtensionField_Method, this, boost::placeholders::_1));
+        removeVariables_Method_->registerMethod(boost::bind(&PublishedDataItemsType::call_RemoveVariables_Method, this, boost::placeholders::_1));
     }
     
     PublishedDataItemsType::~PublishedDataItemsType(void)

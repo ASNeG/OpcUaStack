@@ -1,5 +1,5 @@
 /*
-   Copyright 2019-2021 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2019-2022 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -527,7 +527,7 @@ namespace OpcUaStackServer
 
 		// register method callback
 		auto forwardMethodSync = boost::make_shared<ForwardMethodSync>();
-		forwardMethodSync->methodService().setCallback(boost::bind(&ServerMethod::method, serverMethod.get(), _1));
+		forwardMethodSync->methodService().setCallback(boost::bind(&ServerMethod::method, serverMethod.get(), boost::placeholders::_1));
 		informationModel_->methodMap().registerMethodSync(
 			parentNodeId,
 			nodeId,

@@ -110,11 +110,11 @@ namespace OpcUaStackServer
         setServerMethod(confirm_Method_);
         setServerMethod(disable_Method_);
         setServerMethod(enable_Method_);
-        acknowledge_Method_->registerMethod(boost::bind(&AcknowledgeableConditionType::call_Acknowledge_Method, this, _1));
-        addComment_Method_->registerMethod(boost::bind(&AcknowledgeableConditionType::call_AddComment_Method, this, _1));
-        confirm_Method_->registerMethod(boost::bind(&AcknowledgeableConditionType::call_Confirm_Method, this, _1));
-        disable_Method_->registerMethod(boost::bind(&AcknowledgeableConditionType::call_Disable_Method, this, _1));
-        enable_Method_->registerMethod(boost::bind(&AcknowledgeableConditionType::call_Enable_Method, this, _1));
+        acknowledge_Method_->registerMethod(boost::bind(&AcknowledgeableConditionType::call_Acknowledge_Method, this, boost::placeholders::_1));
+        addComment_Method_->registerMethod(boost::bind(&AcknowledgeableConditionType::call_AddComment_Method, this, boost::placeholders::_1));
+        confirm_Method_->registerMethod(boost::bind(&AcknowledgeableConditionType::call_Confirm_Method, this, boost::placeholders::_1));
+        disable_Method_->registerMethod(boost::bind(&AcknowledgeableConditionType::call_Disable_Method, this, boost::placeholders::_1));
+        enable_Method_->registerMethod(boost::bind(&AcknowledgeableConditionType::call_Enable_Method, this, boost::placeholders::_1));
     }
     
     AcknowledgeableConditionType::AcknowledgeableConditionType(const AcknowledgeableConditionType& value)
@@ -212,11 +212,11 @@ namespace OpcUaStackServer
         setServerMethod(confirm_Method_);
         setServerMethod(disable_Method_);
         setServerMethod(enable_Method_);
-        acknowledge_Method_->registerMethod(boost::bind(&AcknowledgeableConditionType::call_Acknowledge_Method, this, _1));
-        addComment_Method_->registerMethod(boost::bind(&AcknowledgeableConditionType::call_AddComment_Method, this, _1));
-        confirm_Method_->registerMethod(boost::bind(&AcknowledgeableConditionType::call_Confirm_Method, this, _1));
-        disable_Method_->registerMethod(boost::bind(&AcknowledgeableConditionType::call_Disable_Method, this, _1));
-        enable_Method_->registerMethod(boost::bind(&AcknowledgeableConditionType::call_Enable_Method, this, _1));
+        acknowledge_Method_->registerMethod(boost::bind(&AcknowledgeableConditionType::call_Acknowledge_Method, this, boost::placeholders::_1));
+        addComment_Method_->registerMethod(boost::bind(&AcknowledgeableConditionType::call_AddComment_Method, this, boost::placeholders::_1));
+        confirm_Method_->registerMethod(boost::bind(&AcknowledgeableConditionType::call_Confirm_Method, this, boost::placeholders::_1));
+        disable_Method_->registerMethod(boost::bind(&AcknowledgeableConditionType::call_Disable_Method, this, boost::placeholders::_1));
+        enable_Method_->registerMethod(boost::bind(&AcknowledgeableConditionType::call_Enable_Method, this, boost::placeholders::_1));
     }
     
     AcknowledgeableConditionType::~AcknowledgeableConditionType(void)

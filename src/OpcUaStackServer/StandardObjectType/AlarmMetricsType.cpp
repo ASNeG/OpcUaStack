@@ -44,7 +44,7 @@ namespace OpcUaStackServer
         setServerVariable(maximumUnAck_Variable_);
         setServerVariable(startTime_Variable_);
         setServerMethod(reset_Method_);
-        reset_Method_->registerMethod(boost::bind(&AlarmMetricsType::call_Reset_Method, this, _1));
+        reset_Method_->registerMethod(boost::bind(&AlarmMetricsType::call_Reset_Method, this, boost::placeholders::_1));
     }
     
     AlarmMetricsType::AlarmMetricsType(const AlarmMetricsType& value)
@@ -76,7 +76,7 @@ namespace OpcUaStackServer
         setServerVariable(maximumUnAck_Variable_);
         setServerVariable(startTime_Variable_);
         setServerMethod(reset_Method_);
-        reset_Method_->registerMethod(boost::bind(&AlarmMetricsType::call_Reset_Method, this, _1));
+        reset_Method_->registerMethod(boost::bind(&AlarmMetricsType::call_Reset_Method, this, boost::placeholders::_1));
     }
     
     AlarmMetricsType::~AlarmMetricsType(void)

@@ -144,7 +144,7 @@ namespace OpcUaStackServer
         setServerVariable(totalInformation_TimeFirstChange_Variable_);
         setServerVariable(totalInformation_Variable_);
         setServerMethod(reset_Method_);
-        reset_Method_->registerMethod(boost::bind(&PubSubDiagnosticsReaderGroupType::call_Reset_Method, this, _1));
+        reset_Method_->registerMethod(boost::bind(&PubSubDiagnosticsReaderGroupType::call_Reset_Method, this, boost::placeholders::_1));
     }
     
     PubSubDiagnosticsReaderGroupType::PubSubDiagnosticsReaderGroupType(const PubSubDiagnosticsReaderGroupType& value)
@@ -276,7 +276,7 @@ namespace OpcUaStackServer
         setServerVariable(totalInformation_TimeFirstChange_Variable_);
         setServerVariable(totalInformation_Variable_);
         setServerMethod(reset_Method_);
-        reset_Method_->registerMethod(boost::bind(&PubSubDiagnosticsReaderGroupType::call_Reset_Method, this, _1));
+        reset_Method_->registerMethod(boost::bind(&PubSubDiagnosticsReaderGroupType::call_Reset_Method, this, boost::placeholders::_1));
     }
     
     PubSubDiagnosticsReaderGroupType::~PubSubDiagnosticsReaderGroupType(void)

@@ -24,8 +24,8 @@ namespace OpcUaStackServer
         objectTypeNodeId((OpcUaUInt32)15452);
         setServerMethod(addSecurityGroup_Method_);
         setServerMethod(removeSecurityGroup_Method_);
-        addSecurityGroup_Method_->registerMethod(boost::bind(&SecurityGroupFolderType::call_AddSecurityGroup_Method, this, _1));
-        removeSecurityGroup_Method_->registerMethod(boost::bind(&SecurityGroupFolderType::call_RemoveSecurityGroup_Method, this, _1));
+        addSecurityGroup_Method_->registerMethod(boost::bind(&SecurityGroupFolderType::call_AddSecurityGroup_Method, this, boost::placeholders::_1));
+        removeSecurityGroup_Method_->registerMethod(boost::bind(&SecurityGroupFolderType::call_RemoveSecurityGroup_Method, this, boost::placeholders::_1));
     }
     
     SecurityGroupFolderType::SecurityGroupFolderType(const SecurityGroupFolderType& value)
@@ -37,8 +37,8 @@ namespace OpcUaStackServer
         objectTypeNodeId((OpcUaUInt32)15452);
         setServerMethod(addSecurityGroup_Method_);
         setServerMethod(removeSecurityGroup_Method_);
-        addSecurityGroup_Method_->registerMethod(boost::bind(&SecurityGroupFolderType::call_AddSecurityGroup_Method, this, _1));
-        removeSecurityGroup_Method_->registerMethod(boost::bind(&SecurityGroupFolderType::call_RemoveSecurityGroup_Method, this, _1));
+        addSecurityGroup_Method_->registerMethod(boost::bind(&SecurityGroupFolderType::call_AddSecurityGroup_Method, this, boost::placeholders::_1));
+        removeSecurityGroup_Method_->registerMethod(boost::bind(&SecurityGroupFolderType::call_RemoveSecurityGroup_Method, this, boost::placeholders::_1));
     }
     
     SecurityGroupFolderType::~SecurityGroupFolderType(void)

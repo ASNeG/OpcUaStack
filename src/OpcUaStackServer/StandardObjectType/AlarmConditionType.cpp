@@ -214,20 +214,20 @@ namespace OpcUaStackServer
         setServerMethod(silence_Method_);
         setServerMethod(suppress_Method_);
         setServerMethod(unsuppress_Method_);
-        acknowledge_Method_->registerMethod(boost::bind(&AlarmConditionType::call_Acknowledge_Method, this, _1));
-        addComment_Method_->registerMethod(boost::bind(&AlarmConditionType::call_AddComment_Method, this, _1));
-        confirm_Method_->registerMethod(boost::bind(&AlarmConditionType::call_Confirm_Method, this, _1));
-        disable_Method_->registerMethod(boost::bind(&AlarmConditionType::call_Disable_Method, this, _1));
-        enable_Method_->registerMethod(boost::bind(&AlarmConditionType::call_Enable_Method, this, _1));
-        placeInService_Method_->registerMethod(boost::bind(&AlarmConditionType::call_PlaceInService_Method, this, _1));
-        removeFromService_Method_->registerMethod(boost::bind(&AlarmConditionType::call_RemoveFromService_Method, this, _1));
-        reset_Method_->registerMethod(boost::bind(&AlarmConditionType::call_Reset_Method, this, _1));
-        shelvingState_OneShotShelve_Method_->registerMethod(boost::bind(&AlarmConditionType::call_ShelvingState_OneShotShelve_Method, this, _1));
-        shelvingState_TimedShelve_Method_->registerMethod(boost::bind(&AlarmConditionType::call_ShelvingState_TimedShelve_Method, this, _1));
-        shelvingState_Unshelve_Method_->registerMethod(boost::bind(&AlarmConditionType::call_ShelvingState_Unshelve_Method, this, _1));
-        silence_Method_->registerMethod(boost::bind(&AlarmConditionType::call_Silence_Method, this, _1));
-        suppress_Method_->registerMethod(boost::bind(&AlarmConditionType::call_Suppress_Method, this, _1));
-        unsuppress_Method_->registerMethod(boost::bind(&AlarmConditionType::call_Unsuppress_Method, this, _1));
+        acknowledge_Method_->registerMethod(boost::bind(&AlarmConditionType::call_Acknowledge_Method, this, boost::placeholders::_1));
+        addComment_Method_->registerMethod(boost::bind(&AlarmConditionType::call_AddComment_Method, this, boost::placeholders::_1));
+        confirm_Method_->registerMethod(boost::bind(&AlarmConditionType::call_Confirm_Method, this, boost::placeholders::_1));
+        disable_Method_->registerMethod(boost::bind(&AlarmConditionType::call_Disable_Method, this, boost::placeholders::_1));
+        enable_Method_->registerMethod(boost::bind(&AlarmConditionType::call_Enable_Method, this, boost::placeholders::_1));
+        placeInService_Method_->registerMethod(boost::bind(&AlarmConditionType::call_PlaceInService_Method, this, boost::placeholders::_1));
+        removeFromService_Method_->registerMethod(boost::bind(&AlarmConditionType::call_RemoveFromService_Method, this, boost::placeholders::_1));
+        reset_Method_->registerMethod(boost::bind(&AlarmConditionType::call_Reset_Method, this, boost::placeholders::_1));
+        shelvingState_OneShotShelve_Method_->registerMethod(boost::bind(&AlarmConditionType::call_ShelvingState_OneShotShelve_Method, this, boost::placeholders::_1));
+        shelvingState_TimedShelve_Method_->registerMethod(boost::bind(&AlarmConditionType::call_ShelvingState_TimedShelve_Method, this, boost::placeholders::_1));
+        shelvingState_Unshelve_Method_->registerMethod(boost::bind(&AlarmConditionType::call_ShelvingState_Unshelve_Method, this, boost::placeholders::_1));
+        silence_Method_->registerMethod(boost::bind(&AlarmConditionType::call_Silence_Method, this, boost::placeholders::_1));
+        suppress_Method_->registerMethod(boost::bind(&AlarmConditionType::call_Suppress_Method, this, boost::placeholders::_1));
+        unsuppress_Method_->registerMethod(boost::bind(&AlarmConditionType::call_Unsuppress_Method, this, boost::placeholders::_1));
     }
     
     AlarmConditionType::AlarmConditionType(const AlarmConditionType& value)
@@ -429,20 +429,20 @@ namespace OpcUaStackServer
         setServerMethod(silence_Method_);
         setServerMethod(suppress_Method_);
         setServerMethod(unsuppress_Method_);
-        acknowledge_Method_->registerMethod(boost::bind(&AlarmConditionType::call_Acknowledge_Method, this, _1));
-        addComment_Method_->registerMethod(boost::bind(&AlarmConditionType::call_AddComment_Method, this, _1));
-        confirm_Method_->registerMethod(boost::bind(&AlarmConditionType::call_Confirm_Method, this, _1));
-        disable_Method_->registerMethod(boost::bind(&AlarmConditionType::call_Disable_Method, this, _1));
-        enable_Method_->registerMethod(boost::bind(&AlarmConditionType::call_Enable_Method, this, _1));
-        placeInService_Method_->registerMethod(boost::bind(&AlarmConditionType::call_PlaceInService_Method, this, _1));
-        removeFromService_Method_->registerMethod(boost::bind(&AlarmConditionType::call_RemoveFromService_Method, this, _1));
-        reset_Method_->registerMethod(boost::bind(&AlarmConditionType::call_Reset_Method, this, _1));
-        shelvingState_OneShotShelve_Method_->registerMethod(boost::bind(&AlarmConditionType::call_ShelvingState_OneShotShelve_Method, this, _1));
-        shelvingState_TimedShelve_Method_->registerMethod(boost::bind(&AlarmConditionType::call_ShelvingState_TimedShelve_Method, this, _1));
-        shelvingState_Unshelve_Method_->registerMethod(boost::bind(&AlarmConditionType::call_ShelvingState_Unshelve_Method, this, _1));
-        silence_Method_->registerMethod(boost::bind(&AlarmConditionType::call_Silence_Method, this, _1));
-        suppress_Method_->registerMethod(boost::bind(&AlarmConditionType::call_Suppress_Method, this, _1));
-        unsuppress_Method_->registerMethod(boost::bind(&AlarmConditionType::call_Unsuppress_Method, this, _1));
+        acknowledge_Method_->registerMethod(boost::bind(&AlarmConditionType::call_Acknowledge_Method, this, boost::placeholders::_1));
+        addComment_Method_->registerMethod(boost::bind(&AlarmConditionType::call_AddComment_Method, this, boost::placeholders::_1));
+        confirm_Method_->registerMethod(boost::bind(&AlarmConditionType::call_Confirm_Method, this, boost::placeholders::_1));
+        disable_Method_->registerMethod(boost::bind(&AlarmConditionType::call_Disable_Method, this, boost::placeholders::_1));
+        enable_Method_->registerMethod(boost::bind(&AlarmConditionType::call_Enable_Method, this, boost::placeholders::_1));
+        placeInService_Method_->registerMethod(boost::bind(&AlarmConditionType::call_PlaceInService_Method, this, boost::placeholders::_1));
+        removeFromService_Method_->registerMethod(boost::bind(&AlarmConditionType::call_RemoveFromService_Method, this, boost::placeholders::_1));
+        reset_Method_->registerMethod(boost::bind(&AlarmConditionType::call_Reset_Method, this, boost::placeholders::_1));
+        shelvingState_OneShotShelve_Method_->registerMethod(boost::bind(&AlarmConditionType::call_ShelvingState_OneShotShelve_Method, this, boost::placeholders::_1));
+        shelvingState_TimedShelve_Method_->registerMethod(boost::bind(&AlarmConditionType::call_ShelvingState_TimedShelve_Method, this, boost::placeholders::_1));
+        shelvingState_Unshelve_Method_->registerMethod(boost::bind(&AlarmConditionType::call_ShelvingState_Unshelve_Method, this, boost::placeholders::_1));
+        silence_Method_->registerMethod(boost::bind(&AlarmConditionType::call_Silence_Method, this, boost::placeholders::_1));
+        suppress_Method_->registerMethod(boost::bind(&AlarmConditionType::call_Suppress_Method, this, boost::placeholders::_1));
+        unsuppress_Method_->registerMethod(boost::bind(&AlarmConditionType::call_Unsuppress_Method, this, boost::placeholders::_1));
     }
     
     AlarmConditionType::~AlarmConditionType(void)

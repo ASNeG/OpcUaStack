@@ -40,9 +40,9 @@ namespace OpcUaStackServer
         setServerMethod(oneShotShelve_Method_);
         setServerMethod(timedShelve_Method_);
         setServerMethod(unshelve_Method_);
-        oneShotShelve_Method_->registerMethod(boost::bind(&ShelvedStateMachineType::call_OneShotShelve_Method, this, _1));
-        timedShelve_Method_->registerMethod(boost::bind(&ShelvedStateMachineType::call_TimedShelve_Method, this, _1));
-        unshelve_Method_->registerMethod(boost::bind(&ShelvedStateMachineType::call_Unshelve_Method, this, _1));
+        oneShotShelve_Method_->registerMethod(boost::bind(&ShelvedStateMachineType::call_OneShotShelve_Method, this, boost::placeholders::_1));
+        timedShelve_Method_->registerMethod(boost::bind(&ShelvedStateMachineType::call_TimedShelve_Method, this, boost::placeholders::_1));
+        unshelve_Method_->registerMethod(boost::bind(&ShelvedStateMachineType::call_Unshelve_Method, this, boost::placeholders::_1));
     }
     
     ShelvedStateMachineType::ShelvedStateMachineType(const ShelvedStateMachineType& value)
@@ -70,9 +70,9 @@ namespace OpcUaStackServer
         setServerMethod(oneShotShelve_Method_);
         setServerMethod(timedShelve_Method_);
         setServerMethod(unshelve_Method_);
-        oneShotShelve_Method_->registerMethod(boost::bind(&ShelvedStateMachineType::call_OneShotShelve_Method, this, _1));
-        timedShelve_Method_->registerMethod(boost::bind(&ShelvedStateMachineType::call_TimedShelve_Method, this, _1));
-        unshelve_Method_->registerMethod(boost::bind(&ShelvedStateMachineType::call_Unshelve_Method, this, _1));
+        oneShotShelve_Method_->registerMethod(boost::bind(&ShelvedStateMachineType::call_OneShotShelve_Method, this, boost::placeholders::_1));
+        timedShelve_Method_->registerMethod(boost::bind(&ShelvedStateMachineType::call_TimedShelve_Method, this, boost::placeholders::_1));
+        unshelve_Method_->registerMethod(boost::bind(&ShelvedStateMachineType::call_Unshelve_Method, this, boost::placeholders::_1));
     }
     
     ShelvedStateMachineType::~ShelvedStateMachineType(void)

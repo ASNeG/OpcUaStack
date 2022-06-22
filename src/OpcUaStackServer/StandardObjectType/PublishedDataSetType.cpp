@@ -30,8 +30,8 @@ namespace OpcUaStackServer
         setServerVariable(dataSetMetaData_Variable_);
         setServerMethod(extensionFields_AddExtensionField_Method_);
         setServerMethod(extensionFields_RemoveExtensionField_Method_);
-        extensionFields_AddExtensionField_Method_->registerMethod(boost::bind(&PublishedDataSetType::call_ExtensionFields_AddExtensionField_Method, this, _1));
-        extensionFields_RemoveExtensionField_Method_->registerMethod(boost::bind(&PublishedDataSetType::call_ExtensionFields_RemoveExtensionField_Method, this, _1));
+        extensionFields_AddExtensionField_Method_->registerMethod(boost::bind(&PublishedDataSetType::call_ExtensionFields_AddExtensionField_Method, this, boost::placeholders::_1));
+        extensionFields_RemoveExtensionField_Method_->registerMethod(boost::bind(&PublishedDataSetType::call_ExtensionFields_RemoveExtensionField_Method, this, boost::placeholders::_1));
     }
     
     PublishedDataSetType::PublishedDataSetType(const PublishedDataSetType& value)
@@ -49,8 +49,8 @@ namespace OpcUaStackServer
         setServerVariable(dataSetMetaData_Variable_);
         setServerMethod(extensionFields_AddExtensionField_Method_);
         setServerMethod(extensionFields_RemoveExtensionField_Method_);
-        extensionFields_AddExtensionField_Method_->registerMethod(boost::bind(&PublishedDataSetType::call_ExtensionFields_AddExtensionField_Method, this, _1));
-        extensionFields_RemoveExtensionField_Method_->registerMethod(boost::bind(&PublishedDataSetType::call_ExtensionFields_RemoveExtensionField_Method, this, _1));
+        extensionFields_AddExtensionField_Method_->registerMethod(boost::bind(&PublishedDataSetType::call_ExtensionFields_AddExtensionField_Method, this, boost::placeholders::_1));
+        extensionFields_RemoveExtensionField_Method_->registerMethod(boost::bind(&PublishedDataSetType::call_ExtensionFields_RemoveExtensionField_Method, this, boost::placeholders::_1));
     }
     
     PublishedDataSetType::~PublishedDataSetType(void)

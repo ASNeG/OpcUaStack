@@ -26,8 +26,8 @@ namespace OpcUaStackServer
         setServerVariable(state_Variable_);
         setServerMethod(disable_Method_);
         setServerMethod(enable_Method_);
-        disable_Method_->registerMethod(boost::bind(&PubSubStatusType::call_Disable_Method, this, _1));
-        enable_Method_->registerMethod(boost::bind(&PubSubStatusType::call_Enable_Method, this, _1));
+        disable_Method_->registerMethod(boost::bind(&PubSubStatusType::call_Disable_Method, this, boost::placeholders::_1));
+        enable_Method_->registerMethod(boost::bind(&PubSubStatusType::call_Enable_Method, this, boost::placeholders::_1));
     }
     
     PubSubStatusType::PubSubStatusType(const PubSubStatusType& value)
@@ -41,8 +41,8 @@ namespace OpcUaStackServer
         setServerVariable(state_Variable_);
         setServerMethod(disable_Method_);
         setServerMethod(enable_Method_);
-        disable_Method_->registerMethod(boost::bind(&PubSubStatusType::call_Disable_Method, this, _1));
-        enable_Method_->registerMethod(boost::bind(&PubSubStatusType::call_Enable_Method, this, _1));
+        disable_Method_->registerMethod(boost::bind(&PubSubStatusType::call_Disable_Method, this, boost::placeholders::_1));
+        enable_Method_->registerMethod(boost::bind(&PubSubStatusType::call_Enable_Method, this, boost::placeholders::_1));
     }
     
     PubSubStatusType::~PubSubStatusType(void)

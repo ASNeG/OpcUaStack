@@ -140,14 +140,14 @@ namespace OpcUaStackServer
         setServerMethod(securityGroups_AddSecurityGroup_Method_);
         setServerMethod(securityGroups_RemoveSecurityGroup_Method_);
         setServerMethod(setSecurityKeys_Method_);
-        addConnection_Method_->registerMethod(boost::bind(&PublishSubscribeType::call_AddConnection_Method, this, _1));
-        diagnostics_Reset_Method_->registerMethod(boost::bind(&PublishSubscribeType::call_Diagnostics_Reset_Method, this, _1));
-        getSecurityGroup_Method_->registerMethod(boost::bind(&PublishSubscribeType::call_GetSecurityGroup_Method, this, _1));
-        getSecurityKeys_Method_->registerMethod(boost::bind(&PublishSubscribeType::call_GetSecurityKeys_Method, this, _1));
-        removeConnection_Method_->registerMethod(boost::bind(&PublishSubscribeType::call_RemoveConnection_Method, this, _1));
-        securityGroups_AddSecurityGroup_Method_->registerMethod(boost::bind(&PublishSubscribeType::call_SecurityGroups_AddSecurityGroup_Method, this, _1));
-        securityGroups_RemoveSecurityGroup_Method_->registerMethod(boost::bind(&PublishSubscribeType::call_SecurityGroups_RemoveSecurityGroup_Method, this, _1));
-        setSecurityKeys_Method_->registerMethod(boost::bind(&PublishSubscribeType::call_SetSecurityKeys_Method, this, _1));
+        addConnection_Method_->registerMethod(boost::bind(&PublishSubscribeType::call_AddConnection_Method, this, boost::placeholders::_1));
+        diagnostics_Reset_Method_->registerMethod(boost::bind(&PublishSubscribeType::call_Diagnostics_Reset_Method, this, boost::placeholders::_1));
+        getSecurityGroup_Method_->registerMethod(boost::bind(&PublishSubscribeType::call_GetSecurityGroup_Method, this, boost::placeholders::_1));
+        getSecurityKeys_Method_->registerMethod(boost::bind(&PublishSubscribeType::call_GetSecurityKeys_Method, this, boost::placeholders::_1));
+        removeConnection_Method_->registerMethod(boost::bind(&PublishSubscribeType::call_RemoveConnection_Method, this, boost::placeholders::_1));
+        securityGroups_AddSecurityGroup_Method_->registerMethod(boost::bind(&PublishSubscribeType::call_SecurityGroups_AddSecurityGroup_Method, this, boost::placeholders::_1));
+        securityGroups_RemoveSecurityGroup_Method_->registerMethod(boost::bind(&PublishSubscribeType::call_SecurityGroups_RemoveSecurityGroup_Method, this, boost::placeholders::_1));
+        setSecurityKeys_Method_->registerMethod(boost::bind(&PublishSubscribeType::call_SetSecurityKeys_Method, this, boost::placeholders::_1));
     }
     
     PublishSubscribeType::PublishSubscribeType(const PublishSubscribeType& value)
@@ -275,14 +275,14 @@ namespace OpcUaStackServer
         setServerMethod(securityGroups_AddSecurityGroup_Method_);
         setServerMethod(securityGroups_RemoveSecurityGroup_Method_);
         setServerMethod(setSecurityKeys_Method_);
-        addConnection_Method_->registerMethod(boost::bind(&PublishSubscribeType::call_AddConnection_Method, this, _1));
-        diagnostics_Reset_Method_->registerMethod(boost::bind(&PublishSubscribeType::call_Diagnostics_Reset_Method, this, _1));
-        getSecurityGroup_Method_->registerMethod(boost::bind(&PublishSubscribeType::call_GetSecurityGroup_Method, this, _1));
-        getSecurityKeys_Method_->registerMethod(boost::bind(&PublishSubscribeType::call_GetSecurityKeys_Method, this, _1));
-        removeConnection_Method_->registerMethod(boost::bind(&PublishSubscribeType::call_RemoveConnection_Method, this, _1));
-        securityGroups_AddSecurityGroup_Method_->registerMethod(boost::bind(&PublishSubscribeType::call_SecurityGroups_AddSecurityGroup_Method, this, _1));
-        securityGroups_RemoveSecurityGroup_Method_->registerMethod(boost::bind(&PublishSubscribeType::call_SecurityGroups_RemoveSecurityGroup_Method, this, _1));
-        setSecurityKeys_Method_->registerMethod(boost::bind(&PublishSubscribeType::call_SetSecurityKeys_Method, this, _1));
+        addConnection_Method_->registerMethod(boost::bind(&PublishSubscribeType::call_AddConnection_Method, this, boost::placeholders::_1));
+        diagnostics_Reset_Method_->registerMethod(boost::bind(&PublishSubscribeType::call_Diagnostics_Reset_Method, this, boost::placeholders::_1));
+        getSecurityGroup_Method_->registerMethod(boost::bind(&PublishSubscribeType::call_GetSecurityGroup_Method, this, boost::placeholders::_1));
+        getSecurityKeys_Method_->registerMethod(boost::bind(&PublishSubscribeType::call_GetSecurityKeys_Method, this, boost::placeholders::_1));
+        removeConnection_Method_->registerMethod(boost::bind(&PublishSubscribeType::call_RemoveConnection_Method, this, boost::placeholders::_1));
+        securityGroups_AddSecurityGroup_Method_->registerMethod(boost::bind(&PublishSubscribeType::call_SecurityGroups_AddSecurityGroup_Method, this, boost::placeholders::_1));
+        securityGroups_RemoveSecurityGroup_Method_->registerMethod(boost::bind(&PublishSubscribeType::call_SecurityGroups_RemoveSecurityGroup_Method, this, boost::placeholders::_1));
+        setSecurityKeys_Method_->registerMethod(boost::bind(&PublishSubscribeType::call_SetSecurityKeys_Method, this, boost::placeholders::_1));
     }
     
     PublishSubscribeType::~PublishSubscribeType(void)

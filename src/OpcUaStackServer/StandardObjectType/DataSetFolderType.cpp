@@ -34,13 +34,13 @@ namespace OpcUaStackServer
         setServerMethod(addPublishedEvents_Method_);
         setServerMethod(removeDataSetFolder_Method_);
         setServerMethod(removePublishedDataSet_Method_);
-        addDataSetFolder_Method_->registerMethod(boost::bind(&DataSetFolderType::call_AddDataSetFolder_Method, this, _1));
-        addPublishedDataItemsTemplate_Method_->registerMethod(boost::bind(&DataSetFolderType::call_AddPublishedDataItemsTemplate_Method, this, _1));
-        addPublishedDataItems_Method_->registerMethod(boost::bind(&DataSetFolderType::call_AddPublishedDataItems_Method, this, _1));
-        addPublishedEventsTemplate_Method_->registerMethod(boost::bind(&DataSetFolderType::call_AddPublishedEventsTemplate_Method, this, _1));
-        addPublishedEvents_Method_->registerMethod(boost::bind(&DataSetFolderType::call_AddPublishedEvents_Method, this, _1));
-        removeDataSetFolder_Method_->registerMethod(boost::bind(&DataSetFolderType::call_RemoveDataSetFolder_Method, this, _1));
-        removePublishedDataSet_Method_->registerMethod(boost::bind(&DataSetFolderType::call_RemovePublishedDataSet_Method, this, _1));
+        addDataSetFolder_Method_->registerMethod(boost::bind(&DataSetFolderType::call_AddDataSetFolder_Method, this, boost::placeholders::_1));
+        addPublishedDataItemsTemplate_Method_->registerMethod(boost::bind(&DataSetFolderType::call_AddPublishedDataItemsTemplate_Method, this, boost::placeholders::_1));
+        addPublishedDataItems_Method_->registerMethod(boost::bind(&DataSetFolderType::call_AddPublishedDataItems_Method, this, boost::placeholders::_1));
+        addPublishedEventsTemplate_Method_->registerMethod(boost::bind(&DataSetFolderType::call_AddPublishedEventsTemplate_Method, this, boost::placeholders::_1));
+        addPublishedEvents_Method_->registerMethod(boost::bind(&DataSetFolderType::call_AddPublishedEvents_Method, this, boost::placeholders::_1));
+        removeDataSetFolder_Method_->registerMethod(boost::bind(&DataSetFolderType::call_RemoveDataSetFolder_Method, this, boost::placeholders::_1));
+        removePublishedDataSet_Method_->registerMethod(boost::bind(&DataSetFolderType::call_RemovePublishedDataSet_Method, this, boost::placeholders::_1));
     }
     
     DataSetFolderType::DataSetFolderType(const DataSetFolderType& value)
@@ -62,13 +62,13 @@ namespace OpcUaStackServer
         setServerMethod(addPublishedEvents_Method_);
         setServerMethod(removeDataSetFolder_Method_);
         setServerMethod(removePublishedDataSet_Method_);
-        addDataSetFolder_Method_->registerMethod(boost::bind(&DataSetFolderType::call_AddDataSetFolder_Method, this, _1));
-        addPublishedDataItemsTemplate_Method_->registerMethod(boost::bind(&DataSetFolderType::call_AddPublishedDataItemsTemplate_Method, this, _1));
-        addPublishedDataItems_Method_->registerMethod(boost::bind(&DataSetFolderType::call_AddPublishedDataItems_Method, this, _1));
-        addPublishedEventsTemplate_Method_->registerMethod(boost::bind(&DataSetFolderType::call_AddPublishedEventsTemplate_Method, this, _1));
-        addPublishedEvents_Method_->registerMethod(boost::bind(&DataSetFolderType::call_AddPublishedEvents_Method, this, _1));
-        removeDataSetFolder_Method_->registerMethod(boost::bind(&DataSetFolderType::call_RemoveDataSetFolder_Method, this, _1));
-        removePublishedDataSet_Method_->registerMethod(boost::bind(&DataSetFolderType::call_RemovePublishedDataSet_Method, this, _1));
+        addDataSetFolder_Method_->registerMethod(boost::bind(&DataSetFolderType::call_AddDataSetFolder_Method, this, boost::placeholders::_1));
+        addPublishedDataItemsTemplate_Method_->registerMethod(boost::bind(&DataSetFolderType::call_AddPublishedDataItemsTemplate_Method, this, boost::placeholders::_1));
+        addPublishedDataItems_Method_->registerMethod(boost::bind(&DataSetFolderType::call_AddPublishedDataItems_Method, this, boost::placeholders::_1));
+        addPublishedEventsTemplate_Method_->registerMethod(boost::bind(&DataSetFolderType::call_AddPublishedEventsTemplate_Method, this, boost::placeholders::_1));
+        addPublishedEvents_Method_->registerMethod(boost::bind(&DataSetFolderType::call_AddPublishedEvents_Method, this, boost::placeholders::_1));
+        removeDataSetFolder_Method_->registerMethod(boost::bind(&DataSetFolderType::call_RemoveDataSetFolder_Method, this, boost::placeholders::_1));
+        removePublishedDataSet_Method_->registerMethod(boost::bind(&DataSetFolderType::call_RemovePublishedDataSet_Method, this, boost::placeholders::_1));
     }
     
     DataSetFolderType::~DataSetFolderType(void)

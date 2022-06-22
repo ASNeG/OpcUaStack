@@ -146,9 +146,9 @@ namespace OpcUaStackServer
         setServerMethod(createDataSetMirror_Method_);
         setServerMethod(createTargetVariables_Method_);
         setServerMethod(diagnostics_Reset_Method_);
-        createDataSetMirror_Method_->registerMethod(boost::bind(&DataSetReaderType::call_CreateDataSetMirror_Method, this, _1));
-        createTargetVariables_Method_->registerMethod(boost::bind(&DataSetReaderType::call_CreateTargetVariables_Method, this, _1));
-        diagnostics_Reset_Method_->registerMethod(boost::bind(&DataSetReaderType::call_Diagnostics_Reset_Method, this, _1));
+        createDataSetMirror_Method_->registerMethod(boost::bind(&DataSetReaderType::call_CreateDataSetMirror_Method, this, boost::placeholders::_1));
+        createTargetVariables_Method_->registerMethod(boost::bind(&DataSetReaderType::call_CreateTargetVariables_Method, this, boost::placeholders::_1));
+        diagnostics_Reset_Method_->registerMethod(boost::bind(&DataSetReaderType::call_Diagnostics_Reset_Method, this, boost::placeholders::_1));
     }
     
     DataSetReaderType::DataSetReaderType(const DataSetReaderType& value)
@@ -282,9 +282,9 @@ namespace OpcUaStackServer
         setServerMethod(createDataSetMirror_Method_);
         setServerMethod(createTargetVariables_Method_);
         setServerMethod(diagnostics_Reset_Method_);
-        createDataSetMirror_Method_->registerMethod(boost::bind(&DataSetReaderType::call_CreateDataSetMirror_Method, this, _1));
-        createTargetVariables_Method_->registerMethod(boost::bind(&DataSetReaderType::call_CreateTargetVariables_Method, this, _1));
-        diagnostics_Reset_Method_->registerMethod(boost::bind(&DataSetReaderType::call_Diagnostics_Reset_Method, this, _1));
+        createDataSetMirror_Method_->registerMethod(boost::bind(&DataSetReaderType::call_CreateDataSetMirror_Method, this, boost::placeholders::_1));
+        createTargetVariables_Method_->registerMethod(boost::bind(&DataSetReaderType::call_CreateTargetVariables_Method, this, boost::placeholders::_1));
+        diagnostics_Reset_Method_->registerMethod(boost::bind(&DataSetReaderType::call_Diagnostics_Reset_Method, this, boost::placeholders::_1));
     }
     
     DataSetReaderType::~DataSetReaderType(void)

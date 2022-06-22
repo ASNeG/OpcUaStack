@@ -28,9 +28,9 @@ namespace OpcUaStackServer
         setServerMethod(closeAndCommit_Method_);
         setServerMethod(generateFileForRead_Method_);
         setServerMethod(generateFileForWrite_Method_);
-        closeAndCommit_Method_->registerMethod(boost::bind(&TemporaryFileTransferType::call_CloseAndCommit_Method, this, _1));
-        generateFileForRead_Method_->registerMethod(boost::bind(&TemporaryFileTransferType::call_GenerateFileForRead_Method, this, _1));
-        generateFileForWrite_Method_->registerMethod(boost::bind(&TemporaryFileTransferType::call_GenerateFileForWrite_Method, this, _1));
+        closeAndCommit_Method_->registerMethod(boost::bind(&TemporaryFileTransferType::call_CloseAndCommit_Method, this, boost::placeholders::_1));
+        generateFileForRead_Method_->registerMethod(boost::bind(&TemporaryFileTransferType::call_GenerateFileForRead_Method, this, boost::placeholders::_1));
+        generateFileForWrite_Method_->registerMethod(boost::bind(&TemporaryFileTransferType::call_GenerateFileForWrite_Method, this, boost::placeholders::_1));
     }
     
     TemporaryFileTransferType::TemporaryFileTransferType(const TemporaryFileTransferType& value)
@@ -46,9 +46,9 @@ namespace OpcUaStackServer
         setServerMethod(closeAndCommit_Method_);
         setServerMethod(generateFileForRead_Method_);
         setServerMethod(generateFileForWrite_Method_);
-        closeAndCommit_Method_->registerMethod(boost::bind(&TemporaryFileTransferType::call_CloseAndCommit_Method, this, _1));
-        generateFileForRead_Method_->registerMethod(boost::bind(&TemporaryFileTransferType::call_GenerateFileForRead_Method, this, _1));
-        generateFileForWrite_Method_->registerMethod(boost::bind(&TemporaryFileTransferType::call_GenerateFileForWrite_Method, this, _1));
+        closeAndCommit_Method_->registerMethod(boost::bind(&TemporaryFileTransferType::call_CloseAndCommit_Method, this, boost::placeholders::_1));
+        generateFileForRead_Method_->registerMethod(boost::bind(&TemporaryFileTransferType::call_GenerateFileForRead_Method, this, boost::placeholders::_1));
+        generateFileForWrite_Method_->registerMethod(boost::bind(&TemporaryFileTransferType::call_GenerateFileForWrite_Method, this, boost::placeholders::_1));
     }
     
     TemporaryFileTransferType::~TemporaryFileTransferType(void)

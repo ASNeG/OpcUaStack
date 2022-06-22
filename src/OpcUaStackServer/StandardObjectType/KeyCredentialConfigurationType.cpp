@@ -34,9 +34,9 @@ namespace OpcUaStackServer
         setServerMethod(deleteCredential_Method_);
         setServerMethod(getEncryptingKey_Method_);
         setServerMethod(updateCredential_Method_);
-        deleteCredential_Method_->registerMethod(boost::bind(&KeyCredentialConfigurationType::call_DeleteCredential_Method, this, _1));
-        getEncryptingKey_Method_->registerMethod(boost::bind(&KeyCredentialConfigurationType::call_GetEncryptingKey_Method, this, _1));
-        updateCredential_Method_->registerMethod(boost::bind(&KeyCredentialConfigurationType::call_UpdateCredential_Method, this, _1));
+        deleteCredential_Method_->registerMethod(boost::bind(&KeyCredentialConfigurationType::call_DeleteCredential_Method, this, boost::placeholders::_1));
+        getEncryptingKey_Method_->registerMethod(boost::bind(&KeyCredentialConfigurationType::call_GetEncryptingKey_Method, this, boost::placeholders::_1));
+        updateCredential_Method_->registerMethod(boost::bind(&KeyCredentialConfigurationType::call_UpdateCredential_Method, this, boost::placeholders::_1));
     }
     
     KeyCredentialConfigurationType::KeyCredentialConfigurationType(const KeyCredentialConfigurationType& value)
@@ -58,9 +58,9 @@ namespace OpcUaStackServer
         setServerMethod(deleteCredential_Method_);
         setServerMethod(getEncryptingKey_Method_);
         setServerMethod(updateCredential_Method_);
-        deleteCredential_Method_->registerMethod(boost::bind(&KeyCredentialConfigurationType::call_DeleteCredential_Method, this, _1));
-        getEncryptingKey_Method_->registerMethod(boost::bind(&KeyCredentialConfigurationType::call_GetEncryptingKey_Method, this, _1));
-        updateCredential_Method_->registerMethod(boost::bind(&KeyCredentialConfigurationType::call_UpdateCredential_Method, this, _1));
+        deleteCredential_Method_->registerMethod(boost::bind(&KeyCredentialConfigurationType::call_DeleteCredential_Method, this, boost::placeholders::_1));
+        getEncryptingKey_Method_->registerMethod(boost::bind(&KeyCredentialConfigurationType::call_GetEncryptingKey_Method, this, boost::placeholders::_1));
+        updateCredential_Method_->registerMethod(boost::bind(&KeyCredentialConfigurationType::call_UpdateCredential_Method, this, boost::placeholders::_1));
     }
     
     KeyCredentialConfigurationType::~KeyCredentialConfigurationType(void)

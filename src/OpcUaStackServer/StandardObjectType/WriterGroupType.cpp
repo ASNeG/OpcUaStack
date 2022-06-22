@@ -170,9 +170,9 @@ namespace OpcUaStackServer
         setServerMethod(addDataSetWriter_Method_);
         setServerMethod(diagnostics_Reset_Method_);
         setServerMethod(removeDataSetWriter_Method_);
-        addDataSetWriter_Method_->registerMethod(boost::bind(&WriterGroupType::call_AddDataSetWriter_Method, this, _1));
-        diagnostics_Reset_Method_->registerMethod(boost::bind(&WriterGroupType::call_Diagnostics_Reset_Method, this, _1));
-        removeDataSetWriter_Method_->registerMethod(boost::bind(&WriterGroupType::call_RemoveDataSetWriter_Method, this, _1));
+        addDataSetWriter_Method_->registerMethod(boost::bind(&WriterGroupType::call_AddDataSetWriter_Method, this, boost::placeholders::_1));
+        diagnostics_Reset_Method_->registerMethod(boost::bind(&WriterGroupType::call_Diagnostics_Reset_Method, this, boost::placeholders::_1));
+        removeDataSetWriter_Method_->registerMethod(boost::bind(&WriterGroupType::call_RemoveDataSetWriter_Method, this, boost::placeholders::_1));
     }
     
     WriterGroupType::WriterGroupType(const WriterGroupType& value)
@@ -330,9 +330,9 @@ namespace OpcUaStackServer
         setServerMethod(addDataSetWriter_Method_);
         setServerMethod(diagnostics_Reset_Method_);
         setServerMethod(removeDataSetWriter_Method_);
-        addDataSetWriter_Method_->registerMethod(boost::bind(&WriterGroupType::call_AddDataSetWriter_Method, this, _1));
-        diagnostics_Reset_Method_->registerMethod(boost::bind(&WriterGroupType::call_Diagnostics_Reset_Method, this, _1));
-        removeDataSetWriter_Method_->registerMethod(boost::bind(&WriterGroupType::call_RemoveDataSetWriter_Method, this, _1));
+        addDataSetWriter_Method_->registerMethod(boost::bind(&WriterGroupType::call_AddDataSetWriter_Method, this, boost::placeholders::_1));
+        diagnostics_Reset_Method_->registerMethod(boost::bind(&WriterGroupType::call_Diagnostics_Reset_Method, this, boost::placeholders::_1));
+        removeDataSetWriter_Method_->registerMethod(boost::bind(&WriterGroupType::call_RemoveDataSetWriter_Method, this, boost::placeholders::_1));
     }
     
     WriterGroupType::~WriterGroupType(void)
