@@ -274,9 +274,9 @@ namespace OpcUaStackServer
 		boost::optional<boost::property_tree::ptree&> refpTree = ptree.get_child_optional("References");
 
 		if (!refpTree) {
-			Log(Error, "references not exist in node set")
+			Log(Info, "references not exist in node set")
 				.parameter("NodeId", nodeId);
-			return false;
+			return true;
 		}
 
 		boost::property_tree::ptree::iterator it;
