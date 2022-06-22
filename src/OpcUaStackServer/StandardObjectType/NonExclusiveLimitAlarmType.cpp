@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/NonExclusiveLimitAlarmType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

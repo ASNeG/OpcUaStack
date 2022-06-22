@@ -33,88 +33,88 @@ namespace OpcUaStackServer
         //
         void axisScaleType_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& axisScaleType_Variable(void);
-        bool get_AxisScaleType_Variable(OpcUaDataValue& dataValue);
-        bool set_AxisScaleType_Variable(const OpcUaDataValue& dataValue);
+        bool get_AxisScaleType_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_AxisScaleType_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // String
         //
         void definition_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& definition_Variable(void);
-        bool get_Definition_Variable(OpcUaDataValue& dataValue);
-        bool set_Definition_Variable(const OpcUaDataValue& dataValue);
+        bool get_Definition_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Definition_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // Range
         //
         void eURange_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& eURange_Variable(void);
-        bool get_EURange_Variable(OpcUaDataValue& dataValue);
-        bool set_EURange_Variable(const OpcUaDataValue& dataValue);
+        bool get_EURange_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_EURange_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // EUInformation
         //
         void engineeringUnits_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& engineeringUnits_Variable(void);
-        bool get_EngineeringUnits_Variable(OpcUaDataValue& dataValue);
-        bool set_EngineeringUnits_Variable(const OpcUaDataValue& dataValue);
+        bool get_EngineeringUnits_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_EngineeringUnits_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // Range
         //
         void instrumentRange_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& instrumentRange_Variable(void);
-        bool get_InstrumentRange_Variable(OpcUaDataValue& dataValue);
-        bool set_InstrumentRange_Variable(const OpcUaDataValue& dataValue);
+        bool get_InstrumentRange_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_InstrumentRange_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // LocalizedText
         //
         void title_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& title_Variable(void);
-        bool get_Title_Variable(OpcUaDataValue& dataValue);
-        bool set_Title_Variable(const OpcUaDataValue& dataValue);
+        bool get_Title_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Title_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // Double
         //
         void valuePrecision_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& valuePrecision_Variable(void);
-        bool get_ValuePrecision_Variable(OpcUaDataValue& dataValue);
-        bool set_ValuePrecision_Variable(const OpcUaDataValue& dataValue);
+        bool get_ValuePrecision_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_ValuePrecision_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // Variant (Array)
         //
         void variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& variable(void);
-        bool get_Variable(OpcUaDataValue& dataValue);
-        bool set_Variable(const OpcUaDataValue& dataValue);
+        bool get_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // AxisInformation
         //
         void xAxisDefinition_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& xAxisDefinition_Variable(void);
-        bool get_XAxisDefinition_Variable(OpcUaDataValue& dataValue);
-        bool set_XAxisDefinition_Variable(const OpcUaDataValue& dataValue);
+        bool get_XAxisDefinition_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_XAxisDefinition_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // AxisInformation
         //
         void yAxisDefinition_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& yAxisDefinition_Variable(void);
-        bool get_YAxisDefinition_Variable(OpcUaDataValue& dataValue);
-        bool set_YAxisDefinition_Variable(const OpcUaDataValue& dataValue);
+        bool get_YAxisDefinition_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_YAxisDefinition_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // AxisInformation
         //
         void zAxisDefinition_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& zAxisDefinition_Variable(void);
-        bool get_ZAxisDefinition_Variable(OpcUaDataValue& dataValue);
-        bool set_ZAxisDefinition_Variable(const OpcUaDataValue& dataValue);
+        bool get_ZAxisDefinition_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_ZAxisDefinition_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
     
       private:
         ServerVariable::SPtr axisScaleType_Variable_;

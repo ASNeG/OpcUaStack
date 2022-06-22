@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/ShelvedStateMachineType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/PublishedEventsType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
@@ -219,19 +220,19 @@ namespace OpcUaStackServer
     }
 
     void
-    PublishedEventsType::call_ExtensionFields_AddExtensionField_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext)
+    PublishedEventsType::call_ExtensionFields_AddExtensionField_Method(ApplicationMethodContext* applicationMethodContext)
     {
         applicationMethodContext->statusCode_ = BadNotSupported;
     }
 
     void
-    PublishedEventsType::call_ExtensionFields_RemoveExtensionField_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext)
+    PublishedEventsType::call_ExtensionFields_RemoveExtensionField_Method(ApplicationMethodContext* applicationMethodContext)
     {
         applicationMethodContext->statusCode_ = BadNotSupported;
     }
 
     void
-    PublishedEventsType::call_ModifyFieldSelection_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext)
+    PublishedEventsType::call_ModifyFieldSelection_Method(ApplicationMethodContext* applicationMethodContext)
     {
         applicationMethodContext->statusCode_ = BadNotSupported;
     }

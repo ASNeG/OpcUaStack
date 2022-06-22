@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardVariableType/DiscreteItemType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

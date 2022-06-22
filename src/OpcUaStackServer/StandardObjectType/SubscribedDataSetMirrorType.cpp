@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/SubscribedDataSetMirrorType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

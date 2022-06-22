@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/SystemStatusChangeEventType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

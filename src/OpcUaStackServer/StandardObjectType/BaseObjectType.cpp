@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/BaseObjectType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

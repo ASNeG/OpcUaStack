@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/ServerConfigurationType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

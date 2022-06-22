@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/WriterGroupTransportType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

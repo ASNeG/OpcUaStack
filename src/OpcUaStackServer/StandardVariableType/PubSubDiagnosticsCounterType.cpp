@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardVariableType/PubSubDiagnosticsCounterType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

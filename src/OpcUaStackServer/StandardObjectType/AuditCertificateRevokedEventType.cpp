@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/AuditCertificateRevokedEventType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

@@ -34,16 +34,16 @@ namespace OpcUaStackServer
         //
         void authenticationProfileUri_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& authenticationProfileUri_Variable(void);
-        bool get_AuthenticationProfileUri_Variable(OpcUaDataValue& dataValue);
-        bool set_AuthenticationProfileUri_Variable(const OpcUaDataValue& dataValue);
+        bool get_AuthenticationProfileUri_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_AuthenticationProfileUri_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // String
         //
         void resourceUri_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& resourceUri_Variable(void);
-        bool get_ResourceUri_Variable(OpcUaDataValue& dataValue);
-        bool set_ResourceUri_Variable(const OpcUaDataValue& dataValue);
+        bool get_ResourceUri_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_ResourceUri_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
     
       private:
         ServerVariable::SPtr authenticationProfileUri_Variable_;

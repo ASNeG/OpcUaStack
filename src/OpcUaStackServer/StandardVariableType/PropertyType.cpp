@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardVariableType/PropertyType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

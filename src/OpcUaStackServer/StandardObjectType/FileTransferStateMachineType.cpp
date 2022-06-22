@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/FileTransferStateMachineType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

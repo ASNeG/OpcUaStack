@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardVariableType/NDimensionArrayItemType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

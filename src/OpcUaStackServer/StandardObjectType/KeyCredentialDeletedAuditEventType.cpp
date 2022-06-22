@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/KeyCredentialDeletedAuditEventType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

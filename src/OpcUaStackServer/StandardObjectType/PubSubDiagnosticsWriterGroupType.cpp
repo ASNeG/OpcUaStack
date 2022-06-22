@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/PubSubDiagnosticsWriterGroupType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

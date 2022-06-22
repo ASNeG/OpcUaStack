@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/EventQueueOverflowEventType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

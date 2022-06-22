@@ -34,8 +34,8 @@ namespace OpcUaStackServer
         //
         void stateNumber_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& stateNumber_Variable(void);
-        bool get_StateNumber_Variable(OpcUaDataValue& dataValue);
-        bool set_StateNumber_Variable(const OpcUaDataValue& dataValue);
+        bool get_StateNumber_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_StateNumber_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
     
       private:
         ServerVariable::SPtr stateNumber_Variable_;

@@ -22,3 +22,8 @@ tst/data/opc.ua.roby_save.xml
 cmake-build-*
 .vagrant
 cmake-build*
+*.bak
+.cproject
+.project
+.settings/
+

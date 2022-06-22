@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/DialogConditionType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

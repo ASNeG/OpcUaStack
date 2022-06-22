@@ -22,8 +22,6 @@
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 #include "OpcUaStackCore/Application/ApplicationMethodContext.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 

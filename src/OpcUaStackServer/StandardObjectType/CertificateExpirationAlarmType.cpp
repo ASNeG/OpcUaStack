@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/CertificateExpirationAlarmType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardVariableType/SubscriptionDiagnosticsType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

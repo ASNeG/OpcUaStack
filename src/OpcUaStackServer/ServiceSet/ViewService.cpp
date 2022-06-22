@@ -16,6 +16,7 @@
           Upendar Reddy Sama (upendarreddysama3@gmail.com)
  */
 
+#include <bitset>
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/ServiceSet/ViewServiceTransaction.h"

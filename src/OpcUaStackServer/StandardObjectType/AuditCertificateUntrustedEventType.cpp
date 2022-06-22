@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/AuditCertificateUntrustedEventType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

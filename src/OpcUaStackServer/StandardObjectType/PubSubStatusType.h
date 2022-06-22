@@ -34,12 +34,12 @@ namespace OpcUaStackServer
         //
         void state_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& state_Variable(void);
-        bool get_State_Variable(OpcUaDataValue& dataValue);
-        bool set_State_Variable(const OpcUaDataValue& dataValue);
+        bool get_State_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_State_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
-        virtual void call_Disable_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_Disable_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
-        virtual void call_Enable_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_Enable_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
     
       private:
         ServerVariable::SPtr state_Variable_;

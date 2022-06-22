@@ -29,13 +29,13 @@ namespace OpcUaStackServer
        FileDirectoryType(const FileDirectoryType& value);
        virtual ~FileDirectoryType(void);
 
-        virtual void call_CreateDirectory_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_CreateDirectory_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
-        virtual void call_CreateFile_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_CreateFile_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
-        virtual void call_Delete_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_Delete_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
-        virtual void call_MoveOrCopy_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_MoveOrCopy_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
     
       private:
         ServerMethod::SPtr createDirectory_Method_;

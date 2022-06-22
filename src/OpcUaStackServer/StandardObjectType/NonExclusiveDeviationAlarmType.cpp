@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/NonExclusiveDeviationAlarmType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/HttpsCertificateType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

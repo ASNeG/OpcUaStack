@@ -34,28 +34,28 @@ namespace OpcUaStackServer
         //
         void configurationVersion_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& configurationVersion_Variable(void);
-        bool get_ConfigurationVersion_Variable(OpcUaDataValue& dataValue);
-        bool set_ConfigurationVersion_Variable(const OpcUaDataValue& dataValue);
+        bool get_ConfigurationVersion_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_ConfigurationVersion_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // Guid
         //
         void dataSetClassId_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& dataSetClassId_Variable(void);
-        bool get_DataSetClassId_Variable(OpcUaDataValue& dataValue);
-        bool set_DataSetClassId_Variable(const OpcUaDataValue& dataValue);
+        bool get_DataSetClassId_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_DataSetClassId_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // DataSetMetaDataType
         //
         void dataSetMetaData_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& dataSetMetaData_Variable(void);
-        bool get_DataSetMetaData_Variable(OpcUaDataValue& dataValue);
-        bool set_DataSetMetaData_Variable(const OpcUaDataValue& dataValue);
+        bool get_DataSetMetaData_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_DataSetMetaData_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
-        virtual void call_ExtensionFields_AddExtensionField_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_ExtensionFields_AddExtensionField_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
-        virtual void call_ExtensionFields_RemoveExtensionField_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_ExtensionFields_RemoveExtensionField_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
     
       private:
         ServerVariable::SPtr configurationVersion_Variable_;

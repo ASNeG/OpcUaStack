@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/UadpDataSetWriterMessageType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

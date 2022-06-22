@@ -34,32 +34,32 @@ namespace OpcUaStackServer
         //
         void percentDataBad_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& percentDataBad_Variable(void);
-        bool get_PercentDataBad_Variable(OpcUaDataValue& dataValue);
-        bool set_PercentDataBad_Variable(const OpcUaDataValue& dataValue);
+        bool get_PercentDataBad_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_PercentDataBad_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // Byte
         //
         void percentDataGood_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& percentDataGood_Variable(void);
-        bool get_PercentDataGood_Variable(OpcUaDataValue& dataValue);
-        bool set_PercentDataGood_Variable(const OpcUaDataValue& dataValue);
+        bool get_PercentDataGood_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_PercentDataGood_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // Boolean
         //
         void treatUncertainAsBad_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& treatUncertainAsBad_Variable(void);
-        bool get_TreatUncertainAsBad_Variable(OpcUaDataValue& dataValue);
-        bool set_TreatUncertainAsBad_Variable(const OpcUaDataValue& dataValue);
+        bool get_TreatUncertainAsBad_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_TreatUncertainAsBad_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // Boolean
         //
         void useSlopedExtrapolation_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& useSlopedExtrapolation_Variable(void);
-        bool get_UseSlopedExtrapolation_Variable(OpcUaDataValue& dataValue);
-        bool set_UseSlopedExtrapolation_Variable(const OpcUaDataValue& dataValue);
+        bool get_UseSlopedExtrapolation_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_UseSlopedExtrapolation_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
     
       private:
         ServerVariable::SPtr percentDataBad_Variable_;

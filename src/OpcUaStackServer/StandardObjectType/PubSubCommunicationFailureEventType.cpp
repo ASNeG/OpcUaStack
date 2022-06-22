@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/PubSubCommunicationFailureEventType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

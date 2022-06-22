@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackCore/StandardDataTypes/UserTokenPolicy.h"
+#include "OpcUaStackCore/Base/Log.h"
 
 namespace OpcUaStackCore
 {
@@ -169,12 +170,21 @@ namespace OpcUaStackCore
     
         rc &= policyId_.opcUaBinaryEncode(os);
         rc &= tokenType_.opcUaBinaryEncode(os);
-        rc &= issuedTokenType_.opcUaBinaryEncode(os);
-        rc &= issuerEndpointUrl_.opcUaBinaryEncode(os);
-        rc &= securityPolicyUri_.opcUaBinaryEncode(os);
+        rc &= binaryEncodeOptional(issuedTokenType_, os);
+        rc &= binaryEncodeOptional(issuerEndpointUrl_, os);
+        rc &= binaryEncodeOptional(securityPolicyUri_, os);
         return rc;
     }
     
+    bool
+    UserTokenPolicy::binaryEncodeOptional(OpcUaString str, std::ostream& os) const
+    {
+        if (str.value().empty()) {
+            return OpcUaNumber::opcUaBinaryEncode(os, (const OpcUaInt32)-1);
+        }
+        return str.opcUaBinaryEncode(os);
+    }
+
     bool
     UserTokenPolicy::opcUaBinaryDecode(std::istream& is)
     {

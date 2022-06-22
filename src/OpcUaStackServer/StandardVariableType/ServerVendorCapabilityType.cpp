@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardVariableType/ServerVendorCapabilityType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

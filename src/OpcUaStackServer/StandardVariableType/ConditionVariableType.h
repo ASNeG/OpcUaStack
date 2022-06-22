@@ -33,16 +33,16 @@ namespace OpcUaStackServer
         //
         void sourceTimestamp_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& sourceTimestamp_Variable(void);
-        bool get_SourceTimestamp_Variable(OpcUaDataValue& dataValue);
-        bool set_SourceTimestamp_Variable(const OpcUaDataValue& dataValue);
+        bool get_SourceTimestamp_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_SourceTimestamp_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // Variant
         //
         void variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& variable(void);
-        bool get_Variable(OpcUaDataValue& dataValue);
-        bool set_Variable(const OpcUaDataValue& dataValue);
+        bool get_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
     
       private:
         ServerVariable::SPtr sourceTimestamp_Variable_;

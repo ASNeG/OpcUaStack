@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/JsonDataSetWriterMessageType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

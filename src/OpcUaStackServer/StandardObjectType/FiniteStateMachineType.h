@@ -34,48 +34,48 @@ namespace OpcUaStackServer
         //
         void availableStates_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& availableStates_Variable(void);
-        bool get_AvailableStates_Variable(OpcUaDataValue& dataValue);
-        bool set_AvailableStates_Variable(const OpcUaDataValue& dataValue);
+        bool get_AvailableStates_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_AvailableStates_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // NodeId (Array)
         //
         void availableTransitions_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& availableTransitions_Variable(void);
-        bool get_AvailableTransitions_Variable(OpcUaDataValue& dataValue);
-        bool set_AvailableTransitions_Variable(const OpcUaDataValue& dataValue);
+        bool get_AvailableTransitions_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_AvailableTransitions_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // NodeId
         //
         void currentState_Id_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& currentState_Id_Variable(void);
-        bool get_CurrentState_Id_Variable(OpcUaDataValue& dataValue);
-        bool set_CurrentState_Id_Variable(const OpcUaDataValue& dataValue);
+        bool get_CurrentState_Id_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_CurrentState_Id_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // LocalizedText
         //
         void currentState_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& currentState_Variable(void);
-        bool get_CurrentState_Variable(OpcUaDataValue& dataValue);
-        bool set_CurrentState_Variable(const OpcUaDataValue& dataValue);
+        bool get_CurrentState_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_CurrentState_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // NodeId
         //
         void lastTransition_Id_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& lastTransition_Id_Variable(void);
-        bool get_LastTransition_Id_Variable(OpcUaDataValue& dataValue);
-        bool set_LastTransition_Id_Variable(const OpcUaDataValue& dataValue);
+        bool get_LastTransition_Id_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_LastTransition_Id_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // LocalizedText
         //
         void lastTransition_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& lastTransition_Variable(void);
-        bool get_LastTransition_Variable(OpcUaDataValue& dataValue);
-        bool set_LastTransition_Variable(const OpcUaDataValue& dataValue);
+        bool get_LastTransition_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_LastTransition_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
     
       private:
         ServerVariable::SPtr availableStates_Variable_;

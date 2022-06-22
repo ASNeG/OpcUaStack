@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/PubSubDiagnosticsReaderGroupType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

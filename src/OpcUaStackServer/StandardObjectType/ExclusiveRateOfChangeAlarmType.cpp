@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/ExclusiveRateOfChangeAlarmType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

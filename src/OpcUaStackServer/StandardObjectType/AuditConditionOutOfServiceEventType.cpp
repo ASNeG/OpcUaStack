@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/AuditConditionOutOfServiceEventType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/PubSubTransportLimitsExceedEventType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

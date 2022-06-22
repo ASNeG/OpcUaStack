@@ -34,48 +34,48 @@ namespace OpcUaStackServer
         //
         void configurationVersion_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& configurationVersion_Variable(void);
-        bool get_ConfigurationVersion_Variable(OpcUaDataValue& dataValue);
-        bool set_ConfigurationVersion_Variable(const OpcUaDataValue& dataValue);
+        bool get_ConfigurationVersion_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_ConfigurationVersion_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // Guid
         //
         void dataSetClassId_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& dataSetClassId_Variable(void);
-        bool get_DataSetClassId_Variable(OpcUaDataValue& dataValue);
-        bool set_DataSetClassId_Variable(const OpcUaDataValue& dataValue);
+        bool get_DataSetClassId_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_DataSetClassId_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // DataSetMetaDataType
         //
         void dataSetMetaData_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& dataSetMetaData_Variable(void);
-        bool get_DataSetMetaData_Variable(OpcUaDataValue& dataValue);
-        bool set_DataSetMetaData_Variable(const OpcUaDataValue& dataValue);
+        bool get_DataSetMetaData_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_DataSetMetaData_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // NodeId
         //
         void eventNotifier_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& eventNotifier_Variable(void);
-        bool get_EventNotifier_Variable(OpcUaDataValue& dataValue);
-        bool set_EventNotifier_Variable(const OpcUaDataValue& dataValue);
+        bool get_EventNotifier_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_EventNotifier_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // ContentFilter
         //
         void filter_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& filter_Variable(void);
-        bool get_Filter_Variable(OpcUaDataValue& dataValue);
-        bool set_Filter_Variable(const OpcUaDataValue& dataValue);
+        bool get_Filter_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Filter_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // SimpleAttributeOperand (Array)
         //
         void selectedFields_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& selectedFields_Variable(void);
-        bool get_SelectedFields_Variable(OpcUaDataValue& dataValue);
-        bool set_SelectedFields_Variable(const OpcUaDataValue& dataValue);
+        bool get_SelectedFields_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_SelectedFields_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         virtual void call_ExtensionFields_AddExtensionField_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 

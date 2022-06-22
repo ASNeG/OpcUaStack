@@ -71,7 +71,8 @@ namespace OpcUaStackCore
         OpcUaString issuedTokenType_; //!< The type of issued token.
         OpcUaString issuerEndpointUrl_; //!< The endpoint or any other information need to contruct an issued token URL.
         OpcUaString securityPolicyUri_; //!< The security policy to use when encrypting or signing the user token.
-    
+
+        bool binaryEncodeOptional(OpcUaStackCore::OpcUaString str, std::ostream& os) const;
     };
     
     class DLLEXPORT UserTokenPolicyArray

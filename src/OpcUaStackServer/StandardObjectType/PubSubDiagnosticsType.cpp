@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/PubSubDiagnosticsType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

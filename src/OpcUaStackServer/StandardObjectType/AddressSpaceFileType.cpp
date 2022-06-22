@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/AddressSpaceFileType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

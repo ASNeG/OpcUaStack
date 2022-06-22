@@ -269,10 +269,10 @@ namespace OpcUaStackServer
 		ss << prefix << "virtual ExtensionObjectBase::SPtr factory(void) override;" << std::endl;
 		ss << prefix << "virtual std::string namespaceName(void) override;" << std::endl;
 		ss << prefix << "virtual std::string typeName(void) override;" << std::endl;
-		ss << prefix << "virtual OpcUaNodeId typeId(void) override;" << std::endl;
-		ss << prefix << "virtual OpcUaNodeId binaryTypeId(void) override;" << std::endl;
-		ss << prefix << "virtual OpcUaNodeId xmlTypeId(void) override;" << std::endl;
-		ss << prefix << "virtual OpcUaNodeId jsonTypeId(void) override;" << std::endl;
+		ss << prefix << "virtual OpcUaStackCore::OpcUaNodeId typeId(void) override;" << std::endl;
+		ss << prefix << "virtual OpcUaStackCore::OpcUaNodeId binaryTypeId(void) override;" << std::endl;
+		ss << prefix << "virtual OpcUaStackCore::OpcUaNodeId xmlTypeId(void) override;" << std::endl;
+		ss << prefix << "virtual OpcUaStackCore::OpcUaNodeId jsonTypeId(void) override;" << std::endl;
 		ss << prefix << "virtual bool opcUaBinaryEncode(std::ostream& os) const override;" << std::endl;
 		ss << prefix << "virtual bool opcUaBinaryDecode(std::istream& is) override;" << std::endl;
 		ss << prefix << "virtual bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) override;" << std::endl;
@@ -477,6 +477,7 @@ namespace OpcUaStackServer
 		//
 		// namespace
 		//
+		ss << "using namespace OpcUaStackCore;" << std::endl;
 		ss << std::endl;
 		ss << "namespace " <<  nodeInfo_.namespaceName() << std::endl;
 		ss << "{" << std::endl;

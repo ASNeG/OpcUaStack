@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/ExtensionFieldsType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

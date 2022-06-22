@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/DiscrepancyAlarmType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

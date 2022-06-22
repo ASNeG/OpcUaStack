@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardVariableType/YArrayItemType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

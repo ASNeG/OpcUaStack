@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/FileDirectoryType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

@@ -33,24 +33,24 @@ namespace OpcUaStackServer
         //
         void bitMask_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& bitMask_Variable(void);
-        bool get_BitMask_Variable(OpcUaDataValue& dataValue);
-        bool set_BitMask_Variable(const OpcUaDataValue& dataValue);
+        bool get_BitMask_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_BitMask_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // LocalizedText (Array)
         //
         void optionSetValues_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& optionSetValues_Variable(void);
-        bool get_OptionSetValues_Variable(OpcUaDataValue& dataValue);
-        bool set_OptionSetValues_Variable(const OpcUaDataValue& dataValue);
+        bool get_OptionSetValues_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_OptionSetValues_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // Variant (Array)
         //
         void variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& variable(void);
-        bool get_Variable(OpcUaDataValue& dataValue);
-        bool set_Variable(const OpcUaDataValue& dataValue);
+        bool get_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
     
       private:
         ServerVariable::SPtr bitMask_Variable_;

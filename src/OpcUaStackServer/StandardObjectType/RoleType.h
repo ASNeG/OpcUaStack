@@ -34,52 +34,52 @@ namespace OpcUaStackServer
         //
         void applicationsExclude_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& applicationsExclude_Variable(void);
-        bool get_ApplicationsExclude_Variable(OpcUaDataValue& dataValue);
-        bool set_ApplicationsExclude_Variable(const OpcUaDataValue& dataValue);
+        bool get_ApplicationsExclude_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_ApplicationsExclude_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // String (Array)
         //
         void applications_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& applications_Variable(void);
-        bool get_Applications_Variable(OpcUaDataValue& dataValue);
-        bool set_Applications_Variable(const OpcUaDataValue& dataValue);
+        bool get_Applications_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Applications_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // Boolean
         //
         void endpointsExclude_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& endpointsExclude_Variable(void);
-        bool get_EndpointsExclude_Variable(OpcUaDataValue& dataValue);
-        bool set_EndpointsExclude_Variable(const OpcUaDataValue& dataValue);
+        bool get_EndpointsExclude_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_EndpointsExclude_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // EndpointType (Array)
         //
         void endpoints_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& endpoints_Variable(void);
-        bool get_Endpoints_Variable(OpcUaDataValue& dataValue);
-        bool set_Endpoints_Variable(const OpcUaDataValue& dataValue);
+        bool get_Endpoints_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Endpoints_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // IdentityMappingRuleType (Array)
         //
         void identities_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& identities_Variable(void);
-        bool get_Identities_Variable(OpcUaDataValue& dataValue);
-        bool set_Identities_Variable(const OpcUaDataValue& dataValue);
+        bool get_Identities_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Identities_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
-        virtual void call_AddApplication_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_AddApplication_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
-        virtual void call_AddEndpoint_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_AddEndpoint_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
-        virtual void call_AddIdentity_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_AddIdentity_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
-        virtual void call_RemoveApplication_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_RemoveApplication_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
-        virtual void call_RemoveEndpoint_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_RemoveEndpoint_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
-        virtual void call_RemoveIdentity_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_RemoveIdentity_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
     
       private:
         ServerVariable::SPtr applicationsExclude_Variable_;

@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/NamespaceMetadataType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

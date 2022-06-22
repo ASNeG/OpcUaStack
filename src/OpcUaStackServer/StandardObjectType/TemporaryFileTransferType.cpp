@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/TemporaryFileTransferType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

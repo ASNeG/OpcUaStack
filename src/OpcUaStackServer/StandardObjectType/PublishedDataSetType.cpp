@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/PublishedDataSetType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/TripAlarmType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

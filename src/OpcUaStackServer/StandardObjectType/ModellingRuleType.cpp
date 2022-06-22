@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/ModellingRuleType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

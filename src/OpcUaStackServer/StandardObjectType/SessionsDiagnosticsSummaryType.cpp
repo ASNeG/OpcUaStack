@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/SessionsDiagnosticsSummaryType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

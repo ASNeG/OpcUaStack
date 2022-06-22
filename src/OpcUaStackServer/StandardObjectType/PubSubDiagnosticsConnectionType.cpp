@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/PubSubDiagnosticsConnectionType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

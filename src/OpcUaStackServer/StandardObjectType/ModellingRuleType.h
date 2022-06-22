@@ -34,8 +34,8 @@ namespace OpcUaStackServer
         //
         void namingRule_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& namingRule_Variable(void);
-        bool get_NamingRule_Variable(OpcUaDataValue& dataValue);
-        bool set_NamingRule_Variable(const OpcUaDataValue& dataValue);
+        bool get_NamingRule_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_NamingRule_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
     
       private:
         ServerVariable::SPtr namingRule_Variable_;

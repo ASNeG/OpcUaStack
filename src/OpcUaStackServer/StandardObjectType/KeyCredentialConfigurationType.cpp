@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/KeyCredentialConfigurationType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

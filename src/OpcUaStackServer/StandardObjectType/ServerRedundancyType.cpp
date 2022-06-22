@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/ServerRedundancyType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

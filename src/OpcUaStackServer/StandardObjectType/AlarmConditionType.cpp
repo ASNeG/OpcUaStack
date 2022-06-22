@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/AlarmConditionType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

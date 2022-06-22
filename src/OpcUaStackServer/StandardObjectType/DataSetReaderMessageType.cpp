@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/DataSetReaderMessageType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

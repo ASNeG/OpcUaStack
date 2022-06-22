@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/FiniteStateMachineType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

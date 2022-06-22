@@ -34,24 +34,24 @@ namespace OpcUaStackServer
         //
         void issuerEndpointUrl_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& issuerEndpointUrl_Variable(void);
-        bool get_IssuerEndpointUrl_Variable(OpcUaDataValue& dataValue);
-        bool set_IssuerEndpointUrl_Variable(const OpcUaDataValue& dataValue);
+        bool get_IssuerEndpointUrl_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_IssuerEndpointUrl_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // ByteString
         //
         void serviceCertificate_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& serviceCertificate_Variable(void);
-        bool get_ServiceCertificate_Variable(OpcUaDataValue& dataValue);
-        bool set_ServiceCertificate_Variable(const OpcUaDataValue& dataValue);
+        bool get_ServiceCertificate_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_ServiceCertificate_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // String
         //
         void serviceUri_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& serviceUri_Variable(void);
-        bool get_ServiceUri_Variable(OpcUaDataValue& dataValue);
-        bool set_ServiceUri_Variable(const OpcUaDataValue& dataValue);
+        bool get_ServiceUri_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_ServiceUri_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
     
       private:
         ServerVariable::SPtr issuerEndpointUrl_Variable_;

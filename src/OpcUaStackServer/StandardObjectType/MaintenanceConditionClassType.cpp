@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/MaintenanceConditionClassType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

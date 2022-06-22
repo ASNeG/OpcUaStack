@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardVariableType/SelectionListType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

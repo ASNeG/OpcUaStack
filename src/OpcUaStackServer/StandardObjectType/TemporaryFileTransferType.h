@@ -34,14 +34,14 @@ namespace OpcUaStackServer
         //
         void clientProcessingTimeout_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& clientProcessingTimeout_Variable(void);
-        bool get_ClientProcessingTimeout_Variable(OpcUaDataValue& dataValue);
-        bool set_ClientProcessingTimeout_Variable(const OpcUaDataValue& dataValue);
+        bool get_ClientProcessingTimeout_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_ClientProcessingTimeout_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
-        virtual void call_CloseAndCommit_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_CloseAndCommit_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
-        virtual void call_GenerateFileForRead_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_GenerateFileForRead_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
-        virtual void call_GenerateFileForWrite_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_GenerateFileForWrite_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
     
       private:
         ServerVariable::SPtr clientProcessingTimeout_Variable_;

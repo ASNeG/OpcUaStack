@@ -34,16 +34,16 @@ namespace OpcUaStackServer
         //
         void dataSetMessageContentMask_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& dataSetMessageContentMask_Variable(void);
-        bool get_DataSetMessageContentMask_Variable(OpcUaDataValue& dataValue);
-        bool set_DataSetMessageContentMask_Variable(const OpcUaDataValue& dataValue);
+        bool get_DataSetMessageContentMask_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_DataSetMessageContentMask_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // JsonNetworkMessageContentMask
         //
         void networkMessageContentMask_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& networkMessageContentMask_Variable(void);
-        bool get_NetworkMessageContentMask_Variable(OpcUaDataValue& dataValue);
-        bool set_NetworkMessageContentMask_Variable(const OpcUaDataValue& dataValue);
+        bool get_NetworkMessageContentMask_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_NetworkMessageContentMask_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
     
       private:
         ServerVariable::SPtr dataSetMessageContentMask_Variable_;

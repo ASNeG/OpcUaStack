@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/TransitionType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

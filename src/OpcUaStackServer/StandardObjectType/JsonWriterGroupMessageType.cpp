@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/JsonWriterGroupMessageType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

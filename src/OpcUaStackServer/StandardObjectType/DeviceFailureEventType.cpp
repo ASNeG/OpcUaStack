@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/DeviceFailureEventType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

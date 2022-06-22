@@ -34,8 +34,8 @@ namespace OpcUaStackServer
         //
         void discoveryAddress_NetworkInterface_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& discoveryAddress_NetworkInterface_Variable(void);
-        bool get_DiscoveryAddress_NetworkInterface_Variable(OpcUaDataValue& dataValue);
-        bool set_DiscoveryAddress_NetworkInterface_Variable(const OpcUaDataValue& dataValue);
+        bool get_DiscoveryAddress_NetworkInterface_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_DiscoveryAddress_NetworkInterface_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
     
       private:
         ServerVariable::SPtr discoveryAddress_NetworkInterface_Variable_;

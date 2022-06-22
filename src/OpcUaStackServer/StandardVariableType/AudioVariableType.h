@@ -33,32 +33,32 @@ namespace OpcUaStackServer
         //
         void agencyId_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& agencyId_Variable(void);
-        bool get_AgencyId_Variable(OpcUaDataValue& dataValue);
-        bool set_AgencyId_Variable(const OpcUaDataValue& dataValue);
+        bool get_AgencyId_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_AgencyId_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // String
         //
         void listId_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& listId_Variable(void);
-        bool get_ListId_Variable(OpcUaDataValue& dataValue);
-        bool set_ListId_Variable(const OpcUaDataValue& dataValue);
+        bool get_ListId_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_ListId_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // AudioDataType (Array)
         //
         void variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& variable(void);
-        bool get_Variable(OpcUaDataValue& dataValue);
-        bool set_Variable(const OpcUaDataValue& dataValue);
+        bool get_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // String
         //
         void versionId_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& versionId_Variable(void);
-        bool get_VersionId_Variable(OpcUaDataValue& dataValue);
-        bool set_VersionId_Variable(const OpcUaDataValue& dataValue);
+        bool get_VersionId_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_VersionId_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
     
       private:
         ServerVariable::SPtr agencyId_Variable_;

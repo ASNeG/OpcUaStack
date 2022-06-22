@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/ReaderGroupMessageType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/BrokerDataSetWriterTransportType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/TrustListType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

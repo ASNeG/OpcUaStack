@@ -33,56 +33,56 @@ namespace OpcUaStackServer
         //
         void buildDate_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& buildDate_Variable(void);
-        bool get_BuildDate_Variable(OpcUaDataValue& dataValue);
-        bool set_BuildDate_Variable(const OpcUaDataValue& dataValue);
+        bool get_BuildDate_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_BuildDate_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // String
         //
         void buildNumber_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& buildNumber_Variable(void);
-        bool get_BuildNumber_Variable(OpcUaDataValue& dataValue);
-        bool set_BuildNumber_Variable(const OpcUaDataValue& dataValue);
+        bool get_BuildNumber_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_BuildNumber_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // String
         //
         void manufacturerName_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& manufacturerName_Variable(void);
-        bool get_ManufacturerName_Variable(OpcUaDataValue& dataValue);
-        bool set_ManufacturerName_Variable(const OpcUaDataValue& dataValue);
+        bool get_ManufacturerName_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_ManufacturerName_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // String
         //
         void productName_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& productName_Variable(void);
-        bool get_ProductName_Variable(OpcUaDataValue& dataValue);
-        bool set_ProductName_Variable(const OpcUaDataValue& dataValue);
+        bool get_ProductName_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_ProductName_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // String
         //
         void productUri_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& productUri_Variable(void);
-        bool get_ProductUri_Variable(OpcUaDataValue& dataValue);
-        bool set_ProductUri_Variable(const OpcUaDataValue& dataValue);
+        bool get_ProductUri_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_ProductUri_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // String
         //
         void softwareVersion_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& softwareVersion_Variable(void);
-        bool get_SoftwareVersion_Variable(OpcUaDataValue& dataValue);
-        bool set_SoftwareVersion_Variable(const OpcUaDataValue& dataValue);
+        bool get_SoftwareVersion_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_SoftwareVersion_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // BuildInfo (Array)
         //
         void variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& variable(void);
-        bool get_Variable(OpcUaDataValue& dataValue);
-        bool set_Variable(const OpcUaDataValue& dataValue);
+        bool get_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
     
       private:
         ServerVariable::SPtr buildDate_Variable_;

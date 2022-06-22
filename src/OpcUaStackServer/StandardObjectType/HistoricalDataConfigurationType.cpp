@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/HistoricalDataConfigurationType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

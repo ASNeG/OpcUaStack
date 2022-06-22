@@ -18,6 +18,8 @@
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackServer/StandardVariableType/VariableBase.h"
 
+using namespace OpcUaStackCore;
+
 namespace OpcUaStackServer
 {
 

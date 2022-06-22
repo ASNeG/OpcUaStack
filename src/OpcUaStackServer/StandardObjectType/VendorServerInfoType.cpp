@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/VendorServerInfoType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

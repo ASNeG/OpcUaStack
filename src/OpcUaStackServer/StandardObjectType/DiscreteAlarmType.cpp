@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/DiscreteAlarmType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

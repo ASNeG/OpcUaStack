@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardVariableType/ServerStatusType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

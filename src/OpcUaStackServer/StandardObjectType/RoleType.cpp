@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/RoleType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

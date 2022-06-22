@@ -29,9 +29,9 @@ namespace OpcUaStackServer
        SecurityGroupFolderType(const SecurityGroupFolderType& value);
        virtual ~SecurityGroupFolderType(void);
 
-        virtual void call_AddSecurityGroup_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_AddSecurityGroup_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
-        virtual void call_RemoveSecurityGroup_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_RemoveSecurityGroup_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
     
       private:
         ServerMethod::SPtr addSecurityGroup_Method_;

@@ -29,9 +29,9 @@ namespace OpcUaStackServer
        RoleSetType(const RoleSetType& value);
        virtual ~RoleSetType(void);
 
-        virtual void call_AddRole_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_AddRole_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
-        virtual void call_RemoveRole_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_RemoveRole_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
     
       private:
         ServerMethod::SPtr addRole_Method_;

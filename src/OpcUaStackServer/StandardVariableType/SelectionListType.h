@@ -33,32 +33,32 @@ namespace OpcUaStackServer
         //
         void restrictToList_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& restrictToList_Variable(void);
-        bool get_RestrictToList_Variable(OpcUaDataValue& dataValue);
-        bool set_RestrictToList_Variable(const OpcUaDataValue& dataValue);
+        bool get_RestrictToList_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_RestrictToList_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // LocalizedText (Array)
         //
         void selectionDescriptions_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& selectionDescriptions_Variable(void);
-        bool get_SelectionDescriptions_Variable(OpcUaDataValue& dataValue);
-        bool set_SelectionDescriptions_Variable(const OpcUaDataValue& dataValue);
+        bool get_SelectionDescriptions_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_SelectionDescriptions_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // Variant (Array)
         //
         void selections_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& selections_Variable(void);
-        bool get_Selections_Variable(OpcUaDataValue& dataValue);
-        bool set_Selections_Variable(const OpcUaDataValue& dataValue);
+        bool get_Selections_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Selections_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // Variant
         //
         void variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& variable(void);
-        bool get_Variable(OpcUaDataValue& dataValue);
-        bool set_Variable(const OpcUaDataValue& dataValue);
+        bool get_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
     
       private:
         ServerVariable::SPtr restrictToList_Variable_;

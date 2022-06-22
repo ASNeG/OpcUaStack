@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/AuditChannelEventType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/DataTypeSystemType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

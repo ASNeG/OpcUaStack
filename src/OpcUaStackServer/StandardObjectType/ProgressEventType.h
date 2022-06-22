@@ -34,88 +34,88 @@ namespace OpcUaStackServer
         //
         void context_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& context_Variable(void);
-        bool get_Context_Variable(OpcUaDataValue& dataValue);
-        bool set_Context_Variable(const OpcUaDataValue& dataValue);
+        bool get_Context_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Context_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // ByteString
         //
         void eventId_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& eventId_Variable(void);
-        bool get_EventId_Variable(OpcUaDataValue& dataValue);
-        bool set_EventId_Variable(const OpcUaDataValue& dataValue);
+        bool get_EventId_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_EventId_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // NodeId
         //
         void eventType_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& eventType_Variable(void);
-        bool get_EventType_Variable(OpcUaDataValue& dataValue);
-        bool set_EventType_Variable(const OpcUaDataValue& dataValue);
+        bool get_EventType_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_EventType_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // TimeZoneDataType
         //
         void localTime_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& localTime_Variable(void);
-        bool get_LocalTime_Variable(OpcUaDataValue& dataValue);
-        bool set_LocalTime_Variable(const OpcUaDataValue& dataValue);
+        bool get_LocalTime_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_LocalTime_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // LocalizedText
         //
         void message_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& message_Variable(void);
-        bool get_Message_Variable(OpcUaDataValue& dataValue);
-        bool set_Message_Variable(const OpcUaDataValue& dataValue);
+        bool get_Message_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Message_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // UInt16
         //
         void progress_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& progress_Variable(void);
-        bool get_Progress_Variable(OpcUaDataValue& dataValue);
-        bool set_Progress_Variable(const OpcUaDataValue& dataValue);
+        bool get_Progress_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Progress_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // UtcTime
         //
         void receiveTime_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& receiveTime_Variable(void);
-        bool get_ReceiveTime_Variable(OpcUaDataValue& dataValue);
-        bool set_ReceiveTime_Variable(const OpcUaDataValue& dataValue);
+        bool get_ReceiveTime_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_ReceiveTime_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // UInt16
         //
         void severity_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& severity_Variable(void);
-        bool get_Severity_Variable(OpcUaDataValue& dataValue);
-        bool set_Severity_Variable(const OpcUaDataValue& dataValue);
+        bool get_Severity_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Severity_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // String
         //
         void sourceName_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& sourceName_Variable(void);
-        bool get_SourceName_Variable(OpcUaDataValue& dataValue);
-        bool set_SourceName_Variable(const OpcUaDataValue& dataValue);
+        bool get_SourceName_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_SourceName_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // NodeId
         //
         void sourceNode_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& sourceNode_Variable(void);
-        bool get_SourceNode_Variable(OpcUaDataValue& dataValue);
-        bool set_SourceNode_Variable(const OpcUaDataValue& dataValue);
+        bool get_SourceNode_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_SourceNode_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // UtcTime
         //
         void time_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& time_Variable(void);
-        bool get_Time_Variable(OpcUaDataValue& dataValue);
-        bool set_Time_Variable(const OpcUaDataValue& dataValue);
+        bool get_Time_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Time_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
     
       private:
         ServerVariable::SPtr context_Variable_;

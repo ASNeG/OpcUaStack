@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/InitialStateType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

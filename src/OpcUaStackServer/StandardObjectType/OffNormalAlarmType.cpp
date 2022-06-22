@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/OffNormalAlarmType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

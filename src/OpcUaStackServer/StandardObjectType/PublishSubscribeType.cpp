@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/PublishSubscribeType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

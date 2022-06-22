@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/ConnectionTransportType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

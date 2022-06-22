@@ -29,9 +29,9 @@ namespace OpcUaStackServer
        ExtensionFieldsType(const ExtensionFieldsType& value);
        virtual ~ExtensionFieldsType(void);
 
-        virtual void call_AddExtensionField_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_AddExtensionField_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
-        virtual void call_RemoveExtensionField_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_RemoveExtensionField_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
     
       private:
         ServerMethod::SPtr addExtensionField_Method_;

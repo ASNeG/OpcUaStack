@@ -33,48 +33,48 @@ namespace OpcUaStackServer
         //
         void effectiveTransitionTime_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& effectiveTransitionTime_Variable(void);
-        bool get_EffectiveTransitionTime_Variable(OpcUaDataValue& dataValue);
-        bool set_EffectiveTransitionTime_Variable(const OpcUaDataValue& dataValue);
+        bool get_EffectiveTransitionTime_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_EffectiveTransitionTime_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // NodeId
         //
         void id_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& id_Variable(void);
-        bool get_Id_Variable(OpcUaDataValue& dataValue);
-        bool set_Id_Variable(const OpcUaDataValue& dataValue);
+        bool get_Id_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Id_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // QualifiedName
         //
         void name_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& name_Variable(void);
-        bool get_Name_Variable(OpcUaDataValue& dataValue);
-        bool set_Name_Variable(const OpcUaDataValue& dataValue);
+        bool get_Name_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Name_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // UInt32
         //
         void number_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& number_Variable(void);
-        bool get_Number_Variable(OpcUaDataValue& dataValue);
-        bool set_Number_Variable(const OpcUaDataValue& dataValue);
+        bool get_Number_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Number_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // UtcTime
         //
         void transitionTime_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& transitionTime_Variable(void);
-        bool get_TransitionTime_Variable(OpcUaDataValue& dataValue);
-        bool set_TransitionTime_Variable(const OpcUaDataValue& dataValue);
+        bool get_TransitionTime_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_TransitionTime_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // LocalizedText (Array)
         //
         void variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& variable(void);
-        bool get_Variable(OpcUaDataValue& dataValue);
-        bool set_Variable(const OpcUaDataValue& dataValue);
+        bool get_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
     
       private:
         ServerVariable::SPtr effectiveTransitionTime_Variable_;

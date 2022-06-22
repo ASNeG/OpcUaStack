@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/AuditCertificateDataMismatchEventType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

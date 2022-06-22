@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/AuditConditionRespondEventType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

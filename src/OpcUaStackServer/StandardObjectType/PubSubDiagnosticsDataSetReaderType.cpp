@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/PubSubDiagnosticsDataSetReaderType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

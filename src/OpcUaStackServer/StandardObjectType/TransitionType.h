@@ -34,8 +34,8 @@ namespace OpcUaStackServer
         //
         void transitionNumber_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& transitionNumber_Variable(void);
-        bool get_TransitionNumber_Variable(OpcUaDataValue& dataValue);
-        bool set_TransitionNumber_Variable(const OpcUaDataValue& dataValue);
+        bool get_TransitionNumber_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_TransitionNumber_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
     
       private:
         ServerVariable::SPtr transitionNumber_Variable_;

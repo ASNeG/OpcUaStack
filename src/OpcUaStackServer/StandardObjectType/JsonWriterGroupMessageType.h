@@ -34,8 +34,8 @@ namespace OpcUaStackServer
         //
         void networkMessageContentMask_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& networkMessageContentMask_Variable(void);
-        bool get_NetworkMessageContentMask_Variable(OpcUaDataValue& dataValue);
-        bool set_NetworkMessageContentMask_Variable(const OpcUaDataValue& dataValue);
+        bool get_NetworkMessageContentMask_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_NetworkMessageContentMask_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
     
       private:
         ServerVariable::SPtr networkMessageContentMask_Variable_;

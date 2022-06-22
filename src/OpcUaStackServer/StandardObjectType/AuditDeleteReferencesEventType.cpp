@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/AuditDeleteReferencesEventType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

@@ -34,48 +34,48 @@ namespace OpcUaStackServer
         //
         void clientAddress_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& clientAddress_Variable(void);
-        bool get_ClientAddress_Variable(OpcUaDataValue& dataValue);
-        bool set_ClientAddress_Variable(const OpcUaDataValue& dataValue);
+        bool get_ClientAddress_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_ClientAddress_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // String
         //
         void endpointUrl_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& endpointUrl_Variable(void);
-        bool get_EndpointUrl_Variable(OpcUaDataValue& dataValue);
-        bool set_EndpointUrl_Variable(const OpcUaDataValue& dataValue);
+        bool get_EndpointUrl_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_EndpointUrl_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // UInt32
         //
         void sessionId_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& sessionId_Variable(void);
-        bool get_SessionId_Variable(OpcUaDataValue& dataValue);
-        bool set_SessionId_Variable(const OpcUaDataValue& dataValue);
+        bool get_SessionId_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_SessionId_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // SessionState
         //
         void sessionState_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& sessionState_Variable(void);
-        bool get_SessionState_Variable(OpcUaDataValue& dataValue);
-        bool set_SessionState_Variable(const OpcUaDataValue& dataValue);
+        bool get_SessionState_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_SessionState_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // UInt32
         //
         void sessionTimeout_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& sessionTimeout_Variable(void);
-        bool get_SessionTimeout_Variable(OpcUaDataValue& dataValue);
-        bool set_SessionTimeout_Variable(const OpcUaDataValue& dataValue);
+        bool get_SessionTimeout_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_SessionTimeout_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // DateTime
         //
         void startTime_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& startTime_Variable(void);
-        bool get_StartTime_Variable(OpcUaDataValue& dataValue);
-        bool set_StartTime_Variable(const OpcUaDataValue& dataValue);
+        bool get_StartTime_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_StartTime_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
     
       private:
         ServerVariable::SPtr clientAddress_Variable_;

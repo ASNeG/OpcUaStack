@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/PubSubStatusEventType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

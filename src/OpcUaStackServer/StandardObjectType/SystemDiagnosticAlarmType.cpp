@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/SystemDiagnosticAlarmType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

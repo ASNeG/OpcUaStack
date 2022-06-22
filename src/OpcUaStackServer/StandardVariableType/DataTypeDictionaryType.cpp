@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardVariableType/DataTypeDictionaryType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

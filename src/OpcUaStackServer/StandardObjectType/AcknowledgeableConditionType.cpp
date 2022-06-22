@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/AcknowledgeableConditionType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

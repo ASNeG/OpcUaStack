@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/NonExclusiveLevelAlarmType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

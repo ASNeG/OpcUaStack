@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/NetworkAddressType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

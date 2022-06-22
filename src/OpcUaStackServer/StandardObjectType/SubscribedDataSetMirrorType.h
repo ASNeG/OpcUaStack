@@ -34,16 +34,16 @@ namespace OpcUaStackServer
         //
         void dataSetMetaData_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& dataSetMetaData_Variable(void);
-        bool get_DataSetMetaData_Variable(OpcUaDataValue& dataValue);
-        bool set_DataSetMetaData_Variable(const OpcUaDataValue& dataValue);
+        bool get_DataSetMetaData_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_DataSetMetaData_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // Duration
         //
         void messageReceiveTimeout_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& messageReceiveTimeout_Variable(void);
-        bool get_MessageReceiveTimeout_Variable(OpcUaDataValue& dataValue);
-        bool set_MessageReceiveTimeout_Variable(const OpcUaDataValue& dataValue);
+        bool get_MessageReceiveTimeout_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_MessageReceiveTimeout_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
     
       private:
         ServerVariable::SPtr dataSetMetaData_Variable_;

@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/PubSubKeyServiceType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
