@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2022 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -21,6 +21,7 @@
 #include <boost/property_tree/ptree.hpp>
 #include "OpcUaStackCore/StandardDataTypes/EnumDefinitionExpand.h"
 #include "OpcUaStackCore/StandardDataTypes/StructureDefinitionExpand.h"
+#include "OpcUaStackServer/NodeSet/NodeSetAlias.h"
 
 namespace OpcUaStackServer
 {
@@ -31,7 +32,7 @@ namespace OpcUaStackServer
 	class DLLEXPORT NodeSetDefinitionParser
 	{
 	  public:
-		NodeSetDefinitionParser(void);
+		NodeSetDefinitionParser(NodeSetAlias* nodeSetAlias = nullptr);
 		~NodeSetDefinitionParser(void);
 
 		/**
@@ -95,6 +96,8 @@ namespace OpcUaStackServer
 		);
 
 	  private:
+		NodeSetAlias* nodeSetAlias_ = nullptr;
+
 		bool decodeStructureDefinition(
 			boost::property_tree::ptree& ptreeValue,
 			OpcUaStackCore::StructureDefinitionExpand::SPtr& structureDefinition

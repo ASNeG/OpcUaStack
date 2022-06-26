@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2022 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -96,11 +96,13 @@ namespace OpcUaStackServer
 			// added variable name
 			std::string variableName = structureField->name().toStdString();
 			variableName = boost::to_lower_copy(variableName.substr(0,1)) + variableName.substr(1) + "_";
+			std::replace(variableName.begin(), variableName.end(), ' ', '_');
 			dataTypeField->variableName(variableName);
 
 			// added parameter name
 			std::string parameterName = structureField->name().toStdString();
 			parameterName = boost::to_lower_copy(parameterName.substr(0,1)) + parameterName.substr(1);
+			std::replace(parameterName.begin(), parameterName.end(), ' ', '_');
 			dataTypeField->parameterName(parameterName);
 
 			// added array flag

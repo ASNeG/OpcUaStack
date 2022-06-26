@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2022 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -41,8 +41,13 @@ namespace OpcUaDataTypeGenerator
 		std::vector<std::string> dataTypeNameVec_;
 		OpcUaStackServer::InformationModel::SPtr informationModel_;
 		OpcUaStackCore::OpcUaNodeId dataTypeNodeId_;
+		std::string className_ = "";
+		std::string parentClassName_ = "";
 
-		bool findNodeId(const std::string& eventTypeName, const OpcUaStackCore::OpcUaNodeId& nodeId);
+		bool findNodeId(
+			const std::string& DataTypeName,
+			const OpcUaStackCore::OpcUaNodeId& nodeId
+		);
 		int32_t loadInformationModel(void);
 		int32_t generateDataTypeSource(void);
 		int32_t buildAllSubTypes(void);

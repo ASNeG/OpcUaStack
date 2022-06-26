@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2022 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -59,7 +59,8 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
-	NodeSetDefinitionParser::NodeSetDefinitionParser(void)
+	NodeSetDefinitionParser::NodeSetDefinitionParser(NodeSetAlias* nodeSetAlias)
+	: nodeSetAlias_(nodeSetAlias)
 	{
 	}
 
@@ -284,11 +285,18 @@ namespace OpcUaStackServer
 		if (!dataType) {
 			dataType = "i=24";
 		}
-		if (!structureField->dataType().fromString(*dataType)) {
-			Log(Error, "invalid attribute in structure field")
-				.parameter("Attribute", "DataType")
-				.parameter("Value", *dataType);
-			return false;
+
+		bool alias = false;
+		if (nodeSetAlias_ != nullptr) {
+			alias = nodeSetAlias_->map(*dataType, structureField->dataType());
+		}
+		if (alias == false) {
+			if (!structureField->dataType().fromString(*dataType)) {
+				Log(Error, "invalid attribute in structure field")
+					.parameter("Attribute", "DataType")
+					.parameter("Value", *dataType);
+				return false;
+			}
 		}
 
 		// decode value rank attribute

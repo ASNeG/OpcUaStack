@@ -58,6 +58,8 @@ namespace OpcUaStackServer
 		if (!nodeInfo_.init(dataType, informationModel_)) {
 			return false;
 		}
+		if (!className_.empty()) nodeInfo_.className() = className_;
+		if (!parentClassName_.empty()) nodeInfo_.parentClassName() = parentClassName_;
 		//nodeInfo_.log();
 
 		// generate header and source content
@@ -70,6 +72,18 @@ namespace OpcUaStackServer
 	DataTypeGenerator::informationModel(InformationModel::SPtr& informationModel)
 	{
 		informationModel_ = informationModel;
+	}
+
+	void
+	DataTypeGenerator::className(const std::string& className)
+	{
+		className_ = className;
+	}
+
+	void
+	DataTypeGenerator::parentClassName(const std::string& parentClassName)
+	{
+		parentClassName_ = parentClassName;
 	}
 
 	bool
@@ -223,8 +237,8 @@ namespace OpcUaStackServer
 			ss << prefix << ": public " << nodeInfo_.parentClassName() << std::endl;
 		}
 		else {
-			ss << prefix << ": public Object" << std::endl;
-			ss << prefix << ", public ExtensionObjectBase" << std::endl;
+			ss << prefix << ": public OpcUaStackCore::Object" << std::endl;
+			ss << prefix << ", public OpcUaStackCore::ExtensionObjectBase" << std::endl;
 		}
 
 
@@ -275,12 +289,12 @@ namespace OpcUaStackServer
 		ss << prefix << "virtual OpcUaStackCore::OpcUaNodeId jsonTypeId(void) override;" << std::endl;
 		ss << prefix << "virtual bool opcUaBinaryEncode(std::ostream& os) const override;" << std::endl;
 		ss << prefix << "virtual bool opcUaBinaryDecode(std::istream& is) override;" << std::endl;
-		ss << prefix << "virtual bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) override;" << std::endl;
-		ss << prefix << "virtual bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) override;" << std::endl;
-		ss << prefix << "virtual bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) override;" << std::endl;
-		ss << prefix << "virtual bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) override;" << std::endl;
-		ss << prefix << "virtual void copyTo(ExtensionObjectBase& extensionObjectBase) override;" << std::endl;
-		ss << prefix << "virtual bool equal(ExtensionObjectBase& extensionObjectBase) const override;" << std::endl;
+		ss << prefix << "virtual bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, OpcUaStackCore::Xmlns& xmlns) override;" << std::endl;
+		ss << prefix << "virtual bool xmlEncode(boost::property_tree::ptree& pt, OpcUaStackCore::Xmlns& xmlns) override;" << std::endl;
+		ss << prefix << "virtual bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, OpcUaStackCore::Xmlns& xmlns) override;" << std::endl;
+		ss << prefix << "virtual bool xmlDecode(boost::property_tree::ptree& pt, OpcUaStackCore::Xmlns& xmlns) override;" << std::endl;
+		ss << prefix << "virtual void copyTo(OpcUaStackCore::ExtensionObjectBase& extensionObjectBase) override;" << std::endl;
+		ss << prefix << "virtual bool equal(OpcUaStackCore::ExtensionObjectBase& extensionObjectBase) const override;" << std::endl;
 		ss << prefix << "virtual void out(std::ostream& os) override;" << std::endl;
 		ss << prefix << "//- ExtensionObjectBase -----------------------------------------------" << std::endl;
 
@@ -331,7 +345,7 @@ namespace OpcUaStackServer
 		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
 			DataTypeField::SPtr dataTypeField = *it;
 
-			ss << prefix << dataTypeField->variableType() << "& " << dataTypeField->parameterName() << "(void);" << std::endl;
+			ss << prefix << "OpcUaStackCore::"  << dataTypeField->variableType() << "& " << dataTypeField->parameterName() << "(void);" << std::endl;
 		}
 
 		headerContent_ += ss.str();
@@ -367,7 +381,7 @@ namespace OpcUaStackServer
 		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
 			DataTypeField::SPtr dataTypeField = *it;
 
-			ss << prefix << dataTypeField->variableType() << " " << dataTypeField->variableName() << ";";
+			ss << prefix << "OpcUaStackCore::" << dataTypeField->variableType() << " " << dataTypeField->variableName() << ";";
 			if (dataTypeField->description() != "") {
 				ss << " //!< " << dataTypeField->description();
 			}
@@ -385,8 +399,8 @@ namespace OpcUaStackServer
 
 		ss << prefix << std::endl;
 		ss << prefix << "class DLLEXPORT " << nodeInfo_.className() << "Array" << std::endl;
-		ss << prefix << ": public OpcUaArray<" << nodeInfo_.className() << "::SPtr, SPtrTypeCoder<" << nodeInfo_.className() << "> >" << std::endl;
-		ss << prefix << ", public Object" << std::endl;
+		ss << prefix << ": public OpcUaStackCore::OpcUaArray<" << nodeInfo_.className() << "::SPtr, OpcUaStackCore::SPtrTypeCoder<" << nodeInfo_.className() << "> >" << std::endl;
+		ss << prefix << ", public OpcUaStackCore::Object" << std::endl;
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "  public:" << std::endl;
 		ss << prefix << "	   typedef boost::shared_ptr<" << nodeInfo_.className() << "Array> SPtr;" << std::endl;
@@ -611,7 +625,7 @@ namespace OpcUaStackServer
 			DataTypeField::SPtr dataTypeField = *it;
 
 			ss << prefix << std::endl;
-			ss << prefix << dataTypeField->variableType() << "&" << std::endl;
+			ss << prefix << "OpcUaStackCore::" << dataTypeField->variableType() << "&" << std::endl;
 			ss << prefix << nodeInfo_.className() << "::" << dataTypeField->parameterName() << "(void)" << std::endl;
 			ss << prefix << "{" << std::endl;
 			ss << prefix << "    return " <<  dataTypeField->variableName() << ";" << std::endl;
