@@ -261,7 +261,7 @@ endif()
 
 
 include(OpcUaStackCore/CMakeLists.txt)
-#include(OpcUaStackPubSub/CMakeLists.txt)
+include(OpcUaStackPubSub/CMakeLists.txt)
 include(OpcUaStackClient/CMakeLists.txt) 
 include(OpcUaStackServer/CMakeLists.txt)
 include(OpcUaServer/CMakeLists.txt)
