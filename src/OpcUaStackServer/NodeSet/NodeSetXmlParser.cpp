@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2022 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -914,7 +914,7 @@ namespace OpcUaStackServer
 		boost::property_tree::ptree& ptree
 	)
 	{
-		NodeSetDefinitionParser parser;
+		NodeSetDefinitionParser parser(&nodeSetAlias_);
 
 		// get optional Definition element
 		auto definitionTree = ptree.get_child_optional("Definition");
