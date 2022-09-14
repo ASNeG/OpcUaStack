@@ -753,7 +753,7 @@ namespace OpcUaStackServer
 		//
 		// decode data type definitions
 		//
-		if (enableDefinition_) {
+		if (enableDefinition_ && !dataTypeNodeClassSPtr->isAbstract().data()) {
 			if (!decodeDataTypeDefinition(dataTypeNodeClassSPtr, ptree)) return false;
 		}
 
@@ -1448,7 +1448,7 @@ namespace OpcUaStackServer
 			//
 			// encode data type definitions
 			//
-			if (enableDefinition_) {
+			if (enableDefinition_ && !dataTypeNodeClassSPtr->isAbstract().data()) {
 				if (!encodeDataTypeDefinition(dataTypeNodeClassSPtr, node)) return false;
 			}
 
