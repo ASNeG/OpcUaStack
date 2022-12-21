@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardVariableType/ProgramDiagnosticType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

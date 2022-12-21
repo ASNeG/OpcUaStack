@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/FolderType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

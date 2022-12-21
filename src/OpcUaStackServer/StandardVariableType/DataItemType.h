@@ -33,24 +33,24 @@ namespace OpcUaStackServer
         //
         void definition_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& definition_Variable(void);
-        bool get_Definition_Variable(OpcUaDataValue& dataValue);
-        bool set_Definition_Variable(const OpcUaDataValue& dataValue);
+        bool get_Definition_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Definition_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // Double
         //
         void valuePrecision_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& valuePrecision_Variable(void);
-        bool get_ValuePrecision_Variable(OpcUaDataValue& dataValue);
-        bool set_ValuePrecision_Variable(const OpcUaDataValue& dataValue);
+        bool get_ValuePrecision_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_ValuePrecision_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // Variant
         //
         void variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& variable(void);
-        bool get_Variable(OpcUaDataValue& dataValue);
-        bool set_Variable(const OpcUaDataValue& dataValue);
+        bool get_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
     
       private:
         ServerVariable::SPtr definition_Variable_;

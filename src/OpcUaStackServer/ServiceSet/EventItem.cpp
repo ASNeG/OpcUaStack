@@ -113,7 +113,7 @@ namespace OpcUaStackServer
 		}
 
 		// register event handler
-		EventHandler::EventCallback eventCallback = boost::bind(&EventItem::fireEvent, this, _1);
+		EventHandler::EventCallback eventCallback = boost::bind(&EventItem::fireEvent, this, boost::placeholders::_1);
 		EventHandlerMap& eventHandlerMap = informationModel_->eventHandlerMap();
 		eventHandler_->eventCallback(eventCallback);
 		eventHandler_->eventId(eventItemId_);

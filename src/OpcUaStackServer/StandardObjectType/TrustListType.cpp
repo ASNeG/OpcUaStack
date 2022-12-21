@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/TrustListType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
@@ -51,16 +52,16 @@ namespace OpcUaStackServer
         setServerMethod(removeCertificate_Method_);
         setServerMethod(setPosition_Method_);
         setServerMethod(write_Method_);
-        addCertificate_Method_->registerMethod(boost::bind(&TrustListType::call_AddCertificate_Method, this, _1));
-        closeAndUpdate_Method_->registerMethod(boost::bind(&TrustListType::call_CloseAndUpdate_Method, this, _1));
-        close_Method_->registerMethod(boost::bind(&TrustListType::call_Close_Method, this, _1));
-        getPosition_Method_->registerMethod(boost::bind(&TrustListType::call_GetPosition_Method, this, _1));
-        openWithMasks_Method_->registerMethod(boost::bind(&TrustListType::call_OpenWithMasks_Method, this, _1));
-        open_Method_->registerMethod(boost::bind(&TrustListType::call_Open_Method, this, _1));
-        read_Method_->registerMethod(boost::bind(&TrustListType::call_Read_Method, this, _1));
-        removeCertificate_Method_->registerMethod(boost::bind(&TrustListType::call_RemoveCertificate_Method, this, _1));
-        setPosition_Method_->registerMethod(boost::bind(&TrustListType::call_SetPosition_Method, this, _1));
-        write_Method_->registerMethod(boost::bind(&TrustListType::call_Write_Method, this, _1));
+        addCertificate_Method_->registerMethod(boost::bind(&TrustListType::call_AddCertificate_Method, this, boost::placeholders::_1));
+        closeAndUpdate_Method_->registerMethod(boost::bind(&TrustListType::call_CloseAndUpdate_Method, this, boost::placeholders::_1));
+        close_Method_->registerMethod(boost::bind(&TrustListType::call_Close_Method, this, boost::placeholders::_1));
+        getPosition_Method_->registerMethod(boost::bind(&TrustListType::call_GetPosition_Method, this, boost::placeholders::_1));
+        openWithMasks_Method_->registerMethod(boost::bind(&TrustListType::call_OpenWithMasks_Method, this, boost::placeholders::_1));
+        open_Method_->registerMethod(boost::bind(&TrustListType::call_Open_Method, this, boost::placeholders::_1));
+        read_Method_->registerMethod(boost::bind(&TrustListType::call_Read_Method, this, boost::placeholders::_1));
+        removeCertificate_Method_->registerMethod(boost::bind(&TrustListType::call_RemoveCertificate_Method, this, boost::placeholders::_1));
+        setPosition_Method_->registerMethod(boost::bind(&TrustListType::call_SetPosition_Method, this, boost::placeholders::_1));
+        write_Method_->registerMethod(boost::bind(&TrustListType::call_Write_Method, this, boost::placeholders::_1));
     }
     
     TrustListType::TrustListType(const TrustListType& value)
@@ -100,16 +101,16 @@ namespace OpcUaStackServer
         setServerMethod(removeCertificate_Method_);
         setServerMethod(setPosition_Method_);
         setServerMethod(write_Method_);
-        addCertificate_Method_->registerMethod(boost::bind(&TrustListType::call_AddCertificate_Method, this, _1));
-        closeAndUpdate_Method_->registerMethod(boost::bind(&TrustListType::call_CloseAndUpdate_Method, this, _1));
-        close_Method_->registerMethod(boost::bind(&TrustListType::call_Close_Method, this, _1));
-        getPosition_Method_->registerMethod(boost::bind(&TrustListType::call_GetPosition_Method, this, _1));
-        openWithMasks_Method_->registerMethod(boost::bind(&TrustListType::call_OpenWithMasks_Method, this, _1));
-        open_Method_->registerMethod(boost::bind(&TrustListType::call_Open_Method, this, _1));
-        read_Method_->registerMethod(boost::bind(&TrustListType::call_Read_Method, this, _1));
-        removeCertificate_Method_->registerMethod(boost::bind(&TrustListType::call_RemoveCertificate_Method, this, _1));
-        setPosition_Method_->registerMethod(boost::bind(&TrustListType::call_SetPosition_Method, this, _1));
-        write_Method_->registerMethod(boost::bind(&TrustListType::call_Write_Method, this, _1));
+        addCertificate_Method_->registerMethod(boost::bind(&TrustListType::call_AddCertificate_Method, this, boost::placeholders::_1));
+        closeAndUpdate_Method_->registerMethod(boost::bind(&TrustListType::call_CloseAndUpdate_Method, this, boost::placeholders::_1));
+        close_Method_->registerMethod(boost::bind(&TrustListType::call_Close_Method, this, boost::placeholders::_1));
+        getPosition_Method_->registerMethod(boost::bind(&TrustListType::call_GetPosition_Method, this, boost::placeholders::_1));
+        openWithMasks_Method_->registerMethod(boost::bind(&TrustListType::call_OpenWithMasks_Method, this, boost::placeholders::_1));
+        open_Method_->registerMethod(boost::bind(&TrustListType::call_Open_Method, this, boost::placeholders::_1));
+        read_Method_->registerMethod(boost::bind(&TrustListType::call_Read_Method, this, boost::placeholders::_1));
+        removeCertificate_Method_->registerMethod(boost::bind(&TrustListType::call_RemoveCertificate_Method, this, boost::placeholders::_1));
+        setPosition_Method_->registerMethod(boost::bind(&TrustListType::call_SetPosition_Method, this, boost::placeholders::_1));
+        write_Method_->registerMethod(boost::bind(&TrustListType::call_Write_Method, this, boost::placeholders::_1));
     }
     
     TrustListType::~TrustListType(void)

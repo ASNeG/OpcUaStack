@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/CertificateGroupFolderType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
@@ -97,27 +98,27 @@ namespace OpcUaStackServer
         setServerMethod(defaultUserTokenGroup_TrustList_Read_Method_);
         setServerMethod(defaultUserTokenGroup_TrustList_SetPosition_Method_);
         setServerMethod(defaultUserTokenGroup_TrustList_Write_Method_);
-        defaultApplicationGroup_TrustList_Close_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultApplicationGroup_TrustList_Close_Method, this, _1));
-        defaultApplicationGroup_TrustList_GetPosition_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultApplicationGroup_TrustList_GetPosition_Method, this, _1));
-        defaultApplicationGroup_TrustList_OpenWithMasks_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultApplicationGroup_TrustList_OpenWithMasks_Method, this, _1));
-        defaultApplicationGroup_TrustList_Open_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultApplicationGroup_TrustList_Open_Method, this, _1));
-        defaultApplicationGroup_TrustList_Read_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultApplicationGroup_TrustList_Read_Method, this, _1));
-        defaultApplicationGroup_TrustList_SetPosition_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultApplicationGroup_TrustList_SetPosition_Method, this, _1));
-        defaultApplicationGroup_TrustList_Write_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultApplicationGroup_TrustList_Write_Method, this, _1));
-        defaultHttpsGroup_TrustList_Close_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultHttpsGroup_TrustList_Close_Method, this, _1));
-        defaultHttpsGroup_TrustList_GetPosition_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultHttpsGroup_TrustList_GetPosition_Method, this, _1));
-        defaultHttpsGroup_TrustList_OpenWithMasks_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultHttpsGroup_TrustList_OpenWithMasks_Method, this, _1));
-        defaultHttpsGroup_TrustList_Open_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultHttpsGroup_TrustList_Open_Method, this, _1));
-        defaultHttpsGroup_TrustList_Read_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultHttpsGroup_TrustList_Read_Method, this, _1));
-        defaultHttpsGroup_TrustList_SetPosition_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultHttpsGroup_TrustList_SetPosition_Method, this, _1));
-        defaultHttpsGroup_TrustList_Write_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultHttpsGroup_TrustList_Write_Method, this, _1));
-        defaultUserTokenGroup_TrustList_Close_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultUserTokenGroup_TrustList_Close_Method, this, _1));
-        defaultUserTokenGroup_TrustList_GetPosition_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultUserTokenGroup_TrustList_GetPosition_Method, this, _1));
-        defaultUserTokenGroup_TrustList_OpenWithMasks_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultUserTokenGroup_TrustList_OpenWithMasks_Method, this, _1));
-        defaultUserTokenGroup_TrustList_Open_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultUserTokenGroup_TrustList_Open_Method, this, _1));
-        defaultUserTokenGroup_TrustList_Read_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultUserTokenGroup_TrustList_Read_Method, this, _1));
-        defaultUserTokenGroup_TrustList_SetPosition_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultUserTokenGroup_TrustList_SetPosition_Method, this, _1));
-        defaultUserTokenGroup_TrustList_Write_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultUserTokenGroup_TrustList_Write_Method, this, _1));
+        defaultApplicationGroup_TrustList_Close_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultApplicationGroup_TrustList_Close_Method, this, boost::placeholders::_1));
+        defaultApplicationGroup_TrustList_GetPosition_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultApplicationGroup_TrustList_GetPosition_Method, this, boost::placeholders::_1));
+        defaultApplicationGroup_TrustList_OpenWithMasks_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultApplicationGroup_TrustList_OpenWithMasks_Method, this, boost::placeholders::_1));
+        defaultApplicationGroup_TrustList_Open_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultApplicationGroup_TrustList_Open_Method, this, boost::placeholders::_1));
+        defaultApplicationGroup_TrustList_Read_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultApplicationGroup_TrustList_Read_Method, this, boost::placeholders::_1));
+        defaultApplicationGroup_TrustList_SetPosition_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultApplicationGroup_TrustList_SetPosition_Method, this, boost::placeholders::_1));
+        defaultApplicationGroup_TrustList_Write_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultApplicationGroup_TrustList_Write_Method, this, boost::placeholders::_1));
+        defaultHttpsGroup_TrustList_Close_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultHttpsGroup_TrustList_Close_Method, this, boost::placeholders::_1));
+        defaultHttpsGroup_TrustList_GetPosition_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultHttpsGroup_TrustList_GetPosition_Method, this, boost::placeholders::_1));
+        defaultHttpsGroup_TrustList_OpenWithMasks_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultHttpsGroup_TrustList_OpenWithMasks_Method, this, boost::placeholders::_1));
+        defaultHttpsGroup_TrustList_Open_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultHttpsGroup_TrustList_Open_Method, this, boost::placeholders::_1));
+        defaultHttpsGroup_TrustList_Read_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultHttpsGroup_TrustList_Read_Method, this, boost::placeholders::_1));
+        defaultHttpsGroup_TrustList_SetPosition_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultHttpsGroup_TrustList_SetPosition_Method, this, boost::placeholders::_1));
+        defaultHttpsGroup_TrustList_Write_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultHttpsGroup_TrustList_Write_Method, this, boost::placeholders::_1));
+        defaultUserTokenGroup_TrustList_Close_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultUserTokenGroup_TrustList_Close_Method, this, boost::placeholders::_1));
+        defaultUserTokenGroup_TrustList_GetPosition_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultUserTokenGroup_TrustList_GetPosition_Method, this, boost::placeholders::_1));
+        defaultUserTokenGroup_TrustList_OpenWithMasks_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultUserTokenGroup_TrustList_OpenWithMasks_Method, this, boost::placeholders::_1));
+        defaultUserTokenGroup_TrustList_Open_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultUserTokenGroup_TrustList_Open_Method, this, boost::placeholders::_1));
+        defaultUserTokenGroup_TrustList_Read_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultUserTokenGroup_TrustList_Read_Method, this, boost::placeholders::_1));
+        defaultUserTokenGroup_TrustList_SetPosition_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultUserTokenGroup_TrustList_SetPosition_Method, this, boost::placeholders::_1));
+        defaultUserTokenGroup_TrustList_Write_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultUserTokenGroup_TrustList_Write_Method, this, boost::placeholders::_1));
     }
     
     CertificateGroupFolderType::CertificateGroupFolderType(const CertificateGroupFolderType& value)
@@ -203,27 +204,27 @@ namespace OpcUaStackServer
         setServerMethod(defaultUserTokenGroup_TrustList_Read_Method_);
         setServerMethod(defaultUserTokenGroup_TrustList_SetPosition_Method_);
         setServerMethod(defaultUserTokenGroup_TrustList_Write_Method_);
-        defaultApplicationGroup_TrustList_Close_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultApplicationGroup_TrustList_Close_Method, this, _1));
-        defaultApplicationGroup_TrustList_GetPosition_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultApplicationGroup_TrustList_GetPosition_Method, this, _1));
-        defaultApplicationGroup_TrustList_OpenWithMasks_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultApplicationGroup_TrustList_OpenWithMasks_Method, this, _1));
-        defaultApplicationGroup_TrustList_Open_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultApplicationGroup_TrustList_Open_Method, this, _1));
-        defaultApplicationGroup_TrustList_Read_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultApplicationGroup_TrustList_Read_Method, this, _1));
-        defaultApplicationGroup_TrustList_SetPosition_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultApplicationGroup_TrustList_SetPosition_Method, this, _1));
-        defaultApplicationGroup_TrustList_Write_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultApplicationGroup_TrustList_Write_Method, this, _1));
-        defaultHttpsGroup_TrustList_Close_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultHttpsGroup_TrustList_Close_Method, this, _1));
-        defaultHttpsGroup_TrustList_GetPosition_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultHttpsGroup_TrustList_GetPosition_Method, this, _1));
-        defaultHttpsGroup_TrustList_OpenWithMasks_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultHttpsGroup_TrustList_OpenWithMasks_Method, this, _1));
-        defaultHttpsGroup_TrustList_Open_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultHttpsGroup_TrustList_Open_Method, this, _1));
-        defaultHttpsGroup_TrustList_Read_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultHttpsGroup_TrustList_Read_Method, this, _1));
-        defaultHttpsGroup_TrustList_SetPosition_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultHttpsGroup_TrustList_SetPosition_Method, this, _1));
-        defaultHttpsGroup_TrustList_Write_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultHttpsGroup_TrustList_Write_Method, this, _1));
-        defaultUserTokenGroup_TrustList_Close_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultUserTokenGroup_TrustList_Close_Method, this, _1));
-        defaultUserTokenGroup_TrustList_GetPosition_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultUserTokenGroup_TrustList_GetPosition_Method, this, _1));
-        defaultUserTokenGroup_TrustList_OpenWithMasks_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultUserTokenGroup_TrustList_OpenWithMasks_Method, this, _1));
-        defaultUserTokenGroup_TrustList_Open_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultUserTokenGroup_TrustList_Open_Method, this, _1));
-        defaultUserTokenGroup_TrustList_Read_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultUserTokenGroup_TrustList_Read_Method, this, _1));
-        defaultUserTokenGroup_TrustList_SetPosition_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultUserTokenGroup_TrustList_SetPosition_Method, this, _1));
-        defaultUserTokenGroup_TrustList_Write_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultUserTokenGroup_TrustList_Write_Method, this, _1));
+        defaultApplicationGroup_TrustList_Close_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultApplicationGroup_TrustList_Close_Method, this, boost::placeholders::_1));
+        defaultApplicationGroup_TrustList_GetPosition_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultApplicationGroup_TrustList_GetPosition_Method, this, boost::placeholders::_1));
+        defaultApplicationGroup_TrustList_OpenWithMasks_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultApplicationGroup_TrustList_OpenWithMasks_Method, this, boost::placeholders::_1));
+        defaultApplicationGroup_TrustList_Open_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultApplicationGroup_TrustList_Open_Method, this, boost::placeholders::_1));
+        defaultApplicationGroup_TrustList_Read_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultApplicationGroup_TrustList_Read_Method, this, boost::placeholders::_1));
+        defaultApplicationGroup_TrustList_SetPosition_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultApplicationGroup_TrustList_SetPosition_Method, this, boost::placeholders::_1));
+        defaultApplicationGroup_TrustList_Write_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultApplicationGroup_TrustList_Write_Method, this, boost::placeholders::_1));
+        defaultHttpsGroup_TrustList_Close_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultHttpsGroup_TrustList_Close_Method, this, boost::placeholders::_1));
+        defaultHttpsGroup_TrustList_GetPosition_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultHttpsGroup_TrustList_GetPosition_Method, this, boost::placeholders::_1));
+        defaultHttpsGroup_TrustList_OpenWithMasks_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultHttpsGroup_TrustList_OpenWithMasks_Method, this, boost::placeholders::_1));
+        defaultHttpsGroup_TrustList_Open_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultHttpsGroup_TrustList_Open_Method, this, boost::placeholders::_1));
+        defaultHttpsGroup_TrustList_Read_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultHttpsGroup_TrustList_Read_Method, this, boost::placeholders::_1));
+        defaultHttpsGroup_TrustList_SetPosition_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultHttpsGroup_TrustList_SetPosition_Method, this, boost::placeholders::_1));
+        defaultHttpsGroup_TrustList_Write_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultHttpsGroup_TrustList_Write_Method, this, boost::placeholders::_1));
+        defaultUserTokenGroup_TrustList_Close_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultUserTokenGroup_TrustList_Close_Method, this, boost::placeholders::_1));
+        defaultUserTokenGroup_TrustList_GetPosition_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultUserTokenGroup_TrustList_GetPosition_Method, this, boost::placeholders::_1));
+        defaultUserTokenGroup_TrustList_OpenWithMasks_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultUserTokenGroup_TrustList_OpenWithMasks_Method, this, boost::placeholders::_1));
+        defaultUserTokenGroup_TrustList_Open_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultUserTokenGroup_TrustList_Open_Method, this, boost::placeholders::_1));
+        defaultUserTokenGroup_TrustList_Read_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultUserTokenGroup_TrustList_Read_Method, this, boost::placeholders::_1));
+        defaultUserTokenGroup_TrustList_SetPosition_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultUserTokenGroup_TrustList_SetPosition_Method, this, boost::placeholders::_1));
+        defaultUserTokenGroup_TrustList_Write_Method_->registerMethod(boost::bind(&CertificateGroupFolderType::call_DefaultUserTokenGroup_TrustList_Write_Method, this, boost::placeholders::_1));
     }
     
     CertificateGroupFolderType::~CertificateGroupFolderType(void)

@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/ServerConfigurationType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
@@ -61,17 +62,17 @@ namespace OpcUaStackServer
         setServerMethod(createSigningRequest_Method_);
         setServerMethod(getRejectedList_Method_);
         setServerMethod(updateCertificate_Method_);
-        applyChanges_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_ApplyChanges_Method, this, _1));
-        certificateGroups_DefaultApplicationGroup_TrustList_Close_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_CertificateGroups_DefaultApplicationGroup_TrustList_Close_Method, this, _1));
-        certificateGroups_DefaultApplicationGroup_TrustList_GetPosition_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_CertificateGroups_DefaultApplicationGroup_TrustList_GetPosition_Method, this, _1));
-        certificateGroups_DefaultApplicationGroup_TrustList_OpenWithMasks_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_CertificateGroups_DefaultApplicationGroup_TrustList_OpenWithMasks_Method, this, _1));
-        certificateGroups_DefaultApplicationGroup_TrustList_Open_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_CertificateGroups_DefaultApplicationGroup_TrustList_Open_Method, this, _1));
-        certificateGroups_DefaultApplicationGroup_TrustList_Read_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_CertificateGroups_DefaultApplicationGroup_TrustList_Read_Method, this, _1));
-        certificateGroups_DefaultApplicationGroup_TrustList_SetPosition_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_CertificateGroups_DefaultApplicationGroup_TrustList_SetPosition_Method, this, _1));
-        certificateGroups_DefaultApplicationGroup_TrustList_Write_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_CertificateGroups_DefaultApplicationGroup_TrustList_Write_Method, this, _1));
-        createSigningRequest_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_CreateSigningRequest_Method, this, _1));
-        getRejectedList_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_GetRejectedList_Method, this, _1));
-        updateCertificate_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_UpdateCertificate_Method, this, _1));
+        applyChanges_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_ApplyChanges_Method, this, boost::placeholders::_1));
+        certificateGroups_DefaultApplicationGroup_TrustList_Close_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_CertificateGroups_DefaultApplicationGroup_TrustList_Close_Method, this, boost::placeholders::_1));
+        certificateGroups_DefaultApplicationGroup_TrustList_GetPosition_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_CertificateGroups_DefaultApplicationGroup_TrustList_GetPosition_Method, this, boost::placeholders::_1));
+        certificateGroups_DefaultApplicationGroup_TrustList_OpenWithMasks_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_CertificateGroups_DefaultApplicationGroup_TrustList_OpenWithMasks_Method, this, boost::placeholders::_1));
+        certificateGroups_DefaultApplicationGroup_TrustList_Open_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_CertificateGroups_DefaultApplicationGroup_TrustList_Open_Method, this, boost::placeholders::_1));
+        certificateGroups_DefaultApplicationGroup_TrustList_Read_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_CertificateGroups_DefaultApplicationGroup_TrustList_Read_Method, this, boost::placeholders::_1));
+        certificateGroups_DefaultApplicationGroup_TrustList_SetPosition_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_CertificateGroups_DefaultApplicationGroup_TrustList_SetPosition_Method, this, boost::placeholders::_1));
+        certificateGroups_DefaultApplicationGroup_TrustList_Write_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_CertificateGroups_DefaultApplicationGroup_TrustList_Write_Method, this, boost::placeholders::_1));
+        createSigningRequest_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_CreateSigningRequest_Method, this, boost::placeholders::_1));
+        getRejectedList_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_GetRejectedList_Method, this, boost::placeholders::_1));
+        updateCertificate_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_UpdateCertificate_Method, this, boost::placeholders::_1));
     }
     
     ServerConfigurationType::ServerConfigurationType(const ServerConfigurationType& value)
@@ -121,17 +122,17 @@ namespace OpcUaStackServer
         setServerMethod(createSigningRequest_Method_);
         setServerMethod(getRejectedList_Method_);
         setServerMethod(updateCertificate_Method_);
-        applyChanges_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_ApplyChanges_Method, this, _1));
-        certificateGroups_DefaultApplicationGroup_TrustList_Close_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_CertificateGroups_DefaultApplicationGroup_TrustList_Close_Method, this, _1));
-        certificateGroups_DefaultApplicationGroup_TrustList_GetPosition_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_CertificateGroups_DefaultApplicationGroup_TrustList_GetPosition_Method, this, _1));
-        certificateGroups_DefaultApplicationGroup_TrustList_OpenWithMasks_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_CertificateGroups_DefaultApplicationGroup_TrustList_OpenWithMasks_Method, this, _1));
-        certificateGroups_DefaultApplicationGroup_TrustList_Open_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_CertificateGroups_DefaultApplicationGroup_TrustList_Open_Method, this, _1));
-        certificateGroups_DefaultApplicationGroup_TrustList_Read_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_CertificateGroups_DefaultApplicationGroup_TrustList_Read_Method, this, _1));
-        certificateGroups_DefaultApplicationGroup_TrustList_SetPosition_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_CertificateGroups_DefaultApplicationGroup_TrustList_SetPosition_Method, this, _1));
-        certificateGroups_DefaultApplicationGroup_TrustList_Write_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_CertificateGroups_DefaultApplicationGroup_TrustList_Write_Method, this, _1));
-        createSigningRequest_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_CreateSigningRequest_Method, this, _1));
-        getRejectedList_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_GetRejectedList_Method, this, _1));
-        updateCertificate_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_UpdateCertificate_Method, this, _1));
+        applyChanges_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_ApplyChanges_Method, this, boost::placeholders::_1));
+        certificateGroups_DefaultApplicationGroup_TrustList_Close_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_CertificateGroups_DefaultApplicationGroup_TrustList_Close_Method, this, boost::placeholders::_1));
+        certificateGroups_DefaultApplicationGroup_TrustList_GetPosition_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_CertificateGroups_DefaultApplicationGroup_TrustList_GetPosition_Method, this, boost::placeholders::_1));
+        certificateGroups_DefaultApplicationGroup_TrustList_OpenWithMasks_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_CertificateGroups_DefaultApplicationGroup_TrustList_OpenWithMasks_Method, this, boost::placeholders::_1));
+        certificateGroups_DefaultApplicationGroup_TrustList_Open_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_CertificateGroups_DefaultApplicationGroup_TrustList_Open_Method, this, boost::placeholders::_1));
+        certificateGroups_DefaultApplicationGroup_TrustList_Read_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_CertificateGroups_DefaultApplicationGroup_TrustList_Read_Method, this, boost::placeholders::_1));
+        certificateGroups_DefaultApplicationGroup_TrustList_SetPosition_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_CertificateGroups_DefaultApplicationGroup_TrustList_SetPosition_Method, this, boost::placeholders::_1));
+        certificateGroups_DefaultApplicationGroup_TrustList_Write_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_CertificateGroups_DefaultApplicationGroup_TrustList_Write_Method, this, boost::placeholders::_1));
+        createSigningRequest_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_CreateSigningRequest_Method, this, boost::placeholders::_1));
+        getRejectedList_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_GetRejectedList_Method, this, boost::placeholders::_1));
+        updateCertificate_Method_->registerMethod(boost::bind(&ServerConfigurationType::call_UpdateCertificate_Method, this, boost::placeholders::_1));
     }
     
     ServerConfigurationType::~ServerConfigurationType(void)

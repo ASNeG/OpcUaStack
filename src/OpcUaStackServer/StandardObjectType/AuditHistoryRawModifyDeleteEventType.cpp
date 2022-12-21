@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/AuditHistoryRawModifyDeleteEventType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

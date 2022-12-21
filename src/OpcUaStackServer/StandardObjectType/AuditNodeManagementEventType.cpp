@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/AuditNodeManagementEventType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

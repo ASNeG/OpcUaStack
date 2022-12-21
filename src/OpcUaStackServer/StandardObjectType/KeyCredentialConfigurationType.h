@@ -34,32 +34,32 @@ namespace OpcUaStackServer
         //
         void endpointUrls_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& endpointUrls_Variable(void);
-        bool get_EndpointUrls_Variable(OpcUaDataValue& dataValue);
-        bool set_EndpointUrls_Variable(const OpcUaDataValue& dataValue);
+        bool get_EndpointUrls_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_EndpointUrls_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // String
         //
         void profileUri_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& profileUri_Variable(void);
-        bool get_ProfileUri_Variable(OpcUaDataValue& dataValue);
-        bool set_ProfileUri_Variable(const OpcUaDataValue& dataValue);
+        bool get_ProfileUri_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_ProfileUri_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // String
         //
         void resourceUri_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& resourceUri_Variable(void);
-        bool get_ResourceUri_Variable(OpcUaDataValue& dataValue);
-        bool set_ResourceUri_Variable(const OpcUaDataValue& dataValue);
+        bool get_ResourceUri_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_ResourceUri_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // Status
         //
         void serviceStatus_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& serviceStatus_Variable(void);
-        bool get_ServiceStatus_Variable(OpcUaDataValue& dataValue);
-        bool set_ServiceStatus_Variable(const OpcUaDataValue& dataValue);
+        bool get_ServiceStatus_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_ServiceStatus_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         virtual void call_DeleteCredential_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 

@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/CertificateGroupType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
@@ -45,13 +46,13 @@ namespace OpcUaStackServer
         setServerMethod(trustList_Read_Method_);
         setServerMethod(trustList_SetPosition_Method_);
         setServerMethod(trustList_Write_Method_);
-        trustList_Close_Method_->registerMethod(boost::bind(&CertificateGroupType::call_TrustList_Close_Method, this, _1));
-        trustList_GetPosition_Method_->registerMethod(boost::bind(&CertificateGroupType::call_TrustList_GetPosition_Method, this, _1));
-        trustList_OpenWithMasks_Method_->registerMethod(boost::bind(&CertificateGroupType::call_TrustList_OpenWithMasks_Method, this, _1));
-        trustList_Open_Method_->registerMethod(boost::bind(&CertificateGroupType::call_TrustList_Open_Method, this, _1));
-        trustList_Read_Method_->registerMethod(boost::bind(&CertificateGroupType::call_TrustList_Read_Method, this, _1));
-        trustList_SetPosition_Method_->registerMethod(boost::bind(&CertificateGroupType::call_TrustList_SetPosition_Method, this, _1));
-        trustList_Write_Method_->registerMethod(boost::bind(&CertificateGroupType::call_TrustList_Write_Method, this, _1));
+        trustList_Close_Method_->registerMethod(boost::bind(&CertificateGroupType::call_TrustList_Close_Method, this, boost::placeholders::_1));
+        trustList_GetPosition_Method_->registerMethod(boost::bind(&CertificateGroupType::call_TrustList_GetPosition_Method, this, boost::placeholders::_1));
+        trustList_OpenWithMasks_Method_->registerMethod(boost::bind(&CertificateGroupType::call_TrustList_OpenWithMasks_Method, this, boost::placeholders::_1));
+        trustList_Open_Method_->registerMethod(boost::bind(&CertificateGroupType::call_TrustList_Open_Method, this, boost::placeholders::_1));
+        trustList_Read_Method_->registerMethod(boost::bind(&CertificateGroupType::call_TrustList_Read_Method, this, boost::placeholders::_1));
+        trustList_SetPosition_Method_->registerMethod(boost::bind(&CertificateGroupType::call_TrustList_SetPosition_Method, this, boost::placeholders::_1));
+        trustList_Write_Method_->registerMethod(boost::bind(&CertificateGroupType::call_TrustList_Write_Method, this, boost::placeholders::_1));
     }
     
     CertificateGroupType::CertificateGroupType(const CertificateGroupType& value)
@@ -85,13 +86,13 @@ namespace OpcUaStackServer
         setServerMethod(trustList_Read_Method_);
         setServerMethod(trustList_SetPosition_Method_);
         setServerMethod(trustList_Write_Method_);
-        trustList_Close_Method_->registerMethod(boost::bind(&CertificateGroupType::call_TrustList_Close_Method, this, _1));
-        trustList_GetPosition_Method_->registerMethod(boost::bind(&CertificateGroupType::call_TrustList_GetPosition_Method, this, _1));
-        trustList_OpenWithMasks_Method_->registerMethod(boost::bind(&CertificateGroupType::call_TrustList_OpenWithMasks_Method, this, _1));
-        trustList_Open_Method_->registerMethod(boost::bind(&CertificateGroupType::call_TrustList_Open_Method, this, _1));
-        trustList_Read_Method_->registerMethod(boost::bind(&CertificateGroupType::call_TrustList_Read_Method, this, _1));
-        trustList_SetPosition_Method_->registerMethod(boost::bind(&CertificateGroupType::call_TrustList_SetPosition_Method, this, _1));
-        trustList_Write_Method_->registerMethod(boost::bind(&CertificateGroupType::call_TrustList_Write_Method, this, _1));
+        trustList_Close_Method_->registerMethod(boost::bind(&CertificateGroupType::call_TrustList_Close_Method, this, boost::placeholders::_1));
+        trustList_GetPosition_Method_->registerMethod(boost::bind(&CertificateGroupType::call_TrustList_GetPosition_Method, this, boost::placeholders::_1));
+        trustList_OpenWithMasks_Method_->registerMethod(boost::bind(&CertificateGroupType::call_TrustList_OpenWithMasks_Method, this, boost::placeholders::_1));
+        trustList_Open_Method_->registerMethod(boost::bind(&CertificateGroupType::call_TrustList_Open_Method, this, boost::placeholders::_1));
+        trustList_Read_Method_->registerMethod(boost::bind(&CertificateGroupType::call_TrustList_Read_Method, this, boost::placeholders::_1));
+        trustList_SetPosition_Method_->registerMethod(boost::bind(&CertificateGroupType::call_TrustList_SetPosition_Method, this, boost::placeholders::_1));
+        trustList_Write_Method_->registerMethod(boost::bind(&CertificateGroupType::call_TrustList_Write_Method, this, boost::placeholders::_1));
     }
     
     CertificateGroupType::~CertificateGroupType(void)

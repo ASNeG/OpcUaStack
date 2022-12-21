@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardVariableType/SessionSecurityDiagnosticsArrayType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

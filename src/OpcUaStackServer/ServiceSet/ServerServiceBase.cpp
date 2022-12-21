@@ -66,6 +66,13 @@ namespace OpcUaStackServer
 			return;
 		}
 
+		/* FIXME
+		 * After closing a session. The session destructor calls the
+		 * deactivate receiver function. This function dies with the call to future.wait().
+		 * Because the future is never executed, but why?
+		 * This behavior can only be reproduced on Windows 10.
+		 * Linux has no problems here.
+		 *
 		if (!strand_->running_in_this_thread()) {
 			// the function was not called by the strand
 
@@ -82,6 +89,7 @@ namespace OpcUaStackServer
 			future.wait();
 			return;
 		}
+		 */
 
 		Log(Info, "deactivate receiver")
 			.parameter("ServiceName", serviceName_);

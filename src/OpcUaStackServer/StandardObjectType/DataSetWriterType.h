@@ -34,418 +34,418 @@ namespace OpcUaStackServer
         //
         void dataSetFieldContentMask_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& dataSetFieldContentMask_Variable(void);
-        bool get_DataSetFieldContentMask_Variable(OpcUaDataValue& dataValue);
-        bool set_DataSetFieldContentMask_Variable(const OpcUaDataValue& dataValue);
+        bool get_DataSetFieldContentMask_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_DataSetFieldContentMask_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // UInt16
         //
         void dataSetWriterId_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& dataSetWriterId_Variable(void);
-        bool get_DataSetWriterId_Variable(OpcUaDataValue& dataValue);
-        bool set_DataSetWriterId_Variable(const OpcUaDataValue& dataValue);
+        bool get_DataSetWriterId_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_DataSetWriterId_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // KeyValuePair (Array)
         //
         void dataSetWriterProperties_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& dataSetWriterProperties_Variable(void);
-        bool get_DataSetWriterProperties_Variable(OpcUaDataValue& dataValue);
-        bool set_DataSetWriterProperties_Variable(const OpcUaDataValue& dataValue);
+        bool get_DataSetWriterProperties_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_DataSetWriterProperties_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // Boolean
         //
         void diagnostics_Counters_FailedDataSetMessages_Active_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_Counters_FailedDataSetMessages_Active_Variable(void);
-        bool get_Diagnostics_Counters_FailedDataSetMessages_Active_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_Counters_FailedDataSetMessages_Active_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_Counters_FailedDataSetMessages_Active_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_Counters_FailedDataSetMessages_Active_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // PubSubDiagnosticsCounterClassification
         //
         void diagnostics_Counters_FailedDataSetMessages_Classification_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_Counters_FailedDataSetMessages_Classification_Variable(void);
-        bool get_Diagnostics_Counters_FailedDataSetMessages_Classification_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_Counters_FailedDataSetMessages_Classification_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_Counters_FailedDataSetMessages_Classification_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_Counters_FailedDataSetMessages_Classification_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // DiagnosticsLevel
         //
         void diagnostics_Counters_FailedDataSetMessages_DiagnosticsLevel_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_Counters_FailedDataSetMessages_DiagnosticsLevel_Variable(void);
-        bool get_Diagnostics_Counters_FailedDataSetMessages_DiagnosticsLevel_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_Counters_FailedDataSetMessages_DiagnosticsLevel_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_Counters_FailedDataSetMessages_DiagnosticsLevel_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_Counters_FailedDataSetMessages_DiagnosticsLevel_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // DateTime
         //
         void diagnostics_Counters_FailedDataSetMessages_TimeFirstChange_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_Counters_FailedDataSetMessages_TimeFirstChange_Variable(void);
-        bool get_Diagnostics_Counters_FailedDataSetMessages_TimeFirstChange_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_Counters_FailedDataSetMessages_TimeFirstChange_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_Counters_FailedDataSetMessages_TimeFirstChange_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_Counters_FailedDataSetMessages_TimeFirstChange_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // UInt32
         //
         void diagnostics_Counters_FailedDataSetMessages_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_Counters_FailedDataSetMessages_Variable(void);
-        bool get_Diagnostics_Counters_FailedDataSetMessages_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_Counters_FailedDataSetMessages_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_Counters_FailedDataSetMessages_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_Counters_FailedDataSetMessages_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // Boolean
         //
         void diagnostics_Counters_StateDisabledByMethod_Active_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_Counters_StateDisabledByMethod_Active_Variable(void);
-        bool get_Diagnostics_Counters_StateDisabledByMethod_Active_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_Counters_StateDisabledByMethod_Active_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_Counters_StateDisabledByMethod_Active_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_Counters_StateDisabledByMethod_Active_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // PubSubDiagnosticsCounterClassification
         //
         void diagnostics_Counters_StateDisabledByMethod_Classification_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_Counters_StateDisabledByMethod_Classification_Variable(void);
-        bool get_Diagnostics_Counters_StateDisabledByMethod_Classification_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_Counters_StateDisabledByMethod_Classification_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_Counters_StateDisabledByMethod_Classification_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_Counters_StateDisabledByMethod_Classification_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // DiagnosticsLevel
         //
         void diagnostics_Counters_StateDisabledByMethod_DiagnosticsLevel_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_Counters_StateDisabledByMethod_DiagnosticsLevel_Variable(void);
-        bool get_Diagnostics_Counters_StateDisabledByMethod_DiagnosticsLevel_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_Counters_StateDisabledByMethod_DiagnosticsLevel_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_Counters_StateDisabledByMethod_DiagnosticsLevel_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_Counters_StateDisabledByMethod_DiagnosticsLevel_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // DateTime
         //
         void diagnostics_Counters_StateDisabledByMethod_TimeFirstChange_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_Counters_StateDisabledByMethod_TimeFirstChange_Variable(void);
-        bool get_Diagnostics_Counters_StateDisabledByMethod_TimeFirstChange_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_Counters_StateDisabledByMethod_TimeFirstChange_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_Counters_StateDisabledByMethod_TimeFirstChange_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_Counters_StateDisabledByMethod_TimeFirstChange_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // UInt32
         //
         void diagnostics_Counters_StateDisabledByMethod_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_Counters_StateDisabledByMethod_Variable(void);
-        bool get_Diagnostics_Counters_StateDisabledByMethod_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_Counters_StateDisabledByMethod_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_Counters_StateDisabledByMethod_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_Counters_StateDisabledByMethod_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // Boolean
         //
         void diagnostics_Counters_StateError_Active_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_Counters_StateError_Active_Variable(void);
-        bool get_Diagnostics_Counters_StateError_Active_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_Counters_StateError_Active_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_Counters_StateError_Active_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_Counters_StateError_Active_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // PubSubDiagnosticsCounterClassification
         //
         void diagnostics_Counters_StateError_Classification_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_Counters_StateError_Classification_Variable(void);
-        bool get_Diagnostics_Counters_StateError_Classification_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_Counters_StateError_Classification_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_Counters_StateError_Classification_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_Counters_StateError_Classification_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // DiagnosticsLevel
         //
         void diagnostics_Counters_StateError_DiagnosticsLevel_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_Counters_StateError_DiagnosticsLevel_Variable(void);
-        bool get_Diagnostics_Counters_StateError_DiagnosticsLevel_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_Counters_StateError_DiagnosticsLevel_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_Counters_StateError_DiagnosticsLevel_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_Counters_StateError_DiagnosticsLevel_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // DateTime
         //
         void diagnostics_Counters_StateError_TimeFirstChange_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_Counters_StateError_TimeFirstChange_Variable(void);
-        bool get_Diagnostics_Counters_StateError_TimeFirstChange_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_Counters_StateError_TimeFirstChange_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_Counters_StateError_TimeFirstChange_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_Counters_StateError_TimeFirstChange_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // UInt32
         //
         void diagnostics_Counters_StateError_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_Counters_StateError_Variable(void);
-        bool get_Diagnostics_Counters_StateError_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_Counters_StateError_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_Counters_StateError_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_Counters_StateError_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // Boolean
         //
         void diagnostics_Counters_StateOperationalByMethod_Active_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_Counters_StateOperationalByMethod_Active_Variable(void);
-        bool get_Diagnostics_Counters_StateOperationalByMethod_Active_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_Counters_StateOperationalByMethod_Active_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_Counters_StateOperationalByMethod_Active_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_Counters_StateOperationalByMethod_Active_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // PubSubDiagnosticsCounterClassification
         //
         void diagnostics_Counters_StateOperationalByMethod_Classification_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_Counters_StateOperationalByMethod_Classification_Variable(void);
-        bool get_Diagnostics_Counters_StateOperationalByMethod_Classification_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_Counters_StateOperationalByMethod_Classification_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_Counters_StateOperationalByMethod_Classification_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_Counters_StateOperationalByMethod_Classification_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // DiagnosticsLevel
         //
         void diagnostics_Counters_StateOperationalByMethod_DiagnosticsLevel_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_Counters_StateOperationalByMethod_DiagnosticsLevel_Variable(void);
-        bool get_Diagnostics_Counters_StateOperationalByMethod_DiagnosticsLevel_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_Counters_StateOperationalByMethod_DiagnosticsLevel_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_Counters_StateOperationalByMethod_DiagnosticsLevel_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_Counters_StateOperationalByMethod_DiagnosticsLevel_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // DateTime
         //
         void diagnostics_Counters_StateOperationalByMethod_TimeFirstChange_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_Counters_StateOperationalByMethod_TimeFirstChange_Variable(void);
-        bool get_Diagnostics_Counters_StateOperationalByMethod_TimeFirstChange_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_Counters_StateOperationalByMethod_TimeFirstChange_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_Counters_StateOperationalByMethod_TimeFirstChange_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_Counters_StateOperationalByMethod_TimeFirstChange_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // UInt32
         //
         void diagnostics_Counters_StateOperationalByMethod_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_Counters_StateOperationalByMethod_Variable(void);
-        bool get_Diagnostics_Counters_StateOperationalByMethod_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_Counters_StateOperationalByMethod_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_Counters_StateOperationalByMethod_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_Counters_StateOperationalByMethod_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // Boolean
         //
         void diagnostics_Counters_StateOperationalByParent_Active_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_Counters_StateOperationalByParent_Active_Variable(void);
-        bool get_Diagnostics_Counters_StateOperationalByParent_Active_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_Counters_StateOperationalByParent_Active_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_Counters_StateOperationalByParent_Active_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_Counters_StateOperationalByParent_Active_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // PubSubDiagnosticsCounterClassification
         //
         void diagnostics_Counters_StateOperationalByParent_Classification_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_Counters_StateOperationalByParent_Classification_Variable(void);
-        bool get_Diagnostics_Counters_StateOperationalByParent_Classification_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_Counters_StateOperationalByParent_Classification_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_Counters_StateOperationalByParent_Classification_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_Counters_StateOperationalByParent_Classification_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // DiagnosticsLevel
         //
         void diagnostics_Counters_StateOperationalByParent_DiagnosticsLevel_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_Counters_StateOperationalByParent_DiagnosticsLevel_Variable(void);
-        bool get_Diagnostics_Counters_StateOperationalByParent_DiagnosticsLevel_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_Counters_StateOperationalByParent_DiagnosticsLevel_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_Counters_StateOperationalByParent_DiagnosticsLevel_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_Counters_StateOperationalByParent_DiagnosticsLevel_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // DateTime
         //
         void diagnostics_Counters_StateOperationalByParent_TimeFirstChange_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_Counters_StateOperationalByParent_TimeFirstChange_Variable(void);
-        bool get_Diagnostics_Counters_StateOperationalByParent_TimeFirstChange_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_Counters_StateOperationalByParent_TimeFirstChange_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_Counters_StateOperationalByParent_TimeFirstChange_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_Counters_StateOperationalByParent_TimeFirstChange_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // UInt32
         //
         void diagnostics_Counters_StateOperationalByParent_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_Counters_StateOperationalByParent_Variable(void);
-        bool get_Diagnostics_Counters_StateOperationalByParent_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_Counters_StateOperationalByParent_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_Counters_StateOperationalByParent_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_Counters_StateOperationalByParent_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // Boolean
         //
         void diagnostics_Counters_StateOperationalFromError_Active_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_Counters_StateOperationalFromError_Active_Variable(void);
-        bool get_Diagnostics_Counters_StateOperationalFromError_Active_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_Counters_StateOperationalFromError_Active_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_Counters_StateOperationalFromError_Active_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_Counters_StateOperationalFromError_Active_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // PubSubDiagnosticsCounterClassification
         //
         void diagnostics_Counters_StateOperationalFromError_Classification_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_Counters_StateOperationalFromError_Classification_Variable(void);
-        bool get_Diagnostics_Counters_StateOperationalFromError_Classification_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_Counters_StateOperationalFromError_Classification_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_Counters_StateOperationalFromError_Classification_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_Counters_StateOperationalFromError_Classification_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // DiagnosticsLevel
         //
         void diagnostics_Counters_StateOperationalFromError_DiagnosticsLevel_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_Counters_StateOperationalFromError_DiagnosticsLevel_Variable(void);
-        bool get_Diagnostics_Counters_StateOperationalFromError_DiagnosticsLevel_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_Counters_StateOperationalFromError_DiagnosticsLevel_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_Counters_StateOperationalFromError_DiagnosticsLevel_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_Counters_StateOperationalFromError_DiagnosticsLevel_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // DateTime
         //
         void diagnostics_Counters_StateOperationalFromError_TimeFirstChange_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_Counters_StateOperationalFromError_TimeFirstChange_Variable(void);
-        bool get_Diagnostics_Counters_StateOperationalFromError_TimeFirstChange_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_Counters_StateOperationalFromError_TimeFirstChange_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_Counters_StateOperationalFromError_TimeFirstChange_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_Counters_StateOperationalFromError_TimeFirstChange_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // UInt32
         //
         void diagnostics_Counters_StateOperationalFromError_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_Counters_StateOperationalFromError_Variable(void);
-        bool get_Diagnostics_Counters_StateOperationalFromError_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_Counters_StateOperationalFromError_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_Counters_StateOperationalFromError_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_Counters_StateOperationalFromError_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // Boolean
         //
         void diagnostics_Counters_StatePausedByParent_Active_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_Counters_StatePausedByParent_Active_Variable(void);
-        bool get_Diagnostics_Counters_StatePausedByParent_Active_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_Counters_StatePausedByParent_Active_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_Counters_StatePausedByParent_Active_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_Counters_StatePausedByParent_Active_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // PubSubDiagnosticsCounterClassification
         //
         void diagnostics_Counters_StatePausedByParent_Classification_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_Counters_StatePausedByParent_Classification_Variable(void);
-        bool get_Diagnostics_Counters_StatePausedByParent_Classification_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_Counters_StatePausedByParent_Classification_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_Counters_StatePausedByParent_Classification_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_Counters_StatePausedByParent_Classification_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // DiagnosticsLevel
         //
         void diagnostics_Counters_StatePausedByParent_DiagnosticsLevel_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_Counters_StatePausedByParent_DiagnosticsLevel_Variable(void);
-        bool get_Diagnostics_Counters_StatePausedByParent_DiagnosticsLevel_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_Counters_StatePausedByParent_DiagnosticsLevel_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_Counters_StatePausedByParent_DiagnosticsLevel_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_Counters_StatePausedByParent_DiagnosticsLevel_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // DateTime
         //
         void diagnostics_Counters_StatePausedByParent_TimeFirstChange_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_Counters_StatePausedByParent_TimeFirstChange_Variable(void);
-        bool get_Diagnostics_Counters_StatePausedByParent_TimeFirstChange_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_Counters_StatePausedByParent_TimeFirstChange_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_Counters_StatePausedByParent_TimeFirstChange_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_Counters_StatePausedByParent_TimeFirstChange_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // UInt32
         //
         void diagnostics_Counters_StatePausedByParent_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_Counters_StatePausedByParent_Variable(void);
-        bool get_Diagnostics_Counters_StatePausedByParent_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_Counters_StatePausedByParent_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_Counters_StatePausedByParent_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_Counters_StatePausedByParent_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // DiagnosticsLevel
         //
         void diagnostics_DiagnosticsLevel_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_DiagnosticsLevel_Variable(void);
-        bool get_Diagnostics_DiagnosticsLevel_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_DiagnosticsLevel_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_DiagnosticsLevel_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_DiagnosticsLevel_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // Boolean
         //
         void diagnostics_SubError_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_SubError_Variable(void);
-        bool get_Diagnostics_SubError_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_SubError_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_SubError_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_SubError_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // Boolean
         //
         void diagnostics_TotalError_Active_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_TotalError_Active_Variable(void);
-        bool get_Diagnostics_TotalError_Active_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_TotalError_Active_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_TotalError_Active_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_TotalError_Active_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // PubSubDiagnosticsCounterClassification
         //
         void diagnostics_TotalError_Classification_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_TotalError_Classification_Variable(void);
-        bool get_Diagnostics_TotalError_Classification_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_TotalError_Classification_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_TotalError_Classification_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_TotalError_Classification_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // DiagnosticsLevel
         //
         void diagnostics_TotalError_DiagnosticsLevel_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_TotalError_DiagnosticsLevel_Variable(void);
-        bool get_Diagnostics_TotalError_DiagnosticsLevel_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_TotalError_DiagnosticsLevel_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_TotalError_DiagnosticsLevel_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_TotalError_DiagnosticsLevel_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // DateTime
         //
         void diagnostics_TotalError_TimeFirstChange_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_TotalError_TimeFirstChange_Variable(void);
-        bool get_Diagnostics_TotalError_TimeFirstChange_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_TotalError_TimeFirstChange_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_TotalError_TimeFirstChange_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_TotalError_TimeFirstChange_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // UInt32
         //
         void diagnostics_TotalError_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_TotalError_Variable(void);
-        bool get_Diagnostics_TotalError_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_TotalError_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_TotalError_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_TotalError_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // Boolean
         //
         void diagnostics_TotalInformation_Active_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_TotalInformation_Active_Variable(void);
-        bool get_Diagnostics_TotalInformation_Active_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_TotalInformation_Active_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_TotalInformation_Active_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_TotalInformation_Active_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // PubSubDiagnosticsCounterClassification
         //
         void diagnostics_TotalInformation_Classification_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_TotalInformation_Classification_Variable(void);
-        bool get_Diagnostics_TotalInformation_Classification_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_TotalInformation_Classification_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_TotalInformation_Classification_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_TotalInformation_Classification_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // DiagnosticsLevel
         //
         void diagnostics_TotalInformation_DiagnosticsLevel_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_TotalInformation_DiagnosticsLevel_Variable(void);
-        bool get_Diagnostics_TotalInformation_DiagnosticsLevel_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_TotalInformation_DiagnosticsLevel_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_TotalInformation_DiagnosticsLevel_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_TotalInformation_DiagnosticsLevel_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // DateTime
         //
         void diagnostics_TotalInformation_TimeFirstChange_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_TotalInformation_TimeFirstChange_Variable(void);
-        bool get_Diagnostics_TotalInformation_TimeFirstChange_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_TotalInformation_TimeFirstChange_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_TotalInformation_TimeFirstChange_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_TotalInformation_TimeFirstChange_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // UInt32
         //
         void diagnostics_TotalInformation_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnostics_TotalInformation_Variable(void);
-        bool get_Diagnostics_TotalInformation_Variable(OpcUaDataValue& dataValue);
-        bool set_Diagnostics_TotalInformation_Variable(const OpcUaDataValue& dataValue);
+        bool get_Diagnostics_TotalInformation_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Diagnostics_TotalInformation_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // UInt32
         //
         void keyFrameCount_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& keyFrameCount_Variable(void);
-        bool get_KeyFrameCount_Variable(OpcUaDataValue& dataValue);
-        bool set_KeyFrameCount_Variable(const OpcUaDataValue& dataValue);
+        bool get_KeyFrameCount_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_KeyFrameCount_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // PubSubState
         //
         void status_State_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& status_State_Variable(void);
-        bool get_Status_State_Variable(OpcUaDataValue& dataValue);
-        bool set_Status_State_Variable(const OpcUaDataValue& dataValue);
+        bool get_Status_State_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Status_State_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
-        virtual void call_Diagnostics_Reset_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_Diagnostics_Reset_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
     
       private:
         ServerVariable::SPtr dataSetFieldContentMask_Variable_;

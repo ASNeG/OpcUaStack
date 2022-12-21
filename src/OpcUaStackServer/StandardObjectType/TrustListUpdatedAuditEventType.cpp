@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/TrustListUpdatedAuditEventType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

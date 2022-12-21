@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardVariableType/ConditionVariableType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

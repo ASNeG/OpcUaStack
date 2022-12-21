@@ -34,40 +34,40 @@ namespace OpcUaStackServer
         //
         void dataSetOrdering_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& dataSetOrdering_Variable(void);
-        bool get_DataSetOrdering_Variable(OpcUaDataValue& dataValue);
-        bool set_DataSetOrdering_Variable(const OpcUaDataValue& dataValue);
+        bool get_DataSetOrdering_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_DataSetOrdering_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // VersionTime
         //
         void groupVersion_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& groupVersion_Variable(void);
-        bool get_GroupVersion_Variable(OpcUaDataValue& dataValue);
-        bool set_GroupVersion_Variable(const OpcUaDataValue& dataValue);
+        bool get_GroupVersion_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_GroupVersion_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // UadpNetworkMessageContentMask
         //
         void networkMessageContentMask_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& networkMessageContentMask_Variable(void);
-        bool get_NetworkMessageContentMask_Variable(OpcUaDataValue& dataValue);
-        bool set_NetworkMessageContentMask_Variable(const OpcUaDataValue& dataValue);
+        bool get_NetworkMessageContentMask_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_NetworkMessageContentMask_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // Duration
         //
         void publishingOffset_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& publishingOffset_Variable(void);
-        bool get_PublishingOffset_Variable(OpcUaDataValue& dataValue);
-        bool set_PublishingOffset_Variable(const OpcUaDataValue& dataValue);
+        bool get_PublishingOffset_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_PublishingOffset_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // Duration
         //
         void samplingOffset_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& samplingOffset_Variable(void);
-        bool get_SamplingOffset_Variable(OpcUaDataValue& dataValue);
-        bool set_SamplingOffset_Variable(const OpcUaDataValue& dataValue);
+        bool get_SamplingOffset_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_SamplingOffset_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
     
       private:
         ServerVariable::SPtr dataSetOrdering_Variable_;

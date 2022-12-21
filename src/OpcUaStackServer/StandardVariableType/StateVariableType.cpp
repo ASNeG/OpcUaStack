@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardVariableType/StateVariableType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

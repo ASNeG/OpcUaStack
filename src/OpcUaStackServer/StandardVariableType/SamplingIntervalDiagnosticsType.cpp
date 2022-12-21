@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardVariableType/SamplingIntervalDiagnosticsType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/AuditConditionShelvingEventType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

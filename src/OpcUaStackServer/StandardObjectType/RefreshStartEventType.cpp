@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/RefreshStartEventType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

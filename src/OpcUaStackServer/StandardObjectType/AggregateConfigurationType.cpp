@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/AggregateConfigurationType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/DialogConditionType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
@@ -109,10 +110,10 @@ namespace OpcUaStackServer
         setServerMethod(disable_Method_);
         setServerMethod(enable_Method_);
         setServerMethod(respond_Method_);
-        addComment_Method_->registerMethod(boost::bind(&DialogConditionType::call_AddComment_Method, this, _1));
-        disable_Method_->registerMethod(boost::bind(&DialogConditionType::call_Disable_Method, this, _1));
-        enable_Method_->registerMethod(boost::bind(&DialogConditionType::call_Enable_Method, this, _1));
-        respond_Method_->registerMethod(boost::bind(&DialogConditionType::call_Respond_Method, this, _1));
+        addComment_Method_->registerMethod(boost::bind(&DialogConditionType::call_AddComment_Method, this, boost::placeholders::_1));
+        disable_Method_->registerMethod(boost::bind(&DialogConditionType::call_Disable_Method, this, boost::placeholders::_1));
+        enable_Method_->registerMethod(boost::bind(&DialogConditionType::call_Enable_Method, this, boost::placeholders::_1));
+        respond_Method_->registerMethod(boost::bind(&DialogConditionType::call_Respond_Method, this, boost::placeholders::_1));
     }
     
     DialogConditionType::DialogConditionType(const DialogConditionType& value)
@@ -210,10 +211,10 @@ namespace OpcUaStackServer
         setServerMethod(disable_Method_);
         setServerMethod(enable_Method_);
         setServerMethod(respond_Method_);
-        addComment_Method_->registerMethod(boost::bind(&DialogConditionType::call_AddComment_Method, this, _1));
-        disable_Method_->registerMethod(boost::bind(&DialogConditionType::call_Disable_Method, this, _1));
-        enable_Method_->registerMethod(boost::bind(&DialogConditionType::call_Enable_Method, this, _1));
-        respond_Method_->registerMethod(boost::bind(&DialogConditionType::call_Respond_Method, this, _1));
+        addComment_Method_->registerMethod(boost::bind(&DialogConditionType::call_AddComment_Method, this, boost::placeholders::_1));
+        disable_Method_->registerMethod(boost::bind(&DialogConditionType::call_Disable_Method, this, boost::placeholders::_1));
+        enable_Method_->registerMethod(boost::bind(&DialogConditionType::call_Enable_Method, this, boost::placeholders::_1));
+        respond_Method_->registerMethod(boost::bind(&DialogConditionType::call_Respond_Method, this, boost::placeholders::_1));
     }
     
     DialogConditionType::~DialogConditionType(void)

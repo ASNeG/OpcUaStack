@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/RoleSetType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
@@ -26,8 +27,8 @@ namespace OpcUaStackServer
         objectTypeNodeId((OpcUaUInt32)15607);
         setServerMethod(addRole_Method_);
         setServerMethod(removeRole_Method_);
-        addRole_Method_->registerMethod(boost::bind(&RoleSetType::call_AddRole_Method, this, _1));
-        removeRole_Method_->registerMethod(boost::bind(&RoleSetType::call_RemoveRole_Method, this, _1));
+        addRole_Method_->registerMethod(boost::bind(&RoleSetType::call_AddRole_Method, this, boost::placeholders::_1));
+        removeRole_Method_->registerMethod(boost::bind(&RoleSetType::call_RemoveRole_Method, this, boost::placeholders::_1));
     }
     
     /**
@@ -42,8 +43,8 @@ namespace OpcUaStackServer
         objectTypeNodeId((OpcUaUInt32)15607);
         setServerMethod(addRole_Method_);
         setServerMethod(removeRole_Method_);
-        addRole_Method_->registerMethod(boost::bind(&RoleSetType::call_AddRole_Method, this, _1));
-        removeRole_Method_->registerMethod(boost::bind(&RoleSetType::call_RemoveRole_Method, this, _1));
+        addRole_Method_->registerMethod(boost::bind(&RoleSetType::call_AddRole_Method, this, boost::placeholders::_1));
+        removeRole_Method_->registerMethod(boost::bind(&RoleSetType::call_RemoveRole_Method, this, boost::placeholders::_1));
     }
     
     RoleSetType::~RoleSetType(void)

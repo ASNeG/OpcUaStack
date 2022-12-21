@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/ReaderGroupType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
@@ -139,9 +140,9 @@ namespace OpcUaStackServer
         setServerMethod(addDataSetReader_Method_);
         setServerMethod(diagnostics_Reset_Method_);
         setServerMethod(removeDataSetReader_Method_);
-        addDataSetReader_Method_->registerMethod(boost::bind(&ReaderGroupType::call_AddDataSetReader_Method, this, _1));
-        diagnostics_Reset_Method_->registerMethod(boost::bind(&ReaderGroupType::call_Diagnostics_Reset_Method, this, _1));
-        removeDataSetReader_Method_->registerMethod(boost::bind(&ReaderGroupType::call_RemoveDataSetReader_Method, this, _1));
+        addDataSetReader_Method_->registerMethod(boost::bind(&ReaderGroupType::call_AddDataSetReader_Method, this, boost::placeholders::_1));
+        diagnostics_Reset_Method_->registerMethod(boost::bind(&ReaderGroupType::call_Diagnostics_Reset_Method, this, boost::placeholders::_1));
+        removeDataSetReader_Method_->registerMethod(boost::bind(&ReaderGroupType::call_RemoveDataSetReader_Method, this, boost::placeholders::_1));
     }
     
     ReaderGroupType::ReaderGroupType(const ReaderGroupType& value)
@@ -269,9 +270,9 @@ namespace OpcUaStackServer
         setServerMethod(addDataSetReader_Method_);
         setServerMethod(diagnostics_Reset_Method_);
         setServerMethod(removeDataSetReader_Method_);
-        addDataSetReader_Method_->registerMethod(boost::bind(&ReaderGroupType::call_AddDataSetReader_Method, this, _1));
-        diagnostics_Reset_Method_->registerMethod(boost::bind(&ReaderGroupType::call_Diagnostics_Reset_Method, this, _1));
-        removeDataSetReader_Method_->registerMethod(boost::bind(&ReaderGroupType::call_RemoveDataSetReader_Method, this, _1));
+        addDataSetReader_Method_->registerMethod(boost::bind(&ReaderGroupType::call_AddDataSetReader_Method, this, boost::placeholders::_1));
+        diagnostics_Reset_Method_->registerMethod(boost::bind(&ReaderGroupType::call_Diagnostics_Reset_Method, this, boost::placeholders::_1));
+        removeDataSetReader_Method_->registerMethod(boost::bind(&ReaderGroupType::call_RemoveDataSetReader_Method, this, boost::placeholders::_1));
     }
     
     ReaderGroupType::~ReaderGroupType(void)

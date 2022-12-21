@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/HighlyManagedAlarmConditionClassType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

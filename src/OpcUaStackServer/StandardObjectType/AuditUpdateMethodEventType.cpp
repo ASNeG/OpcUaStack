@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/AuditUpdateMethodEventType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

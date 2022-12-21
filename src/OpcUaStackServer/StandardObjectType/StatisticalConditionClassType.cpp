@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/StatisticalConditionClassType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

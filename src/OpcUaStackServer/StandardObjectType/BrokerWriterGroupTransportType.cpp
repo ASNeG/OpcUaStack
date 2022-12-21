@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/BrokerWriterGroupTransportType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

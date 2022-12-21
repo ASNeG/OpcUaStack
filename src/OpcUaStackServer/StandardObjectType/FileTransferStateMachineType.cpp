@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/FileTransferStateMachineType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
@@ -33,7 +34,7 @@ namespace OpcUaStackServer
         setServerVariable(lastTransition_Id_Variable_);
         setServerVariable(lastTransition_Variable_);
         setServerMethod(reset_Method_);
-        reset_Method_->registerMethod(boost::bind(&FileTransferStateMachineType::call_Reset_Method, this, _1));
+        reset_Method_->registerMethod(boost::bind(&FileTransferStateMachineType::call_Reset_Method, this, boost::placeholders::_1));
     }
     
     FileTransferStateMachineType::FileTransferStateMachineType(const FileTransferStateMachineType& value)
@@ -55,7 +56,7 @@ namespace OpcUaStackServer
         setServerVariable(lastTransition_Id_Variable_);
         setServerVariable(lastTransition_Variable_);
         setServerMethod(reset_Method_);
-        reset_Method_->registerMethod(boost::bind(&FileTransferStateMachineType::call_Reset_Method, this, _1));
+        reset_Method_->registerMethod(boost::bind(&FileTransferStateMachineType::call_Reset_Method, this, boost::placeholders::_1));
     }
     
     FileTransferStateMachineType::~FileTransferStateMachineType(void)

@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/SecurityGroupType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

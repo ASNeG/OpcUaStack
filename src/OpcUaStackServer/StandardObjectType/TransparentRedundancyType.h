@@ -34,24 +34,24 @@ namespace OpcUaStackServer
         //
         void currentServerId_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& currentServerId_Variable(void);
-        bool get_CurrentServerId_Variable(OpcUaDataValue& dataValue);
-        bool set_CurrentServerId_Variable(const OpcUaDataValue& dataValue);
+        bool get_CurrentServerId_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_CurrentServerId_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // RedundancySupport
         //
         void redundancySupport_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& redundancySupport_Variable(void);
-        bool get_RedundancySupport_Variable(OpcUaDataValue& dataValue);
-        bool set_RedundancySupport_Variable(const OpcUaDataValue& dataValue);
+        bool get_RedundancySupport_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_RedundancySupport_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // RedundantServerDataType (Array)
         //
         void redundantServerArray_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& redundantServerArray_Variable(void);
-        bool get_RedundantServerArray_Variable(OpcUaDataValue& dataValue);
-        bool set_RedundantServerArray_Variable(const OpcUaDataValue& dataValue);
+        bool get_RedundantServerArray_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_RedundantServerArray_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
     
       private:
         ServerVariable::SPtr currentServerId_Variable_;

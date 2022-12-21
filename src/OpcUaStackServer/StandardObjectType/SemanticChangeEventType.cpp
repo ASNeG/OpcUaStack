@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/SemanticChangeEventType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/AuditCertificateExpiredEventType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

@@ -1,5 +1,5 @@
 /*
-   Copyright 2019-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2019-2022 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -221,14 +221,14 @@ namespace OpcUaStackServer
 			ss << prefix << "//" << std::endl;
 			ss << prefix << "void " << vt->functionName() << "(ServerVariable::SPtr& serverVariable);" << std::endl;
 			ss << prefix << "ServerVariable::SPtr& " << vt->functionName() << "(void);" << std::endl;
-			ss << prefix << "bool get_" << vt->name() << "(OpcUaDataValue& dataValue);" << std::endl;
-			ss << prefix << "bool set_" << vt->name() << "(const OpcUaDataValue& dataValue);" << std::endl;
+			ss << prefix << "bool get_" << vt->name() << "(OpcUaStackCore::OpcUaDataValue& dataValue);" << std::endl;
+			ss << prefix << "bool set_" << vt->name() << "(const OpcUaStackCore::OpcUaDataValue& dataValue);" << std::endl;
 		}
 
 		for (auto& methodTypeField : nodeInfo_.methodTypeFieldMap()) {
 			auto& vt  = methodTypeField.second;
 			ss << std::endl;
-			ss << prefix << "virtual void call_" << vt->name() << "(ApplicationMethodContext* applicationMethodContext);" << std::endl;
+			ss << prefix << "virtual void call_" << vt->name() << "(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);" << std::endl;
 		}
 
 		headerContent_ += ss.str();
@@ -349,6 +349,8 @@ namespace OpcUaStackServer
 		//
 		// namespace
 		//
+
+		ss << "using namespace OpcUaStackCore;" << std::endl;
 		ss << std::endl;
 		ss << "namespace " <<  nodeInfo_.namespaceName() << std::endl;
 		ss << "{" << std::endl;
@@ -417,7 +419,7 @@ namespace OpcUaStackServer
 
 		for (auto& methodTypeField : nodeInfo_.methodTypeFieldMap()) {
 			auto& vt = methodTypeField.second;
-			ss << prefix << "    " << vt->variableName() << "->registerMethod(boost::bind(&" << nodeInfo_.className() << "::call_" << vt->name() << ", this, _1));" << std::endl;
+			ss << prefix << "    " << vt->variableName() << "->registerMethod(boost::bind(&" << nodeInfo_.className() << "::call_" << vt->name() << ", this, boost::placeholder::_1));" << std::endl;
 		}
 
 		ss << prefix << "}" << std::endl;
@@ -462,7 +464,7 @@ namespace OpcUaStackServer
 
 		for (auto& methodTypeField : nodeInfo_.methodTypeFieldMap()) {
 			auto& vt = methodTypeField.second;
-			ss << prefix << "    " << vt->variableName() << "->registerMethod(boost::bind(&" << nodeInfo_.className() << "::call_" << vt->name() << ", this, _1));" << std::endl;
+			ss << prefix << "    " << vt->variableName() << "->registerMethod(boost::bind(&" << nodeInfo_.className() << "::call_" << vt->name() << ", this, boost::placeholder::_1));" << std::endl;
 		}
 
 		ss << prefix << "}" << std::endl;

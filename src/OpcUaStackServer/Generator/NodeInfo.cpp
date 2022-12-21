@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2022 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -337,9 +337,8 @@ namespace OpcUaStackServer
 		//
 		if (isStructureType) {
 			if (!ima.getBinaryEncodingNode(baseNode_, defaultBinaryNodeId_)) {
-				Log(Error, "default binary encoding node identifier do not not exist in information model")
+				Log(Info, "default binary encoding node identifier do not not exist in information model")
 					.parameter("DataTypeNodeId", dataTypeNodeId_);
-				return false;
 			}
 		}
 
@@ -348,9 +347,9 @@ namespace OpcUaStackServer
 		//
 		if (isStructureType) {
 			if (!ima.getXMLEncodingNode(baseNode_, defaultXMLNodeId_)) {
-				Log(Error, "default xml encoding node identifier do not not exist in information model")
+				Log(Info, "default xml encoding node identifier do not not exist in information model")
 					.parameter("DataTypeNodeId", dataTypeNodeId_);
-				return false;
+
 			}
 		}
 
@@ -359,9 +358,8 @@ namespace OpcUaStackServer
 		//
 		if (isStructureType) {
 			if (!ima.getJSONEncodingNode(baseNode_, defaultJSONNodeId_)) {
-				Log(Error, "default json encoding node identifier do not not exist in information model")
+				Log(Info, "default json encoding node identifier do not not exist in information model")
 					.parameter("DataTypeNodeId", dataTypeNodeId_);
-				return false;
 			}
 		}
 

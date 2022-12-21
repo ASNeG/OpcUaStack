@@ -33,24 +33,24 @@ namespace OpcUaStackServer
         //
         void dataTypeVersion_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& dataTypeVersion_Variable(void);
-        bool get_DataTypeVersion_Variable(OpcUaDataValue& dataValue);
-        bool set_DataTypeVersion_Variable(const OpcUaDataValue& dataValue);
+        bool get_DataTypeVersion_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_DataTypeVersion_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // ByteString
         //
         void dictionaryFragment_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& dictionaryFragment_Variable(void);
-        bool get_DictionaryFragment_Variable(OpcUaDataValue& dataValue);
-        bool set_DictionaryFragment_Variable(const OpcUaDataValue& dataValue);
+        bool get_DictionaryFragment_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_DictionaryFragment_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // String (Array)
         //
         void variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& variable(void);
-        bool get_Variable(OpcUaDataValue& dataValue);
-        bool set_Variable(const OpcUaDataValue& dataValue);
+        bool get_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
     
       private:
         ServerVariable::SPtr dataTypeVersion_Variable_;

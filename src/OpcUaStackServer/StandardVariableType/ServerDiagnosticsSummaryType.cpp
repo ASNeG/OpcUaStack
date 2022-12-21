@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardVariableType/ServerDiagnosticsSummaryType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

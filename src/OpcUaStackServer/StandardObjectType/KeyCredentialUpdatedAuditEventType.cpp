@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/KeyCredentialUpdatedAuditEventType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

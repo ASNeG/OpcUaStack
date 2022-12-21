@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/DataSetWriterType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
@@ -125,7 +126,7 @@ namespace OpcUaStackServer
         setServerVariable(keyFrameCount_Variable_);
         setServerVariable(status_State_Variable_);
         setServerMethod(diagnostics_Reset_Method_);
-        diagnostics_Reset_Method_->registerMethod(boost::bind(&DataSetWriterType::call_Diagnostics_Reset_Method, this, _1));
+        diagnostics_Reset_Method_->registerMethod(boost::bind(&DataSetWriterType::call_Diagnostics_Reset_Method, this, boost::placeholders::_1));
     }
     
     DataSetWriterType::DataSetWriterType(const DataSetWriterType& value)
@@ -239,7 +240,7 @@ namespace OpcUaStackServer
         setServerVariable(keyFrameCount_Variable_);
         setServerVariable(status_State_Variable_);
         setServerMethod(diagnostics_Reset_Method_);
-        diagnostics_Reset_Method_->registerMethod(boost::bind(&DataSetWriterType::call_Diagnostics_Reset_Method, this, _1));
+        diagnostics_Reset_Method_->registerMethod(boost::bind(&DataSetWriterType::call_Diagnostics_Reset_Method, this, boost::placeholders::_1));
     }
     
     DataSetWriterType::~DataSetWriterType(void)

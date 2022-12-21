@@ -263,7 +263,7 @@ namespace OpcUaStackServer
 	SubscriptionService::receiveSetPublishingModeRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
 		// FIXME:
-		serviceTransaction->statusCode(BadInternalError);
+		serviceTransaction->statusCode(Success);//BadInternalError);
 		sendAnswer(serviceTransaction);
 	}
 

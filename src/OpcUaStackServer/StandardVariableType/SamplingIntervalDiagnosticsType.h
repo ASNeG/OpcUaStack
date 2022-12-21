@@ -33,40 +33,40 @@ namespace OpcUaStackServer
         //
         void disabledMonitoredItemsSamplingCount_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& disabledMonitoredItemsSamplingCount_Variable(void);
-        bool get_DisabledMonitoredItemsSamplingCount_Variable(OpcUaDataValue& dataValue);
-        bool set_DisabledMonitoredItemsSamplingCount_Variable(const OpcUaDataValue& dataValue);
+        bool get_DisabledMonitoredItemsSamplingCount_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_DisabledMonitoredItemsSamplingCount_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // UInt32
         //
         void maxSampledMonitoredItemsCount_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& maxSampledMonitoredItemsCount_Variable(void);
-        bool get_MaxSampledMonitoredItemsCount_Variable(OpcUaDataValue& dataValue);
-        bool set_MaxSampledMonitoredItemsCount_Variable(const OpcUaDataValue& dataValue);
+        bool get_MaxSampledMonitoredItemsCount_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_MaxSampledMonitoredItemsCount_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // UInt32
         //
         void sampledMonitoredItemsCount_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& sampledMonitoredItemsCount_Variable(void);
-        bool get_SampledMonitoredItemsCount_Variable(OpcUaDataValue& dataValue);
-        bool set_SampledMonitoredItemsCount_Variable(const OpcUaDataValue& dataValue);
+        bool get_SampledMonitoredItemsCount_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_SampledMonitoredItemsCount_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // Duration
         //
         void samplingInterval_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& samplingInterval_Variable(void);
-        bool get_SamplingInterval_Variable(OpcUaDataValue& dataValue);
-        bool set_SamplingInterval_Variable(const OpcUaDataValue& dataValue);
+        bool get_SamplingInterval_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_SamplingInterval_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // SamplingIntervalDiagnosticsDataType (Array)
         //
         void variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& variable(void);
-        bool get_Variable(OpcUaDataValue& dataValue);
-        bool set_Variable(const OpcUaDataValue& dataValue);
+        bool get_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
     
       private:
         ServerVariable::SPtr disabledMonitoredItemsSamplingCount_Variable_;

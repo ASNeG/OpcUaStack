@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/KeyCredentialConfigurationFolderType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
@@ -21,7 +22,7 @@ namespace OpcUaStackServer
         objectTypeNamespaceName("http://opcfoundation.org/UA/");
         objectTypeNodeId((OpcUaUInt32)17496);
         setServerMethod(createCredential_Method_);
-        createCredential_Method_->registerMethod(boost::bind(&KeyCredentialConfigurationFolderType::call_CreateCredential_Method, this, _1));
+        createCredential_Method_->registerMethod(boost::bind(&KeyCredentialConfigurationFolderType::call_CreateCredential_Method, this, boost::placeholders::_1));
     }
     
     KeyCredentialConfigurationFolderType::KeyCredentialConfigurationFolderType(const KeyCredentialConfigurationFolderType& value)
@@ -31,7 +32,7 @@ namespace OpcUaStackServer
         objectTypeNamespaceName("http://opcfoundation.org/UA/");
         objectTypeNodeId((OpcUaUInt32)17496);
         setServerMethod(createCredential_Method_);
-        createCredential_Method_->registerMethod(boost::bind(&KeyCredentialConfigurationFolderType::call_CreateCredential_Method, this, _1));
+        createCredential_Method_->registerMethod(boost::bind(&KeyCredentialConfigurationFolderType::call_CreateCredential_Method, this, boost::placeholders::_1));
     }
     
     KeyCredentialConfigurationFolderType::~KeyCredentialConfigurationFolderType(void)

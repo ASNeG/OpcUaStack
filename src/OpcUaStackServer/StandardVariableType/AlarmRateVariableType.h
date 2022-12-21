@@ -33,16 +33,16 @@ namespace OpcUaStackServer
         //
         void rate_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& rate_Variable(void);
-        bool get_Rate_Variable(OpcUaDataValue& dataValue);
-        bool set_Rate_Variable(const OpcUaDataValue& dataValue);
+        bool get_Rate_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Rate_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // Double (Array)
         //
         void variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& variable(void);
-        bool get_Variable(OpcUaDataValue& dataValue);
-        bool set_Variable(const OpcUaDataValue& dataValue);
+        bool get_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
     
       private:
         ServerVariable::SPtr rate_Variable_;

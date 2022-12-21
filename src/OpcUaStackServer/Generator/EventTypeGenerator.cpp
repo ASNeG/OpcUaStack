@@ -621,12 +621,12 @@ namespace OpcUaStackServer
 			VariableElement::SPtr variableElement = *it;
 			std::string functionName = variableElement->functionName();
 
-			ss << prefix << "bool " << functionName << "(OpcUaVariant::SPtr& variable);" << std::endl;
+			ss << prefix << "bool " << functionName << "(OpcUaStackCore::OpcUaVariant::SPtr& variable);" << std::endl;
 			ss << prefix << "OpcUaVariant::SPtr " << functionName << "(void);" << std::endl;
 			ss << prefix << std::endl;
 		}
 
-		ss << prefix << "bool set" << eventTypeName_ << "(OpcUaVariant::SPtr& variable);" << std::endl;
+		ss << prefix << "bool set" << eventTypeName_ << "(OpcUaStackCore::OpcUaVariant::SPtr& variable);" << std::endl;
 		ss << prefix << "OpcUaVariant::SPtr get" << eventTypeName_ << "(void);" << std::endl;
 		ss << prefix << std::endl;
 
@@ -634,9 +634,9 @@ namespace OpcUaStackServer
 		ss << prefix << "//- EventBase interface" << std::endl;
 		ss << prefix << "virtual void mapNamespaceUri(void);" << std::endl;
 		ss << prefix << std::endl;
-		ss << prefix << "virtual OpcUaVariant::SPtr get(" << std::endl;
-		ss << prefix << "    OpcUaNodeId& eventType," << std::endl;
-		ss << prefix << "    std::list<OpcUaQualifiedName::SPtr>& browseNameList," << std::endl;
+		ss << prefix << "virtual OpcUaStackCore::OpcUaVariant::SPtr get(" << std::endl;
+		ss << prefix << "    OpcUaStackCore::OpcUaNodeId& eventType," << std::endl;
+		ss << prefix << "    std::list<OpcUaStackCore::OpcUaQualifiedName::SPtr>& browseNameList," << std::endl;
 		ss << prefix << "    EventResult::Code& resultCode" << std::endl;
 		ss << prefix << ");" << std::endl;
 		ss << prefix << "//- EventBase interface" << std::endl;
@@ -725,6 +725,7 @@ namespace OpcUaStackServer
 		//
 		// namespace
 		//
+		ss << "using namespace OpcUaStackCore;" << std::endl;
 		ss << std::endl;
 		ss << "namespace " <<  projectNamespace_ << std::endl;
 		ss << "{" << std::endl;

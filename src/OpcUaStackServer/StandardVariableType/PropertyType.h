@@ -33,8 +33,8 @@ namespace OpcUaStackServer
         //
         void variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& variable(void);
-        bool get_Variable(OpcUaDataValue& dataValue);
-        bool set_Variable(const OpcUaDataValue& dataValue);
+        bool get_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
     
       private:
         ServerVariable::SPtr variable_;

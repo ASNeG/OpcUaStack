@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardVariableType/CubeItemType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

@@ -34,48 +34,48 @@ namespace OpcUaStackServer
         //
         void groupProperties_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& groupProperties_Variable(void);
-        bool get_GroupProperties_Variable(OpcUaDataValue& dataValue);
-        bool set_GroupProperties_Variable(const OpcUaDataValue& dataValue);
+        bool get_GroupProperties_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_GroupProperties_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // UInt32
         //
         void maxNetworkMessageSize_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& maxNetworkMessageSize_Variable(void);
-        bool get_MaxNetworkMessageSize_Variable(OpcUaDataValue& dataValue);
-        bool set_MaxNetworkMessageSize_Variable(const OpcUaDataValue& dataValue);
+        bool get_MaxNetworkMessageSize_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_MaxNetworkMessageSize_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // String
         //
         void securityGroupId_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& securityGroupId_Variable(void);
-        bool get_SecurityGroupId_Variable(OpcUaDataValue& dataValue);
-        bool set_SecurityGroupId_Variable(const OpcUaDataValue& dataValue);
+        bool get_SecurityGroupId_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_SecurityGroupId_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // EndpointDescription (Array)
         //
         void securityKeyServices_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& securityKeyServices_Variable(void);
-        bool get_SecurityKeyServices_Variable(OpcUaDataValue& dataValue);
-        bool set_SecurityKeyServices_Variable(const OpcUaDataValue& dataValue);
+        bool get_SecurityKeyServices_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_SecurityKeyServices_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // MessageSecurityMode
         //
         void securityMode_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& securityMode_Variable(void);
-        bool get_SecurityMode_Variable(OpcUaDataValue& dataValue);
-        bool set_SecurityMode_Variable(const OpcUaDataValue& dataValue);
+        bool get_SecurityMode_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_SecurityMode_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // PubSubState
         //
         void status_State_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& status_State_Variable(void);
-        bool get_Status_State_Variable(OpcUaDataValue& dataValue);
-        bool set_Status_State_Variable(const OpcUaDataValue& dataValue);
+        bool get_Status_State_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Status_State_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
     
       private:
         ServerVariable::SPtr groupProperties_Variable_;

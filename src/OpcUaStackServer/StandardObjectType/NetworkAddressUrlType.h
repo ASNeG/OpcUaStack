@@ -34,16 +34,16 @@ namespace OpcUaStackServer
         //
         void networkInterface_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& networkInterface_Variable(void);
-        bool get_NetworkInterface_Variable(OpcUaDataValue& dataValue);
-        bool set_NetworkInterface_Variable(const OpcUaDataValue& dataValue);
+        bool get_NetworkInterface_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_NetworkInterface_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // String
         //
         void url_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& url_Variable(void);
-        bool get_Url_Variable(OpcUaDataValue& dataValue);
-        bool set_Url_Variable(const OpcUaDataValue& dataValue);
+        bool get_Url_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Url_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
     
       private:
         ServerVariable::SPtr networkInterface_Variable_;

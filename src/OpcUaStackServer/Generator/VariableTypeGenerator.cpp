@@ -224,8 +224,8 @@ namespace OpcUaStackServer
 			ss << prefix << "//" << std::endl;
 			ss << prefix << "void " << vt->functionName() << "(ServerVariable::SPtr& serverVariable);" << std::endl;
 			ss << prefix << "ServerVariable::SPtr& " << vt->functionName() << "(void);" << std::endl;
-			ss << prefix << "bool get_" << vt->name() << "(OpcUaDataValue& dataValue);" << std::endl;
-			ss << prefix << "bool set_" << vt->name() << "(const OpcUaDataValue& dataValue);" << std::endl;
+			ss << prefix << "bool get_" << vt->name() << "(OpcUaStackCore::OpcUaDataValue& dataValue);" << std::endl;
+			ss << prefix << "bool set_" << vt->name() << "(const OpcUaStackCore::OpcUaDataValue& dataValue);" << std::endl;
 		}
 
 		headerContent_ += ss.str();
@@ -338,6 +338,7 @@ namespace OpcUaStackServer
 		//
 		// namespace
 		//
+		ss << "using namespace OpcUaStackCore;" << std::endl;
 		ss << std::endl;
 		ss << "namespace " <<  nodeInfo_.namespaceName() << std::endl;
 		ss << "{" << std::endl;

@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/RoleType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
@@ -41,12 +42,12 @@ namespace OpcUaStackServer
         setServerMethod(removeApplication_Method_);
         setServerMethod(removeEndpoint_Method_);
         setServerMethod(removeIdentity_Method_);
-        addApplication_Method_->registerMethod(boost::bind(&RoleType::call_AddApplication_Method, this, _1));
-        addEndpoint_Method_->registerMethod(boost::bind(&RoleType::call_AddEndpoint_Method, this, _1));
-        addIdentity_Method_->registerMethod(boost::bind(&RoleType::call_AddIdentity_Method, this, _1));
-        removeApplication_Method_->registerMethod(boost::bind(&RoleType::call_RemoveApplication_Method, this, _1));
-        removeEndpoint_Method_->registerMethod(boost::bind(&RoleType::call_RemoveEndpoint_Method, this, _1));
-        removeIdentity_Method_->registerMethod(boost::bind(&RoleType::call_RemoveIdentity_Method, this, _1));
+        addApplication_Method_->registerMethod(boost::bind(&RoleType::call_AddApplication_Method, this, boost::placeholders::_1));
+        addEndpoint_Method_->registerMethod(boost::bind(&RoleType::call_AddEndpoint_Method, this, boost::placeholders::_1));
+        addIdentity_Method_->registerMethod(boost::bind(&RoleType::call_AddIdentity_Method, this, boost::placeholders::_1));
+        removeApplication_Method_->registerMethod(boost::bind(&RoleType::call_RemoveApplication_Method, this, boost::placeholders::_1));
+        removeEndpoint_Method_->registerMethod(boost::bind(&RoleType::call_RemoveEndpoint_Method, this, boost::placeholders::_1));
+        removeIdentity_Method_->registerMethod(boost::bind(&RoleType::call_RemoveIdentity_Method, this, boost::placeholders::_1));
     }
     
     RoleType::RoleType(const RoleType& value)
@@ -76,12 +77,12 @@ namespace OpcUaStackServer
         setServerMethod(removeApplication_Method_);
         setServerMethod(removeEndpoint_Method_);
         setServerMethod(removeIdentity_Method_);
-        addApplication_Method_->registerMethod(boost::bind(&RoleType::call_AddApplication_Method, this, _1));
-        addEndpoint_Method_->registerMethod(boost::bind(&RoleType::call_AddEndpoint_Method, this, _1));
-        addIdentity_Method_->registerMethod(boost::bind(&RoleType::call_AddIdentity_Method, this, _1));
-        removeApplication_Method_->registerMethod(boost::bind(&RoleType::call_RemoveApplication_Method, this, _1));
-        removeEndpoint_Method_->registerMethod(boost::bind(&RoleType::call_RemoveEndpoint_Method, this, _1));
-        removeIdentity_Method_->registerMethod(boost::bind(&RoleType::call_RemoveIdentity_Method, this, _1));
+        addApplication_Method_->registerMethod(boost::bind(&RoleType::call_AddApplication_Method, this, boost::placeholders::_1));
+        addEndpoint_Method_->registerMethod(boost::bind(&RoleType::call_AddEndpoint_Method, this, boost::placeholders::_1));
+        addIdentity_Method_->registerMethod(boost::bind(&RoleType::call_AddIdentity_Method, this, boost::placeholders::_1));
+        removeApplication_Method_->registerMethod(boost::bind(&RoleType::call_RemoveApplication_Method, this, boost::placeholders::_1));
+        removeEndpoint_Method_->registerMethod(boost::bind(&RoleType::call_RemoveEndpoint_Method, this, boost::placeholders::_1));
+        removeIdentity_Method_->registerMethod(boost::bind(&RoleType::call_RemoveIdentity_Method, this, boost::placeholders::_1));
     }
     
     RoleType::~RoleType(void)

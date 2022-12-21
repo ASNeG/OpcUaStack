@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/DataSetReaderTransportType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

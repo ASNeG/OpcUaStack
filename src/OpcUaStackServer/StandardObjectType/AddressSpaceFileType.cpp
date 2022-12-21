@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/AddressSpaceFileType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
@@ -46,13 +47,13 @@ namespace OpcUaStackServer
         setServerMethod(read_Method_);
         setServerMethod(setPosition_Method_);
         setServerMethod(write_Method_);
-        close_Method_->registerMethod(boost::bind(&AddressSpaceFileType::call_Close_Method, this, _1));
-        exportNamespace_Method_->registerMethod(boost::bind(&AddressSpaceFileType::call_ExportNamespace_Method, this, _1));
-        getPosition_Method_->registerMethod(boost::bind(&AddressSpaceFileType::call_GetPosition_Method, this, _1));
-        open_Method_->registerMethod(boost::bind(&AddressSpaceFileType::call_Open_Method, this, _1));
-        read_Method_->registerMethod(boost::bind(&AddressSpaceFileType::call_Read_Method, this, _1));
-        setPosition_Method_->registerMethod(boost::bind(&AddressSpaceFileType::call_SetPosition_Method, this, _1));
-        write_Method_->registerMethod(boost::bind(&AddressSpaceFileType::call_Write_Method, this, _1));
+        close_Method_->registerMethod(boost::bind(&AddressSpaceFileType::call_Close_Method, this, boost::placeholders::_1));
+        exportNamespace_Method_->registerMethod(boost::bind(&AddressSpaceFileType::call_ExportNamespace_Method, this, boost::placeholders::_1));
+        getPosition_Method_->registerMethod(boost::bind(&AddressSpaceFileType::call_GetPosition_Method, this, boost::placeholders::_1));
+        open_Method_->registerMethod(boost::bind(&AddressSpaceFileType::call_Open_Method, this, boost::placeholders::_1));
+        read_Method_->registerMethod(boost::bind(&AddressSpaceFileType::call_Read_Method, this, boost::placeholders::_1));
+        setPosition_Method_->registerMethod(boost::bind(&AddressSpaceFileType::call_SetPosition_Method, this, boost::placeholders::_1));
+        write_Method_->registerMethod(boost::bind(&AddressSpaceFileType::call_Write_Method, this, boost::placeholders::_1));
     }
     
     /**
@@ -87,13 +88,13 @@ namespace OpcUaStackServer
         setServerMethod(read_Method_);
         setServerMethod(setPosition_Method_);
         setServerMethod(write_Method_);
-        close_Method_->registerMethod(boost::bind(&AddressSpaceFileType::call_Close_Method, this, _1));
-        exportNamespace_Method_->registerMethod(boost::bind(&AddressSpaceFileType::call_ExportNamespace_Method, this, _1));
-        getPosition_Method_->registerMethod(boost::bind(&AddressSpaceFileType::call_GetPosition_Method, this, _1));
-        open_Method_->registerMethod(boost::bind(&AddressSpaceFileType::call_Open_Method, this, _1));
-        read_Method_->registerMethod(boost::bind(&AddressSpaceFileType::call_Read_Method, this, _1));
-        setPosition_Method_->registerMethod(boost::bind(&AddressSpaceFileType::call_SetPosition_Method, this, _1));
-        write_Method_->registerMethod(boost::bind(&AddressSpaceFileType::call_Write_Method, this, _1));
+        close_Method_->registerMethod(boost::bind(&AddressSpaceFileType::call_Close_Method, this, boost::placeholders::_1));
+        exportNamespace_Method_->registerMethod(boost::bind(&AddressSpaceFileType::call_ExportNamespace_Method, this, boost::placeholders::_1));
+        getPosition_Method_->registerMethod(boost::bind(&AddressSpaceFileType::call_GetPosition_Method, this, boost::placeholders::_1));
+        open_Method_->registerMethod(boost::bind(&AddressSpaceFileType::call_Open_Method, this, boost::placeholders::_1));
+        read_Method_->registerMethod(boost::bind(&AddressSpaceFileType::call_Read_Method, this, boost::placeholders::_1));
+        setPosition_Method_->registerMethod(boost::bind(&AddressSpaceFileType::call_SetPosition_Method, this, boost::placeholders::_1));
+        write_Method_->registerMethod(boost::bind(&AddressSpaceFileType::call_Write_Method, this, boost::placeholders::_1));
     }
     
     AddressSpaceFileType::~AddressSpaceFileType(void)

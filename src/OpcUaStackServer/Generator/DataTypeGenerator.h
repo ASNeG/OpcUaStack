@@ -47,6 +47,11 @@ namespace OpcUaStackServer
 		 */
 		void informationModel(InformationModel::SPtr& informationModel);
 
+		void className(const std::string& className);
+		void parentClassName(const std::string& parentClassName);
+
+		std::string fileName(void);
+
 		/**
 		 * This function sets a new namespace entry
 		 *
@@ -145,6 +150,9 @@ namespace OpcUaStackServer
 		std::string headerContent_;
 
 		NodeInfoDataType nodeInfo_;						//!< information about the data type node
+
+		std::string className_ = "";
+		std::string parentClassName_ = "";
 	};
 
 

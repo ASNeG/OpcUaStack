@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/AuditConditionSilenceEventType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardVariableType/AnalogUnitItemType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

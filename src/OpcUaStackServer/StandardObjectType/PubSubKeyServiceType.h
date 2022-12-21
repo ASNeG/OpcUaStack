@@ -29,13 +29,13 @@ namespace OpcUaStackServer
        PubSubKeyServiceType(const PubSubKeyServiceType& value);
        virtual ~PubSubKeyServiceType(void);
 
-        virtual void call_GetSecurityGroup_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_GetSecurityGroup_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
-        virtual void call_GetSecurityKeys_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_GetSecurityKeys_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
-        virtual void call_SecurityGroups_AddSecurityGroup_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_SecurityGroups_AddSecurityGroup_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
-        virtual void call_SecurityGroups_RemoveSecurityGroup_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_SecurityGroups_RemoveSecurityGroup_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
     
       private:
         ServerMethod::SPtr getSecurityGroup_Method_;

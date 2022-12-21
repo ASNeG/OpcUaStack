@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/FileDirectoryType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
@@ -27,10 +28,10 @@ namespace OpcUaStackServer
         setServerMethod(createFile_Method_);
         setServerMethod(delete_Method_);
         setServerMethod(moveOrCopy_Method_);
-        createDirectory_Method_->registerMethod(boost::bind(&FileDirectoryType::call_CreateDirectory_Method, this, _1));
-        createFile_Method_->registerMethod(boost::bind(&FileDirectoryType::call_CreateFile_Method, this, _1));
-        delete_Method_->registerMethod(boost::bind(&FileDirectoryType::call_Delete_Method, this, _1));
-        moveOrCopy_Method_->registerMethod(boost::bind(&FileDirectoryType::call_MoveOrCopy_Method, this, _1));
+        createDirectory_Method_->registerMethod(boost::bind(&FileDirectoryType::call_CreateDirectory_Method, this, boost::placeholders::_1));
+        createFile_Method_->registerMethod(boost::bind(&FileDirectoryType::call_CreateFile_Method, this, boost::placeholders::_1));
+        delete_Method_->registerMethod(boost::bind(&FileDirectoryType::call_Delete_Method, this, boost::placeholders::_1));
+        moveOrCopy_Method_->registerMethod(boost::bind(&FileDirectoryType::call_MoveOrCopy_Method, this, boost::placeholders::_1));
     }
     
     FileDirectoryType::FileDirectoryType(const FileDirectoryType& value)
@@ -46,10 +47,10 @@ namespace OpcUaStackServer
         setServerMethod(createFile_Method_);
         setServerMethod(delete_Method_);
         setServerMethod(moveOrCopy_Method_);
-        createDirectory_Method_->registerMethod(boost::bind(&FileDirectoryType::call_CreateDirectory_Method, this, _1));
-        createFile_Method_->registerMethod(boost::bind(&FileDirectoryType::call_CreateFile_Method, this, _1));
-        delete_Method_->registerMethod(boost::bind(&FileDirectoryType::call_Delete_Method, this, _1));
-        moveOrCopy_Method_->registerMethod(boost::bind(&FileDirectoryType::call_MoveOrCopy_Method, this, _1));
+        createDirectory_Method_->registerMethod(boost::bind(&FileDirectoryType::call_CreateDirectory_Method, this, boost::placeholders::_1));
+        createFile_Method_->registerMethod(boost::bind(&FileDirectoryType::call_CreateFile_Method, this, boost::placeholders::_1));
+        delete_Method_->registerMethod(boost::bind(&FileDirectoryType::call_Delete_Method, this, boost::placeholders::_1));
+        moveOrCopy_Method_->registerMethod(boost::bind(&FileDirectoryType::call_MoveOrCopy_Method, this, boost::placeholders::_1));
     }
     
     FileDirectoryType::~FileDirectoryType(void)

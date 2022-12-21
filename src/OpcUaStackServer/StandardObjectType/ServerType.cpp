@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/ServerType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
@@ -120,10 +121,10 @@ namespace OpcUaStackServer
         setServerMethod(requestServerStateChange_Method_);
         setServerMethod(resendData_Method_);
         setServerMethod(setSubscriptionDurable_Method_);
-        getMonitoredItems_Method_->registerMethod(boost::bind(&ServerType::call_GetMonitoredItems_Method, this, _1));
-        requestServerStateChange_Method_->registerMethod(boost::bind(&ServerType::call_RequestServerStateChange_Method, this, _1));
-        resendData_Method_->registerMethod(boost::bind(&ServerType::call_ResendData_Method, this, _1));
-        setSubscriptionDurable_Method_->registerMethod(boost::bind(&ServerType::call_SetSubscriptionDurable_Method, this, _1));
+        getMonitoredItems_Method_->registerMethod(boost::bind(&ServerType::call_GetMonitoredItems_Method, this, boost::placeholders::_1));
+        requestServerStateChange_Method_->registerMethod(boost::bind(&ServerType::call_RequestServerStateChange_Method, this, boost::placeholders::_1));
+        resendData_Method_->registerMethod(boost::bind(&ServerType::call_ResendData_Method, this, boost::placeholders::_1));
+        setSubscriptionDurable_Method_->registerMethod(boost::bind(&ServerType::call_SetSubscriptionDurable_Method, this, boost::placeholders::_1));
     }
     
     /**
@@ -232,10 +233,10 @@ namespace OpcUaStackServer
         setServerMethod(requestServerStateChange_Method_);
         setServerMethod(resendData_Method_);
         setServerMethod(setSubscriptionDurable_Method_);
-        getMonitoredItems_Method_->registerMethod(boost::bind(&ServerType::call_GetMonitoredItems_Method, this, _1));
-        requestServerStateChange_Method_->registerMethod(boost::bind(&ServerType::call_RequestServerStateChange_Method, this, _1));
-        resendData_Method_->registerMethod(boost::bind(&ServerType::call_ResendData_Method, this, _1));
-        setSubscriptionDurable_Method_->registerMethod(boost::bind(&ServerType::call_SetSubscriptionDurable_Method, this, _1));
+        getMonitoredItems_Method_->registerMethod(boost::bind(&ServerType::call_GetMonitoredItems_Method, this, boost::placeholders::_1));
+        requestServerStateChange_Method_->registerMethod(boost::bind(&ServerType::call_RequestServerStateChange_Method, this, boost::placeholders::_1));
+        resendData_Method_->registerMethod(boost::bind(&ServerType::call_ResendData_Method, this, boost::placeholders::_1));
+        setSubscriptionDurable_Method_->registerMethod(boost::bind(&ServerType::call_SetSubscriptionDurable_Method, this, boost::placeholders::_1));
     }
     
     ServerType::~ServerType(void)

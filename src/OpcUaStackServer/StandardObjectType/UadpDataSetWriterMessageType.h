@@ -34,32 +34,32 @@ namespace OpcUaStackServer
         //
         void configuredSize_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& configuredSize_Variable(void);
-        bool get_ConfiguredSize_Variable(OpcUaDataValue& dataValue);
-        bool set_ConfiguredSize_Variable(const OpcUaDataValue& dataValue);
+        bool get_ConfiguredSize_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_ConfiguredSize_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // UadpDataSetMessageContentMask
         //
         void dataSetMessageContentMask_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& dataSetMessageContentMask_Variable(void);
-        bool get_DataSetMessageContentMask_Variable(OpcUaDataValue& dataValue);
-        bool set_DataSetMessageContentMask_Variable(const OpcUaDataValue& dataValue);
+        bool get_DataSetMessageContentMask_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_DataSetMessageContentMask_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // UInt16
         //
         void dataSetOffset_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& dataSetOffset_Variable(void);
-        bool get_DataSetOffset_Variable(OpcUaDataValue& dataValue);
-        bool set_DataSetOffset_Variable(const OpcUaDataValue& dataValue);
+        bool get_DataSetOffset_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_DataSetOffset_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // UInt16
         //
         void networkMessageNumber_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& networkMessageNumber_Variable(void);
-        bool get_NetworkMessageNumber_Variable(OpcUaDataValue& dataValue);
-        bool set_NetworkMessageNumber_Variable(const OpcUaDataValue& dataValue);
+        bool get_NetworkMessageNumber_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_NetworkMessageNumber_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
     
       private:
         ServerVariable::SPtr configuredSize_Variable_;

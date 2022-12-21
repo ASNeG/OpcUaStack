@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/TargetVariablesType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
@@ -29,8 +30,8 @@ namespace OpcUaStackServer
         setServerVariable(targetVariables_Variable_);
         setServerMethod(addTargetVariables_Method_);
         setServerMethod(removeTargetVariables_Method_);
-        addTargetVariables_Method_->registerMethod(boost::bind(&TargetVariablesType::call_AddTargetVariables_Method, this, _1));
-        removeTargetVariables_Method_->registerMethod(boost::bind(&TargetVariablesType::call_RemoveTargetVariables_Method, this, _1));
+        addTargetVariables_Method_->registerMethod(boost::bind(&TargetVariablesType::call_AddTargetVariables_Method, this, boost::placeholders::_1));
+        removeTargetVariables_Method_->registerMethod(boost::bind(&TargetVariablesType::call_RemoveTargetVariables_Method, this, boost::placeholders::_1));
     }
     
     TargetVariablesType::TargetVariablesType(const TargetVariablesType& value)
@@ -48,8 +49,8 @@ namespace OpcUaStackServer
         setServerVariable(targetVariables_Variable_);
         setServerMethod(addTargetVariables_Method_);
         setServerMethod(removeTargetVariables_Method_);
-        addTargetVariables_Method_->registerMethod(boost::bind(&TargetVariablesType::call_AddTargetVariables_Method, this, _1));
-        removeTargetVariables_Method_->registerMethod(boost::bind(&TargetVariablesType::call_RemoveTargetVariables_Method, this, _1));
+        addTargetVariables_Method_->registerMethod(boost::bind(&TargetVariablesType::call_AddTargetVariables_Method, this, boost::placeholders::_1));
+        removeTargetVariables_Method_->registerMethod(boost::bind(&TargetVariablesType::call_RemoveTargetVariables_Method, this, boost::placeholders::_1));
     }
     
     TargetVariablesType::~TargetVariablesType(void)

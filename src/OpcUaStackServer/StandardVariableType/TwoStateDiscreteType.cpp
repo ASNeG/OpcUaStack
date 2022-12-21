@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardVariableType/TwoStateDiscreteType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

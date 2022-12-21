@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/AuditSessionEventType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardVariableType/BaseVariableType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

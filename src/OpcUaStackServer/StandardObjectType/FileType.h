@@ -34,52 +34,52 @@ namespace OpcUaStackServer
         //
         void mimeType_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& mimeType_Variable(void);
-        bool get_MimeType_Variable(OpcUaDataValue& dataValue);
-        bool set_MimeType_Variable(const OpcUaDataValue& dataValue);
+        bool get_MimeType_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_MimeType_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // UInt16
         //
         void openCount_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& openCount_Variable(void);
-        bool get_OpenCount_Variable(OpcUaDataValue& dataValue);
-        bool set_OpenCount_Variable(const OpcUaDataValue& dataValue);
+        bool get_OpenCount_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_OpenCount_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // UInt64
         //
         void size_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& size_Variable(void);
-        bool get_Size_Variable(OpcUaDataValue& dataValue);
-        bool set_Size_Variable(const OpcUaDataValue& dataValue);
+        bool get_Size_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Size_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // Boolean
         //
         void userWritable_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& userWritable_Variable(void);
-        bool get_UserWritable_Variable(OpcUaDataValue& dataValue);
-        bool set_UserWritable_Variable(const OpcUaDataValue& dataValue);
+        bool get_UserWritable_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_UserWritable_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // Boolean
         //
         void writable_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& writable_Variable(void);
-        bool get_Writable_Variable(OpcUaDataValue& dataValue);
-        bool set_Writable_Variable(const OpcUaDataValue& dataValue);
+        bool get_Writable_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Writable_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
-        virtual void call_Close_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_Close_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
-        virtual void call_GetPosition_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_GetPosition_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
-        virtual void call_Open_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_Open_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
-        virtual void call_Read_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_Read_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
-        virtual void call_SetPosition_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_SetPosition_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
-        virtual void call_Write_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_Write_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
     
       private:
         ServerVariable::SPtr mimeType_Variable_;

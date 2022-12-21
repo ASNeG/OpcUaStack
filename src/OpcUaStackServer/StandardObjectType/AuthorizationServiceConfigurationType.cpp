@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/AuthorizationServiceConfigurationType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

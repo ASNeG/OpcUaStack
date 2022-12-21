@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardVariableType/DataItemType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

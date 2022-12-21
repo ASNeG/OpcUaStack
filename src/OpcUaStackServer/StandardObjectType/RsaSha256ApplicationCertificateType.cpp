@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/RsaSha256ApplicationCertificateType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

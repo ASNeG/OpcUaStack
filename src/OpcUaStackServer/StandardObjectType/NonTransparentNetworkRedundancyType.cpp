@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/NonTransparentNetworkRedundancyType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

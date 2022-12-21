@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/DataTypeEncodingType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

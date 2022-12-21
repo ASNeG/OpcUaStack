@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/AuditUrlMismatchEventType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

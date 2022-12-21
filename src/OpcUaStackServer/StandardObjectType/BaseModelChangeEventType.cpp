@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/BaseModelChangeEventType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

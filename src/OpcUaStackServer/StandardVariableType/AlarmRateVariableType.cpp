@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardVariableType/AlarmRateVariableType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

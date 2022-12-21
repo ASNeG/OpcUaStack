@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/BaseConditionClassType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

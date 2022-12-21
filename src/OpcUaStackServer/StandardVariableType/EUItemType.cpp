@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardVariableType/EUItemType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

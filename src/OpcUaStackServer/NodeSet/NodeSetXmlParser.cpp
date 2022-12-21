@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2022 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -274,9 +274,9 @@ namespace OpcUaStackServer
 		boost::optional<boost::property_tree::ptree&> refpTree = ptree.get_child_optional("References");
 
 		if (!refpTree) {
-			Log(Error, "references not exist in node set")
+			Log(Info, "references not exist in node set")
 				.parameter("NodeId", nodeId);
-			return false;
+			return true;
 		}
 
 		boost::property_tree::ptree::iterator it;
@@ -753,7 +753,7 @@ namespace OpcUaStackServer
 		//
 		// decode data type definitions
 		//
-		if (enableDefinition_) {
+		if (enableDefinition_ && !dataTypeNodeClassSPtr->isAbstract().data()) {
 			if (!decodeDataTypeDefinition(dataTypeNodeClassSPtr, ptree)) return false;
 		}
 
@@ -914,7 +914,7 @@ namespace OpcUaStackServer
 		boost::property_tree::ptree& ptree
 	)
 	{
-		NodeSetDefinitionParser parser;
+		NodeSetDefinitionParser parser(&nodeSetAlias_);
 
 		// get optional Definition element
 		auto definitionTree = ptree.get_child_optional("Definition");
@@ -1448,7 +1448,7 @@ namespace OpcUaStackServer
 			//
 			// encode data type definitions
 			//
-			if (enableDefinition_) {
+			if (enableDefinition_ && !dataTypeNodeClassSPtr->isAbstract().data()) {
 				if (!encodeDataTypeDefinition(dataTypeNodeClassSPtr, node)) return false;
 			}
 

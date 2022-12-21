@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/TestingConditionClassType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

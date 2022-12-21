@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardVariableType/AudioVariableType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

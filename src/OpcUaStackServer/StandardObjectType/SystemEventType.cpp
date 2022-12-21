@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/SystemEventType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

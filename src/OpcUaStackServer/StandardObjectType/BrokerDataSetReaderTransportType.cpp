@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/BrokerDataSetReaderTransportType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

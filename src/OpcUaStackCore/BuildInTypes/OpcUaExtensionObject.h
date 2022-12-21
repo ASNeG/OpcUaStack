@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2022 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -178,17 +178,28 @@ namespace OpcUaStackCore
 			  OpcUaNodeId xmlType(epSPtr->xmlTypeId());
 			  OpcUaNodeId jsonType(epSPtr->jsonTypeId());
 
-			  if (!OpcUaExtensionObject::insertElement(opcUaNodeId, epSPtr)) {
-				  return false;
+			  if (opcUaNodeId != OpcUaNodeId(0, 0)) {
+				  if (!OpcUaExtensionObject::insertElement(opcUaNodeId, epSPtr)) {
+					 return false;
+				  }
 			  }
-			  if (!OpcUaExtensionObject::insertElement(opcUaBinaryType, epSPtr)) {
-				  return false;
+
+			  if (opcUaBinaryType != OpcUaNodeId(0, 0)) {
+				  if (!OpcUaExtensionObject::insertElement(opcUaBinaryType, epSPtr)) {
+					  return false;
+				  }
 			  }
-			  if (!OpcUaExtensionObject::insertElement(xmlType, epSPtr)) {
-				  return false;
+
+			  if (xmlType != OpcUaNodeId(0, 0)) {
+				  if (!OpcUaExtensionObject::insertElement(xmlType, epSPtr)) {
+					  return false;
+				  }
 			  }
-			  if (!OpcUaExtensionObject::insertElement(jsonType, epSPtr)) {
-				  return false;
+
+			  if (jsonType != OpcUaNodeId(0, 0)) {
+				  if (!OpcUaExtensionObject::insertElement(jsonType, epSPtr)) {
+					  return false;
+				  }
 			  }
 
 			  return true;
@@ -275,6 +286,11 @@ namespace OpcUaStackCore
 		template<typename T>
 		   typename T::SPtr parameter(const OpcUaNodeId& typeNodeId) {
 				typeId(typeNodeId);
+				return parameter<T>();
+			}
+		template<typename T>
+		   typename T::SPtr getObjectRef(void) {
+				typeId(T().typeId());
 				return parameter<T>();
 			}
 

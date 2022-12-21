@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/SubscribedDataSetType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

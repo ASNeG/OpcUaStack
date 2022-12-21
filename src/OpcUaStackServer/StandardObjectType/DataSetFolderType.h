@@ -29,19 +29,19 @@ namespace OpcUaStackServer
        DataSetFolderType(const DataSetFolderType& value);
        virtual ~DataSetFolderType(void);
 
-        virtual void call_AddDataSetFolder_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_AddDataSetFolder_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
-        virtual void call_AddPublishedDataItemsTemplate_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_AddPublishedDataItemsTemplate_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
-        virtual void call_AddPublishedDataItems_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_AddPublishedDataItems_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
-        virtual void call_AddPublishedEventsTemplate_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_AddPublishedEventsTemplate_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
-        virtual void call_AddPublishedEvents_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_AddPublishedEvents_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
-        virtual void call_RemoveDataSetFolder_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_RemoveDataSetFolder_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
-        virtual void call_RemovePublishedDataSet_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_RemovePublishedDataSet_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
     
       private:
         ServerMethod::SPtr addDataSetFolder_Method_;

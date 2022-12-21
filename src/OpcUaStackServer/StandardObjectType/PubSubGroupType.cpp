@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/PubSubGroupType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

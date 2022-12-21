@@ -110,7 +110,7 @@ namespace OpcUaStackServer
 		  }
 
 		  virtual void out(std::ostream& os) const {
-			  os << data_;
+		  //  os << data_;
 		  }
 		  friend std::ostream& operator<<(std::ostream& os, const AttributeData& attributeData) {
 			os << attributeData.data_;

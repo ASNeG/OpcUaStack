@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/HistoryServerCapabilitiesType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

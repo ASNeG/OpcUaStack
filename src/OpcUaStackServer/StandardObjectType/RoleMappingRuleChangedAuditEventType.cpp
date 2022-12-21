@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/RoleMappingRuleChangedAuditEventType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

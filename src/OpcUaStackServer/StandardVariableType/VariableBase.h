@@ -20,7 +20,9 @@
 
 #include "OpcUaStackServer/StandardVariableType/ServerVariables.h"
 
-using namespace OpcUaStackCore;
+#include <boost/shared_ptr.hpp>
+
+//using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

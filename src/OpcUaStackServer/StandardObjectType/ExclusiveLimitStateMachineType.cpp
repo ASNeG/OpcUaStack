@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/ExclusiveLimitStateMachineType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2022 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -81,7 +81,7 @@ namespace OpcUaDataTypeGenerator
 				"set data type name (mandatory)"
 			)
 			(
-				"namespaces_",
+				"namespaces",
 				boost::program_options::value< std::vector<std::string> >(),
 			    "set project namespaces"
 			)
@@ -94,6 +94,16 @@ namespace OpcUaDataTypeGenerator
 				"ignoreDataTypeName",
 				boost::program_options::value< std::vector<std::string> >(),
 			    "ignore data type name"
+			)
+			(
+				"classname",
+				boost::program_options::value<std::string>()->default_value(""),
+				"name of class"
+			)
+			(
+				"parentclassname",
+				boost::program_options::value<std::string>()->default_value(""),
+				"name of parent class"
 			)
 		;
 
@@ -133,6 +143,8 @@ namespace OpcUaDataTypeGenerator
 		if (vm.count("ignoreEventTypeName") != 0) {
 			ignoreDataTypeNameVec_ = vm["ignoreDataTypeName"].as< std::vector<std::string> >();
 		}
+		className_ = vm["classname"].as<std::string>();
+		parentClassName_ = vm["parentclassname"].as<std::string>();
 
 		if (buildSubTypes_) {
 			return buildAllSubTypes();
@@ -153,7 +165,10 @@ namespace OpcUaDataTypeGenerator
 	}
 
 	bool
-	OpcUaDataTypeGenerator::findNodeId(const std::string& eventTypeName, const OpcUaNodeId& nodeId)
+	OpcUaDataTypeGenerator::findNodeId(
+		const std::string& dataTypeName,
+		const OpcUaNodeId& nodeId
+	)
 	{
 		bool success;
 
@@ -172,7 +187,7 @@ namespace OpcUaDataTypeGenerator
 		}
 
 		// check browse name
-		if (browseName.name().toStdString() == eventTypeName) {
+		if (browseName.name().toStdString() == dataTypeName) {
 			dataTypeNodeId_ = nodeId;
 			return true;
 		}
@@ -194,7 +209,7 @@ namespace OpcUaDataTypeGenerator
 		}
 
 		for (it = childNodeIdVec.begin(); it != childNodeIdVec.end(); it++) {
-			success = findNodeId(eventTypeName, *it);
+			success = findNodeId(dataTypeName, *it);
 			if (success) {
 				return true;
 			}
@@ -262,13 +277,19 @@ namespace OpcUaDataTypeGenerator
 		// generate data type source code
 		DataTypeGenerator dataTypeGenerator;
 		for (it = namespaces_.begin(); it != namespaces_.end(); it++) {
+			Log(Debug, "set namesapce")
+				.parameter("ns", *it);
 			dataTypeGenerator.setNamespaceEntry(*it);
 		}
 		dataTypeGenerator.informationModel(informationModel_);
+		dataTypeGenerator.className(className_);
+		dataTypeGenerator.parentClassName(parentClassName_);
 		if (!dataTypeGenerator.generate(dataTypeNodeId_)) {
 			std::cout << "source code generator error - " << dataTypeName_ << std::endl;
 			return -4;
 		}
+
+		if (!className_.empty()) dataTypeName_ = className_;
 
 		// save header and source file
 		boost::filesystem::ofstream ofStream;

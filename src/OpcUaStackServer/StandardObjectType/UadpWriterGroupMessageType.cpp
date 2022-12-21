@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/UadpWriterGroupMessageType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

@@ -29,7 +29,7 @@ namespace OpcUaStackServer
        KeyCredentialConfigurationFolderType(const KeyCredentialConfigurationFolderType& value);
        virtual ~KeyCredentialConfigurationFolderType(void);
 
-        virtual void call_CreateCredential_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_CreateCredential_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
     
       private:
         ServerMethod::SPtr createCredential_Method_;

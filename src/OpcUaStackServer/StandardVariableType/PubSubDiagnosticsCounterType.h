@@ -33,40 +33,40 @@ namespace OpcUaStackServer
         //
         void active_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& active_Variable(void);
-        bool get_Active_Variable(OpcUaDataValue& dataValue);
-        bool set_Active_Variable(const OpcUaDataValue& dataValue);
+        bool get_Active_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Active_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // PubSubDiagnosticsCounterClassification
         //
         void classification_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& classification_Variable(void);
-        bool get_Classification_Variable(OpcUaDataValue& dataValue);
-        bool set_Classification_Variable(const OpcUaDataValue& dataValue);
+        bool get_Classification_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Classification_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // DiagnosticsLevel
         //
         void diagnosticsLevel_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& diagnosticsLevel_Variable(void);
-        bool get_DiagnosticsLevel_Variable(OpcUaDataValue& dataValue);
-        bool set_DiagnosticsLevel_Variable(const OpcUaDataValue& dataValue);
+        bool get_DiagnosticsLevel_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_DiagnosticsLevel_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // DateTime
         //
         void timeFirstChange_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& timeFirstChange_Variable(void);
-        bool get_TimeFirstChange_Variable(OpcUaDataValue& dataValue);
-        bool set_TimeFirstChange_Variable(const OpcUaDataValue& dataValue);
+        bool get_TimeFirstChange_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_TimeFirstChange_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // UInt32 (Array)
         //
         void variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& variable(void);
-        bool get_Variable(OpcUaDataValue& dataValue);
-        bool set_Variable(const OpcUaDataValue& dataValue);
+        bool get_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
     
       private:
         ServerVariable::SPtr active_Variable_;

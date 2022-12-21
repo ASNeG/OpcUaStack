@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/ProcessConditionClassType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

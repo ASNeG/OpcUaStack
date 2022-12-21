@@ -2,6 +2,10 @@
 REM
 REM OpcUaStack build and install script
 REM
+REM Example:
+REM
+REM build.bat -t local -vs "Visual Studio 17 2022"
+REM
 
 set CMAKE=cmake.exe
 
@@ -109,7 +113,11 @@ REM ---------------------------------------------------------------------------
 	REM
 	REM build OpcUaStack
 	REM
-	%CMAKE% %VS_GENERATOR% -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -DCMAKE_CXX_FLAGS=/MP%JOBS% -H./src/ -B./build_local_%BUILD_DIR_SUFFIX%
+	if exist build_local_%BUILD_DIR_SUFFIX%/ (
+		%CMAKE% -B./build_local_%BUILD_DIR_SUFFIX%
+	) else (
+		%CMAKE% %VS_GENERATOR% -A Win32 -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -DCMAKE_CXX_FLAGS=/MP%JOBS% -H./src/ -B./build_local_%BUILD_DIR_SUFFIX%
+	)
 
 	REM
 	REM install OpcUaStack
@@ -130,7 +138,7 @@ REM ---------------------------------------------------------------------------
 	REM
 	REM build OpcUaStack
 	REM
-	%CMAKE% %VS_GENERATOR% -DCPACK_BINARY_MSI=ON -DCPACK_PACKAGE_TYPE=%PACKAGE_TYPE%  -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -DCMAKE_CXX_FLAGS=/MP%JOBS% -H./src/ -B./build_msi_%BUILD_DIR_SUFFIX%
+	%CMAKE% -DCPACK_BINARY_MSI=ON -DCPACK_PACKAGE_TYPE=%PACKAGE_TYPE%  -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -DCMAKE_CXX_FLAGS=/MP%JOBS% -H./src/ -B./build_msi_%BUILD_DIR_SUFFIX% -Wa,-mbig-obj
 
 	REM
 	REM package OpcUaStack to MSI

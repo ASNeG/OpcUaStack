@@ -33,32 +33,32 @@ namespace OpcUaStackServer
         //
         void dataTypeVersion_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& dataTypeVersion_Variable(void);
-        bool get_DataTypeVersion_Variable(OpcUaDataValue& dataValue);
-        bool set_DataTypeVersion_Variable(const OpcUaDataValue& dataValue);
+        bool get_DataTypeVersion_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_DataTypeVersion_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // Boolean
         //
         void deprecated_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& deprecated_Variable(void);
-        bool get_Deprecated_Variable(OpcUaDataValue& dataValue);
-        bool set_Deprecated_Variable(const OpcUaDataValue& dataValue);
+        bool get_Deprecated_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Deprecated_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // String
         //
         void namespaceUri_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& namespaceUri_Variable(void);
-        bool get_NamespaceUri_Variable(OpcUaDataValue& dataValue);
-        bool set_NamespaceUri_Variable(const OpcUaDataValue& dataValue);
+        bool get_NamespaceUri_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_NamespaceUri_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // ByteString (Array)
         //
         void variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& variable(void);
-        bool get_Variable(OpcUaDataValue& dataValue);
-        bool set_Variable(const OpcUaDataValue& dataValue);
+        bool get_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
     
       private:
         ServerVariable::SPtr dataTypeVersion_Variable_;

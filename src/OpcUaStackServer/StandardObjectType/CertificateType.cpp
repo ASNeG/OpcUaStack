@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/CertificateType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

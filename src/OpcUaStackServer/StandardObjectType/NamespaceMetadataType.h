@@ -34,124 +34,124 @@ namespace OpcUaStackServer
         //
         void defaultAccessRestrictions_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& defaultAccessRestrictions_Variable(void);
-        bool get_DefaultAccessRestrictions_Variable(OpcUaDataValue& dataValue);
-        bool set_DefaultAccessRestrictions_Variable(const OpcUaDataValue& dataValue);
+        bool get_DefaultAccessRestrictions_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_DefaultAccessRestrictions_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // RolePermissionType (Array)
         //
         void defaultRolePermissions_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& defaultRolePermissions_Variable(void);
-        bool get_DefaultRolePermissions_Variable(OpcUaDataValue& dataValue);
-        bool set_DefaultRolePermissions_Variable(const OpcUaDataValue& dataValue);
+        bool get_DefaultRolePermissions_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_DefaultRolePermissions_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // RolePermissionType (Array)
         //
         void defaultUserRolePermissions_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& defaultUserRolePermissions_Variable(void);
-        bool get_DefaultUserRolePermissions_Variable(OpcUaDataValue& dataValue);
-        bool set_DefaultUserRolePermissions_Variable(const OpcUaDataValue& dataValue);
+        bool get_DefaultUserRolePermissions_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_DefaultUserRolePermissions_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // Boolean
         //
         void isNamespaceSubset_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& isNamespaceSubset_Variable(void);
-        bool get_IsNamespaceSubset_Variable(OpcUaDataValue& dataValue);
-        bool set_IsNamespaceSubset_Variable(const OpcUaDataValue& dataValue);
+        bool get_IsNamespaceSubset_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_IsNamespaceSubset_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // UInt16
         //
         void namespaceFile_OpenCount_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& namespaceFile_OpenCount_Variable(void);
-        bool get_NamespaceFile_OpenCount_Variable(OpcUaDataValue& dataValue);
-        bool set_NamespaceFile_OpenCount_Variable(const OpcUaDataValue& dataValue);
+        bool get_NamespaceFile_OpenCount_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_NamespaceFile_OpenCount_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // UInt64
         //
         void namespaceFile_Size_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& namespaceFile_Size_Variable(void);
-        bool get_NamespaceFile_Size_Variable(OpcUaDataValue& dataValue);
-        bool set_NamespaceFile_Size_Variable(const OpcUaDataValue& dataValue);
+        bool get_NamespaceFile_Size_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_NamespaceFile_Size_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // Boolean
         //
         void namespaceFile_UserWritable_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& namespaceFile_UserWritable_Variable(void);
-        bool get_NamespaceFile_UserWritable_Variable(OpcUaDataValue& dataValue);
-        bool set_NamespaceFile_UserWritable_Variable(const OpcUaDataValue& dataValue);
+        bool get_NamespaceFile_UserWritable_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_NamespaceFile_UserWritable_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // Boolean
         //
         void namespaceFile_Writable_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& namespaceFile_Writable_Variable(void);
-        bool get_NamespaceFile_Writable_Variable(OpcUaDataValue& dataValue);
-        bool set_NamespaceFile_Writable_Variable(const OpcUaDataValue& dataValue);
+        bool get_NamespaceFile_Writable_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_NamespaceFile_Writable_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // DateTime
         //
         void namespacePublicationDate_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& namespacePublicationDate_Variable(void);
-        bool get_NamespacePublicationDate_Variable(OpcUaDataValue& dataValue);
-        bool set_NamespacePublicationDate_Variable(const OpcUaDataValue& dataValue);
+        bool get_NamespacePublicationDate_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_NamespacePublicationDate_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // String
         //
         void namespaceUri_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& namespaceUri_Variable(void);
-        bool get_NamespaceUri_Variable(OpcUaDataValue& dataValue);
-        bool set_NamespaceUri_Variable(const OpcUaDataValue& dataValue);
+        bool get_NamespaceUri_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_NamespaceUri_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // String
         //
         void namespaceVersion_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& namespaceVersion_Variable(void);
-        bool get_NamespaceVersion_Variable(OpcUaDataValue& dataValue);
-        bool set_NamespaceVersion_Variable(const OpcUaDataValue& dataValue);
+        bool get_NamespaceVersion_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_NamespaceVersion_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // IdType (Array)
         //
         void staticNodeIdTypes_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& staticNodeIdTypes_Variable(void);
-        bool get_StaticNodeIdTypes_Variable(OpcUaDataValue& dataValue);
-        bool set_StaticNodeIdTypes_Variable(const OpcUaDataValue& dataValue);
+        bool get_StaticNodeIdTypes_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_StaticNodeIdTypes_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // NumericRange (Array)
         //
         void staticNumericNodeIdRange_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& staticNumericNodeIdRange_Variable(void);
-        bool get_StaticNumericNodeIdRange_Variable(OpcUaDataValue& dataValue);
-        bool set_StaticNumericNodeIdRange_Variable(const OpcUaDataValue& dataValue);
+        bool get_StaticNumericNodeIdRange_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_StaticNumericNodeIdRange_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // String
         //
         void staticStringNodeIdPattern_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& staticStringNodeIdPattern_Variable(void);
-        bool get_StaticStringNodeIdPattern_Variable(OpcUaDataValue& dataValue);
-        bool set_StaticStringNodeIdPattern_Variable(const OpcUaDataValue& dataValue);
+        bool get_StaticStringNodeIdPattern_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_StaticStringNodeIdPattern_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
-        virtual void call_NamespaceFile_Close_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_NamespaceFile_Close_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
-        virtual void call_NamespaceFile_GetPosition_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_NamespaceFile_GetPosition_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
-        virtual void call_NamespaceFile_Open_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_NamespaceFile_Open_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
-        virtual void call_NamespaceFile_Read_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_NamespaceFile_Read_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
-        virtual void call_NamespaceFile_SetPosition_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_NamespaceFile_SetPosition_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
-        virtual void call_NamespaceFile_Write_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_NamespaceFile_Write_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
     
       private:
         ServerVariable::SPtr defaultAccessRestrictions_Variable_;

@@ -34,16 +34,16 @@ namespace OpcUaStackServer
         //
         void messageRepeatCount_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& messageRepeatCount_Variable(void);
-        bool get_MessageRepeatCount_Variable(OpcUaDataValue& dataValue);
-        bool set_MessageRepeatCount_Variable(const OpcUaDataValue& dataValue);
+        bool get_MessageRepeatCount_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_MessageRepeatCount_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // Duration
         //
         void messageRepeatDelay_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& messageRepeatDelay_Variable(void);
-        bool get_MessageRepeatDelay_Variable(OpcUaDataValue& dataValue);
-        bool set_MessageRepeatDelay_Variable(const OpcUaDataValue& dataValue);
+        bool get_MessageRepeatDelay_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_MessageRepeatDelay_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
     
       private:
         ServerVariable::SPtr messageRepeatCount_Variable_;

@@ -34,16 +34,16 @@ namespace OpcUaStackServer
         //
         void sessionDiagnosticsArray_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& sessionDiagnosticsArray_Variable(void);
-        bool get_SessionDiagnosticsArray_Variable(OpcUaDataValue& dataValue);
-        bool set_SessionDiagnosticsArray_Variable(const OpcUaDataValue& dataValue);
+        bool get_SessionDiagnosticsArray_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_SessionDiagnosticsArray_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
 
         //
         // SessionSecurityDiagnosticsDataType (Array)
         //
         void sessionSecurityDiagnosticsArray_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& sessionSecurityDiagnosticsArray_Variable(void);
-        bool get_SessionSecurityDiagnosticsArray_Variable(OpcUaDataValue& dataValue);
-        bool set_SessionSecurityDiagnosticsArray_Variable(const OpcUaDataValue& dataValue);
+        bool get_SessionSecurityDiagnosticsArray_Variable(OpcUaStackCore::OpcUaDataValue& dataValue);
+        bool set_SessionSecurityDiagnosticsArray_Variable(const OpcUaStackCore::OpcUaDataValue& dataValue);
     
       private:
         ServerVariable::SPtr sessionDiagnosticsArray_Variable_;

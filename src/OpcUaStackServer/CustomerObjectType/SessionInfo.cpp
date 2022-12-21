@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/CustomerObjectType/SessionInfo.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

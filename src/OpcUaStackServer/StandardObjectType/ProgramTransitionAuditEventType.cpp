@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/ProgramTransitionAuditEventType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

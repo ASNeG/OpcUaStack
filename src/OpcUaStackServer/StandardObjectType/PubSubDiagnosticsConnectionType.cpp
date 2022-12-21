@@ -10,6 +10,7 @@
 */
 
 #include "OpcUaStackServer/StandardObjectType/PubSubDiagnosticsConnectionType.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
@@ -109,7 +110,7 @@ namespace OpcUaStackServer
         setServerVariable(totalInformation_TimeFirstChange_Variable_);
         setServerVariable(totalInformation_Variable_);
         setServerMethod(reset_Method_);
-        reset_Method_->registerMethod(boost::bind(&PubSubDiagnosticsConnectionType::call_Reset_Method, this, _1));
+        reset_Method_->registerMethod(boost::bind(&PubSubDiagnosticsConnectionType::call_Reset_Method, this, boost::placeholders::_1));
     }
     
     PubSubDiagnosticsConnectionType::PubSubDiagnosticsConnectionType(const PubSubDiagnosticsConnectionType& value)
@@ -207,7 +208,7 @@ namespace OpcUaStackServer
         setServerVariable(totalInformation_TimeFirstChange_Variable_);
         setServerVariable(totalInformation_Variable_);
         setServerMethod(reset_Method_);
-        reset_Method_->registerMethod(boost::bind(&PubSubDiagnosticsConnectionType::call_Reset_Method, this, _1));
+        reset_Method_->registerMethod(boost::bind(&PubSubDiagnosticsConnectionType::call_Reset_Method, this, boost::placeholders::_1));
     }
     
     PubSubDiagnosticsConnectionType::~PubSubDiagnosticsConnectionType(void)
