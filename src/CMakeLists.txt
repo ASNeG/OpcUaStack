@@ -18,7 +18,7 @@ set(BOOST_VERSION_MAJOR "1"  CACHE STRING "boost major version")
 set(BOOST_VERSION_MINOR "65" CACHE STRING "boost minor version")
 
 set(OPENSSL_VERSION_MAJOR "1" CACHE STRING "major version")
-set(OPENSSL_VERSION_MINOR "0" CACHE STRING "minor version")
+set(OPENSSL_VERSION_MINOR "1" CACHE STRING "minor version")
 set(OPENSSL_VERSION_PATCH "0" CACHE STRING "patch version")
 
 # -----------------------------------------------------------------------------
@@ -129,7 +129,7 @@ message(STATUS "  host system: ${CMAKE_HOST_SYSTEM}")
 #
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
- if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")    
+ if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
     set(Boost_USE_DEBUG_LIBS     ON)
     set(Boost_USE_RELEASE_LIBS   OFF)
  else()
