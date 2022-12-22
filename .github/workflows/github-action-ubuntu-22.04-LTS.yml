@@ -1,26 +1,42 @@
 name: Ubuntu 22.04 LTS Build & Test
-run-name: ${{ github.actor }} is testing on Ubuntu 22.04 LTS 🚀
+run-name: ${{ github.actor }} is testing on Ubuntu 22.04 LTS 
 on: [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-22.04
     steps:
-      - run: echo "The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      - name: Check out repository code
+      # Checkout source code
+      - name: Step 1 - Check out repository code
         uses: actions/checkout@v3
 
-      - name: Install Dependencies
+      # Install dependencies
+      - name: Step 2 - Install Dependencies
         run: |
           sudo apt-get install libboost-all-dev cmake libssl-dev  build-essential
 
-      - name: Build Project
+      # Build project
+      - name: Step 3 - Build Project
         run: |
           sh build.sh -t local
 
-      - name: Build Test
+      # Build unittest
+      - name: Step 4 - Build Test
         run: |
           sh build.sh -t tst -s ~/.ASNeG/
+
+      # Run unittest 
+      - name: Step 5 - Run Test OpcUaStackCoreTest
+        run: |
+          cd build_tst_Debug 
+          ./OpcUaStackCoreTest --log_format=JUNIT --log_sink=core_results.xml --log_level=all --report_level=no
+          ./OpcUaStackClientTest --log_format=JUNIT --log_sink=client_results.xml --log_level=all --report_level=no
+          ./OpcUaStackServerTest --log_format=JUNIT --log_sink=server_results.xml --log_level=all --report_level=no
+
+      # Publish test result
+      - name: Step 6 - Pulish test resul
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          junit_files: build_tst_Debug/*_results.xml
 
       - run: echo "This job's status is ${{ job.status }}."
