@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_CASE(RSASign_sign)
 	RSAKey rsaKey(2048);
 	PrivateKey privateKey = rsaKey.privateKey();
 	EVP_PKEY* key = privateKey;
-	RSA* r = EVP_PKEY_get0_RSA(key);
+	RSA* r = (RSA*)EVP_PKEY_get0_RSA(key);
 
 	unsigned char *sig = NULL;
 	unsigned int sig_len = 0;

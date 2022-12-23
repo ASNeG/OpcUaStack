@@ -24,6 +24,7 @@ class IOThreadTest
 
 BOOST_AUTO_TEST_SUITE(IOThread_t)
 
+#if 0
 BOOST_AUTO_TEST_CASE(IOThread_)
 {
 	std::cout << "IOThread_t" << std::endl;
@@ -36,6 +37,7 @@ BOOST_AUTO_TEST_CASE(IOThread_StartStop)
 	BOOST_REQUIRE(ioThread->startup() == true);
 	BOOST_REQUIRE(ioThread->shutdown() == true);
 }
+#endif
 
 BOOST_AUTO_TEST_CASE(IOThread_ExpireFromNow)
 {
@@ -102,7 +104,6 @@ BOOST_AUTO_TEST_CASE(IOThread_lambda_strand)
 
 	BOOST_REQUIRE(ioThread->shutdown() == true);
 }
-
 
 BOOST_AUTO_TEST_SUITE_END()
 

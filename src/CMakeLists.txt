@@ -129,7 +129,7 @@ message(STATUS "  host system: ${CMAKE_HOST_SYSTEM}")
 #
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
- if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")    
+ if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")    
     set(Boost_USE_DEBUG_LIBS     ON)
     set(Boost_USE_RELEASE_LIBS   OFF)
  else()
