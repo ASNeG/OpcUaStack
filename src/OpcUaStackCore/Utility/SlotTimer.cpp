@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2022 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -501,15 +501,15 @@ namespace OpcUaStackCore
 				Log(Error, "slot timer error");
 			}
 			running_ = false;
-			stopCondition_.set_value();
 			mutex_.unlock();
+			stopCondition_.set_value();
 			ownSPtr_.reset();
 			return;
 		}
 
 		if (running_ == false) {
-			stopCondition_.set_value();
 			mutex_.unlock();
+			stopCondition_.set_value();
 			ownSPtr_.reset();
 			return;
 		}
@@ -527,8 +527,8 @@ namespace OpcUaStackCore
 		uint64_t nextTick = slotArray1_.run(&mutex_);
 
 		if (running_ == false) {
-			stopCondition_.set_value();
 			mutex_.unlock();
+			stopCondition_.set_value();
 			ownSPtr_.reset();
 			return;
 		}

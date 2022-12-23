@@ -142,7 +142,7 @@ namespace OpcUaStackCore
 	    		bytesToEncrypt,      	   										// number bytes to encrypt
 	    		(const unsigned char*)(plainTextBuf + plainTextPosition),       // buffer to encrypt
 	    		(unsigned char*)(encryptedTextBuf + encryptedTextPosition),  	// where to encrypt
-				EVP_PKEY_get0_RSA(key),                              			// public key
+				(RSA*)EVP_PKEY_get0_RSA(key),                              			// public key
 	    		padding															// padding mode
 			);
 	    	if(encryptedBytes < 0) {
@@ -245,7 +245,7 @@ namespace OpcUaStackCore
 					keySize,                            							// how much to decrypt
 					(unsigned char*)encryptedTextBuf + encryptedTextPosition,   	// what to decrypt
 					(unsigned char*)plainTextBuf + (*plainTextLen),  				// where to decrypt
-					EVP_PKEY_get0_RSA(key),                  								// private key
+					(RSA*)EVP_PKEY_get0_RSA(key),                  								// private key
 					padding															// padding mode
 				);
 				if(decryptedBytes == -1) {
@@ -319,7 +319,7 @@ namespace OpcUaStackCore
 			plainTextLen,
 			(unsigned char*)signTextBuf,
 			signTextLen,
-			EVP_PKEY_get0_RSA(key)
+			(RSA*)EVP_PKEY_get0_RSA(key)
 		);
 		if (result != 1) {
 			addOpenSSLError();
@@ -381,7 +381,7 @@ namespace OpcUaStackCore
 			(const unsigned char*)plainTextBuf,
 			plainTextLen, (unsigned char *)signTextBuf,
 			signTextLen,
-			EVP_PKEY_get0_RSA(key)
+			(RSA*)EVP_PKEY_get0_RSA(key)
 		);
 		if (result != 1) {
 			addOpenSSLError();

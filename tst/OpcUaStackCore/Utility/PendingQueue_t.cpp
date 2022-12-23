@@ -88,7 +88,7 @@ BOOST_AUTO_TEST_CASE(PendingQueue_insert_remove)
 
 	PendingQueueTest pendingQueueTest;
 	PendingQueue pendingQueue(ioService);
-	pendingQueue.timeoutCallback(boost::bind(&PendingQueueTest::onTimeout, &pendingQueueTest, _1));
+	pendingQueue.timeoutCallback(boost::bind(&PendingQueueTest::onTimeout, &pendingQueueTest, boost::placeholders::_1));
 
 	Object::SPtr objectSPtr1(boost::make_shared<MyQueueElement>());
 	Object::SPtr objectSPtr2;
@@ -114,7 +114,7 @@ BOOST_AUTO_TEST_CASE(PendingQueue_insert_expire_remove)
 
 	PendingQueueTest pendingQueueTest;
 	PendingQueue pendingQueue(ioService);
-	pendingQueue.timeoutCallback(boost::bind(&PendingQueueTest::onTimeout, &pendingQueueTest, _1));
+	pendingQueue.timeoutCallback(boost::bind(&PendingQueueTest::onTimeout, &pendingQueueTest, boost::placeholders::_1));
 
 	Object::SPtr objectSPtr1(boost::make_shared<MyQueueElement>());
 	Object::SPtr objectSPtr2;
