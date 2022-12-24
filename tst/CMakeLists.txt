@@ -69,6 +69,9 @@ endif()
 
 
 #add_definitions(-DBOOST_ALL_DYN_LINK)
+#https://www.boost.org/doc/libs/1_78_0/boost/bind.hpp
+#Retain behavior of havin Bind placeholders (_1,_2,..) in the global namespace, even if deprecated
+add_definitions(-DBOOST_BIND_GLOBAL_PLACEHOLDERS)
 
 if (WIN32)
     if (MSVC)
