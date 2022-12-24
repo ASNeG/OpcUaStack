@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2022 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -154,8 +154,8 @@ namespace OpcUaStackCore
         if (!error) {
         	auto now = boost::posix_time::microsec_clock::universal_time();
 
-           	uint32_t validFrom;
-        	if (info.validFrom() < now) {
+           	long validFrom;
+        	if (info.validFrom() <= now) {
         		validFrom = 0;
         	}
         	else {
@@ -163,8 +163,8 @@ namespace OpcUaStackCore
         		 validFrom = dt.total_seconds();
         	}
 
-        	uint32_t validTime;
-           	if (info.validTime() < now) {
+        	long validTime;
+           	if (info.validTime() <= now) {
            		validTime = 0;
             }
             else {
@@ -315,8 +315,8 @@ namespace OpcUaStackCore
         if (!error) {
            	auto now = boost::posix_time::microsec_clock::universal_time();
 
-            uint32_t validFrom;
-            if (info.validFrom() < now) {
+            long validFrom;
+            if (info.validFrom() <= now) {
             	validFrom = 0;
             }
             else {
@@ -324,8 +324,8 @@ namespace OpcUaStackCore
             	validFrom = dt.total_seconds();
             }
 
-            uint32_t validTime;
-            if (info.validTime() < now) {
+            long validTime;
+            if (info.validTime() <= now) {
                	validTime = 0;
             }
             else {
@@ -543,68 +543,31 @@ namespace OpcUaStackCore
 		// get serial number
 		info.serialNumber(ASN1_INTEGER_get(X509_get_serialNumber(cert_)));
 
-		// get valid time
-		auto getTime = [this] (asn1_string_st* str) ->  boost::optional<boost::posix_time::ptime> {
-			size_t i = 0;
-			struct tm reulstTime;
-			auto data = (const char*)str->data;
+		struct tm timeinfo;
 
-			auto y1 = data[i++];
-			auto y2 = data[i++];
-
-			if (str->type == V_ASN1_UTCTIME) {
-				reulstTime.tm_year = (y1 - '0') * 10 + (y2 - '0');
-				if (reulstTime.tm_year < 70) {
-					reulstTime.tm_year += 100;
-				}
-			}
-			else if (str->type == V_ASN1_GENERALIZEDTIME) {
-				auto y3 = data[i++];
-				auto y4 = data[i++];
-				reulstTime.tm_year = (y1 - '0') * 1000 +
-									   (y2 - '0') * 100 +
-									   (y3 - '0') * 10 +
-									   (y4 - '0');
-				reulstTime.tm_year -= 1900;
-			}
-			else {
-				return boost::none;
-			}
-
-			auto t1 = data[i++]; auto t2 = data[i++];
-			reulstTime.tm_mon = ((t1 - '0') * 10 + (t2 - '0')) - 1; // -1 since January is 0 not 1.
-
-			t1 = data[i++]; t2 = data[i++];
-			reulstTime.tm_mday = (t1 - '0') * 10 + (t2 - '0');
-
-			t1 = data[i++];	t2 = data[i++];
-			reulstTime.tm_hour = (t1 - '0') * 10 + (t2 - '0');
-
-			t1 = data[i++];	t2 = data[i++];
-			reulstTime.tm_min  = (t1 - '0') * 10 + (t2 - '0');
-
-			t1 = data[i++]; t2 = data[i++];
-			reulstTime.tm_sec  = (t1 - '0') * 10 + (t2 - '0');
-
-			return boost::make_optional<boost::posix_time::ptime>(boost::posix_time::from_time_t(mktime(&reulstTime)));
-
-		};
-
-		if (auto beforeTimeLocal = getTime(X509_get_notBefore(cert_))) {
-			info.validFrom(beforeTimeLocal.get() + boost::posix_time::seconds(timeDiff));
-		} else {
+		// Get NotBefore time
+		ASN1_TIME* notBefore = X509_get_notBefore(cert_);
+		if (notBefore == NULL) {
 			addError("not before time format invalid");
 			return false;
 		}
+		if (!ASN1_TIME_to_tm(notBefore, &timeinfo)) {
+			addError("not before time format invalid");
+			return false;
+		}
+		info.validFrom(boost::posix_time::ptime_from_tm(timeinfo));
 
-
-		if (auto afterTimeLocal = getTime(X509_get_notAfter(cert_))) {
-			info.validTime(afterTimeLocal.get() + boost::posix_time::seconds(timeDiff));
-		} else {
+		// Get NotAfter time
+		ASN1_TIME* notAfter = X509_get_notAfter(cert_);
+		if (notAfter == NULL) {
 			addError("not after time format invalid");
 			return false;
 		}
-
+		if (!ASN1_TIME_to_tm(notAfter, &timeinfo)) {
+			addError("not after time format invalid");
+			return false;
+		}
+		info.validTime(boost::posix_time::ptime_from_tm(timeinfo));
 
 		return true;
 	}
