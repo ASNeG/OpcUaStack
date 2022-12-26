@@ -21,14 +21,23 @@
 #include <boost/shared_ptr.hpp>
 
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaByteString.h"
 
 namespace OpcUaStackCore
 {
 
-	enum class DLLEXPORT PKIStoreCertKind
+	enum class DLLEXPORT PKIStoreDataType
 	{
-		OwnKey,   // ApplType, RsaMinType, RsaSha256Type, HttpsType, UserCredentialType
-		OwnCert,
+		OwnKeyApplType,
+		OwnKeyRsaMinType,
+		OwnKeyRsaSha256Type,
+		OwnKeyHttpsType,
+		OwnKeyUserCredentialType,
+		OwnCertApplType,
+		OwnCertRsaMinType,
+		OwnCertRsaSha256Type,
+		OwnCertHttpsType,
+		OwnCertUserCredentialType,
 		TrustedCert,
 		TrustedCrlsCert,
 		IssuerCert,
@@ -43,8 +52,8 @@ namespace OpcUaStackCore
  	  public:
 	    typedef boost::shared_ptr<PKIStoreConfiguration> SPtr;
 
-	    PKIStoreConfiguration(void);
-	    virtual ~PKIStoreConfiguration(void);
+	    PKIStoreConfiguration(void) {}
+	    virtual ~PKIStoreConfiguration(void) {}
 	};
 
 
@@ -53,18 +62,40 @@ namespace OpcUaStackCore
 	  public:
 		typedef boost::shared_ptr<PKIStore> SPtr;
 
-		PKIStore(void);
-		virtual ~PKIStore(void);
+		PKIStore(void) {}
+		virtual ~PKIStore(void) {}
 
 		// Functions to open and close PKI Store
 		virtual bool open(PKIStoreConfiguration::SPtr config) = 0;
 		virtual bool close(void) = 0;
 		virtual bool cleanup(void) = 0;
 
-		// Functions to access certificates and keys
-#if 0
-		virtual bool write(PKIStoreCertKind kind, const std::string& name, ...) = 0;
-#endif
+		// Functions to access data in key store
+		virtual bool exist(
+			PKIStoreDataType type,
+			const std::string& name
+		) = 0;
+		virtual bool write(
+			PKIStoreDataType type,
+			const std::string& name,
+			const OpcUaStackCore::OpcUaByteString& data
+		) = 0;
+		virtual bool read(
+			PKIStoreDataType type,
+			const std::string& name,
+			OpcUaStackCore::OpcUaByteString& data
+		) = 0;
+		virtual bool readAll(
+			PKIStoreDataType type,
+			std::vector<OpcUaByteString>& dataVec
+		) = 0;
+		virtual bool remove(
+			PKIStoreDataType type,
+			const std::string& name
+		) = 0;
+		virtual bool removeAll(
+			PKIStoreDataType type
+		) = 0;
 	};
 
 }
