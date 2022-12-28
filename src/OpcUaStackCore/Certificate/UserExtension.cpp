@@ -15,7 +15,10 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "UserExtension.h"
+#include <sstream>
+
+#include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/Certificate/UserExtension.h"
 
 namespace OpcUaStackCore
 {
@@ -29,13 +32,13 @@ namespace OpcUaStackCore
 	}
 
 	void
-	UserExtension::setNid(uint32_t nid)
+	UserExtension::nid(uint32_t nid)
 	{
 		nid_ = nid;
 	}
 
 	uint32_t
-	UserExtension::getNid(void)
+	UserExtension::nid(void)
 	{
 		return nid_;
 	}
@@ -65,6 +68,23 @@ namespace OpcUaStackCore
 	UserExtension::getEntryVec(std::vector<std::string>& names)
 	{
 		for(auto it : entryMap_) names.push_back(it.second);
+	}
+
+	void
+	UserExtension::logContent(const std::string& message)
+	{
+		bool first = true;
+		std::stringstream ss;
+
+		ss << "nid=" << nid_ << ": ";
+		for(auto it : entryMap_) {
+			if (first) first = false;
+			else ss << "/";
+			ss << it.first << "=" << it.second;
+		}
+
+		Log(Debug, message)
+			.parameter("Content", ss.str());
 	}
 
 }

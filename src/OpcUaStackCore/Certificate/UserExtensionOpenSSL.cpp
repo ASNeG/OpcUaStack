@@ -27,37 +27,28 @@
 namespace OpcUaStackCore
 {
 
-	UserExtensionOpenSSL::UserExtensionOpenSSL(void)
+	UserExtensionOpenSSL::UserExtensionOpenSSL(uint32_t nid)
 	: UserExtension()
+	, OpenSSLError()
 	{
+		nid_ = nid;
 	}
 
 	UserExtensionOpenSSL::~UserExtensionOpenSSL(void)
 	{
 		if (ex_ != nullptr) {
 			X509_EXTENSION_free(ex_);
+			ex_ = NULL;
 		}
 	}
 
-	void
-	UserExtensionOpenSSL::setExtension(X509_EXTENSION* ex)
-	{
-		ex_ = ex;
-	}
-
-	X509_EXTENSION*
-	UserExtensionOpenSSL::getExtension(void)
-	{
-		return ex_;
-	}
-
 	bool
-	UserExtensionOpenSSL::encodeExtention(void)
+	UserExtensionOpenSSL::encodeExtensionData(void)
 	{
-		// Check parameter
+		// Create new X509 extension
 		if (ex_ != nullptr) {
-			Log(Error, "encode extension error, because extension already exist");
-			return false;
+			X509_EXTENSION_free(ex_);
+			ex_ = NULL;
 		}
 
 		// Create extension string from entry map
@@ -67,35 +58,23 @@ namespace OpcUaStackCore
 			ss << it.first << ":" << it.second;
 		}
 
-		// Convert extension string to octet string
-		ASN1_OCTET_STRING* extOctetString = ASN1_OCTET_STRING_new();
-		if (extOctetString == nullptr) {
-			Log(Error, "encode extension error, because create octet string failed");
-			return false;
-		}
-		int rc = ASN1_OCTET_STRING_set(extOctetString, (unsigned char *)ss.str().c_str(), ss.str().size());
-		if (rc != 1) {
-			ASN1_OCTET_STRING_free(extOctetString);
-			Log(Error, "encode extension error, because set octet string failed");
-			return false;
-		}
+	    ASN1_OCTET_STRING* data0 = ASN1_OCTET_STRING_new();
+	    ASN1_OCTET_STRING_set(data0, (unsigned char *)ss.str().c_str(), ss.str().size());
 
 	    // Create extension
-		ex_ = X509_EXTENSION_create_by_NID(&ex_, nid_, 0, extOctetString);
+		ex_ = X509_EXTENSION_create_by_NID(nullptr, nid_ + OBJ_new_nid(0), 0, data0);
 	    if (ex_ == NULL) {
 	    	Log(Error, "encode extension error, because create extension failed");
-	    	ASN1_OCTET_STRING_free(extOctetString);
 	    	X509_EXTENSION_free(ex_);
 	    	ex_ = NULL;
 	        return false;
 	    }
 
-	    ASN1_OCTET_STRING_free(extOctetString);
 		return true;
 	}
 
 	bool
-	UserExtensionOpenSSL::decodeExtention(void)
+	UserExtensionOpenSSL::decodeExtensionData(void)
 	{
 		// Check parameter
 		if (ex_ == nullptr) {
@@ -131,6 +110,52 @@ namespace OpcUaStackCore
 			entryMap_.insert(std::make_pair(name, value));
 		}
 
+		return true;
+	}
+
+	bool
+	UserExtensionOpenSSL::encodeX509UserExtension(X509 *cert)
+	{
+		// Create user extension object
+		if (!encodeExtensionData()) {
+			addError("encode user extension data error");
+			return false;
+		}
+
+		// Add user extension object to certificate
+		int32_t result = X509_add_ext(cert, ex_, -1);
+ 		if (!result) {
+ 			addOpenSSLError();
+			return false;
+		}
+
+		return true;
+	}
+
+	bool
+	UserExtensionOpenSSL::decodeX509UserExtension(X509 *cert)
+	{
+		// Get user extension from certificate
+	    int32_t pos = X509_get_ext_by_NID(cert, nid_ + OBJ_new_nid(0), -1);
+		if (pos < 0) {
+			addOpenSSLError();
+			return false;
+		}
+
+		ex_ = X509_get_ext(cert, pos);
+		if (ex_ == nullptr) {
+			addOpenSSLError();
+			return false;
+		}
+
+		// Get data from user extension
+		if (!decodeExtensionData()) {
+			ex_ = nullptr;
+			addError("decode user extension data error");
+			return false;
+		}
+
+		ex_ = nullptr;
 		return true;
 	}
 

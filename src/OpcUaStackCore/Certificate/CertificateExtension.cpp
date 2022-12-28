@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2022 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -16,7 +16,7 @@
  */
 
 #include <iostream>
-#include <OpcUaStackCore/Certificate/CertificateExtension.h>
+#include "OpcUaStackCore/Certificate/CertificateExtension.h"
 
 namespace OpcUaStackCore
 {
@@ -147,6 +147,20 @@ namespace OpcUaStackCore
 	CertificateExtension::subjectAltName(void)
 	{
 		return subjectAltName_;
+	}
+
+	UserExtension::SPtr
+	CertificateExtension::getUserExtension(uint32_t nid)
+	{
+		auto userExtension = userExtensionMap_.find(nid);
+		if (userExtension == userExtensionMap_.end()) return nullptr;
+		return userExtension->second;
+	}
+
+	bool
+	CertificateExtension::addUserExtension(uint32_t nid, const UserExtension::SPtr& userExtension)
+	{
+		return userExtensionMap_.insert(std::make_pair(nid, userExtension)).second;
 	}
 
 	bool
@@ -286,14 +300,15 @@ namespace OpcUaStackCore
 	CertificateExtension::logContent(const std::string& message)
 	{
 		Log(Debug, message)
-			.parameter("UseCACert", useCACert_)
-			.parameter("BasicContrains", basicConstraints_)
-			.parameter("NsComment", nsComment_)
-			.parameter("SubjectKeyIdentifier", subjectKeyIdentifier_)
-			.parameter("AuthorityKeyIdentifier", authorityKeyIdentifier_)
-			.parameter("KeyUsage", keyUsage_)
-			.parameter("ExtendedKeyUsage", extendedKeyUsage_)
-			.parameter("SubjectAltName", subjectAltName_);
+		    .parameter("UseCACert", useCACert_)
+	        .parameter("BasicContrains", basicConstraints_)
+		    .parameter("NsComment", nsComment_)
+	        .parameter("SubjectKeyIdentifier", subjectKeyIdentifier_)
+		    .parameter("AuthorityKeyIdentifier", authorityKeyIdentifier_)
+		    .parameter("KeyUsage", keyUsage_)
+	        .parameter("ExtendedKeyUsage", extendedKeyUsage_)
+	        .parameter("SubjectAltName", subjectAltName_);
+
 	}
 
 }

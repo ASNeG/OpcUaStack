@@ -33,20 +33,23 @@ namespace OpcUaStackCore
 	{
 	  public:
 		using SPtr = boost::shared_ptr<UserExtension>;
+		using Map = std::map<uint32_t, SPtr>;
+		using Vec = std::vector<SPtr>;
 		using EntryMap = std::map<std::string, std::string>;
 
 		UserExtension(void);
 		virtual ~UserExtension(void);
 
-		void setNid(uint32_t nid);
-		uint32_t getNid(void);
+		void nid(uint32_t nid);
+		uint32_t nid(void);
 		bool existEntry(const std::string& name);
 		bool setEntry(const std::string& name, const std::string& value);
 		bool getEntry(const std::string& name, std::string& value);
 		void getEntryVec(std::vector<std::string>& names);
+		void logContent(const std::string& message);
 
-		virtual bool encodeExtention(void) = 0;
-		virtual bool decodeExtention(void) = 0;
+		virtual bool encodeExtensionData(void) = 0;
+		virtual bool decodeExtensionData(void) = 0;
 
 	  protected:
 		uint32_t nid_ = 0;

@@ -127,6 +127,7 @@ BOOST_AUTO_TEST_CASE(ValidateCertificate_Build_Test_Certs)
 	BOOST_REQUIRE(gf->certificateSelfSigned_->createCertificate(
 		info, identity,
 		gf->keySelfSigned_,
+		nullptr,
 		false,
 		SignatureAlgorithm_Sha256) == true
 	);
@@ -164,7 +165,7 @@ BOOST_AUTO_TEST_CASE(ValidateCertificate_Build_Test_Certs)
 
 	BOOST_REQUIRE(
 		gf->certificateCA_->createCertificate(
-			info, identity, gf->keyCA_, true, SignatureAlgorithm_Sha256
+			info, identity, gf->keyCA_, nullptr, true, SignatureAlgorithm_Sha256
 		) == true
 	);
 	BOOST_REQUIRE(gf->certificateCA_->isError() == false);
@@ -206,7 +207,7 @@ BOOST_AUTO_TEST_CASE(ValidateCertificate_Build_Test_Certs)
 		gf->certificateDEP_->createCertificate(
 			info, identity, publicKeyDEP,
 			*gf->certificateCA_.get(), privateKeyCA,
-			true, SignatureAlgorithm_Sha256
+			nullptr, true, SignatureAlgorithm_Sha256
 		) == true
 	);
 	BOOST_REQUIRE(gf->certificateDEP_->isError() == false);
@@ -247,7 +248,7 @@ BOOST_AUTO_TEST_CASE(ValidateCertificate_Build_Test_Certs)
 		gf->certificateSRV_->createCertificate(
 			info, identity, publicKeySRV,
 			*gf->certificateDEP_.get(), privateKeyDEP,
-			false, SignatureAlgorithm_Sha256
+			nullptr, false, SignatureAlgorithm_Sha256
 		) == true
 	);
 	BOOST_REQUIRE(gf->certificateDEP_->isError() == false);

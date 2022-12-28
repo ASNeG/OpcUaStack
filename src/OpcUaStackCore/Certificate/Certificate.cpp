@@ -21,6 +21,7 @@
 #include <boost/date_time/local_time_adjustor.hpp>
 #include <boost/date_time/c_local_time_adjustor.hpp>
 #include "OpcUaStackCore/Base/MemoryBuffer.h"
+#include "OpcUaStackCore/Certificate/UserExtensionOpenSSL.h"
 #include "OpcUaStackCore/Certificate/Certificate.h"
 
 namespace OpcUaStackCore
@@ -37,6 +38,7 @@ namespace OpcUaStackCore
 		CertificateInfo& info,
 		Identity& subject,
 	    RSAKey& rsaKey,
+		UserExtension::Vec* userExtensionVec,
 	    bool useCACert,
 	    SignatureAlgorithm signatureAlgorithm
 	)
@@ -48,6 +50,7 @@ namespace OpcUaStackCore
 			info,
 			subject,
 			rsaKey,
+			userExtensionVec,
 			useCACert,
 			signatureAlgorithm
 		);
@@ -59,6 +62,7 @@ namespace OpcUaStackCore
 		PublicKey& subjectPublicKey,
 		Certificate&  issuerCertificate,
 		PrivateKey& issuerPrivateKey,
+		UserExtension::Vec* userExtensionVec,
 	    bool useCACert,
 	    SignatureAlgorithm signatureAlgorithm
 	)
@@ -73,6 +77,7 @@ namespace OpcUaStackCore
 			subjectPublicKey,
 			issuerCertificate,
 			issuerPrivateKey,
+			userExtensionVec,
 			useCACert,
 			signatureAlgorithm
 		);
@@ -91,6 +96,7 @@ namespace OpcUaStackCore
 		CertificateInfo& info,
 		Identity& subject,
 		RSAKey& rsaKey,
+		UserExtension::Vec* userExtensionVec,
 		bool useCACert,
 		SignatureAlgorithm signatureAlgorithm
 	)
@@ -192,15 +198,32 @@ namespace OpcUaStackCore
         X509V3_set_ctx(&ctx, cert_, cert_, NULL, NULL, 0);
         if (!error) {
             CertificateExtension certificateExtension(useCACert);
+
+            // set subject alternative name
             certificateExtension.subjectAltName(info.subjectAltName());
+
+            // Set key usage
             if (!info.keyUsage().empty()) {
            	   certificateExtension.keyUsage(info.keyUsage());
             }
+
             certificateExtension.logContent(std::string("create certificate ") + subject.commonName());
             if (!certificateExtension.encodeX509(cert_, ctx)) {
             	error = true;
             	addError(certificateExtension.errorList());
             }
+        }
+
+        // set user extensions
+        if (!error && userExtensionVec != nullptr) {
+        	for (auto userExtension : *userExtensionVec) {
+        		auto ext = boost::static_pointer_cast<UserExtensionOpenSSL>(userExtension);
+        		ext->logContent(std::string("create user extension"));
+        		if (!ext->encodeX509UserExtension(cert_)) {
+        			error = true;
+        			addError(ext->errorList());
+        		}
+        	}
         }
 
         // sign the certificate
@@ -235,6 +258,7 @@ namespace OpcUaStackCore
 		PublicKey& subjectPublicKey,
 		Certificate&  issuerCertificate,
 		PrivateKey& issuerPrivateKey,
+		UserExtension::Vec* userExtensionVec,
 		bool useCACert,
 		SignatureAlgorithm signatureAlgorithm
 	)
@@ -353,15 +377,32 @@ namespace OpcUaStackCore
          X509V3_set_ctx(&ctx, cert_, cert_, NULL, NULL, 0);
          if (!error) {
              CertificateExtension certificateExtension(useCACert);
+
+             // Set subject alternative name
              certificateExtension.subjectAltName(info.subjectAltName());
+
+             // Set key usage
              if (!info.keyUsage().empty()) {
             	 certificateExtension.keyUsage(info.keyUsage());
              }
+
              certificateExtension.logContent(std::string("create certificate ") + subject.commonName());
              if (!certificateExtension.encodeX509(cert_, ctx)) {
                  error = true;
               	 addError(certificateExtension.errorList());
              }
+         }
+
+         // set user extensions
+         if (!error && userExtensionVec != nullptr) {
+         	for (auto userExtension : *userExtensionVec) {
+         		auto ext = boost::static_pointer_cast<UserExtensionOpenSSL>(userExtension);
+         		ext->logContent(std::string("create user extension"));
+         		if (!ext->encodeX509UserExtension(cert_)) {
+         			error = true;
+         			addError(ext->errorList());
+         		}
+         	}
          }
 
          // sign the certificate
@@ -535,7 +576,11 @@ namespace OpcUaStackCore
 			addError(ext.errorList());
 			return false;
 		}
+
+		// Get key usage
 		info.keyUsage(ext.keyUsage());
+
+		// Get subject alternative name
 		if (!isCACert) {
 			info.subjectAltName(ext.subjectAltName());
 		}
@@ -584,6 +629,27 @@ namespace OpcUaStackCore
 			addError(certificateExtension.errorList());
 			return false;
 		}
+
+		return true;
+	}
+
+	bool
+	Certificate::getUserExtension(UserExtension::SPtr& userExtension)
+	{
+		if (cert_ == nullptr) {
+			addError("certificate is empty");
+			return false;
+		}
+
+		UserExtensionOpenSSL::SPtr userExtensionOpenSSL =
+			boost::static_pointer_cast<UserExtensionOpenSSL>(userExtension);
+
+		// Get object from user extension
+		if (!userExtensionOpenSSL->decodeX509UserExtension(cert_)) {
+			addError("decode user extension error");
+			return false;
+		}
+		userExtensionOpenSSL->logContent(std::string("get user extension"));
 
 		return true;
 	}

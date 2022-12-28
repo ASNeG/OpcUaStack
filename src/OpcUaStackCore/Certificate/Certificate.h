@@ -35,6 +35,7 @@
 #include "OpcUaStackCore/Certificate/Identity.h"
 #include "OpcUaStackCore/Certificate/RSAKey.h"
 #include "OpcUaStackCore/Certificate/CertificateInfo.h"
+#include "OpcUaStackCore/Certificate/UserExtension.h"
 
 namespace OpcUaStackCore
 {
@@ -52,6 +53,7 @@ namespace OpcUaStackCore
 			CertificateInfo& info,
 			Identity& subject,
 		    RSAKey& rsaKey,
+			UserExtension::Vec* userExtensionVec = nullptr,
 		    bool useCACert = false,
 		    SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm_Sha1
 		);
@@ -61,6 +63,7 @@ namespace OpcUaStackCore
 			PublicKey& subjectPublicKey,
 			Certificate&  issuerCertificate,
 			PrivateKey& issuerPrivateKey,
+			UserExtension::Vec* userExtensionVec = nullptr,
 		    bool useCACert = false,
 		    SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm_Sha1
 		);
@@ -70,6 +73,7 @@ namespace OpcUaStackCore
 			CertificateInfo& info,
 			Identity& subject,
 			RSAKey& rsaKey,
+			UserExtension::Vec* userExtensionVec = nullptr,
 			bool useCACert = false,
 			SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm_Sha1
 		);
@@ -79,6 +83,7 @@ namespace OpcUaStackCore
 			PublicKey& subjectPublicKey,
 			Certificate&  issuerCertificate,
 			PrivateKey& issuerPrivateKey,
+			UserExtension::Vec* userExtensionVec = nullptr,
 			bool useCACert = false,
 			SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm_Sha1
 		);
@@ -93,6 +98,7 @@ namespace OpcUaStackCore
 		bool getIssuer(Identity& issuer);
 		bool getInfo(CertificateInfo& info);
 		bool getExtension(CertificateExtension& certificateExtension);
+		bool getUserExtension(UserExtension::SPtr& userExtension);
 
 		OpcUaByteString thumbPrint(void);
 		bool thumbPrint(char* buf, uint32_t* bufLen);

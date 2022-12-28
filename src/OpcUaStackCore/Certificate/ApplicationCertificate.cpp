@@ -163,7 +163,7 @@ namespace OpcUaStackCore
 		}
 
 		// create self signed certificate
-		Certificate certificate(info, identity, key, false, signatureAlgorithm);
+		Certificate certificate(info, identity, key, nullptr, false, signatureAlgorithm);
 		if (certificate.isError()) {
 			certificate.log(Error, "create self signed certificate error");
 			return false;

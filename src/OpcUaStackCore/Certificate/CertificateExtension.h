@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2022 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -21,6 +21,7 @@
 #include <openssl/x509.h>
 #include <openssl/x509v3.h>
 #include "OpcUaStackCore/Certificate/OpenSSLError.h"
+#include "OpcUaStackCore/Certificate/UserExtension.h"
 
 namespace OpcUaStackCore
 {
@@ -47,6 +48,8 @@ namespace OpcUaStackCore
 		std::string& extendedKeyUsage(void);
 		void subjectAltName(const std::string& subjectAltName);
 		std::string& subjectAltName(void);
+		UserExtension::SPtr getUserExtension(uint32_t nid);
+		bool addUserExtension(uint32_t nid, const UserExtension::SPtr& userExtension);
 
 		bool encodeX509(X509 *cert, X509V3_CTX& ctx);
 		bool decodeX509(X509 *cert);
@@ -65,6 +68,7 @@ namespace OpcUaStackCore
 		std::string keyUsage_;
 		std::string extendedKeyUsage_;
 		std::string subjectAltName_;
+		UserExtension::Map userExtensionMap_;
 	};
 
 }

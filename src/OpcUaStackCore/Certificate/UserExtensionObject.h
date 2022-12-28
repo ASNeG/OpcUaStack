@@ -15,42 +15,36 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_UserExtensionOpenSSL_h__
-#define __OpcUaStackCore_UserExtensionOpenSSL_h__
+#ifndef __OpcUaStackCore_UserExtensionObject_h__
+#define __OpcUaStackCore_UserExtensionObject_h__
 
 #include <boost/shared_ptr.hpp>
 
 #include <string>
-#include <vector>
-#include <map>
 
 #include <openssl/x509.h>
 
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Certificate/UserExtension.h"
 #include "OpcUaStackCore/Certificate/OpenSSLError.h"
 
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT UserExtensionOpenSSL
-	: public UserExtension
-	, public OpenSSLError
+	class DLLEXPORT UserExtensionObject
+	: public OpenSSLError
 	{
 	  public:
-		using SPtr = boost::shared_ptr<UserExtensionOpenSSL>;
+		using SPtr = boost::shared_ptr<UserExtensionObject>;
 
-		UserExtensionOpenSSL(uint32_t nid = 0);
-		virtual ~UserExtensionOpenSSL(void);
+	    UserExtensionObject(void);
+	    ~UserExtensionObject(void);
 
-		bool encodeX509UserExtension(X509 *cert);
-		bool decodeX509UserExtension(X509 *cert);
-
-	  private:
-		X509_EXTENSION *ex_ = nullptr;
-
-		bool encodeExtensionData(void) override;
-		bool decodeExtensionData(void) override;
+	    bool registerUserExtension(
+	    	uint32_t nid,
+			const std::string& oid,
+			const std::string& shortName,
+			const std::string& longName
+	    );
 	};
 
 }
