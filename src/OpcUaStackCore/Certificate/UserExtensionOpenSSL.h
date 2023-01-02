@@ -1,5 +1,5 @@
 /*
-   Copyright 2022 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2022-2023 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -45,6 +45,9 @@ namespace OpcUaStackCore
 
 		bool encodeX509UserExtension(X509 *cert);
 		bool decodeX509UserExtension(X509 *cert);
+
+		bool encodeX509UserExtension(X509_REQ *req, STACK_OF(X509_EXTENSION)* exts);
+		bool decodeX509UserExtension(X509_REQ *req);
 
 	  private:
 		X509_EXTENSION *ex_ = nullptr;

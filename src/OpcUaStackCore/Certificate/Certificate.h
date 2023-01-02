@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2023 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -31,11 +31,11 @@
 #include "OpcUaStackCore/Certificate/CertificateInfo.h"
 #include "OpcUaStackCore/Certificate/OpenSSLError.h"
 #include "OpcUaStackCore/Certificate/CertificateEnums.h"
-#include "OpcUaStackCore/Certificate/CertificateExtension.h"
 #include "OpcUaStackCore/Certificate/Identity.h"
 #include "OpcUaStackCore/Certificate/RSAKey.h"
 #include "OpcUaStackCore/Certificate/CertificateInfo.h"
 #include "OpcUaStackCore/Certificate/UserExtension.h"
+#include "X509Extension.h"
 
 namespace OpcUaStackCore
 {
@@ -97,7 +97,7 @@ namespace OpcUaStackCore
 		bool getSubject(Identity& subject);
 		bool getIssuer(Identity& issuer);
 		bool getInfo(CertificateInfo& info);
-		bool getExtension(CertificateExtension& certificateExtension);
+		bool getExtension(X509Extension& x509Extension);
 		bool getUserExtension(UserExtension::SPtr& userExtension);
 
 		OpcUaByteString thumbPrint(void);

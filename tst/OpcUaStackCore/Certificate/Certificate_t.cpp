@@ -204,7 +204,7 @@ BOOST_AUTO_TEST_CASE(Certificate__readFile)
 	//std::cout << info2.validFrom() << " " << from << std::endl;
 	//std::cout << info2.validTime() << " " << to << std::endl;
 
-	CertificateExtension ce(certificate2.isSelfSigned());
+	X509Extension ce(certificate2.isSelfSigned());
 	BOOST_REQUIRE(certificate2.getExtension(ce) == true);
 	std::cout << ce.subjectKeyIdentifier() << std::endl;
 }

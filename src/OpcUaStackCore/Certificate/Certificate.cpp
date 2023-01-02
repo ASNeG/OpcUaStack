@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2022 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2023 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -197,20 +197,20 @@ namespace OpcUaStackCore
         X509V3_CTX ctx;
         X509V3_set_ctx(&ctx, cert_, cert_, NULL, NULL, 0);
         if (!error) {
-            CertificateExtension certificateExtension(useCACert);
+            X509Extension x509Extension(useCACert);
 
             // set subject alternative name
-            certificateExtension.subjectAltName(info.subjectAltName());
+            x509Extension.subjectAltName(info.subjectAltName());
 
             // Set key usage
             if (!info.keyUsage().empty()) {
-           	   certificateExtension.keyUsage(info.keyUsage());
+           	   x509Extension.keyUsage(info.keyUsage());
             }
 
-            certificateExtension.logContent(std::string("create certificate ") + subject.commonName());
-            if (!certificateExtension.encodeX509(cert_, ctx)) {
+            x509Extension.logContent(std::string("create certificate ") + subject.commonName());
+            if (!x509Extension.encode(cert_, ctx)) {
             	error = true;
-            	addError(certificateExtension.errorList());
+            	addError(x509Extension.errorList());
             }
         }
 
@@ -376,20 +376,20 @@ namespace OpcUaStackCore
          X509V3_CTX ctx;
          X509V3_set_ctx(&ctx, cert_, cert_, NULL, NULL, 0);
          if (!error) {
-             CertificateExtension certificateExtension(useCACert);
+             X509Extension x509Extension(useCACert);
 
              // Set subject alternative name
-             certificateExtension.subjectAltName(info.subjectAltName());
+             x509Extension.subjectAltName(info.subjectAltName());
 
              // Set key usage
              if (!info.keyUsage().empty()) {
-            	 certificateExtension.keyUsage(info.keyUsage());
+            	 x509Extension.keyUsage(info.keyUsage());
              }
 
-             certificateExtension.logContent(std::string("create certificate ") + subject.commonName());
-             if (!certificateExtension.encodeX509(cert_, ctx)) {
+             x509Extension.logContent(std::string("create certificate ") + subject.commonName());
+             if (!x509Extension.encode(cert_, ctx)) {
                  error = true;
-              	 addError(certificateExtension.errorList());
+              	 addError(x509Extension.errorList());
              }
          }
 
@@ -433,12 +433,12 @@ namespace OpcUaStackCore
 	Certificate::isCaCertificate(void)
 	{
 		// 1. The CA attribute must be set to true
-		CertificateExtension certificateExtension(true);
-		if (!getExtension(certificateExtension)) {
+		X509Extension x509Extension(true);
+		if (!getExtension(x509Extension)) {
 			addError("read certificate extension error");
 			return false;
 		}
-		if (certificateExtension.basicConstraints().find("CA:TRUE") == std::string::npos) {
+		if (x509Extension.basicConstraints().find("CA:TRUE") == std::string::npos) {
 			return false;
 		}
 
@@ -475,12 +475,12 @@ namespace OpcUaStackCore
 	Certificate::isIntermediateCertificate(void)
 	{
 		// 1. The CA attribute must be set to true
-		CertificateExtension certificateExtension(true);
-		if (!getExtension(certificateExtension)) {
+		X509Extension x509Extension(true);
+		if (!getExtension(x509Extension)) {
 			addError("read certificate extension error");
 			return false;
 		}
-		if (certificateExtension.basicConstraints().find("CA:TRUE") == std::string::npos) {
+		if (x509Extension.basicConstraints().find("CA:TRUE") == std::string::npos) {
 			return false;
 		}
 
@@ -571,8 +571,8 @@ namespace OpcUaStackCore
 
 		// get extensions
 		auto isCACert = isCaCertificate() || isIntermediateCertificate();
-		CertificateExtension ext(isCACert);
-		if (!ext.decodeX509(cert_)) {
+		X509Extension ext(isCACert);
+		if (!ext.decode(cert_)) {
 			addError(ext.errorList());
 			return false;
 		}
@@ -618,15 +618,15 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	Certificate::getExtension(CertificateExtension& certificateExtension)
+	Certificate::getExtension(X509Extension& x509Extension)
 	{
 		if (cert_ == nullptr) {
 			addError("certificate is empty");
 			return false;
 		}
 
-		if (!certificateExtension.decodeX509(cert_)) {
-			addError(certificateExtension.errorList());
+		if (!x509Extension.decode(cert_)) {
+			addError(x509Extension.errorList());
 			return false;
 		}
 

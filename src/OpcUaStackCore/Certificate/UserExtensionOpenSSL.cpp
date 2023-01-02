@@ -1,5 +1,5 @@
 /*
-   Copyright 2022 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2022-2023 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -156,6 +156,62 @@ namespace OpcUaStackCore
 		}
 
 		ex_ = nullptr;
+		return true;
+	}
+
+	bool
+	UserExtensionOpenSSL::encodeX509UserExtension(X509_REQ *req, STACK_OF(X509_EXTENSION)* exts)
+	{
+		// Create user extension object
+		if (!encodeExtensionData()) {
+			addError("encode user extension data error");
+			return false;
+		}
+
+		// Add extension to extension stack
+		int result = sk_X509_EXTENSION_push(exts, ex_);
+		if (!result) {
+			addOpenSSLError();
+			X509_EXTENSION_free(ex_);
+			ex_ = nullptr;
+			return false;
+		}
+
+		return true;
+	}
+
+
+	bool
+	UserExtensionOpenSSL::decodeX509UserExtension(X509_REQ *req)
+	{
+		// get extensions from request
+		STACK_OF(X509_EXTENSION)* exts = X509_REQ_get_extensions(req);
+		if (exts == NULL) {
+			addOpenSSLError();
+			return false;
+		}
+
+	    int32_t pos = X509v3_get_ext_by_NID(exts, nid_ + OBJ_new_nid(0), -1);
+		if (pos < 0) {
+			addOpenSSLError();
+			return false;
+		}
+
+		ex_ = X509v3_get_ext(exts, pos);
+		if (ex_ == nullptr) {
+			addOpenSSLError();
+			return false;
+		}
+
+		// Get data from user extension
+		if (!decodeExtensionData()) {
+			ex_ = nullptr;
+			addError("decode user extension data error");
+			return false;
+		}
+
+		ex_ = nullptr;
+		sk_X509_EXTENSION_free(exts);
 		return true;
 	}
 

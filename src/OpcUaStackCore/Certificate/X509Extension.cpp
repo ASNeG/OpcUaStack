@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2022 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2023 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -9,19 +9,20 @@
    erfolgt die Bereitstellung der im Rahmen der Lizenz verbreiteten Software OHNE
    GEWÄHR ODER VORBEHALTE – ganz gleich, ob ausdrücklich oder stillschweigend.
 
-   CertificateExtensionrmationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
+   X509Extensionrmationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
 #include <iostream>
-#include "OpcUaStackCore/Certificate/CertificateExtension.h"
+
+#include "OpcUaStackCore/Certificate/X509Extension.h"
 
 namespace OpcUaStackCore
 {
 
-	CertificateExtension::CertificateExtension(bool useCACert)
+	X509Extension::X509Extension(bool useCACert)
 	: OpenSSLError()
 	, useCACert_(useCACert)
 	, basicConstraints_("")
@@ -49,12 +50,12 @@ namespace OpcUaStackCore
 		}
 	}
 
-	CertificateExtension::~CertificateExtension(void)
+	X509Extension::~X509Extension(void)
 	{
 	}
 
 	void
-	CertificateExtension::clear(void)
+	X509Extension::clear(void)
 	{
 		basicConstraints_ = "";
 		nsComment_ = "";
@@ -66,133 +67,119 @@ namespace OpcUaStackCore
 	}
 
 	void
-	CertificateExtension::basicConstraints(const std::string& basicConstraints)
+	X509Extension::basicConstraints(const std::string& basicConstraints)
 	{
 		basicConstraints_ = basicConstraints;
 	}
 
 	std::string&
-	CertificateExtension::basicConstraints(void)
+	X509Extension::basicConstraints(void)
 	{
 		return basicConstraints_;
 	}
 
 	void
-	CertificateExtension::nsComment(const std::string& nsComment)
+	X509Extension::nsComment(const std::string& nsComment)
 	{
 		nsComment_ = nsComment;
 	}
 
 	std::string&
-	CertificateExtension::nsComment(void)
+	X509Extension::nsComment(void)
 	{
 		return nsComment_;
 	}
 
 	void
-	CertificateExtension::subjectKeyIdentifier(const std::string& subjectKeyIdentifier)
+	X509Extension::subjectKeyIdentifier(const std::string& subjectKeyIdentifier)
 	{
 		subjectKeyIdentifier_ = subjectKeyIdentifier;
 	}
 
 	std::string&
-	CertificateExtension::subjectKeyIdentifier(void)
+	X509Extension::subjectKeyIdentifier(void)
 	{
 		return subjectKeyIdentifier_;
 	}
 
 	void
-	CertificateExtension::authorityKeyIdentifier(const std::string& authorityKeyIdentifier)
+	X509Extension::authorityKeyIdentifier(const std::string& authorityKeyIdentifier)
 	{
 		authorityKeyIdentifier_ = authorityKeyIdentifier;
 	}
 
 	std::string&
-	CertificateExtension::authorityKeyIdentifier(void)
+	X509Extension::authorityKeyIdentifier(void)
 	{
 		return authorityKeyIdentifier_;
 	}
 
 	void
-	CertificateExtension::keyUsage(const std::string& keyUsage)
+	X509Extension::keyUsage(const std::string& keyUsage)
 	{
 		keyUsage_ = keyUsage;
 	}
 
 	std::string&
-	CertificateExtension::keyUsage(void)
+	X509Extension::keyUsage(void)
 	{
 		return keyUsage_;
 	}
 
 	void
-	CertificateExtension::extendedKeyUsage(const std::string& extendedKeyUsage)
+	X509Extension::extendedKeyUsage(const std::string& extendedKeyUsage)
 	{
 		extendedKeyUsage_ = extendedKeyUsage;
 	}
 
 	std::string&
-	CertificateExtension::extendedKeyUsage(void)
+	X509Extension::extendedKeyUsage(void)
 	{
 		return extendedKeyUsage_;
 	}
 
 	void
-	CertificateExtension::subjectAltName(const std::string& subjectAltName)
+	X509Extension::subjectAltName(const std::string& subjectAltName)
 	{
 		subjectAltName_ = subjectAltName;
 	}
 
 	std::string&
-	CertificateExtension::subjectAltName(void)
+	X509Extension::subjectAltName(void)
 	{
 		return subjectAltName_;
 	}
 
-	UserExtension::SPtr
-	CertificateExtension::getUserExtension(uint32_t nid)
-	{
-		auto userExtension = userExtensionMap_.find(nid);
-		if (userExtension == userExtensionMap_.end()) return nullptr;
-		return userExtension->second;
-	}
-
 	bool
-	CertificateExtension::addUserExtension(uint32_t nid, const UserExtension::SPtr& userExtension)
+	X509Extension::encode(X509 *cert, X509V3_CTX& ctx)
 	{
-		return userExtensionMap_.insert(std::make_pair(nid, userExtension)).second;
-	}
-
-	bool
-	CertificateExtension::encodeX509(X509 *cert, X509V3_CTX& ctx)
-	{
-		if (!encodeX509Extension(cert, ctx, "basicConstraints", basicConstraints_)) {
+		if (!encode(cert, ctx, "basicConstraints", basicConstraints_)) {
 			addError("encode NID_basic_constraints error");
 			return false;
 		}
-		if (!encodeX509Extension(cert, ctx, "nsComment", nsComment_)) {
+		if (!encode(cert, ctx, "nsComment", nsComment_)) {
 			addError("encode NID_netscape_comment error");
 			return false;
 		}
-		if (!encodeX509Extension(cert, ctx, "keyUsage", keyUsage_)) {
+		if (!encode(cert, ctx, "keyUsage", keyUsage_)) {
 			addError("encode NID_key_usage error");
 			return false;
 		}
-		if (!encodeX509Extension(cert, ctx, "subjectKeyIdentifier", subjectKeyIdentifier_)) {
+		if (!encode(cert, ctx, "subjectKeyIdentifier", subjectKeyIdentifier_)) {
 			addError("encode NID_subject_key_identifier error");
 			return false;
 		}
 
 		if (!useCACert_) {
-			if (!encodeX509Extension(cert, ctx, "extendedKeyUsage", extendedKeyUsage_)) {
+			if (!encode(cert, ctx, "extendedKeyUsage", extendedKeyUsage_)) {
 				addError("encode NID_ext_key_usage error");
 				return false;
 			}
-			if (!encodeX509Extension(cert, ctx, "authorityKeyIdentifier", authorityKeyIdentifier_)) {
+			if (!encode(cert, ctx, "authorityKeyIdentifier", authorityKeyIdentifier_)) {
 				addError("encode NID_authority_key_identifier error");
 				return false;
 			}
-			if (!encodeX509Extension(cert, ctx, "subjectAltName", subjectAltName_)) {
+			if (!encode(cert, ctx, "subjectAltName", subjectAltName_)) {
 				addError("encode NID_subject_alt_name error");
 				return false;
 			}
@@ -202,37 +189,37 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	CertificateExtension::decodeX509(X509 *cert)
+	X509Extension::decode(X509 *cert)
 	{
 		clear();
 
-		if (!decodeX509Extension(cert, NID_basic_constraints, basicConstraints_)) {
+		if (!decode(cert, NID_basic_constraints, basicConstraints_)) {
 			addError("decode NID_basic_constraints error");
 			return false;
 		}
-		if (!decodeX509Extension(cert, NID_netscape_comment, nsComment_, false)) {
+		if (!decode(cert, NID_netscape_comment, nsComment_, false)) {
 			addError("decode NID_netscape_comment error");
 			return false;
 		}
-		if (!decodeX509Extension(cert, NID_key_usage, keyUsage_)) {
+		if (!decode(cert, NID_key_usage, keyUsage_)) {
 			addError("decode NID_key_usage error");
 			return false;
 		}
-		if (!decodeX509Extension(cert, NID_subject_key_identifier, subjectKeyIdentifier_)) {
+		if (!decode(cert, NID_subject_key_identifier, subjectKeyIdentifier_)) {
 			addError("decode NID_subject_key_identifier error");
 			return false;
 		}
 
 		if (!useCACert_) {
-			if (!decodeX509Extension(cert, NID_ext_key_usage, extendedKeyUsage_)) {
+			if (!decode(cert, NID_ext_key_usage, extendedKeyUsage_)) {
 				addError("decode NID_ext_key_usage error");
 				return false;
 			}
-			if (!decodeX509Extension(cert, NID_authority_key_identifier, authorityKeyIdentifier_)) {
+			if (!decode(cert, NID_authority_key_identifier, authorityKeyIdentifier_)) {
 				addError("decode NID_authority_key_identifier error");
 				return false;
 			}
-			if (!decodeX509Extension(cert, NID_subject_alt_name, subjectAltName_)) {
+			if (!decode(cert, NID_subject_alt_name, subjectAltName_)) {
 				addError("decode NID_subject_alt_name error");
 				return false;
 			}
@@ -242,7 +229,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	CertificateExtension::encodeX509Extension(X509 *cert, X509V3_CTX& ctx, const std::string& key, const std::string& value)
+	X509Extension::encode(X509 *cert, X509V3_CTX& ctx, const std::string& key, const std::string& value)
 	{
 		int32_t result;
 		X509_EXTENSION* ext = nullptr;
@@ -265,7 +252,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	CertificateExtension::decodeX509Extension(X509 *cert, int32_t key, std::string& value, bool mandatory)
+	X509Extension::decode(X509 *cert, int32_t key, std::string& value, bool mandatory)
 	{
 	    int32_t pos = X509_get_ext_by_NID(cert, key, -1);
 		if (pos < 0) {
@@ -296,8 +283,115 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool
+	X509Extension::encode(X509_REQ *req, STACK_OF(X509_EXTENSION)* exts)
+	{
+		// Create key usage extension
+		if (!encode(exts, "keyUsage", keyUsage_)) {
+			addError("encode NID_key_usage error");
+			sk_X509_EXTENSION_free(exts);
+			return false;
+		}
+
+		// Create subject alternative name extension
+		if (!encode(exts, "subjectAltName", subjectAltName_)) {
+			addError("encode NID_subject_alt_name error");
+			sk_X509_EXTENSION_free(exts);
+			return false;
+		}
+
+		return true;
+	}
+
+	bool
+	X509Extension::decode(X509_REQ *req)
+	{
+		// get extensions from request
+		STACK_OF(X509_EXTENSION)* exts = X509_REQ_get_extensions(req);
+		if (exts == NULL) {
+			addOpenSSLError();
+			return false;
+		}
+
+		if (!decode(exts, NID_key_usage, keyUsage_)) {
+			addError("decode NID_key_usage error");
+			return false;
+		}
+
+		if (!decode(exts, NID_subject_alt_name, subjectAltName_)) {
+			addError("decode NID_subject_alt_name error");
+			return false;
+		}
+
+		sk_X509_EXTENSION_free(exts);
+		return true;
+	}
+
+	bool
+	X509Extension::encode(
+		STACK_OF(X509_EXTENSION)* exts,
+		const std::string& key,
+		const std::string& value
+	)
+	{
+		int32_t result;
+		X509_EXTENSION* ext = nullptr;
+
+		// set key value
+		ext = X509V3_EXT_conf(nullptr, nullptr, (char*)key.c_str(), (char*)value.c_str());
+		if (!ext) {
+			addOpenSSLError();
+			return false;
+		}
+		result = sk_X509_EXTENSION_push(exts, ext);
+		if (!result) {
+			addOpenSSLError();
+			X509_EXTENSION_free(ext);
+			return false;
+		}
+
+		return true;
+	}
+
+	bool
+	X509Extension::decode(
+		STACK_OF(X509_EXTENSION)* exts,
+		int32_t key,
+		std::string& value,
+		bool mandatory
+	)
+	{
+	    int32_t pos = X509v3_get_ext_by_NID(exts, key, -1);
+		if (pos < 0) {
+			if (!mandatory) {
+				value = "";
+				return true;
+			}
+			addOpenSSLError();
+			return false;
+		}
+
+		X509_EXTENSION* ext = X509v3_get_ext(exts, pos);
+		BIO* bio = BIO_new (BIO_s_mem());
+		int32_t result = X509V3_EXT_print(bio, ext, 0, 0);
+		if (!result) {
+			addOpenSSLError();
+			BIO_free(bio);
+			return false;
+		}
+
+		BUF_MEM* buf = nullptr;
+		BIO_get_mem_ptr(bio, &buf);
+
+		std::string str(buf->data, buf->length);
+		value = str;
+
+		BIO_free(bio);
+		return true;
+	}
+
 	void
-	CertificateExtension::logContent(const std::string& message)
+	X509Extension::logContent(const std::string& message)
 	{
 		Log(Debug, message)
 		    .parameter("UseCACert", useCACert_)
