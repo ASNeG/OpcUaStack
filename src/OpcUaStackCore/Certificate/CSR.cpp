@@ -279,4 +279,33 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool
+	CSR::validateSignature(PublicKey& publicKey)
+	{
+		// Check parameter
+		if (req_ == nullptr) {
+			Log(Error, "key is null");
+			return false;
+		}
+
+		// Get public key
+		EVP_PKEY* pubkey = publicKey;
+		if (pubkey == nullptr) {
+			Log(Error, "public key is null");
+			return false;
+		}
+
+		// Verify signature
+		int32_t result = X509_REQ_verify(req_, pubkey);
+		if (result <= 0) {
+		    const_cast<CSR*>(this)->addOpenSSLError();
+		}
+
+	    if (result <= 0) {
+	        return false;
+	    }
+
+		return true;
+	}
+
 }

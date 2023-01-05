@@ -1,5 +1,5 @@
 /*
-   Copyright 2022 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2022-2023 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -44,7 +44,17 @@ namespace OpcUaStackCore
 		IssuerCrlsCert,
 		RejectedCert,
 		UserCredentialKey,
-		UserCredentialCert
+		UserCredentialCert,
+		UserDefinedCert1,
+		UserDefinedCert2,
+		UserDefinedCert3,
+		UserDefinedCert4,
+		UserDefinedCert5,
+		UserDefinedKey1,
+		UserDefinedKey2,
+		UserDefinedKey3,
+		UserDefinedKey4,
+		UserDefinedKey5
 	};
 
 	class DLLEXPORT PKIStoreConfiguration

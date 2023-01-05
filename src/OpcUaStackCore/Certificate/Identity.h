@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 	{
 	  public:
 		Identity(void);
-		~Identity(void);
+		virtual ~Identity(void);
 
 		void organization(const std::string& organization);
 		std::string& organization(void);

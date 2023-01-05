@@ -58,6 +58,8 @@ namespace OpcUaStackCore
 		bool toDERBuf(MemoryBuffer& derBuf);
 		bool fromDERBuf(MemoryBuffer& derBuf);
 
+		bool validateSignature(PublicKey& publicKey);
+
 	  private:
 		X509_REQ* req_ = nullptr;
 	};

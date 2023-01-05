@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2023 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -161,6 +161,24 @@ namespace OpcUaStackCore
 	    char* ptr = buf;
 		i2d_PrivateKey(privateKey_, (unsigned char**)&ptr);
 		return true;
+	}
+
+	bool
+	PrivateKey::toDERBuf(OpcUaByteString& byteString) const
+	{
+		// Get length of private key in DER format
+		int length = i2d_PrivateKey(privateKey_, 0);
+		if (length < 0) {
+		    const_cast<PrivateKey*>(this)->addOpenSSLError();
+		    return false;
+		}
+
+		// Get private key in DER format
+		uint32_t size = length;
+		byteString.resize(length);
+		char* ptr = byteString.memBuf();
+		return toDER(ptr, size);
+
 	}
 
 	bool
