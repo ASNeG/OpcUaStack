@@ -90,6 +90,11 @@ namespace OpcUaStackCore
 			const std::string& name,
 			const OpcUaStackCore::OpcUaByteString& data
 		) = 0;
+		virtual bool writeFile(
+			PKIStoreDataType type,
+			const std::string& name,
+			const std::string& filename
+		) = 0;
 		virtual bool read(
 			PKIStoreDataType type,
 			const std::string& name,

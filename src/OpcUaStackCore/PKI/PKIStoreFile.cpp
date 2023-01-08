@@ -205,6 +205,51 @@ namespace OpcUaStackCore
 	}
 
 	bool
+	PKIStoreFile::writeFile(
+		PKIStoreDataType type,
+		const std::string& name,
+		const std::string& filename
+	)
+	{
+		OpcUaByteString data;
+		boost::system::error_code ec;
+		std::string file = filename;
+
+		// get target file name of symlink
+		if (boost::filesystem::is_symlink(boost::filesystem::path(filename))) {
+			boost::filesystem::path targetFile;
+			targetFile = boost::filesystem::read_symlink(boost::filesystem::path(filename), ec);
+			if (ec) {
+				Log(Error, "Read symlink error")
+				    .parameter("Filename", filename)
+					.parameter("Error", ec.message());
+				return false;
+			}
+
+			file = targetFile.string();
+		}
+
+		// Read file
+		try {
+			std::ifstream ifs(file);
+			ifs.seekg(0, std::ios::end);
+			size_t size = ifs.tellg();
+			data.resize(size);
+			ifs.seekg(0);
+			ifs.read(data.memBuf(), size);
+		}
+		catch (std::exception& e) {
+			Log(Error, "Read file error")
+				.parameter("Filename", filename)
+				.parameter("Error", e.what());
+			return false;
+		}
+
+		// write data to pki store
+		return write(type, name, data);
+	}
+
+	bool
 	PKIStoreFile::read(
 		PKIStoreDataType type,
 		const std::string& name,

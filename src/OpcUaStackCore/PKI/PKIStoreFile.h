@@ -89,6 +89,11 @@ namespace OpcUaStackCore
 			const std::string& name,
 			const OpcUaByteString& data
 		) override;
+		bool writeFile(
+			PKIStoreDataType type,
+			const std::string& name,
+			const std::string& filename
+		) override;
 		bool read(
 			PKIStoreDataType type,
 			const std::string& name,
