@@ -1,0 +1,42 @@
+name: Windows Build & Test
+run-name: ${{ github.actor }} is testing on Windows
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: windows-2022
+    steps:
+      # Checkout source code
+      - name: Step 1 - Check out repository code
+        uses: actions/checkout@v3
+
+      # Install dependencies
+      #- name: Step 2 - Install Dependencies
+      #  run: |
+      #    sudo apt-get install libboost-all-dev cmake libssl-dev  build-essential
+
+      # Build project
+      #- name: Step 3 - Build Project
+      #  run: |
+      #    sh build.sh -t local
+
+      # Build unittest
+      #- name: Step 4 - Build Test
+      #  run: |
+      #    sh build.sh -t tst -s ~/.ASNeG/
+
+      # Run unittest 
+      #- name: Step 5 - Run Test OpcUaStackCoreTest
+      #  run: |
+      #    cd build_tst_Debug 
+      #    ./OpcUaStackCoreTest --log_format=JUNIT --log_sink=core_results.xml --log_level=all --report_level=no
+      #    ./OpcUaStackClientTest --log_format=JUNIT --log_sink=client_results.xml --log_level=all --report_level=no
+      #    ./OpcUaStackServerTest --log_format=JUNIT --log_sink=server_results.xml --log_level=all --report_level=no
+
+      # Publish test result
+      #- name: Step 6 - Pulish test resul
+      #  uses: EnricoMi/publish-unit-test-result-action@v2
+      #  if: always()
+      #  with:
+      #    junit_files: build_tst_Debug/*_results.xml
+
+      - run: echo "This job's status is ${{ job.status }}."
