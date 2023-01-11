@@ -200,7 +200,13 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	PrivateKey::fromPEM(char* buf, uint32_t bufLen, const char *password, PasswordCallback* passwordCallback, void *data)
+	PrivateKey::fromPEM(
+		char* buf,
+		uint32_t bufLen,
+		const char *password,
+		PasswordCallback* passwordCallback,
+		void *data
+	)
 	{
 		if (privateKey_ != nullptr) {
 			EVP_PKEY_free(privateKey_);
@@ -225,6 +231,50 @@ namespace OpcUaStackCore
 		BIO_free(bio);
 		return true;
 	}
+
+	bool
+	PrivateKey::toPEM(
+    	char* buf,
+		uint32_t& bufLen,
+		const char* password
+	) const
+	{
+	   	if (privateKey_ == nullptr) {
+	   		const_cast<PrivateKey*>(this)->addError("key is empty");
+	    	return false;
+	    }
+
+	    BIO *bio = BIO_new(BIO_s_mem());
+
+	    int result;
+	    if (password) {
+	        result = PEM_write_bio_PrivateKey(bio, privateKey_, EVP_aes_256_cbc(), 0, 0, 0, (void*)password);
+	    }
+	    else {
+	        result = PEM_write_bio_PrivateKey(bio, privateKey_, 0, 0, 0, 0, 0);
+	    }
+
+	    if (result == 0) {
+	        const_cast<PrivateKey*>(this)->addOpenSSLError();
+	        BIO_free(bio);
+	        return false;
+	    }
+
+	    char* data = nullptr;
+	    uint32_t length = BIO_get_mem_data(bio, &data);
+
+	    if (length > bufLen) {
+	        const_cast<PrivateKey*>(this)->addError("buffer length is too short");
+	        return false;
+	    }
+
+	    bufLen = length;
+	    memcpy(buf, data, bufLen);
+
+	    BIO_set_close(bio, BIO_CLOSE);
+	    return true;
+	}
+
 
 	bool
 	PrivateKey::toPEMFile(const std::string& fileName, const char* password)

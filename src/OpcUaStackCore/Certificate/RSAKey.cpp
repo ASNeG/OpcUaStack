@@ -170,7 +170,6 @@ namespace OpcUaStackCore
     	if (pKey_ == nullptr) {
     		const_cast<RSAKey*>(this)->addError("key is empty");
     		return false;
-    		return false;
     	}
 
     	BIO *bio = BIO_new(BIO_s_mem());

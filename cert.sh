@@ -87,6 +87,7 @@ openssl ca \
 
 # change format
 openssl x509 -inform pem -in ./client_cert.pem -outform der -out ./client_cert.der
+openssl rsa -inform pem -in ./client_key.pem -outform der -out ./client_key.der
 	
 # show certificate
 openssl x509 -in ./client_cert.pem -text

@@ -51,7 +51,19 @@ namespace OpcUaStackCore
 		bool toDER(char* buf, uint32_t& bufLen) const;
 		bool toDERBuf(OpcUaByteString& byteString) const;
 		bool fromDER(char* buf, uint32_t bufLen, KeyType keyType);
-		bool fromPEM(char* buf, uint32_t bufLen, const char *password, PasswordCallback* passwordCallback = nullptr, void *data = nullptr);
+
+		bool fromPEM(
+			char* buf,
+			uint32_t bufLen,
+			const char *password,
+			PasswordCallback* passwordCallback = nullptr,
+			void *data = nullptr
+		);
+	    bool toPEM(
+	    	char* buf,
+			uint32_t& bufLen,
+			const char* password
+		) const;
 
 		bool toPEMFile(const std::string& fileName, const char* password);
 		bool fromPEMFile(const std::string& fileName, const char* password, PasswordCallback* passwordCallback = nullptr, void *data = nullptr);

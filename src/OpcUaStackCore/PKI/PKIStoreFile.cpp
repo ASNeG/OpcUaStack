@@ -1,5 +1,5 @@
 /*
-   Copyright 2022 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2022-2023 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -127,12 +127,15 @@ namespace OpcUaStackCore
 		const std::string& name
 	)
 	{
+		std::string pkiFileName = name;
+		std::replace(pkiFileName.begin(), pkiFileName.end(), ' ', '_');
+
 		// Find directory in directory map
 		auto it = dirEntryMap_.find(type);
 		if (it == dirEntryMap_.end()) return false;
 
 		// Check if file in directory exist
-		std::string filename = std::get<1>(it->second) + "/" + name;
+		std::string filename = std::get<1>(it->second) + "/" + pkiFileName;
 		return boost::filesystem::exists(boost::filesystem::path(filename)) ||
 			   boost::filesystem::is_symlink(boost::filesystem::path(filename));
 	}
@@ -187,7 +190,10 @@ namespace OpcUaStackCore
 		}
 
 		// Create name link
-		std::string link = std::get<1>(it->second) + "/" + name;
+		std::string pkiFileName = name;
+		std::replace(pkiFileName.begin(), pkiFileName.end(), ' ', '_');
+
+		std::string link = std::get<1>(it->second) + "/" + pkiFileName;
 		boost::filesystem::create_symlink(
 			boost::filesystem::path(filename),
 			boost::filesystem::path(link),
@@ -211,14 +217,17 @@ namespace OpcUaStackCore
 		const std::string& filename
 	)
 	{
+		std::string pkiFileName = name;
+		std::replace(pkiFileName.begin(), pkiFileName.end(), ' ', '_');
+
 		OpcUaByteString data;
 		boost::system::error_code ec;
 		std::string file = filename;
 
 		// get target file name of symlink
-		if (boost::filesystem::is_symlink(boost::filesystem::path(filename))) {
+		if (boost::filesystem::is_symlink(boost::filesystem::path(pkiFileName))) {
 			boost::filesystem::path targetFile;
-			targetFile = boost::filesystem::read_symlink(boost::filesystem::path(filename), ec);
+			targetFile = boost::filesystem::read_symlink(boost::filesystem::path(pkiFileName), ec);
 			if (ec) {
 				Log(Error, "Read symlink error")
 				    .parameter("Filename", filename)
@@ -264,10 +273,14 @@ namespace OpcUaStackCore
 		}
 
 		// Find directory in directory map
+		std::string pkiFileName = name;
+		std::replace(pkiFileName.begin(), pkiFileName.end(), ' ', '_');
+
+
 		auto it = dirEntryMap_.find(type);
 		if (it == dirEntryMap_.end()) return false;
 		bool useSymlink = std::get<2>(it->second);
-		std::string filename = std::get<1>(it->second) + "/" + name;
+		std::string filename = std::get<1>(it->second) + "/" + pkiFileName;
 
 		// If file is symlink then get target file
 		if (useSymlink) {
