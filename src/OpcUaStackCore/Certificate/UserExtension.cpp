@@ -65,6 +65,12 @@ namespace OpcUaStackCore
 	}
 
 	void
+	UserExtension::delEntry(const std::string& name)
+	{
+		entryMap_.erase(name);
+	}
+
+	void
 	UserExtension::getEntryVec(std::vector<std::string>& names)
 	{
 		for(auto it : entryMap_) names.push_back(it.second);

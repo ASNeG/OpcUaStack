@@ -149,6 +149,13 @@ namespace OpcUaStackCore
 	{
 		boost::system::error_code ec;
 
+		// Check parameter
+		if (data.isNull()) {
+			Log(Error, "cannot write data, because data is null")
+				.parameter("Name", name);
+			return false;
+		}
+
 		// Find directory in directory map
 		auto it = dirEntryMap_.find(type);
 		if (it == dirEntryMap_.end()) return false;
@@ -217,17 +224,14 @@ namespace OpcUaStackCore
 		const std::string& filename
 	)
 	{
-		std::string pkiFileName = name;
-		std::replace(pkiFileName.begin(), pkiFileName.end(), ' ', '_');
-
 		OpcUaByteString data;
 		boost::system::error_code ec;
 		std::string file = filename;
 
 		// get target file name of symlink
-		if (boost::filesystem::is_symlink(boost::filesystem::path(pkiFileName))) {
+		if (boost::filesystem::is_symlink(boost::filesystem::path(filename))) {
 			boost::filesystem::path targetFile;
-			targetFile = boost::filesystem::read_symlink(boost::filesystem::path(pkiFileName), ec);
+			targetFile = boost::filesystem::read_symlink(boost::filesystem::path(filename), ec);
 			if (ec) {
 				Log(Error, "Read symlink error")
 				    .parameter("Filename", filename)

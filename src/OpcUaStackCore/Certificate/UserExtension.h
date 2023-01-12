@@ -45,6 +45,7 @@ namespace OpcUaStackCore
 		bool existEntry(const std::string& name);
 		bool setEntry(const std::string& name, const std::string& value);
 		bool getEntry(const std::string& name, std::string& value);
+		void delEntry(const std::string& name);
 		void getEntryVec(std::vector<std::string>& names);
 		void logContent(const std::string& message);
 
