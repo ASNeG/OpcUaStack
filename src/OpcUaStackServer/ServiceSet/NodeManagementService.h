@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2021 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2023 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -67,6 +67,7 @@ namespace OpcUaStackServer
 			OpcUaStackCore::AddNodesItem::SPtr addNodesItem,
 			OpcUaStackCore::AddNodesResult::SPtr addNodesResult
 		);
+		
 		OpcUaStackCore::OpcUaStatusCode deleteNode(
 			uint32_t pos,
 			OpcUaStackCore::DeleteNodesItem::SPtr deleteNodesItem,
@@ -87,6 +88,36 @@ namespace OpcUaStackServer
 			uint32_t pos,
 			OpcUaStackCore::AddNodesItem::SPtr addNodesItem,
 			OpcUaStackCore::AddNodesResult::SPtr addNodesResult
+		);
+		OpcUaStackCore::OpcUaStatusCode addNodeMethod(
+			uint32_t pos,
+			OpcUaStackCore::AddNodesItem::SPtr addNodesItem,
+			OpcUaStackCore::AddNodesResult::SPtr addNodesResult
+		);
+		OpcUaStackCore::OpcUaStatusCode addNodeObjectType(
+			uint32_t pos,
+			OpcUaStackCore::AddNodesItem::SPtr addNodesItem,
+			OpcUaStackCore::AddNodesResult::SPtr addNodesResult
+		);
+		OpcUaStackCore::OpcUaStatusCode addNodeVariableType(
+			uint32_t pos,
+			OpcUaStackCore::AddNodesItem::SPtr addNodesItem,
+			OpcUaStackCore::AddNodesResult::SPtr addNodesResult
+		);
+		OpcUaStackCore::OpcUaStatusCode addNodeReferenceType(
+			uint32_t pos,
+			OpcUaStackCore::AddNodesItem::SPtr addNodesItem,
+			OpcUaStackCore::AddNodesResult::SPtr addNodesResult
+		);
+		OpcUaStackCore::OpcUaStatusCode addNodeDataType(
+			uint32_t pos,
+			OpcUaStackCore::AddNodesItem::SPtr addNodesItem,
+			OpcUaStackCore::AddNodesResult::SPtr addNodesResult
+		);
+		OpcUaStackCore::OpcUaStatusCode	deleteReference(
+			uint32_t pos,
+			OpcUaStackCore::DeleteReferencesItem::SPtr deleteReferencesItem,
+			OpcUaStackCore::DeleteReferencesResult::SPtr deleteReferencesResult
 		);
 	};
 

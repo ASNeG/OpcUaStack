@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2023 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -155,12 +155,50 @@ namespace OpcUaStackServer
 	bool
 	ReferenceItemMap::remove(const OpcUaNodeId& referenceTypeNodeId, const OpcUaNodeId& nodeId)
 	{
+		// Remove references from reference item table
 		size_t result = referenceItemMultiMap_[referenceTypeNodeId].erase(nodeId);
+
+		// Check number of elements in reference item table
 		if (referenceItemMultiMap_[referenceTypeNodeId].size() == 0) {
 			referenceItemMultiMap_.erase(referenceTypeNodeId);
 		}
 
 		return result == 1;
+	}
+
+	bool
+	ReferenceItemMap::remove(
+		const OpcUaStackCore::OpcUaNodeId& referenceTypeNodeId,
+		bool isForward,
+		const OpcUaStackCore::OpcUaNodeId& nodeId
+	)
+	{
+		bool remove = false;
+
+ 		// Get reference item table
+		auto referenceItemTable = referenceItemMultiMap_.find(referenceTypeNodeId);
+		if (referenceItemTable == referenceItemMultiMap_.end()) return true;
+
+		// Remove references
+		auto it = referenceItemTable->second.begin();
+		while (it != referenceItemTable->second.end()) {
+			auto referenceItem = it->second;
+
+			if (referenceItem->isForward_ == isForward && referenceItem->nodeId_ == nodeId) {
+				remove = true;
+				it = referenceItemTable->second.erase(it);
+			}
+			else {
+				++it;
+			}
+		}
+
+		// Check number of elements in reference item table
+		if (referenceItemTable->second.size() == 0) {
+			referenceItemMultiMap_.erase(referenceItemTable);
+		}
+
+		return remove;
 	}
 
 	void

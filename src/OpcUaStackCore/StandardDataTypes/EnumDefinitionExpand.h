@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2021 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -44,6 +44,8 @@ namespace OpcUaStackCore
 
 		void copyTo(EnumDefinitionExpand& enumTypeDefinition);
 		bool operator==(const EnumDefinitionExpand& enumTypeDefinition) const;
+	    bool operator!=(const EnumDefinitionExpand& value);
+	    EnumDefinitionExpand& operator=(const EnumDefinitionExpand& value);
 		friend std::ostream& operator<<(std::ostream& os, const EnumDefinitionExpand& value) {
 			const_cast<EnumDefinitionExpand*>(&value)->out(os);
 			return os;
@@ -51,6 +53,9 @@ namespace OpcUaStackCore
 
 		//- ExtensionObjectBase -----------------------------------------------
 		virtual ExtensionObjectBase::SPtr factory(void) override;
+        virtual std::string namespaceName(void) override;
+        virtual std::string typeName(void) override;
+        virtual OpcUaNodeId typeId(void) override;
 		virtual OpcUaNodeId binaryTypeId(void) override;
 		virtual OpcUaNodeId xmlTypeId(void) override;
 		virtual bool opcUaBinaryEncode(std::ostream& os) const override;

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2023 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -72,6 +72,7 @@ namespace OpcUaStackServer
 
 		bool remove(const OpcUaStackCore::OpcUaNodeId& referenceTypeNodeId, ReferenceItem::SPtr& referenceItem);
 		bool remove(const OpcUaStackCore::OpcUaNodeId& referenceTypeNodeId, const OpcUaStackCore::OpcUaNodeId& nodeId);
+		bool remove(const OpcUaStackCore::OpcUaNodeId& referenceTypeNodeId, bool isForward, const OpcUaStackCore::OpcUaNodeId& nodeId);
 
 		void copyTo(ReferenceItemMap::SPtr& referenceItemMap) const;
 		void copyTo(ReferenceItemMap& referenceItemMap) const;
