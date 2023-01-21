@@ -4,6 +4,7 @@
 #include "OpcUaStackCore/StandardDataTypes/MethodAttributes.h"
 #include "OpcUaStackCore/StandardDataTypes/ObjectTypeAttributes.h"
 #include "OpcUaStackCore/StandardDataTypes/VariableTypeAttributes.h"
+#include "OpcUaStackCore/StandardDataTypes/DataTypeAttributes.h"
 #include "OpcUaStackCore/StandardDataTypes/ReferenceTypeAttributes.h"
 #include "OpcUaStackClient/CryptoManagerTest.h"
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
@@ -62,7 +63,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_NodeManagement_)
 
 BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_NodeManagement_AddObjectNode)
 {
-	std::cout << "Running 1 AddObjectNode Test Case" << std::endl;
+	std::cout << "AddObjectNode Test Case" << std::endl;
 	// create object node
 	auto trx = boost::make_shared<ServiceTransactionAddNodes>();
 	auto req = trx->request();
@@ -98,7 +99,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_NodeManagement_AddObjectNode)
 BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_NodeManagement_AddVariableNode)
 {
 
-	std::cout << "Running 2 AddVariableNode Test Case" << std::endl;
+	std::cout << "AddVariableNode Test Case" << std::endl;
 
 	// create variable node
 	auto trx = boost::make_shared<ServiceTransactionAddNodes>();
@@ -138,9 +139,10 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_NodeManagement_AddVariableNode)
 	BOOST_REQUIRE((*res->results().get())[0]->statusCode() == Success);
 
 }
+
 BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_NodeManagement_AddMethodNode)
 {
-	std::cout << "Running 3 AddMethodNode Test Case" << std::endl;
+	std::cout << "AddMethodNode Test Case" << std::endl;
 	// create  node
 	auto trx = boost::make_shared<ServiceTransactionAddNodes>();
 	auto req = trx->request();
@@ -179,14 +181,14 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_NodeManagement_AddMethodNode)
 BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_NodeManagement_AddObjectTypeNode)
 {
 
-	std::cout << "Running 4 AddObjectTypeNode Test Case" << std::endl;
+	std::cout << "AddObjectTypeNode Test Case" << std::endl;
 	// create  node
 	auto trx = boost::make_shared<ServiceTransactionAddNodes>();
 	auto req = trx->request();
 
 	auto addNodesItem = boost::make_shared<AddNodesItem>();
 	addNodesItem->parentNodeId().set("NodeManagementFolder", 1);
-	addNodesItem->referenceTypeId().set(OpcUaId_HasComponent);
+	addNodesItem->referenceTypeId().set(OpcUaId_HasSubtype);
 	addNodesItem->requestedNewNodeId().set("ObjectTypeNode", 1);
 	addNodesItem->browseName().set("ObjectTypeNode", 1);
 	addNodesItem->nodeClass() = NodeClass::EnumObjectType;
@@ -214,11 +216,10 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_NodeManagement_AddObjectTypeNode)
 
 }
 
-
 BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_NodeManagement_AddVariableTypeNode)
 {
 
-	std::cout << "Running 5 AddVariableTypeNode Test Case" << std::endl;
+	std::cout << "AddVariableTypeNode Test Case" << std::endl;
 
 	// create  node
 	auto trx = boost::make_shared<ServiceTransactionAddNodes>();
@@ -226,7 +227,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_NodeManagement_AddVariableTypeNod
 
 	auto addNodesItem = boost::make_shared<AddNodesItem>();
 	addNodesItem->parentNodeId().set("NodeManagementFolder", 1);
-	addNodesItem->referenceTypeId().set(OpcUaId_HasComponent);
+	addNodesItem->referenceTypeId().set(OpcUaId_HasSubtype);
 	addNodesItem->requestedNewNodeId().set("VariableTypeNode", 1);
 	addNodesItem->browseName().set("VariableTypeNode", 1);
 	addNodesItem->nodeClass() = NodeClass::EnumVariableType;
@@ -253,13 +254,49 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_NodeManagement_AddVariableTypeNod
 	BOOST_REQUIRE(trx->statusCode() == Success);
 	BOOST_REQUIRE(res->results()->size() == 1);
 	BOOST_REQUIRE((*res->results().get())[0]->statusCode() == Success);
+}
+
+BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_NodeManagement_AddDataTypeNode)
+{
+
+	std::cout << "AddDataTypeNode Test Case" << std::endl;
+
+	// create  node
+	auto trx = boost::make_shared<ServiceTransactionAddNodes>();
+	auto req = trx->request();
+
+	auto addNodesItem = boost::make_shared<AddNodesItem>();
+	addNodesItem->parentNodeId().set("NodeManagementFolder", 1);
+	addNodesItem->referenceTypeId().set(OpcUaId_HasSubtype);
+	addNodesItem->requestedNewNodeId().set("DataTypeNode", 1);
+	addNodesItem->browseName().set("DataTypeNode", 1);
+	addNodesItem->nodeClass() = NodeClass::EnumDataType;
+	addNodesItem->typeDefinition().setNull();
+
+	auto dataTypeAttributes = addNodesItem->nodeAttributes().parameter<DataTypeAttributes>(OpcUaNodeId(OpcUaId_DataTypeAttributes));
+	BOOST_REQUIRE(dataTypeAttributes.get() != nullptr);
+	// base attributes
+	dataTypeAttributes->displayName().set("de", "DataTypeNode");
+	dataTypeAttributes->description().set("de", "test data type");
+	dataTypeAttributes->writeMask() = 0;
+	dataTypeAttributes->userWriteMask() = 0;
+
+	// object specific attributes
+	dataTypeAttributes->isAbstract() = false;
+
+	req->nodesToAdd()->set(addNodesItem);
+
+	nodeManagementService->syncSend(trx);
+	AddNodesResponse::SPtr res = trx->response();
+	BOOST_REQUIRE(trx->statusCode() == Success);
+	BOOST_REQUIRE(res->results()->size() == 1);
+	BOOST_REQUIRE((*res->results().get())[0]->statusCode() == Success);
 
 }
 
-
 BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_NodeManagement_AddReferenceTypeNode)
 {
-	std::cout << "Running 6 AddReferenceTypeNode Test Case" << std::endl;
+	std::cout << "AddReferenceTypeNode Test Case" << std::endl;
 	// create  node
 	auto trx = boost::make_shared<ServiceTransactionAddNodes>();
 	auto req = trx->request();
@@ -288,6 +325,53 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_NodeManagement_AddReferenceTypeNo
 
 	nodeManagementService->syncSend(trx);
 	AddNodesResponse::SPtr res = trx->response();
+	BOOST_REQUIRE(trx->statusCode() == Success);
+	BOOST_REQUIRE(res->results()->size() == 1);
+	BOOST_REQUIRE((*res->results().get())[0]->statusCode() == Success);
+}
+
+BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_NodeManagement_AddReferences)
+{
+	std::cout << "AddReferences Test Case" << std::endl;
+	// create  node
+	auto trx = boost::make_shared<ServiceTransactionAddReferences>();
+	auto req = trx->request();
+
+	auto addReferencesItem = boost::make_shared<AddReferencesItem>();
+	addReferencesItem->sourceNodeId().set("VariableNode", 1);
+	addReferencesItem->targetNodeId().set("NodeManagementFolder", 1);
+	addReferencesItem->referenceTypeId().set(OpcUaId_HasEventSource);
+	addReferencesItem->isForward() == true;
+	addReferencesItem->targetNodeClass() = NodeClass::EnumObject;
+
+	req->referencesToAdd()->set(addReferencesItem);
+
+	nodeManagementService->syncSend(trx);
+	AddReferencesResponse::SPtr res = trx->response();
+	BOOST_REQUIRE(trx->statusCode() == Success);
+	BOOST_REQUIRE(res->results()->size() == 1);
+	BOOST_REQUIRE((*res->results().get())[0]->statusCode() == Success);
+}
+
+BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_NodeManagement_DeleteReferences)
+{
+	std::cout << "DeleteReferences Test Case" << std::endl;
+
+	//delete reference request
+	auto trx = boost::make_shared<ServiceTransactionDeleteReferences>();
+	auto req = trx->request();
+
+	auto deleteReferemcesItem = boost::make_shared<DeleteReferencesItem>();
+	deleteReferemcesItem->sourceNodeId().set("VariableNode", 1);
+	deleteReferemcesItem->referenceTypeId().set(OpcUaId_HasEventSource);
+	deleteReferemcesItem->isForward() = true;
+	deleteReferemcesItem->targetNodeId().set("NodeManagementFolder", 1);
+	deleteReferemcesItem->deleteBidirectional() = true;
+
+	req->referencesToDelete()->set(deleteReferemcesItem);
+
+	nodeManagementService->syncSend(trx);
+	DeleteReferencesResponse::SPtr res = trx->response();
 	BOOST_REQUIRE(trx->statusCode() == Success);
 	BOOST_REQUIRE(res->results()->size() == 1);
 	BOOST_REQUIRE((*res->results().get())[0]->statusCode() == Success);
@@ -335,7 +419,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_NodeManagement_Add_Delete_Referen
 	AddReferencesResponse::SPtr res_1 = trx_1->response();
 	BOOST_REQUIRE(trx_1->statusCode() == Success);
 	BOOST_REQUIRE(res_1->results()->size() == 1);
-	BOOST_REQUIRE((*res_1->results().get())[0]->statusCode() == BadReferenceLocalOnly);
+	BOOST_REQUIRE((*res_1->results().get())[0]->statusCode() == Success);
 
 
 	// create  forward Reference with invalid target Node Class
@@ -410,20 +494,25 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_NodeManagement_DeleteNodes)
 	deleteNodesItem6->nodeId().set("NodeManagementFolder", 1);
 	deleteNodesItem6->deleteTargetReferences() = true;
 
-	req->nodesToDelete()->resize(6);
+	auto deleteNodesItem7 = boost::make_shared<DeleteNodesItem>();
+	deleteNodesItem7->nodeId().set("DataTypeNode", 1);
+	deleteNodesItem7->deleteTargetReferences() = true;
+
+	req->nodesToDelete()->resize(7);
 	req->nodesToDelete()->set(0, deleteNodesItem1);
 	req->nodesToDelete()->set(1, deleteNodesItem2);
 	req->nodesToDelete()->set(2, deleteNodesItem3);
 	req->nodesToDelete()->set(3, deleteNodesItem4);
 	req->nodesToDelete()->set(4, deleteNodesItem5);
 	req->nodesToDelete()->set(5, deleteNodesItem6);
+	req->nodesToDelete()->set(6, deleteNodesItem7);
 
 	nodeManagementService->syncSend(trx);
 	DeleteNodesResponse::SPtr res = trx->response();
 	BOOST_REQUIRE(trx->statusCode() == Success);
-	BOOST_REQUIRE(res->results()->size() == 6);
+	BOOST_REQUIRE(res->results()->size() == 7);
 
-	for (uint8_t i = 0; i < 6; ++i) {
+	for (uint8_t i = 0; i < 7; ++i) {
 		BOOST_REQUIRE((*res->results().get())[i]->statusCode() == Success);
 	}
 }

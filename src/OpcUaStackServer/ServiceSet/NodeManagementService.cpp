@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2021 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2023 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -171,13 +171,6 @@ namespace OpcUaStackServer
 			
 			AddReferencesItem::SPtr addReferencesItem;
 			addReferencesRequest->referencesToAdd()->get(idx, addReferencesItem); 
-
-			if(!addReferencesItem->isForward())
-			{
-				Log(Debug, "remote server not supported");
-				addReferencesResult->statusCode(BadReferenceLocalOnly);
-				break;
-			}
 			
 			//Get the target node
 			OpcUaNodeId targetNodeId;
@@ -205,9 +198,22 @@ namespace OpcUaStackServer
 			if (targetNodeClass->nodeClass().data() == addReferencesItem->targetNodeClass().enumeration())
 			{
 				boost::unique_lock<boost::shared_mutex> lock1(sourceNodeClass->mutex());
-				sourceNodeClass->referenceItemMap().add(addReferencesItem->referenceTypeId(), true, targetNodeId);
-				targetNodeClass->referenceItemMap().add(addReferencesItem->referenceTypeId(), false, sourceNodeId);
+
+				bool sourceNodeForward = true;
+				bool targetNodeForward = false;
+ 				if(!addReferencesItem->isForward()) {
+ 					sourceNodeForward = false;
+ 					targetNodeForward = true;
+				}
+
+				sourceNodeClass->referenceItemMap().add(addReferencesItem->referenceTypeId(), targetNodeForward, targetNodeId);
+				targetNodeClass->referenceItemMap().add(addReferencesItem->referenceTypeId(), sourceNodeForward, sourceNodeId);
 			} else {
+				Log(Debug, "target node class invalid")
+					.parameter("SourceNodeId", sourceNodeId)
+					.parameter("TargetNodeId", targetNodeId)
+					.parameter("ExpectedNodeClass", (uint32_t)addReferencesItem->targetNodeClass().enumeration())
+					.parameter("TargetNodeClass", targetNodeClass->nodeClass().data());
 				addReferencesResult->statusCode(BadNodeClassInvalid);
 				break;
 			}
@@ -818,22 +824,18 @@ namespace OpcUaStackServer
 		OpcUaStackCore::DeleteReferencesResult::SPtr deleteReferencesResult
 	)
 	{
-		// find node which contains the reference to be deleted
+		bool rc = true;
+
+		// Find source node
 		auto baseSourceNodeClass = informationModel_->find(deleteReferencesItem->sourceNodeId());
 		if (baseSourceNodeClass.get() == nullptr) {
-			Log(Debug, "delete reference error, because node not exist")
+			Log(Debug, "delete reference error, because source node not exist")
 				.parameter("NodeId", deleteReferencesItem->sourceNodeId());
 			deleteReferencesResult->statusCode(BadNodeIdUnknown);
 			return Success;
 		}
 
-		for (auto referenceItem : baseSourceNodeClass->referenceItemMap()) {
-			if (referenceItem->typeId_ == deleteReferencesItem->typeId()) {
-				baseSourceNodeClass->referenceItemMap().remove(referenceItem->typeId_, referenceItem);
-			}
-		}
-		
-
+		// Find target node
 		OpcUaNodeId targetNodeId;
 		targetNodeId.namespaceIndex(deleteReferencesItem->targetNodeId().namespaceIndex());
 		targetNodeId.nodeIdValue(deleteReferencesItem->targetNodeId().nodeIdValue());
@@ -846,17 +848,31 @@ namespace OpcUaStackServer
 			return Success;
 		}
 
-		if (deleteReferencesItem->deleteBidirectional())
-		{
-			for (auto referenceItem : targetNodeClass->referenceItemMap()) {
-				if (referenceItem->typeId_ == deleteReferencesItem->typeId()) {
-					targetNodeClass->referenceItemMap().remove(referenceItem->typeId_, referenceItem);
-				}
-			}
+		// Remove reference
+		rc = baseSourceNodeClass->referenceItemMap().remove(
+			deleteReferencesItem->referenceTypeId(),
+			deleteReferencesItem->isForward(),
+			targetNodeId
+		);
+		if (!rc) {
+			deleteReferencesResult->statusCode(BadNotFound);
+			return Success;
 		}
 		
-		deleteReferencesResult->statusCode(Success);
+		// Remove inverse reference
+		if (deleteReferencesItem->deleteBidirectional()) {
+			rc = targetNodeClass->referenceItemMap().remove(
+				deleteReferencesItem->referenceTypeId(),
+				!deleteReferencesItem->isForward(),
+				deleteReferencesItem->sourceNodeId()
+			);
+			if (!rc) {
+				deleteReferencesResult->statusCode(BadNotFound);
+				return Success;
+			}
+		}
 
+		deleteReferencesResult->statusCode(Success);
 		return Success;
 	}
 
