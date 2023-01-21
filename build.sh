@@ -13,6 +13,13 @@
 #   export USE_MOSQUITTO_CLIENT=1
 #
 
+#
+# Use OpenSSL version 1.1.1
+# -DOPENSSL_ROOT_DIR=${HOME}/Downloads/openssl-1.1.1f/
+# -DOPENSSL_LIBRARIES=${HOME}/Downloads/openssl-1.1.1f/lib
+#
+
+
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 #
@@ -108,6 +115,9 @@ build_local()
               -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
 	      -DGIT_COMMIT="${GIT_COMMIT}" \
 	      -DGIT_BRANCH="${GIT_BRANCH}" 
+        #      -DOPENSSL_ROOT_DIR=${HOME}/Downloads/openssl-1.1.1f/
+	#      -DOPENSSL_LIBRARIES=${HOME}/Downloads/openssl-1.1.1f/lib
+
         RESULT=$?
         set +x
         if [ ${RESULT} -ne 0 ] ;
