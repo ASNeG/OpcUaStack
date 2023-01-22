@@ -105,7 +105,6 @@ build_local()
         cmake ${DEBUG_OUTPUT} \
 	      ../src \
               "${CMAKE_GENERATOR_LOCAL}" \
-	      #-DOPENSSL_ROOT_DIR=/opt/openssl/ \
               -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
 	      -DGIT_COMMIT="${GIT_COMMIT}" \
 	      -DGIT_BRANCH="${GIT_BRANCH}" 
