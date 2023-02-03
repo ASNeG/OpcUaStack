@@ -44,8 +44,11 @@ namespace OpcUaStackCore
 		UserExtension::Vec* userExtensionVec
 	)
 	{
+		bool error = false;
+		int32_t result = 0;
 		STACK_OF(X509_EXTENSION)* exts = nullptr;
 		assert(req_ == nullptr);
+
 
 		/* Create X509 certificate request */
 		req_ = X509_REQ_new();
@@ -54,15 +57,13 @@ namespace OpcUaStackCore
 		    return false;
 		}
 
-		bool error = false;
-		int32_t result = 0;
-
 		// set version
 		if (!error) {
 			result = X509_REQ_set_version(req_, 2);
 			if (!result) {
 				error = true;
 				addOpenSSLError();
+				addError("call X509_REQ_set_version error");
 			}
 		}
 
@@ -82,7 +83,8 @@ namespace OpcUaStackCore
             if (!x509Extension.encode(req_, exts)) {
             	error = true;
             	addError(x509Extension.errorList());
-            	sk_X509_EXTENSION_free(exts);
+            	addError("encode X509 extension error");
+            	if (exts) sk_X509_EXTENSION_free(exts);
             }
 		}
 
@@ -94,6 +96,7 @@ namespace OpcUaStackCore
         		if (!ext->encodeX509UserExtension(req_, exts)) {
         			error = true;
         			addError(ext->errorList());
+        			addError("encode X509 user extension error");
         			sk_X509_EXTENSION_free(exts);
         		}
         	}
@@ -105,6 +108,7 @@ namespace OpcUaStackCore
         	if (!result) {
         		error = true;
         		addOpenSSLError();
+        		addError("call X509_REQ_add_extensions error");
         	}
 
         	sk_X509_EXTENSION_free(exts);
@@ -122,6 +126,7 @@ namespace OpcUaStackCore
                 if (!result) {
                 	error = true;
                 	addOpenSSLError();
+                	addError("call X509_REQ_set_subject_name error");
                 }
                 X509_NAME_free(name);
             }
@@ -132,6 +137,7 @@ namespace OpcUaStackCore
         	if (!X509_REQ_set_pubkey(req_, publicKey)) {
         		error = true;
         		addOpenSSLError();
+        		addError("call X509_REQ_set_pubkey error");
         	}
         }
 
@@ -140,6 +146,7 @@ namespace OpcUaStackCore
         	if (!X509_REQ_sign(req_, privateKey, EVP_sha256())) {
         		error = true;
         		addOpenSSLError();
+        		addError("call X509_REQ_sign error");
         	}
         }
 

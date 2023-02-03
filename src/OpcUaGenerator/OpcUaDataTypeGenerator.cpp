@@ -277,7 +277,7 @@ namespace OpcUaDataTypeGenerator
 		// generate data type source code
 		DataTypeGenerator dataTypeGenerator;
 		for (it = namespaces_.begin(); it != namespaces_.end(); it++) {
-			Log(Debug, "set namesapce")
+			Log(Debug, "set namespace")
 				.parameter("ns", *it);
 			dataTypeGenerator.setNamespaceEntry(*it);
 		}

@@ -64,8 +64,7 @@ namespace OpcUaStackCore
 	    // Create extension
 		ex_ = X509_EXTENSION_create_by_NID(nullptr, nid_ + OBJ_new_nid(0), 0, data0);
 	    if (ex_ == NULL) {
-	    	Log(Error, "encode extension error, because create extension failed");
-	    	X509_EXTENSION_free(ex_);
+	    	addError("call X509_EXTENSION_create_by_NID error");
 	    	ex_ = NULL;
 	        return false;
 	    }
