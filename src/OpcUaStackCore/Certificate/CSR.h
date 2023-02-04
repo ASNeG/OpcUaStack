@@ -57,6 +57,8 @@ namespace OpcUaStackCore
 
 		bool toDERBuf(MemoryBuffer& derBuf);
 		bool fromDERBuf(MemoryBuffer& derBuf);
+		bool toPEMBuf(MemoryBuffer& pemBuf);
+		bool fromPEMBuf(MemoryBuffer& pemBuf);
 
 		bool validateSignature(PublicKey& publicKey);
 

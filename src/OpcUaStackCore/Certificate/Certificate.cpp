@@ -17,9 +17,13 @@
 
 #include <iostream>
 #include <time.h>
+
+#include <openssl/pem.h>
+
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/date_time/local_time_adjustor.hpp>
 #include <boost/date_time/c_local_time_adjustor.hpp>
+
 #include "OpcUaStackCore/Base/MemoryBuffer.h"
 #include "OpcUaStackCore/Certificate/UserExtensionOpenSSL.h"
 #include "OpcUaStackCore/Certificate/Certificate.h"
@@ -871,6 +875,62 @@ namespace OpcUaStackCore
         	return false;
         }
 
+		return true;
+	}
+
+	bool
+	Certificate::toPEMBuf(MemoryBuffer& pemBuf)
+	{
+		// Check parameter
+		if (cert_ == nullptr) {
+			addError("CSR is empty");
+			return false;
+		}
+
+	    BIO *bio = BIO_new(BIO_s_mem());
+
+	    int result = PEM_write_bio_X509(bio, cert_);
+	    if (result == 0) {
+	        addOpenSSLError();
+	        addError("call PEM_write_bio_X509 error");
+	        return false;
+	    }
+
+	    char* data = nullptr;
+	    uint32_t length = BIO_get_mem_data(bio, &data);
+
+		// Create certificate data buffer
+		pemBuf.resize(length);
+		if (pemBuf.memLen() <= 0) {
+			addError("PEM buffer empty");
+			return false;
+		}
+	    memcpy(pemBuf.memBuf(), data, pemBuf.memLen());
+
+	    BIO_set_close(bio, BIO_CLOSE);
+		return true;
+	}
+
+	bool
+	Certificate::fromPEMBuf(MemoryBuffer& pemBuf)
+	{
+		if (cert_ != nullptr) {
+			X509_free(cert_);
+			cert_ = nullptr;
+		}
+
+	    BIO* bio = BIO_new_mem_buf((void*)pemBuf.memBuf(), pemBuf.memLen());
+
+	    // Create certificate
+		cert_ = PEM_read_bio_X509(bio, 0, 0, 0);
+		if (cert_ == nullptr) {
+			addOpenSSLError();
+			addError("call PEM_read_bio_X509 error");
+			BIO_free(bio);
+			return false;
+		}
+
+		BIO_free(bio);
 		return true;
 	}
 

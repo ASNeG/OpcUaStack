@@ -224,6 +224,7 @@ namespace OpcUaStackCore
 
 		if (privateKey_ == nullptr) {
 			addOpenSSLError();
+			addError("call PEM_read_bio_PrivateKey error");
 			BIO_free(bio);
 			return false;
 		}
@@ -256,7 +257,7 @@ namespace OpcUaStackCore
 
 	    if (result == 0) {
 	        const_cast<PrivateKey*>(this)->addOpenSSLError();
-	        BIO_free(bio);
+	        const_cast<PrivateKey*>(this)->addError("call PEM_write_bio_PrivateKey error");
 	        return false;
 	    }
 

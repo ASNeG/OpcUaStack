@@ -110,6 +110,8 @@ namespace OpcUaStackCore
 		bool toDERBuf(MemoryBuffer& derBuf);
 		bool fromDERBuf(char* buf, uint32_t bufLen);
 		bool fromDERBuf(MemoryBuffer& derBuf);
+		bool toPEMBuf(MemoryBuffer& pemBuf);
+		bool fromPEMBuf(MemoryBuffer& pemBuf);
 
 		bool isIssuerFrom(Certificate&  certificate);
 

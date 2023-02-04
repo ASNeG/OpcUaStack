@@ -15,6 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
+#include <openssl/pem.h>
+
 #include "OpcUaStackCore/Certificate/CSR.h"
 #include "OpcUaStackCore/Certificate/X509Extension.h"
 #include "OpcUaStackCore/Certificate/UserExtensionOpenSSL.h"
@@ -246,25 +248,29 @@ namespace OpcUaStackCore
 	{
 		// Check parameter
 		if (req_ == nullptr) {
-			addError("CSR is empty");
+			addError("csr is empty");
 			return false;
 		}
 
 		// Determine necessary length for CSR buffer
 		int size = i2d_X509_REQ(req_, 0);
 		if (size < 0) {
-
+			addError("csr length error");
 		    return false;
 		}
 
 		// Create CSR buffer in DER format
 		derBuf.resize(size);
 		if (derBuf.memLen() <= 0) {
-			Log(Error, "DER buffer empty");
+			addError("DER buffer empty");
 			return false;
 		}
 		char* ptr = derBuf.memBuf();
-		i2d_X509_REQ(req_, (unsigned char**)&ptr);
+		if (i2d_X509_REQ(req_, (unsigned char**)&ptr) < 0) {
+	       	addOpenSSLError();
+	        addError("call i2d_X509_REQ error");
+	        return false;
+		}
 
 		return true;
 	}
@@ -273,16 +279,73 @@ namespace OpcUaStackCore
 	CSR::fromDERBuf(MemoryBuffer& derBuf)
 	{
 		if (req_ != nullptr) {
-			addError("certificate is not empty");
+			addError("csr is not empty");
 			return false;
 		}
 		char* ptr =derBuf.memBuf();
         req_= d2i_X509_REQ(0, (const unsigned char**)&ptr, derBuf.memLen());
         if (req_ == nullptr) {
         	addOpenSSLError();
+        	addError("call d2i_X509_REQ error");
         	return false;
         }
 
+		return true;
+	}
+
+	bool
+	CSR::toPEMBuf(MemoryBuffer& pemBuf)
+	{
+		// Check parameter
+		if (req_ == nullptr) {
+			addError("CSR is empty");
+			return false;
+		}
+
+	    BIO *bio = BIO_new(BIO_s_mem());
+
+	    int result = PEM_write_bio_X509_REQ(bio, req_);
+	    if (result == 0) {
+	        addOpenSSLError();
+	        addError("call PEM_write_bio_X509_REQ error");
+	        return false;
+	    }
+
+	    char* data = nullptr;
+	    uint32_t length = BIO_get_mem_data(bio, &data);
+
+		// Create CSR data buffer
+		pemBuf.resize(length);
+		if (pemBuf.memLen() <= 0) {
+			addError("PEM buffer empty");
+			return false;
+		}
+	    memcpy(pemBuf.memBuf(), data, pemBuf.memLen());
+
+	    BIO_set_close(bio, BIO_CLOSE);
+		return true;
+	}
+
+	bool
+	CSR::fromPEMBuf(MemoryBuffer& pemBuf)
+	{
+		if (req_ != nullptr) {
+			X509_REQ_free(req_);
+			req_ = nullptr;
+		}
+
+	    BIO* bio = BIO_new_mem_buf((void*)pemBuf.memBuf(), pemBuf.memLen());
+
+	    // Create CSR
+		req_ = PEM_read_bio_X509_REQ(bio, 0, 0, 0);
+		if (req_ == nullptr) {
+			addOpenSSLError();
+			addError("call PEM_read_bio_X509_REQ error");
+			BIO_free(bio);
+			return false;
+		}
+
+		BIO_free(bio);
 		return true;
 	}
 
