@@ -39,11 +39,6 @@
 #include "OpcUaStackCore/Base/MemoryBuffer.h"
 #include "OpcUaStackCore/PKI/PKIStore.h"
 
-#define pkiStoreDataType(entry) std::get<0>(entry)
-#define subdirectory(entry) std::get<1>(entry)
-#define	symlinkUsed(entry) std::get<2>(entry)
-#define firstFileThumbprintUsed(entry) std::get<3>(entry)
-
 namespace OpcUaStackCore
 {
 
@@ -129,12 +124,22 @@ namespace OpcUaStackCore
 		bool removeAll(
 			PKIStoreDataType type
 		) override;
+		bool getNameList(
+			PKIStoreDataType type,
+			std::vector<std::string>& nameVec,
+			PKIStoreNameType nameType
+		) override;
 
 	  private:
 		PKIStoreFileConfiguration::SPtr config_ = NULL;
 		DirEntryMap dirEntryMap_ = {};
 
 		bool createThumbPrint(const OpcUaByteString& buffer, std::string& thumbPrint);
+
+		inline PKIStoreDataType pkiStoreDataType(const PKIStoreFileConfiguration::DirEntry& entry) { return std::get<0>(entry); }
+		inline std::string subdirectory(const PKIStoreFileConfiguration::DirEntry& entry) { return std::get<1>(entry); }
+		inline bool symlinkUsed(const PKIStoreFileConfiguration::DirEntry& entry) { return std::get<2>(entry); }
+		inline bool firstFileThumbprintUsed(const PKIStoreFileConfiguration::DirEntry& entry) { return std::get<3>(entry); }
 	};
 
 }

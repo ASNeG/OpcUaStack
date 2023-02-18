@@ -26,6 +26,12 @@
 namespace OpcUaStackCore
 {
 
+	enum class DLLEXPORT PKIStoreNameType
+	{
+		ThumbPrint,
+		RealName
+	};
+
 	enum class DLLEXPORT PKIStoreDataType
 	{
 		OwnKeyApplType,
@@ -116,6 +122,12 @@ namespace OpcUaStackCore
 		virtual bool removeAll(
 			PKIStoreDataType type
 		) = 0;
+		virtual bool getNameList(
+			PKIStoreDataType type,
+			std::vector<std::string>& nameVec,
+			PKIStoreNameType nameType
+		) = 0;
+
 	};
 
 }

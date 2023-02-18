@@ -83,9 +83,9 @@ namespace OpcUaStackCore
 
 		// Create PKI directories
 		for (auto dirEntry : config_->dirEntryVec_) {
-			if (dirEntryMap_.find(std::get<0>(dirEntry)) != dirEntryMap_.end()) continue;
-			if (std::get<1>(dirEntry).empty()) continue;
-			std::string pkiPath = config_->rootPath_ + "/" + std::get<1>(dirEntry);
+			if (dirEntryMap_.find(pkiStoreDataType(dirEntry)) != dirEntryMap_.end()) continue;
+			if (subdirectory(dirEntry).empty()) continue;
+			std::string pkiPath = config_->rootPath_ + "/" + subdirectory(dirEntry);
 
 			// Create PKI directory
 			if (!boost::filesystem::exists(boost::filesystem::path(pkiPath))) {
@@ -99,8 +99,8 @@ namespace OpcUaStackCore
 			}
 
 			// Add PKI directory to directory map
-			std::get<1>(dirEntry) = pkiPath;
-			dirEntryMap_.insert(std::make_pair(std::get<0>(dirEntry), dirEntry));
+			subdirectory(dirEntry) = pkiPath;
+			dirEntryMap_.insert(std::make_pair(pkiStoreDataType(dirEntry), dirEntry));
 		}
 
 		return true;
@@ -129,9 +129,10 @@ namespace OpcUaStackCore
 		// Find directory in directory map
 		auto it = dirEntryMap_.find(type);
 		if (it == dirEntryMap_.end()) return true;
+		auto dirEntry = it->second;
 
 		// Check if file exist in subdirectory
-		std::string directory = std::get<1>(it->second);
+		std::string directory = config_->rootPath_ + "/" + subdirectory(dirEntry);
 		for (boost::filesystem::directory_iterator it(directory);
 			 it != boost::filesystem::directory_iterator(); ++it
 		) {
@@ -147,15 +148,15 @@ namespace OpcUaStackCore
 		const std::string& name
 	)
 	{
-		std::string pkiFileName = name;
-		std::replace(pkiFileName.begin(), pkiFileName.end(), ' ', '_');
-
 		// Find directory in directory map
 		auto it = dirEntryMap_.find(type);
 		if (it == dirEntryMap_.end()) return false;
+		auto dirEntry = it->second;
+
+		std::string filename = config_->rootPath_ + "/" + subdirectory(dirEntry) + "/" + name;
+		std::replace(filename.begin(), filename.end(), ' ', '_');
 
 		// Check if file in directory exist
-		std::string filename = std::get<1>(it->second) + "/" + pkiFileName;
 		return boost::filesystem::exists(boost::filesystem::path(filename)) ||
 			   boost::filesystem::is_symlink(boost::filesystem::path(filename));
 	}
@@ -178,58 +179,85 @@ namespace OpcUaStackCore
 
 		// Find directory in directory map
 		auto it = dirEntryMap_.find(type);
-		if (it == dirEntryMap_.end()) return false;
-
-		// Create ThumbPrint
-		std::string thumbPrint;
-		if (!createThumbPrint(data, thumbPrint)) {
-			Log(Error, "create thumbprint from data error")
-				.parameter("Name", name);
+		if (it == dirEntryMap_.end()) {
 			return false;
 		}
-		std::string filename = std::get<1>(it->second) + "/" + thumbPrint;
-		bool useSymlinks = std::get<2>(it->second);
+		auto dirEntry = it->second;
+
+		std::string firstFile = "";
+		std::string secondFile = "";
+
+		if (firstFileThumbprintUsed(dirEntry) == true) {
+
+			// First file: ThumbPrint name
+			std::string thumbPrint;
+			if (!createThumbPrint(data, thumbPrint)) {
+				Log(Error, "create thumbprint from data error")
+					.parameter("Name", name);
+				return false;
+			}
+			firstFile = config_->rootPath_ + "/" + subdirectory(dirEntry) + "/" + thumbPrint;
+
+			// Second File: Real name
+			if (symlinkUsed(dirEntry) == true) {
+				secondFile = config_->rootPath_ + "/" + subdirectory(dirEntry) + "/" + name;
+			}
+		}
+		else {
+			// First File: Real name
+			firstFile = config_->rootPath_ + "/" + subdirectory(dirEntry) + "/" + name;
+
+			// Second file: ThumbPrint name
+			if (symlinkUsed(dirEntry) == true) {
+				std::string thumbPrint;
+				if (!createThumbPrint(data, thumbPrint)) {
+					Log(Error, "create thumbprint from data error")
+						.parameter("Name", name);
+					return false;
+				}
+				secondFile = config_->rootPath_ + "/" + subdirectory(dirEntry) + "/" + thumbPrint;
+			}
+		}
+
+		std::replace(firstFile.begin(), firstFile.end(), ' ', '_');
+		std::replace(secondFile.begin(), secondFile.end(), ' ', '_');
 
 		// Check if file already exist
-		if (exist(type, thumbPrint)) {
+		if (exist(type, firstFile)) {
 			Log(Error, "file write error, because file already exist")
-				.parameter("ThumbPrint", thumbPrint)
+				.parameter("ThumbPrint", firstFile)
 				.parameter("Name", name);
 			return false;
 		}
 
-		// Save file with thumbprint name
+		// Save first file
 		try {
-			boost::filesystem::ofstream ofs(filename);
+			boost::filesystem::ofstream ofs(firstFile);
 			ofs << data.toString();
 			ofs.close();
 		}
 		catch (std::exception& e) {
 			Log(Error, "file write filename")
-				.parameter("Filename", name)
+				.parameter("Filename", firstFile)
 				.parameter("Error", e.what());
 			return false;
 		}
 
 		// Do we want to create a link?
-		if (!useSymlinks) {
+		if (secondFile == "") {
 			return true;
 		}
 
 		// Create name link
-		std::string pkiFileName = name;
-		std::replace(pkiFileName.begin(), pkiFileName.end(), ' ', '_');
-
-		std::string link = std::get<1>(it->second) + "/" + pkiFileName;
 		boost::filesystem::create_symlink(
-			boost::filesystem::path(filename),
-			boost::filesystem::path(link),
+			boost::filesystem::path(firstFile),
+			boost::filesystem::path(secondFile),
 			ec
 		);
 		if (ec) {
 			Log(Error, "create symlink error")
-				.parameter("Filename", filename)
-				.parameter("Link", link)
+				.parameter("LinkTo", firstFile)
+				.parameter("LinkFrom", secondFile)
 				.parameter("Error", ec.message());
 			return false;
 		}
@@ -303,23 +331,22 @@ namespace OpcUaStackCore
 
 		auto it = dirEntryMap_.find(type);
 		if (it == dirEntryMap_.end()) return false;
-		bool useSymlink = std::get<2>(it->second);
-		std::string filename = std::get<1>(it->second) + "/" + pkiFileName;
+		auto dirEntry = it->second;
+
+		std::string filename = config_->rootPath_ + "/" + subdirectory(dirEntry) + "/" + pkiFileName;
 
 		// If file is symlink then get target file
-		if (useSymlink) {
-			if (boost::filesystem::is_symlink(boost::filesystem::path(filename))) {
-				boost::filesystem::path targetFile;
-				targetFile = boost::filesystem::read_symlink(boost::filesystem::path(filename), ec);
-				if (ec) {
-					Log(Error, "Read symlink error")
-						.parameter("Filename", filename)
-						.parameter("Error", ec.message());
-					return false;
-				}
-
-				filename = targetFile.string();
+		if (boost::filesystem::is_symlink(boost::filesystem::path(filename))) {
+			boost::filesystem::path targetFile;
+			targetFile = boost::filesystem::read_symlink(boost::filesystem::path(filename), ec);
+			if (ec) {
+				Log(Error, "Read symlink error")
+					.parameter("Filename", filename)
+					.parameter("Error", ec.message());
+				return false;
 			}
+
+			filename = targetFile.string();
 		}
 
 		// Read file
@@ -349,7 +376,7 @@ namespace OpcUaStackCore
 		// Find directory in directory map
 		auto it = dirEntryMap_.find(type);
 		if (it == dirEntryMap_.end()) return false;
-		std::string pkiDir = std::get<1>(it->second);
+		std::string pkiDir = config_->rootPath_ + "/" + subdirectory(it->second);
 
 		// Read all regular files from directory
 		for (boost::filesystem::directory_iterator it1(pkiDir);
@@ -385,15 +412,17 @@ namespace OpcUaStackCore
 		// Find directory in directory map
 		auto it = dirEntryMap_.find(type);
 		if (it == dirEntryMap_.end()) return false;
-		std::string pkiDir = std::get<1>(it->second);
-		bool useSymlink = std::get<2>(it->second);
-		std::string filename = pkiDir + "/" + name;
+		auto dirEntry = it->second;
+
+		std::string pkiDir = config_->rootPath_ + "/" + subdirectory(dirEntry);
+		std::string filename = config_->rootPath_ + "/" + subdirectory(dirEntry) + "/" + name;
+		std::string firstFile = "";
+		std::string secondFile = "";
 
 		// Remove target file
 		if (boost::filesystem::is_symlink(boost::filesystem::path(filename))) {
 
-			// The file is a symlink file. We must remove the target of the
-			// symlink first.
+			// The file is a symlink file.
 			boost::filesystem::path targetFile;
 			targetFile = boost::filesystem::read_symlink(boost::filesystem::path(filename), ec);
 			if (ec) {
@@ -403,54 +432,55 @@ namespace OpcUaStackCore
 				return false;
 			}
 
-			boost::filesystem::remove(targetFile, ec);
-			if (ec) {
-				Log(Error, "cannot remove target file")
-					.parameter("Filename", targetFile)
-					.parameter("Error", ec.message());
-				return false;
-			}
+			firstFile = targetFile.string();
+			secondFile = filename;
 		}
 		else { // Find and remove the symlinks to the file
-			if (useSymlink) {
-				for (boost::filesystem::directory_iterator it1(pkiDir);
-					it1 != boost::filesystem::directory_iterator(); ++it1
-				) {
-					boost::filesystem::path dirFile = it1->path();
+			firstFile = filename;
 
-					if (boost::filesystem::is_symlink(dirFile)) {
-						boost::filesystem::path targetFile;
-						targetFile = boost::filesystem::read_symlink(dirFile, ec);
-						if (ec) {
-							Log(Error, "cannot remove file, because read symlink target error")
-								.parameter("SymlinkFile", dirFile.string())
-								.parameter("Error", ec.message());
-							return false;
-						}
+			for (boost::filesystem::directory_iterator it1(pkiDir);
+				it1 != boost::filesystem::directory_iterator(); ++it1
+			) {
+				boost::filesystem::path dirFile = it1->path();
 
-						if (targetFile.string() == filename) {
-							// Remove target file
-							boost::filesystem::remove(dirFile, ec);
-							if (ec) {
-								Log(Error, "cannot remove symlink file")
-								    .parameter("Filename", dirFile.string())
-									.parameter("Error", ec.message());
-								return false;
-							}
-							break;
-						}
+				if (boost::filesystem::is_symlink(dirFile)) {
+					boost::filesystem::path targetFile;
+					targetFile = boost::filesystem::read_symlink(dirFile, ec);
+					if (ec) {
+						Log(Error, "cannot remove file, because read symlink target error")
+							.parameter("SymlinkFile", dirFile.string())
+							.parameter("Error", ec.message());
+						return false;
+					}
+
+					if (targetFile.string() == filename) {
+						secondFile = dirFile.string();
+						break;
 					}
 				}
 			}
 		}
 
-		// Remove file
-		boost::filesystem::remove(boost::filesystem::path(filename), ec);
-		if (ec) {
-			Log(Error, "cannot remove file")
-			    .parameter("Filename", filename)
-				.parameter("Error", ec.message());
-			return false;
+		// Remove first file
+		if (!firstFile.empty()) {
+			boost::filesystem::remove(boost::filesystem::path(firstFile), ec);
+			if (ec) {
+				Log(Error, "cannot remove file")
+			    	.parameter("Filename", firstFile)
+					.parameter("Error", ec.message());
+				return false;
+			}
+		}
+
+		// Remove second file
+		if (!secondFile.empty()) {
+			boost::filesystem::remove(boost::filesystem::path(secondFile), ec);
+			if (ec) {
+				Log(Error, "cannot remove file")
+			    	.parameter("Filename", secondFile)
+					.parameter("Error", ec.message());
+				return false;
+			}
 		}
 
 		return true;
@@ -466,7 +496,9 @@ namespace OpcUaStackCore
 		// Find directory in directory map
 		auto it = dirEntryMap_.find(type);
 		if (it == dirEntryMap_.end()) return false;
-		std::string pkiDir = std::get<1>(it->second);
+		auto dirEntry = it->second;
+
+		std::string pkiDir = config_->rootPath_ + "/" + subdirectory(dirEntry);
 
 		// Remove all files from directory
 		boost::filesystem::remove_all(pkiDir, ec);
@@ -476,6 +508,61 @@ namespace OpcUaStackCore
 				.parameter("Error", ec.message());
 			return false;
 		}
+
+		return true;
+	}
+
+	bool
+	PKIStoreFile::getNameList(
+		PKIStoreDataType type,
+		std::vector<std::string>& nameVec,
+		PKIStoreNameType nameType
+	)
+	{
+		// Find directory in directory map
+		auto it = dirEntryMap_.find(type);
+		if (it == dirEntryMap_.end()) return false;
+		auto dirEntry = it->second;
+
+		std::string pkiDir = config_->rootPath_ + "/" + subdirectory(dirEntry);
+
+		for (boost::filesystem::directory_iterator it1(pkiDir);
+			it1 != boost::filesystem::directory_iterator(); ++it1
+		) {
+			boost::filesystem::path dirFile = it1->path();
+
+			bool addToList = false;
+			if (!boost::filesystem::is_symlink(dirFile)) {
+				if (firstFileThumbprintUsed(dirEntry)) {
+					if (nameType == PKIStoreNameType::ThumbPrint) {
+						addToList = true;
+					}
+				}
+				else {
+					if (nameType == PKIStoreNameType::RealName) {
+						addToList = true;
+					}
+				}
+			}
+			else {
+				if (firstFileThumbprintUsed(dirEntry)) {
+					if (nameType == PKIStoreNameType::RealName) {
+						addToList = true;
+					}
+				}
+				else {
+					if (nameType == PKIStoreNameType::ThumbPrint) {
+						addToList = true;
+					}
+				}
+			}
+
+			if (addToList) {
+				nameVec.push_back(dirFile.filename().string());
+			}
+		}
+
+
 
 		return true;
 	}
