@@ -13,6 +13,17 @@
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
    Autor: Kai Huebl (kai@huebl-sgh.de)
+
+   DirEntry:
+   <0>: Pki store data type
+   <1>: Name of the sub directory
+   <2>: True: A second file is created as a symlink to the first file
+        False: A second file is not used
+   <3>: True: The first filename is the thumbprint of the file content. The second
+              filename (symlink) is the passed name.
+        False:The first filename is the passed name. The second filename (symlink)
+              is the thumbprint of the file content.
+
  */
 
 #ifndef __OpcUaStackCore_PKIStoreFile_h__
@@ -28,6 +39,11 @@
 #include "OpcUaStackCore/Base/MemoryBuffer.h"
 #include "OpcUaStackCore/PKI/PKIStore.h"
 
+#define pkiStoreDataType(entry) std::get<0>(entry)
+#define subdirectory(entry) std::get<1>(entry)
+#define	symlinkUsed(entry) std::get<2>(entry)
+#define firstFileThumbprintUsed(entry) std::get<3>(entry)
+
 namespace OpcUaStackCore
 {
 
@@ -36,7 +52,7 @@ namespace OpcUaStackCore
 	{
 	  public:
 		using SPtr = boost::shared_ptr<PKIStoreFileConfiguration>;
-		using DirEntry = std::tuple<PKIStoreDataType, std::string, bool>;
+		using DirEntry = std::tuple<PKIStoreDataType, std::string, bool, bool>; // Description see above
 		using DirEntryVec = std::vector<DirEntry>;
 
 		PKIStoreFileConfiguration(void);
@@ -44,23 +60,23 @@ namespace OpcUaStackCore
 
 	    std::string rootPath_ = "pki";
 	    DirEntryVec dirEntryVec_ = {
-	    	{PKIStoreDataType::OwnKeyApplType, "OwnKeyApplType", false},
-			{PKIStoreDataType::OwnKeyRsaMinType, "OwnKeyRsaMinType", false},
-			{PKIStoreDataType::OwnKeyRsaSha256Type, "OwnKeyRsaSha256Type", false},
-			{PKIStoreDataType::OwnKeyHttpsType, "OwnKeyHttpsType", false},
-			{PKIStoreDataType::OwnKeyUserCredentialType, "OwnKeyUserCredentialType", false},
-			{PKIStoreDataType::OwnCertApplType, "OwnCertApplType", false},
-			{PKIStoreDataType::OwnCertRsaMinType, "OwnCertRsaMinType", false},
-			{PKIStoreDataType::OwnCertRsaSha256Type, "OwnCertRsaSha256Type", false},
-			{PKIStoreDataType::OwnCertHttpsType, "OwnCertHttpsType", false},
-			{PKIStoreDataType::OwnCertUserCredentialType, "OwnCertUserCredentialType", false},
-			{PKIStoreDataType::TrustedCert, "TrustedCert", true},
-			{PKIStoreDataType::TrustedCrlsCert, "TrustedCrlsCert", true},
-			{PKIStoreDataType::IssuerCert, "IssuerCert", true},
-			{PKIStoreDataType::IssuerCrlsCert, "IssuerCrlsCert", true},
-			{PKIStoreDataType::RejectedCert, "RejectedCert", true},
-			{PKIStoreDataType::UserCredentialKey, "UserCredentialKey", true},
-			{PKIStoreDataType::UserCredentialCert, "UserCredentialCert", true}
+	    	{PKIStoreDataType::OwnKeyApplType, "OwnKeyApplType", false, true},
+			{PKIStoreDataType::OwnKeyRsaMinType, "OwnKeyRsaMinType", false, true},
+			{PKIStoreDataType::OwnKeyRsaSha256Type, "OwnKeyRsaSha256Type", false, true},
+			{PKIStoreDataType::OwnKeyHttpsType, "OwnKeyHttpsType", false, true},
+			{PKIStoreDataType::OwnKeyUserCredentialType, "OwnKeyUserCredentialType", false, true},
+			{PKIStoreDataType::OwnCertApplType, "OwnCertApplType", false, true},
+			{PKIStoreDataType::OwnCertRsaMinType, "OwnCertRsaMinType", false, true},
+			{PKIStoreDataType::OwnCertRsaSha256Type, "OwnCertRsaSha256Type", false, true},
+			{PKIStoreDataType::OwnCertHttpsType, "OwnCertHttpsType", false, true},
+			{PKIStoreDataType::OwnCertUserCredentialType, "OwnCertUserCredentialType", false, true},
+			{PKIStoreDataType::TrustedCert, "TrustedCert", true, true},
+			{PKIStoreDataType::TrustedCrlsCert, "TrustedCrlsCert", true, true},
+			{PKIStoreDataType::IssuerCert, "IssuerCert", true, true},
+			{PKIStoreDataType::IssuerCrlsCert, "IssuerCrlsCert", true, true},
+			{PKIStoreDataType::RejectedCert, "RejectedCert", true, true},
+			{PKIStoreDataType::UserCredentialKey, "UserCredentialKey", true, true},
+			{PKIStoreDataType::UserCredentialCert, "UserCredentialCert", true, true}
 	    };
 	};
 
@@ -80,6 +96,9 @@ namespace OpcUaStackCore
 		bool cleanup(void) override;
 
 		// Functions to access data in key store
+		bool empty(
+			PKIStoreDataType type
+		) override;
 		bool exist(
 			PKIStoreDataType type,
 			const std::string& name

@@ -246,4 +246,37 @@ BOOST_AUTO_TEST_CASE(PKIStoreFile_remove_all)
 	boost::filesystem::remove_all(boost::filesystem::path("./pki"));
 }
 
+BOOST_AUTO_TEST_CASE(PKIStoreFile_empty)
+{
+	boost::filesystem::remove_all(boost::filesystem::path("./pki"));
+
+	// Open PKI Store -
+	PKIStoreFile pkiStore;
+	BOOST_REQUIRE(pkiStore.open(boost::make_shared<PKIStoreFileConfiguration>()) == true);
+
+	// Check empty
+	BOOST_REQUIRE(pkiStore.empty(PKIStoreDataType::TrustedCert) == true);
+
+	// Write data to PKI store
+	BOOST_REQUIRE(pkiStore.write(PKIStoreDataType::TrustedCert, "MyCert", OpcUaByteString("0123456789")) == true);
+	BOOST_REQUIRE(pkiStore.exist(PKIStoreDataType::TrustedCert, "MyCert") == true);
+	BOOST_REQUIRE(pkiStore.exist(PKIStoreDataType::TrustedCert, "87acec17cd9dcd20a716cc2cf67417b71c8a7016") == true);
+
+	// Check empty
+	BOOST_REQUIRE(pkiStore.empty(PKIStoreDataType::TrustedCert) == false);
+
+	// Remove data from PKI store
+	BOOST_REQUIRE(pkiStore.remove(PKIStoreDataType::TrustedCert, "MyCert") == true);
+	BOOST_REQUIRE(pkiStore.exist(PKIStoreDataType::TrustedCert, "MyCert") == false);
+	BOOST_REQUIRE(pkiStore.exist(PKIStoreDataType::TrustedCert, "87acec17cd9dcd20a716cc2cf67417b71c8a7016") == false);
+
+	// Check empty
+	BOOST_REQUIRE(pkiStore.empty(PKIStoreDataType::TrustedCert) == true);
+
+	// Close PKI Store
+	BOOST_REQUIRE(pkiStore.close() == true);
+
+	boost::filesystem::remove_all(boost::filesystem::path("./pki"));
+}
+
 BOOST_AUTO_TEST_SUITE_END()

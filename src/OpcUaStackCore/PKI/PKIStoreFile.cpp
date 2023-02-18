@@ -122,6 +122,26 @@ namespace OpcUaStackCore
 	}
 
 	bool
+	PKIStoreFile::empty(
+		PKIStoreDataType type
+	)
+	{
+		// Find directory in directory map
+		auto it = dirEntryMap_.find(type);
+		if (it == dirEntryMap_.end()) return true;
+
+		// Check if file exist in subdirectory
+		std::string directory = std::get<1>(it->second);
+		for (boost::filesystem::directory_iterator it(directory);
+			 it != boost::filesystem::directory_iterator(); ++it
+		) {
+		    boost::filesystem::path filename = it->path();
+		    if (boost::filesystem::is_regular_file(filename)) return false;
+		}
+		return true;
+	}
+
+	bool
 	PKIStoreFile::exist(
 		PKIStoreDataType type,
 		const std::string& name
@@ -150,8 +170,8 @@ namespace OpcUaStackCore
 		boost::system::error_code ec;
 
 		// Check parameter
-		if (data.isNull()) {
-			Log(Error, "cannot write data, because data is null")
+		if (data.isNull() || data.size() == 0) {
+			Log(Error, "cannot write data, because data is null or empty")
 				.parameter("Name", name);
 			return false;
 		}
@@ -160,7 +180,7 @@ namespace OpcUaStackCore
 		auto it = dirEntryMap_.find(type);
 		if (it == dirEntryMap_.end()) return false;
 
-		// Get ThumbPrint
+		// Create ThumbPrint
 		std::string thumbPrint;
 		if (!createThumbPrint(data, thumbPrint)) {
 			Log(Error, "create thumbprint from data error")

@@ -54,7 +54,9 @@ namespace OpcUaStackCore
 		UserDefinedKey2,
 		UserDefinedKey3,
 		UserDefinedKey4,
-		UserDefinedKey5
+		UserDefinedKey5,
+		UserAccessConfigData,
+		UserAccessConfigSign
 	};
 
 	class DLLEXPORT PKIStoreConfiguration
@@ -81,6 +83,9 @@ namespace OpcUaStackCore
 		virtual bool cleanup(void) = 0;
 
 		// Functions to access data in key store
+		virtual bool empty(
+			PKIStoreDataType type
+		) = 0;
 		virtual bool exist(
 			PKIStoreDataType type,
 			const std::string& name
