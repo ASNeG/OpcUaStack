@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2023 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -202,6 +202,82 @@ namespace OpcUaStackCore
 	    i2d_X509_PUBKEY(publicKey_, (unsigned char**)&ptr);
 
 	    return true;
+	}
+
+	bool
+	PublicKey::toPEMBuf(MemoryBuffer& memoryBuffer)
+	{
+		BIOCtx bioCtx;
+		if (!toPEMBuf(bioCtx)) {
+			addError("call toPEMBuf error");
+			return false;
+		}
+
+		// Get data length and data pointer
+	    char* data = nullptr;
+	    uint32_t length = BIO_get_mem_data(bioCtx.bio(), &data);
+
+		// Create certificate data buffer
+	    memoryBuffer.resize(length);
+		if (memoryBuffer.memLen() <= 0) {
+			addError("PEM buffer empty");
+			return false;
+		}
+	    memcpy(memoryBuffer.memBuf(), data, memoryBuffer.memLen());
+
+	    return true;
+	}
+
+	bool
+	PublicKey::toPEMBuf(BIOCtx& bioCtx)
+	{
+		// Check parameter
+		if (publicKey_ == nullptr) {
+			addError("csertificate is empty");
+			return false;
+		}
+
+	    int result = PEM_write_bio_PUBKEY(bioCtx.bio(), X509_PUBKEY_get(publicKey_));
+	    if (result == 0) {
+	        addOpenSSLError();
+	        addError("call PEM_write_bio_PUBKEY error");
+	        return false;
+	    }
+
+		return true;
+	}
+
+	bool
+	PublicKey::fromPEMBuf(MemoryBuffer& memoryBuffer)
+	{
+		BIOCtx bioCtx(memoryBuffer);
+		return fromPEMBuf(bioCtx);
+	}
+
+	bool
+	PublicKey::fromPEMBuf(BIOCtx& bioCtx)
+	{
+		if (publicKey_ != nullptr) {
+			X509_PUBKEY_free(publicKey_);
+			publicKey_ = nullptr;
+		}
+
+	    // Create certificate
+		EVP_PKEY* evp_pkey = PEM_read_bio_PUBKEY(bioCtx.bio(), 0, 0, 0);
+		if (publicKey_ == nullptr) {
+			addOpenSSLError();
+			addError("call PEM_read_bio_PUBKEY error");
+			return false;
+		}
+
+		int result = X509_PUBKEY_set(&publicKey_, evp_pkey);
+		if (!result) {
+		    addOpenSSLError();
+		}
+
+		EVP_PKEY_free(evp_pkey);
+
+		return true;
 	}
 
 }

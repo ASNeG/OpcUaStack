@@ -23,6 +23,7 @@
 #include <openssl/x509.h>
 
 #include "OpcUaStackCore/Base/MemoryBuffer.h"
+#include "OpcUaStackCore/Certificate/BIOCtx.h"
 #include "OpcUaStackCore/Certificate/OpenSSLError.h"
 #include "OpcUaStackCore/Certificate/Identity.h"
 #include "OpcUaStackCore/Certificate/PublicKey.h"
@@ -57,8 +58,11 @@ namespace OpcUaStackCore
 
 		bool toDERBuf(MemoryBuffer& derBuf);
 		bool fromDERBuf(MemoryBuffer& derBuf);
+
 		bool toPEMBuf(MemoryBuffer& pemBuf);
+		bool toPEMBuf(BIOCtx& bioCtx);
 		bool fromPEMBuf(MemoryBuffer& pemBuf);
+		bool fromPEMBuf(BIOCtx& bioCtx);
 
 		bool validateSignature(PublicKey& publicKey);
 

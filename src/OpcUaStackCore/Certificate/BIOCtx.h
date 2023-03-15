@@ -9,46 +9,38 @@
    erfolgt die Bereitstellung der im Rahmen der Lizenz verbreiteten Software OHNE
    GEWÄHR ODER VORBEHALTE – ganz gleich, ob ausdrücklich oder stillschweigend.
 
-   Pemrmationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
+   BIOCtxrmationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
+   Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_Pem_h__
-#define __OpcUaStackCore_Pem_h__
+#ifndef __OpcUaStackCore_BIOCtx_h__
+#define __OpcUaStackCore_BIOCtx_h__
 
-#include <boost/shared_ptr.hpp>
+#include <openssl/pem.h>
 
-#include <string>
-
-#include "OpcUaStackCore/Certificate/OpenSSLError.h"
 #include "OpcUaStackCore/Base/MemoryBuffer.h"
 
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT Pem
-	: public OpenSSLError
+	class DLLEXPORT BIOCtx
 	{
 	  public:
-		using SPtr = boost::shared_ptr<Pem>;
+		BIOCtx(void);
+		BIOCtx(MemoryBuffer& memoryBuffer);
+		~BIOCtx(void);
 
-		Pem(void);
-		~Pem(void);
+		bool getMemoryBuffer(MemoryBuffer& memoryBuffer);
+		bool setMemoryBuffer(MemoryBuffer& memoryBuffer);
+		BIO* bio(void);
 
-		bool toText(
-			MemoryBuffer& memoryBuffer,
-			std::string& str,
-			const std::string& textName
-		);
+	  private:
+		BIO* bio_ = nullptr;
 
-		bool fromText(
-			std::string& str,
-			MemoryBuffer& memoryBuffer,
-			std::string& textName
-		);
 	};
+
 }
 
 #endif

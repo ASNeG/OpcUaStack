@@ -22,6 +22,8 @@
 
 #include <openssl/x509.h>
 
+#include "OpcUaStackCore/Base/MemoryBuffer.h"
+#include "OpcUaStackCore/Certificate/BIOCtx.h"
 #include "OpcUaStackCore/Certificate/OpenSSLError.h"
 #include "OpcUaStackCore/Certificate/CertificateEnums.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaByteString.h"
@@ -53,17 +55,25 @@ namespace OpcUaStackCore
 		bool fromDER(char* buf, uint32_t bufLen, KeyType keyType);
 
 		bool fromPEM(
-			char* buf,
-			uint32_t bufLen,
+			BIOCtx& bioCtx,
 			const char *password,
 			PasswordCallback* passwordCallback = nullptr,
 			void *data = nullptr
 		);
-	    bool toPEM(
-	    	char* buf,
-			uint32_t& bufLen,
+		bool fromPEM(
+			MemoryBuffer& pemBuf,
+			const char *password,
+			PasswordCallback* passwordCallback = nullptr,
+			void *data = nullptr
+		);
+		bool toPEM(
+			BIOCtx& bioCtx,
 			const char* password
-		) const;
+		);
+	    bool toPEM(
+	    	MemoryBuffer& pemBuf,
+			const char* password
+		);
 
 		bool toPEMFile(const std::string& fileName, const char* password);
 		bool fromPEMFile(const std::string& fileName, const char* password, PasswordCallback* passwordCallback = nullptr, void *data = nullptr);

@@ -316,7 +316,9 @@ namespace OpcUaStackServer
 		// read values
 		readResponse->dataValueArray()->resize(readRequest->readValueIdArray()->size());
 		for (uint32_t idx = 0; idx < readRequest->readValueIdArray()->size(); idx++) {
-			OpcUaDataValue::SPtr dataValue = boost::make_shared<OpcUaDataValue>();
+
+			// Create data value and add it to response
+			auto dataValue = boost::make_shared<OpcUaDataValue>();
 			readResponse->dataValueArray()->set(idx, dataValue);
 
 			// determine node information

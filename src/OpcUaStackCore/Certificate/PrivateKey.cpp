@@ -201,8 +201,7 @@ namespace OpcUaStackCore
 
 	bool
 	PrivateKey::fromPEM(
-		char* buf,
-		uint32_t bufLen,
+		BIOCtx& bioCtx,
 		const char *password,
 		PasswordCallback* passwordCallback,
 		void *data
@@ -213,46 +212,51 @@ namespace OpcUaStackCore
 			privateKey_ = nullptr;
 		}
 
-	    BIO* bio = BIO_new_mem_buf((void*)buf, bufLen);
-
 		if (passwordCallback) {
-		    privateKey_ = PEM_read_bio_PrivateKey(bio, 0, passwordCallback, data);
+		    privateKey_ = PEM_read_bio_PrivateKey(bioCtx.bio(), 0, passwordCallback, data);
 		}
 		else {
-		    privateKey_ = PEM_read_bio_PrivateKey(bio, 0, 0, (void*)password);
+		    privateKey_ = PEM_read_bio_PrivateKey(bioCtx.bio(), 0, 0, (void*)password);
 		}
 
 		if (privateKey_ == nullptr) {
 			addOpenSSLError();
 			addError("call PEM_read_bio_PrivateKey error");
-			BIO_free(bio);
 			return false;
 		}
 
-		BIO_free(bio);
 		return true;
 	}
 
 	bool
+	PrivateKey::fromPEM(
+		MemoryBuffer& pemBuf,
+		const char *password,
+		PasswordCallback* passwordCallback,
+		void *data
+	)
+	{
+		BIOCtx bioCtx(pemBuf);
+		return fromPEM(bioCtx, password, passwordCallback, data);
+	}
+
+	bool
 	PrivateKey::toPEM(
-    	char* buf,
-		uint32_t& bufLen,
+		BIOCtx& bioCtx,
 		const char* password
-	) const
+	)
 	{
 	   	if (privateKey_ == nullptr) {
 	   		const_cast<PrivateKey*>(this)->addError("key is empty");
 	    	return false;
 	    }
 
-	    BIO *bio = BIO_new(BIO_s_mem());
-
 	    int result;
 	    if (password) {
-	        result = PEM_write_bio_PrivateKey(bio, privateKey_, EVP_aes_256_cbc(), 0, 0, 0, (void*)password);
+	        result = PEM_write_bio_PrivateKey(bioCtx.bio(), privateKey_, EVP_aes_256_cbc(), 0, 0, 0, (void*)password);
 	    }
 	    else {
-	        result = PEM_write_bio_PrivateKey(bio, privateKey_, 0, 0, 0, 0, 0);
+	        result = PEM_write_bio_PrivateKey(bioCtx.bio(), privateKey_, 0, 0, 0, 0, 0);
 	    }
 
 	    if (result == 0) {
@@ -261,18 +265,33 @@ namespace OpcUaStackCore
 	        return false;
 	    }
 
+		return true;
+	}
+
+	bool
+	PrivateKey::toPEM(
+		MemoryBuffer& pemBuf,
+		const char* password
+	)
+	{
+		bool rc = true;
+
+		// Write private key to bio context
+		BIOCtx bioCtx;
+		rc = toPEM(bioCtx, password);
+		if (!rc) return false;
+
 	    char* data = nullptr;
-	    uint32_t length = BIO_get_mem_data(bio, &data);
+	    uint32_t length = BIO_get_mem_data(bioCtx.bio(), &data);
 
-	    if (length > bufLen) {
-	        const_cast<PrivateKey*>(this)->addError("buffer length is too short");
-	        return false;
+	    // Create data buffer
+	    pemBuf.resize(length);
+	    if (pemBuf.memLen() <= 0) {
+	    	const_cast<PrivateKey*>(this)->addError("PEM buffer empty");
+	    	return false;
 	    }
+	    memcpy(pemBuf.memBuf(), data, pemBuf.memLen());
 
-	    bufLen = length;
-	    memcpy(buf, data, bufLen);
-
-	    BIO_set_close(bio, BIO_CLOSE);
 	    return true;
 	}
 

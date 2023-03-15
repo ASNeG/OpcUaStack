@@ -567,6 +567,39 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	std::string
+	PKIStoreFile::getPath(
+		PKIStoreDataType type,
+		const std::string& name
+	)
+	{
+		// Find directory in directory map
+		auto it = dirEntryMap_.find(type);
+		if (it == dirEntryMap_.end()) return "";
+		auto dirEntry = it->second;
+
+		std::string filename = config_->rootPath_ + "/" + subdirectory(dirEntry) + "/" + name;
+		std::replace(filename.begin(), filename.end(), ' ', '_');
+
+		return filename;
+	}
+
+	void
+	PKIStoreFile::log(void)
+	{
+		Log(Debug, "pki store")
+			.parameter("Size", dirEntryMap_.size());
+
+		for (auto it : dirEntryMap_) {
+			auto id = it.first;
+			auto dirEntry = it.second;
+
+			Log(Debug, "pki store subdirectory")
+				.parameter("Id", static_cast<unsigned int>(id))
+				.parameter("Path", subdirectory(dirEntry));
+		}
+	}
+
 	bool
 	PKIStoreFile::createThumbPrint(const OpcUaByteString& buffer, std::string& thumbPrint)
 	{

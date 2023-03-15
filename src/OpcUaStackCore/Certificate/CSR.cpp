@@ -294,7 +294,32 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	CSR::toPEMBuf(MemoryBuffer& pemBuf)
+	CSR::toPEMBuf(MemoryBuffer& memoryBuffer)
+	{
+		bool rc = true;
+
+		// Write csr to bio
+		BIOCtx bioCtx;
+		rc = toPEMBuf(bioCtx);
+		if (!rc) return false;
+
+		// Get data length and data pointer
+	    char* data = nullptr;
+	    uint32_t length = BIO_get_mem_data(bioCtx.bio(), &data);
+
+		// Create CSR data buffer
+	    memoryBuffer.resize(length);
+		if (memoryBuffer.memLen() <= 0) {
+			addError("PEM buffer empty");
+			return false;
+		}
+	    memcpy(memoryBuffer.memBuf(), data, memoryBuffer.memLen());
+
+		return true;
+	}
+
+	bool
+	CSR::toPEMBuf(BIOCtx& bioCtx)
 	{
 		// Check parameter
 		if (req_ == nullptr) {
@@ -302,50 +327,46 @@ namespace OpcUaStackCore
 			return false;
 		}
 
-	    BIO *bio = BIO_new(BIO_s_mem());
-
-	    int result = PEM_write_bio_X509_REQ(bio, req_);
+		// Write csr to bio context
+	    int result = PEM_write_bio_X509_REQ(bioCtx.bio(), req_);
 	    if (result == 0) {
 	        addOpenSSLError();
 	        addError("call PEM_write_bio_X509_REQ error");
 	        return false;
 	    }
 
-	    char* data = nullptr;
-	    uint32_t length = BIO_get_mem_data(bio, &data);
+	    return true;
+	}
 
-		// Create CSR data buffer
-		pemBuf.resize(length);
-		if (pemBuf.memLen() <= 0) {
-			addError("PEM buffer empty");
-			return false;
-		}
-	    memcpy(pemBuf.memBuf(), data, pemBuf.memLen());
+	bool
+	CSR::fromPEMBuf(MemoryBuffer& memoryBuffer)
+	{
+		bool rc = true;
 
-	    BIO_set_close(bio, BIO_CLOSE);
+		// READ csr from bio conext
+		BIOCtx bioCtx(memoryBuffer);
+		rc = fromPEMBuf(bioCtx);
+		if (!rc) return false;
+
 		return true;
 	}
 
 	bool
-	CSR::fromPEMBuf(MemoryBuffer& pemBuf)
+	CSR::fromPEMBuf(BIOCtx& bioCtx)
 	{
 		if (req_ != nullptr) {
 			X509_REQ_free(req_);
 			req_ = nullptr;
 		}
 
-	    BIO* bio = BIO_new_mem_buf((void*)pemBuf.memBuf(), pemBuf.memLen());
-
 	    // Create CSR
-		req_ = PEM_read_bio_X509_REQ(bio, 0, 0, 0);
+		req_ = PEM_read_bio_X509_REQ(bioCtx.bio(), 0, 0, 0);
 		if (req_ == nullptr) {
 			addOpenSSLError();
 			addError("call PEM_read_bio_X509_REQ error");
-			BIO_free(bio);
 			return false;
 		}
 
-		BIO_free(bio);
 		return true;
 	}
 

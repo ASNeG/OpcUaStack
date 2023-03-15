@@ -28,6 +28,7 @@
 
 #include "OpcUaStackCore/Base/MemoryBuffer.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaByteString.h"
+#include "OpcUaStackCore/Certificate/BIOCtx.h"
 #include "OpcUaStackCore/Certificate/CertificateInfo.h"
 #include "OpcUaStackCore/Certificate/OpenSSLError.h"
 #include "OpcUaStackCore/Certificate/CertificateEnums.h"
@@ -69,10 +70,19 @@ namespace OpcUaStackCore
 		);
 		~Certificate(void);
 
-		bool createCertificate(
+		bool createCertificate( // create self signed certificate
 			CertificateInfo& info,
 			Identity& subject,
 			RSAKey& rsaKey,
+			UserExtension::Vec* userExtensionVec = nullptr,
+			bool useCACert = false,
+			SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm_Sha1
+		);
+		bool createCertificate( // create self signed certificate
+			CertificateInfo& info,
+			Identity& subject,
+			PublicKey& publicKey,
+			PrivateKey& privateKey,
 			UserExtension::Vec* userExtensionVec = nullptr,
 			bool useCACert = false,
 			SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm_Sha1
@@ -110,8 +120,11 @@ namespace OpcUaStackCore
 		bool toDERBuf(MemoryBuffer& derBuf);
 		bool fromDERBuf(char* buf, uint32_t bufLen);
 		bool fromDERBuf(MemoryBuffer& derBuf);
+
 		bool toPEMBuf(MemoryBuffer& pemBuf);
+		bool toPEMBuf(BIOCtx& bioCtx);
 		bool fromPEMBuf(MemoryBuffer& pemBuf);
+		bool fromPEMBuf(BIOCtx& bioCtx, bool logging = true);
 
 		bool isIssuerFrom(Certificate&  certificate);
 

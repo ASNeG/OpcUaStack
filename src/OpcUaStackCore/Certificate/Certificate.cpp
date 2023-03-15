@@ -105,6 +105,31 @@ namespace OpcUaStackCore
 		SignatureAlgorithm signatureAlgorithm
 	)
 	{
+		PublicKey publicKey = rsaKey.publicKey();
+		PrivateKey privateKey = rsaKey.privateKey();
+
+		return createCertificate(
+			info,
+			subject,
+			publicKey,
+			privateKey,
+			userExtensionVec,
+			useCACert,
+			signatureAlgorithm
+		);
+	}
+
+	bool
+	Certificate::createCertificate(
+		CertificateInfo& info,
+		Identity& subject,
+		PublicKey& publicKey,
+		PrivateKey& privateKey,
+		UserExtension::Vec* userExtensionVec,
+		bool useCACert,
+		SignatureAlgorithm signatureAlgorithm
+	)
+	{
 		assert(cert_ == nullptr);
 
 		cert_ = X509_new();
@@ -188,13 +213,13 @@ namespace OpcUaStackCore
 
         // set public key
         if (!error) {
-	        EVP_PKEY* publicKey = (EVP_PKEY*)rsaKey.publicKey();
-	        result = X509_set_pubkey(cert_, publicKey);
+	        EVP_PKEY* EVPPublicKey = (EVP_PKEY*)publicKey;
+	        result = X509_set_pubkey(cert_, EVPPublicKey);
 	        if (!result) {
 	        	error = true;
 	        	addOpenSSLError();
 	        }
-	        EVP_PKEY_free(publicKey);
+	        EVP_PKEY_free(EVPPublicKey);
 	    }
 
         // set extensions
@@ -232,7 +257,7 @@ namespace OpcUaStackCore
 
         // sign the certificate
 	    if (!error) {
-	        EVP_PKEY* key = (EVP_PKEY*)(const EVP_PKEY*)rsaKey.privateKey();
+	        EVP_PKEY* key = (EVP_PKEY*)(const EVP_PKEY*)privateKey;
 	        if (signatureAlgorithm == SignatureAlgorithm_Sha1) {
 	            result = X509_sign(cert_, key, EVP_sha1());
 	        }
@@ -881,23 +906,15 @@ namespace OpcUaStackCore
 	bool
 	Certificate::toPEMBuf(MemoryBuffer& pemBuf)
 	{
-		// Check parameter
-		if (cert_ == nullptr) {
-			addError("CSR is empty");
+		BIOCtx bioCtx;
+		if (!toPEMBuf(bioCtx)) {
+			addError("call toPEMBuf error");
 			return false;
 		}
 
-	    BIO *bio = BIO_new(BIO_s_mem());
-
-	    int result = PEM_write_bio_X509(bio, cert_);
-	    if (result == 0) {
-	        addOpenSSLError();
-	        addError("call PEM_write_bio_X509 error");
-	        return false;
-	    }
-
+		// Get data length and data pointer
 	    char* data = nullptr;
-	    uint32_t length = BIO_get_mem_data(bio, &data);
+	    uint32_t length = BIO_get_mem_data(bioCtx.bio(), &data);
 
 		// Create certificate data buffer
 		pemBuf.resize(length);
@@ -907,30 +924,53 @@ namespace OpcUaStackCore
 		}
 	    memcpy(pemBuf.memBuf(), data, pemBuf.memLen());
 
-	    BIO_set_close(bio, BIO_CLOSE);
+	    return true;
+	}
+
+	bool
+	Certificate::toPEMBuf(BIOCtx& bioCtx)
+	{
+		// Check parameter
+		if (cert_ == nullptr) {
+			addError("csertificate is empty");
+			return false;
+		}
+
+	    int result = PEM_write_bio_X509(bioCtx.bio(), cert_);
+	    if (result == 0) {
+	        addOpenSSLError();
+	        addError("call PEM_write_bio_X509 error");
+	        return false;
+	    }
+
 		return true;
 	}
 
 	bool
 	Certificate::fromPEMBuf(MemoryBuffer& pemBuf)
 	{
+		BIOCtx bioCtx(pemBuf);
+		return fromPEMBuf(bioCtx);
+	}
+
+	bool
+	Certificate::fromPEMBuf(BIOCtx& bioCtx, bool logging)
+	{
 		if (cert_ != nullptr) {
 			X509_free(cert_);
 			cert_ = nullptr;
 		}
 
-	    BIO* bio = BIO_new_mem_buf((void*)pemBuf.memBuf(), pemBuf.memLen());
-
 	    // Create certificate
-		cert_ = PEM_read_bio_X509(bio, 0, 0, 0);
+		cert_ = PEM_read_bio_X509(bioCtx.bio(), 0, 0, 0);
 		if (cert_ == nullptr) {
-			addOpenSSLError();
-			addError("call PEM_read_bio_X509 error");
-			BIO_free(bio);
+			if (logging) {
+				addOpenSSLError();
+				addError("call PEM_read_bio_X509 error");
+			}
 			return false;
 		}
 
-		BIO_free(bio);
 		return true;
 	}
 

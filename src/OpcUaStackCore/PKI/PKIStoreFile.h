@@ -130,6 +130,12 @@ namespace OpcUaStackCore
 			PKIStoreNameType nameType
 		) override;
 
+		std::string getPath(
+			PKIStoreDataType type,
+			const std::string& name
+		);
+		void log(void);
+
 	  private:
 		PKIStoreFileConfiguration::SPtr config_ = NULL;
 		DirEntryMap dirEntryMap_ = {};
