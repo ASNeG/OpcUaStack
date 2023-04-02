@@ -44,6 +44,12 @@ namespace OpcUaStackCore
 	}
 
 	bool
+	UserExtension::empty(void)
+	{
+		return entryMap_.size() == 0;
+	}
+
+	bool
 	UserExtension::existEntry(const std::string& name)
 	{
 		return entryMap_.find(name) != entryMap_.end();

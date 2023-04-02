@@ -42,6 +42,7 @@ namespace OpcUaStackCore
 
 		void nid(uint32_t nid);
 		uint32_t nid(void);
+		bool empty(void);
 		bool existEntry(const std::string& name);
 		bool setEntry(const std::string& name, const std::string& value);
 		bool getEntry(const std::string& name, std::string& value);

@@ -264,7 +264,7 @@ namespace OpcUaStackCore
 
 	    // Create certificate
 		EVP_PKEY* evp_pkey = PEM_read_bio_PUBKEY(bioCtx.bio(), 0, 0, 0);
-		if (publicKey_ == nullptr) {
+		if (evp_pkey == nullptr) {
 			addOpenSSLError();
 			addError("call PEM_read_bio_PUBKEY error");
 			return false;
