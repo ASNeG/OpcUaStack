@@ -65,7 +65,8 @@ namespace OpcUaStackClient
 		if (!receiverContext_ || !receiverContext_->receiverCallback_) {
 			return;
 		}
-
+/* FIXME: FOUND ENDLESS LOOP on windows!!!
+ * FIXME: Problem: The opcua webgateway cannot open a new session after closing a old one.
 		if (!strand_->running_in_this_thread()) {
 			// the function was not called by the strand
 
@@ -82,7 +83,7 @@ namespace OpcUaStackClient
 			future.wait();
 			return;
 		}
-
+*/
 		Log(Info, "deactivate receiver")
 			.parameter("ServiceName", serviceName_)
 			.parameter("ServiceRunning", receiverContext_->receiverCallbackRunning_);
