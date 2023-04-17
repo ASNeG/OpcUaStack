@@ -23,6 +23,7 @@
 #include <string>
 
 #include "OpcUaStackCore/Certificate/OpenSSLError.h"
+#include "OpcUaStackCore/Certificate/BIOCtx.h"
 #include "OpcUaStackCore/Base/MemoryBuffer.h"
 
 namespace OpcUaStackCore
@@ -43,8 +44,20 @@ namespace OpcUaStackCore
 			const std::string& textName
 		);
 
+		bool toBIO(
+			MemoryBuffer& memoryBuffer,
+			BIOCtx& bioCtx,
+			const std::string& textName
+		);
+
 		bool fromText(
 			std::string& str,
+			MemoryBuffer& memoryBuffer,
+			std::string& textName
+		);
+
+		bool fromBIO(
+			BIOCtx bioCtx,
 			MemoryBuffer& memoryBuffer,
 			std::string& textName
 		);

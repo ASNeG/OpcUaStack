@@ -59,6 +59,23 @@ namespace OpcUaStackCore
 	}
 
 	bool
+	Pem::toBIO(
+		MemoryBuffer& memoryBuffer,
+		BIOCtx& bioCtx,
+		const std::string& textName
+	)
+	{
+		int result = PEM_write_bio(bioCtx.bio(), textName.c_str(), "", (const unsigned char*)memoryBuffer.memBuf(), memoryBuffer.memLen());
+	    if (result == 0) {
+	        addOpenSSLError();
+	        addError("call PEM_write_bio error");
+	        return false;
+	    }
+
+		return true;
+	}
+
+	bool
 	Pem::fromText(
 		std::string& str,
 		MemoryBuffer& memoryBuffer,
@@ -81,6 +98,31 @@ namespace OpcUaStackCore
 
 
 		BIO_set_close(bio, BIO_CLOSE);
+
+		memoryBuffer.resize(len);
+		memoryBuffer.set((const char*)data, len);
+
+		return true;
+	}
+
+	bool
+	Pem::fromBIO(
+		BIOCtx bioCtx,
+		MemoryBuffer& memoryBuffer,
+		std::string& textName
+	)
+	{
+		char* name = nullptr;
+		char* header = nullptr;
+		unsigned char* data = nullptr;
+		long len;
+		int result = PEM_read_bio(bioCtx.bio(), &name, &header, &data, &len);
+	    if (result == 0) {
+	        addOpenSSLError();
+	        addError("call PEM_read_bio error");
+	        return false;
+	    }
+	    textName = name;
 
 		memoryBuffer.resize(len);
 		memoryBuffer.set((const char*)data, len);
