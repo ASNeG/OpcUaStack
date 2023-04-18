@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2021 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2023 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -531,6 +531,7 @@ namespace OpcUaStackServer
 				.parameter("SecurityPolicyUri", userTokenPolicy->securityPolicyUri());
 			return BadIdentityTokenRejected;
 		}
+		auto securityPolicy = cryptoManager_->securityPolicy(userTokenPolicy->securityPolicyUri());
 		uint32_t encryptionAlg = EnryptionAlgs::uriToEncryptionAlg(token->encryptionAlgorithm());
 		if (encryptionAlg == 0) {
 			Log(Debug, "encryption alg invalid")
@@ -553,26 +554,34 @@ namespace OpcUaStackServer
 		plainTextBuf = plainText.memBuf();
 		plainTextLen = plainText.memLen();
 
-		auto privateKey = cryptoManager_->applicationCertificate()->privateKey();
-
-		statusCode = cryptoBase->asymmetricDecrypt(
-			encryptedTextBuf,
-			encryptedTextLen,
-			*privateKey.get(),
-			plainTextBuf,
-			&plainTextLen
-		);
-		if (statusCode != Success) {
-			Log(Debug, "decrypt token data error");
-			return BadIdentityTokenRejected;;
+		if (securityPolicy == SecurityPolicy::EnumNone) {
+			memcpy(plainTextBuf, encryptedTextBuf, plainTextLen);
+			token->tokenData().value((const OpcUaByte*)plainTextBuf, plainTextLen);
 		}
+		else {
+			auto privateKey = cryptoManager_->applicationCertificate()->privateKey();
 
-		// check decrypted password and server nonce
-		if (memcmp(serverNonce_, &plainTextBuf[plainTextLen-32] , 32) != 0) {
-			Log(Debug, "decrypt token data server nonce error");
+			statusCode = cryptoBase->asymmetricDecrypt(
+				encryptedTextBuf,
+				encryptedTextLen,
+				*privateKey.get(),
+				plainTextBuf,
+				&plainTextLen
+			);
+			if (statusCode != Success) {
+				Log(Debug, "decrypt token data error");
 				return BadIdentityTokenRejected;;
+			}
+
+			// check decrypted password and server nonce
+			if (memcmp(serverNonce_, &plainTextBuf[plainTextLen-32] , 32) != 0) {
+				Log(Debug, "decrypt token data server nonce error");
+					return BadIdentityTokenRejected;
+			}
+
+			token->tokenData().value((const OpcUaByte*)&plainTextBuf[4], plainTextLen-36);
 		}
-		token->tokenData().value((const OpcUaByte*)&plainTextBuf[4], plainTextLen-36);
+
 
 		// create application context
 		ApplicationAuthenticationContext context;

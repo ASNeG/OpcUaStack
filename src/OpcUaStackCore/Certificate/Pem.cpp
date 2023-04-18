@@ -107,7 +107,7 @@ namespace OpcUaStackCore
 
 	bool
 	Pem::fromBIO(
-		BIOCtx bioCtx,
+		BIOCtx& bioCtx,
 		MemoryBuffer& memoryBuffer,
 		std::string& textName
 	)
