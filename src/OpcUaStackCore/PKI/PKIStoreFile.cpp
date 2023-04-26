@@ -352,12 +352,13 @@ namespace OpcUaStackCore
 
 		// Read file
 		try {
-			std::ifstream ifs(filename);
+			std::ifstream ifs(filename, std::ios::binary);
 			ifs.seekg(0, std::ios::end);
 			size_t size = ifs.tellg();
 			data.resize(size);
 			ifs.seekg(0);
 			ifs.read(data.memBuf(), size);
+			ifs.close();
 		}
 		catch (std::exception& e) {
 			Log(Error, "Read file error")
