@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2022 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2023 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -17,10 +17,15 @@
 
 #include <iostream>
 #include <time.h>
+
+#include <openssl/pem.h>
+
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/date_time/local_time_adjustor.hpp>
 #include <boost/date_time/c_local_time_adjustor.hpp>
+
 #include "OpcUaStackCore/Base/MemoryBuffer.h"
+#include "OpcUaStackCore/Certificate/UserExtensionOpenSSL.h"
 #include "OpcUaStackCore/Certificate/Certificate.h"
 
 namespace OpcUaStackCore
@@ -37,6 +42,7 @@ namespace OpcUaStackCore
 		CertificateInfo& info,
 		Identity& subject,
 	    RSAKey& rsaKey,
+		UserExtension::Vec* userExtensionVec,
 	    bool useCACert,
 	    SignatureAlgorithm signatureAlgorithm
 	)
@@ -48,6 +54,7 @@ namespace OpcUaStackCore
 			info,
 			subject,
 			rsaKey,
+			userExtensionVec,
 			useCACert,
 			signatureAlgorithm
 		);
@@ -59,6 +66,7 @@ namespace OpcUaStackCore
 		PublicKey& subjectPublicKey,
 		Certificate&  issuerCertificate,
 		PrivateKey& issuerPrivateKey,
+		UserExtension::Vec* userExtensionVec,
 	    bool useCACert,
 	    SignatureAlgorithm signatureAlgorithm
 	)
@@ -73,6 +81,7 @@ namespace OpcUaStackCore
 			subjectPublicKey,
 			issuerCertificate,
 			issuerPrivateKey,
+			userExtensionVec,
 			useCACert,
 			signatureAlgorithm
 		);
@@ -91,6 +100,32 @@ namespace OpcUaStackCore
 		CertificateInfo& info,
 		Identity& subject,
 		RSAKey& rsaKey,
+		UserExtension::Vec* userExtensionVec,
+		bool useCACert,
+		SignatureAlgorithm signatureAlgorithm
+	)
+	{
+		PublicKey publicKey = rsaKey.publicKey();
+		PrivateKey privateKey = rsaKey.privateKey();
+
+		return createCertificate(
+			info,
+			subject,
+			publicKey,
+			privateKey,
+			userExtensionVec,
+			useCACert,
+			signatureAlgorithm
+		);
+	}
+
+	bool
+	Certificate::createCertificate(
+		CertificateInfo& info,
+		Identity& subject,
+		PublicKey& publicKey,
+		PrivateKey& privateKey,
+		UserExtension::Vec* userExtensionVec,
 		bool useCACert,
 		SignatureAlgorithm signatureAlgorithm
 	)
@@ -178,34 +213,51 @@ namespace OpcUaStackCore
 
         // set public key
         if (!error) {
-	        EVP_PKEY* publicKey = (EVP_PKEY*)rsaKey.publicKey();
-	        result = X509_set_pubkey(cert_, publicKey);
+	        EVP_PKEY* EVPPublicKey = (EVP_PKEY*)publicKey;
+	        result = X509_set_pubkey(cert_, EVPPublicKey);
 	        if (!result) {
 	        	error = true;
 	        	addOpenSSLError();
 	        }
-	        EVP_PKEY_free(publicKey);
+	        EVP_PKEY_free(EVPPublicKey);
 	    }
 
         // set extensions
         X509V3_CTX ctx;
         X509V3_set_ctx(&ctx, cert_, cert_, NULL, NULL, 0);
         if (!error) {
-            CertificateExtension certificateExtension(useCACert);
-            certificateExtension.subjectAltName(info.subjectAltName());
+            X509Extension x509Extension(useCACert);
+
+            // set subject alternative name
+            x509Extension.subjectAltName(info.subjectAltName());
+
+            // Set key usage
             if (!info.keyUsage().empty()) {
-           	   certificateExtension.keyUsage(info.keyUsage());
+           	   x509Extension.keyUsage(info.keyUsage());
             }
-            certificateExtension.logContent(std::string("create certificate ") + subject.commonName());
-            if (!certificateExtension.encodeX509(cert_, ctx)) {
+
+            x509Extension.logContent(std::string("create certificate ") + subject.commonName());
+            if (!x509Extension.encode(cert_, ctx)) {
             	error = true;
-            	addError(certificateExtension.errorList());
+            	addError(x509Extension.errorList());
             }
+        }
+
+        // set user extensions
+        if (!error && userExtensionVec != nullptr) {
+        	for (auto userExtension : *userExtensionVec) {
+        		auto ext = boost::static_pointer_cast<UserExtensionOpenSSL>(userExtension);
+        		ext->logContent(std::string("create user extension"));
+        		if (!ext->encodeX509UserExtension(cert_)) {
+        			error = true;
+        			addError(ext->errorList());
+        		}
+        	}
         }
 
         // sign the certificate
 	    if (!error) {
-	        EVP_PKEY* key = (EVP_PKEY*)(const EVP_PKEY*)rsaKey.privateKey();
+	        EVP_PKEY* key = (EVP_PKEY*)(const EVP_PKEY*)privateKey;
 	        if (signatureAlgorithm == SignatureAlgorithm_Sha1) {
 	            result = X509_sign(cert_, key, EVP_sha1());
 	        }
@@ -235,6 +287,7 @@ namespace OpcUaStackCore
 		PublicKey& subjectPublicKey,
 		Certificate&  issuerCertificate,
 		PrivateKey& issuerPrivateKey,
+		UserExtension::Vec* userExtensionVec,
 		bool useCACert,
 		SignatureAlgorithm signatureAlgorithm
 	)
@@ -352,16 +405,33 @@ namespace OpcUaStackCore
          X509V3_CTX ctx;
          X509V3_set_ctx(&ctx, cert_, cert_, NULL, NULL, 0);
          if (!error) {
-             CertificateExtension certificateExtension(useCACert);
-             certificateExtension.subjectAltName(info.subjectAltName());
+             X509Extension x509Extension(useCACert);
+
+             // Set subject alternative name
+             x509Extension.subjectAltName(info.subjectAltName());
+
+             // Set key usage
              if (!info.keyUsage().empty()) {
-            	 certificateExtension.keyUsage(info.keyUsage());
+            	 x509Extension.keyUsage(info.keyUsage());
              }
-             certificateExtension.logContent(std::string("create certificate ") + subject.commonName());
-             if (!certificateExtension.encodeX509(cert_, ctx)) {
+
+             x509Extension.logContent(std::string("create certificate ") + subject.commonName());
+             if (!x509Extension.encode(cert_, ctx)) {
                  error = true;
-              	 addError(certificateExtension.errorList());
+              	 addError(x509Extension.errorList());
              }
+         }
+
+         // set user extensions
+         if (!error && userExtensionVec != nullptr) {
+         	for (auto userExtension : *userExtensionVec) {
+         		auto ext = boost::static_pointer_cast<UserExtensionOpenSSL>(userExtension);
+         		ext->logContent(std::string("create user extension"));
+         		if (!ext->encodeX509UserExtension(cert_)) {
+         			error = true;
+         			addError(ext->errorList());
+         		}
+         	}
          }
 
          // sign the certificate
@@ -392,12 +462,12 @@ namespace OpcUaStackCore
 	Certificate::isCaCertificate(void)
 	{
 		// 1. The CA attribute must be set to true
-		CertificateExtension certificateExtension(true);
-		if (!getExtension(certificateExtension)) {
+		X509Extension x509Extension(true);
+		if (!getExtension(x509Extension)) {
 			addError("read certificate extension error");
 			return false;
 		}
-		if (certificateExtension.basicConstraints().find("CA:TRUE") == std::string::npos) {
+		if (x509Extension.basicConstraints().find("CA:TRUE") == std::string::npos) {
 			return false;
 		}
 
@@ -434,12 +504,12 @@ namespace OpcUaStackCore
 	Certificate::isIntermediateCertificate(void)
 	{
 		// 1. The CA attribute must be set to true
-		CertificateExtension certificateExtension(true);
-		if (!getExtension(certificateExtension)) {
+		X509Extension x509Extension(true);
+		if (!getExtension(x509Extension)) {
 			addError("read certificate extension error");
 			return false;
 		}
-		if (certificateExtension.basicConstraints().find("CA:TRUE") == std::string::npos) {
+		if (x509Extension.basicConstraints().find("CA:TRUE") == std::string::npos) {
 			return false;
 		}
 
@@ -530,12 +600,16 @@ namespace OpcUaStackCore
 
 		// get extensions
 		auto isCACert = isCaCertificate() || isIntermediateCertificate();
-		CertificateExtension ext(isCACert);
-		if (!ext.decodeX509(cert_)) {
+		X509Extension ext(isCACert);
+		if (!ext.decode(cert_)) {
 			addError(ext.errorList());
 			return false;
 		}
+
+		// Get key usage
 		info.keyUsage(ext.keyUsage());
+
+		// Get subject alternative name
 		if (!isCACert) {
 			info.subjectAltName(ext.subjectAltName());
 		}
@@ -573,17 +647,38 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	Certificate::getExtension(CertificateExtension& certificateExtension)
+	Certificate::getExtension(X509Extension& x509Extension)
 	{
 		if (cert_ == nullptr) {
 			addError("certificate is empty");
 			return false;
 		}
 
-		if (!certificateExtension.decodeX509(cert_)) {
-			addError(certificateExtension.errorList());
+		if (!x509Extension.decode(cert_)) {
+			addError(x509Extension.errorList());
 			return false;
 		}
+
+		return true;
+	}
+
+	bool
+	Certificate::getUserExtension(UserExtension::SPtr& userExtension)
+	{
+		if (cert_ == nullptr) {
+			addError("certificate is empty");
+			return false;
+		}
+
+		UserExtensionOpenSSL::SPtr userExtensionOpenSSL =
+			boost::static_pointer_cast<UserExtensionOpenSSL>(userExtension);
+
+		// Get object from user extension
+		if (!userExtensionOpenSSL->decodeX509UserExtension(cert_)) {
+			addError("decode user extension error");
+			return false;
+		}
+		userExtensionOpenSSL->logContent(std::string("get user extension"));
 
 		return true;
 	}
@@ -804,6 +899,77 @@ namespace OpcUaStackCore
         	addOpenSSLError();
         	return false;
         }
+
+		return true;
+	}
+
+	bool
+	Certificate::toPEMBuf(MemoryBuffer& pemBuf)
+	{
+		BIOCtx bioCtx;
+		if (!toPEMBuf(bioCtx)) {
+			addError("call toPEMBuf error");
+			return false;
+		}
+
+		// Get data length and data pointer
+	    char* data = nullptr;
+	    uint32_t length = BIO_get_mem_data(bioCtx.bio(), &data);
+
+		// Create certificate data buffer
+		pemBuf.resize(length);
+		if (pemBuf.memLen() <= 0) {
+			addError("PEM buffer empty");
+			return false;
+		}
+	    memcpy(pemBuf.memBuf(), data, pemBuf.memLen());
+
+	    return true;
+	}
+
+	bool
+	Certificate::toPEMBuf(BIOCtx& bioCtx)
+	{
+		// Check parameter
+		if (cert_ == nullptr) {
+			addError("csertificate is empty");
+			return false;
+		}
+
+	    int result = PEM_write_bio_X509(bioCtx.bio(), cert_);
+	    if (result == 0) {
+	        addOpenSSLError();
+	        addError("call PEM_write_bio_X509 error");
+	        return false;
+	    }
+
+		return true;
+	}
+
+	bool
+	Certificate::fromPEMBuf(MemoryBuffer& pemBuf)
+	{
+		BIOCtx bioCtx(pemBuf);
+		return fromPEMBuf(bioCtx);
+	}
+
+	bool
+	Certificate::fromPEMBuf(BIOCtx& bioCtx, bool logging)
+	{
+		if (cert_ != nullptr) {
+			X509_free(cert_);
+			cert_ = nullptr;
+		}
+
+	    // Create certificate
+		cert_ = PEM_read_bio_X509(bioCtx.bio(), 0, 0, 0);
+		if (cert_ == nullptr) {
+			if (logging) {
+				addOpenSSLError();
+				addError("call PEM_read_bio_X509 error");
+			}
+			return false;
+		}
 
 		return true;
 	}

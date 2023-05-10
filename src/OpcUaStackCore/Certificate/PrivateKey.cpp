@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2023 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -164,6 +164,24 @@ namespace OpcUaStackCore
 	}
 
 	bool
+	PrivateKey::toDERBuf(OpcUaByteString& byteString) const
+	{
+		// Get length of private key in DER format
+		int length = i2d_PrivateKey(privateKey_, 0);
+		if (length < 0) {
+		    const_cast<PrivateKey*>(this)->addOpenSSLError();
+		    return false;
+		}
+
+		// Get private key in DER format
+		uint32_t size = length;
+		byteString.resize(length);
+		char* ptr = byteString.memBuf();
+		return toDER(ptr, size);
+
+	}
+
+	bool
 	PrivateKey::fromDER (char* buf, uint32_t bufLen, KeyType keyType)
 	{
 		if (privateKey_ != nullptr) {
@@ -182,31 +200,101 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	PrivateKey::fromPEM(char* buf, uint32_t bufLen, const char *password, PasswordCallback* passwordCallback, void *data)
+	PrivateKey::fromPEM(
+		BIOCtx& bioCtx,
+		const char *password,
+		PasswordCallback* passwordCallback,
+		void *data
+	)
 	{
 		if (privateKey_ != nullptr) {
 			EVP_PKEY_free(privateKey_);
 			privateKey_ = nullptr;
 		}
 
-	    BIO* bio = BIO_new_mem_buf((void*)buf, bufLen);
-
 		if (passwordCallback) {
-		    privateKey_ = PEM_read_bio_PrivateKey(bio, 0, passwordCallback, data);
+		    privateKey_ = PEM_read_bio_PrivateKey(bioCtx.bio(), 0, passwordCallback, data);
 		}
 		else {
-		    privateKey_ = PEM_read_bio_PrivateKey(bio, 0, 0, (void*)password);
+		    privateKey_ = PEM_read_bio_PrivateKey(bioCtx.bio(), 0, 0, (void*)password);
 		}
 
 		if (privateKey_ == nullptr) {
 			addOpenSSLError();
-			BIO_free(bio);
+			addError("call PEM_read_bio_PrivateKey error");
 			return false;
 		}
 
-		BIO_free(bio);
 		return true;
 	}
+
+	bool
+	PrivateKey::fromPEM(
+		MemoryBuffer& pemBuf,
+		const char *password,
+		PasswordCallback* passwordCallback,
+		void *data
+	)
+	{
+		BIOCtx bioCtx(pemBuf);
+		return fromPEM(bioCtx, password, passwordCallback, data);
+	}
+
+	bool
+	PrivateKey::toPEM(
+		BIOCtx& bioCtx,
+		const char* password
+	)
+	{
+	   	if (privateKey_ == nullptr) {
+	   		const_cast<PrivateKey*>(this)->addError("key is empty");
+	    	return false;
+	    }
+
+	    int result;
+	    if (password) {
+	        result = PEM_write_bio_PrivateKey(bioCtx.bio(), privateKey_, EVP_aes_256_cbc(), 0, 0, 0, (void*)password);
+	    }
+	    else {
+	        result = PEM_write_bio_PrivateKey(bioCtx.bio(), privateKey_, 0, 0, 0, 0, 0);
+	    }
+
+	    if (result == 0) {
+	        const_cast<PrivateKey*>(this)->addOpenSSLError();
+	        const_cast<PrivateKey*>(this)->addError("call PEM_write_bio_PrivateKey error");
+	        return false;
+	    }
+
+		return true;
+	}
+
+	bool
+	PrivateKey::toPEM(
+		MemoryBuffer& pemBuf,
+		const char* password
+	)
+	{
+		bool rc = true;
+
+		// Write private key to bio context
+		BIOCtx bioCtx;
+		rc = toPEM(bioCtx, password);
+		if (!rc) return false;
+
+	    char* data = nullptr;
+	    uint32_t length = BIO_get_mem_data(bioCtx.bio(), &data);
+
+	    // Create data buffer
+	    pemBuf.resize(length);
+	    if (pemBuf.memLen() <= 0) {
+	    	const_cast<PrivateKey*>(this)->addError("PEM buffer empty");
+	    	return false;
+	    }
+	    memcpy(pemBuf.memBuf(), data, pemBuf.memLen());
+
+	    return true;
+	}
+
 
 	bool
 	PrivateKey::toPEMFile(const std::string& fileName, const char* password)

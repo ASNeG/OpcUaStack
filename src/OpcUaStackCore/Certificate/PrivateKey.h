@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2023 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -22,8 +22,11 @@
 
 #include <openssl/x509.h>
 
+#include "OpcUaStackCore/Base/MemoryBuffer.h"
+#include "OpcUaStackCore/Certificate/BIOCtx.h"
 #include "OpcUaStackCore/Certificate/OpenSSLError.h"
 #include "OpcUaStackCore/Certificate/CertificateEnums.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaByteString.h"
 
 namespace OpcUaStackCore
 {
@@ -48,8 +51,29 @@ namespace OpcUaStackCore
 		PrivateKey& operator=(const PrivateKey& copy);
 		operator EVP_PKEY*(void);
 		bool toDER(char* buf, uint32_t& bufLen) const;
+		bool toDERBuf(OpcUaByteString& byteString) const;
 		bool fromDER(char* buf, uint32_t bufLen, KeyType keyType);
-		bool fromPEM(char* buf, uint32_t bufLen, const char *password, PasswordCallback* passwordCallback = nullptr, void *data = nullptr);
+
+		bool fromPEM(
+			BIOCtx& bioCtx,
+			const char *password,
+			PasswordCallback* passwordCallback = nullptr,
+			void *data = nullptr
+		);
+		bool fromPEM(
+			MemoryBuffer& pemBuf,
+			const char *password,
+			PasswordCallback* passwordCallback = nullptr,
+			void *data = nullptr
+		);
+		bool toPEM(
+			BIOCtx& bioCtx,
+			const char* password
+		);
+	    bool toPEM(
+	    	MemoryBuffer& pemBuf,
+			const char* password
+		);
 
 		bool toPEMFile(const std::string& fileName, const char* password);
 		bool fromPEMFile(const std::string& fileName, const char* password, PasswordCallback* passwordCallback = nullptr, void *data = nullptr);

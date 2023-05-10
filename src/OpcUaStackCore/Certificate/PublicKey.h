@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2023 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,6 +19,7 @@
 #define __OpcUaStackCore_PublicKey_h__
 
 #include <openssl/x509.h>
+#include "OpcUaStackCore/Certificate/BIOCtx.h"
 #include "OpcUaStackCore/Certificate/OpenSSLError.h"
 #include "OpcUaStackCore/Certificate/CertificateEnums.h"
 
@@ -42,6 +43,11 @@ namespace OpcUaStackCore
 
 		bool fromDER(const char* buf, uint32_t bufLen);
 		bool toDER(char* buf, uint32_t& bufLen);
+
+		bool toPEMBuf(MemoryBuffer& memoryBuffer);
+		bool toPEMBuf(BIOCtx& bioCtx);
+		bool fromPEMBuf(MemoryBuffer& memoryBuffer);
+		bool fromPEMBuf(BIOCtx& bioCtx);
 
 	  private:
 		X509_PUBKEY *publicKey_;

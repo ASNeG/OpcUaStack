@@ -93,6 +93,7 @@ file(GLOB INC_OpcUaStackCore_Filter OpcUaStackCore/Filter/*.h)
 file(GLOB INC_OpcUaStackCore_Network OpcUaStackCore/Network/*.h)
 file(GLOB INC_OpcUaStackCore_EventType OpcUaStackCore/EventType/*.h)
 file(GLOB INC_OpcUaStackCore_StandardEventType OpcUaStackCore/StandardEventType/*.h)
+file(GLOB INC_OpcUaStackCore_PKI OpcUaStackCore/PKI/*.h)
 
 
 
@@ -225,6 +226,12 @@ install(
 install(
     FILES ${INC_OpcUaStackCore_StandardEventType} 
     DESTINATION ${INSTALL_PREFIX}/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/StandardEventType
+    COMPONENT headers
+)
+
+install(
+    FILES ${INC_OpcUaStackCore_PKI} 
+    DESTINATION ${INSTALL_PREFIX}/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/PKI
     COMPONENT headers
 )
 

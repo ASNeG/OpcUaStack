@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2023 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -169,7 +169,6 @@ namespace OpcUaStackCore
     {
     	if (pKey_ == nullptr) {
     		const_cast<RSAKey*>(this)->addError("key is empty");
-    		return false;
     		return false;
     	}
 

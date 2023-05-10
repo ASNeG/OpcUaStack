@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2023 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -28,13 +28,15 @@
 
 #include "OpcUaStackCore/Base/MemoryBuffer.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaByteString.h"
+#include "OpcUaStackCore/Certificate/BIOCtx.h"
 #include "OpcUaStackCore/Certificate/CertificateInfo.h"
 #include "OpcUaStackCore/Certificate/OpenSSLError.h"
 #include "OpcUaStackCore/Certificate/CertificateEnums.h"
-#include "OpcUaStackCore/Certificate/CertificateExtension.h"
 #include "OpcUaStackCore/Certificate/Identity.h"
 #include "OpcUaStackCore/Certificate/RSAKey.h"
 #include "OpcUaStackCore/Certificate/CertificateInfo.h"
+#include "OpcUaStackCore/Certificate/UserExtension.h"
+#include "X509Extension.h"
 
 namespace OpcUaStackCore
 {
@@ -52,6 +54,7 @@ namespace OpcUaStackCore
 			CertificateInfo& info,
 			Identity& subject,
 		    RSAKey& rsaKey,
+			UserExtension::Vec* userExtensionVec = nullptr,
 		    bool useCACert = false,
 		    SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm_Sha1
 		);
@@ -61,15 +64,26 @@ namespace OpcUaStackCore
 			PublicKey& subjectPublicKey,
 			Certificate&  issuerCertificate,
 			PrivateKey& issuerPrivateKey,
+			UserExtension::Vec* userExtensionVec = nullptr,
 		    bool useCACert = false,
 		    SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm_Sha1
 		);
 		~Certificate(void);
 
-		bool createCertificate(
+		bool createCertificate( // create self signed certificate
 			CertificateInfo& info,
 			Identity& subject,
 			RSAKey& rsaKey,
+			UserExtension::Vec* userExtensionVec = nullptr,
+			bool useCACert = false,
+			SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm_Sha1
+		);
+		bool createCertificate( // create self signed certificate
+			CertificateInfo& info,
+			Identity& subject,
+			PublicKey& publicKey,
+			PrivateKey& privateKey,
+			UserExtension::Vec* userExtensionVec = nullptr,
 			bool useCACert = false,
 			SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm_Sha1
 		);
@@ -79,6 +93,7 @@ namespace OpcUaStackCore
 			PublicKey& subjectPublicKey,
 			Certificate&  issuerCertificate,
 			PrivateKey& issuerPrivateKey,
+			UserExtension::Vec* userExtensionVec = nullptr,
 			bool useCACert = false,
 			SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm_Sha1
 		);
@@ -92,7 +107,8 @@ namespace OpcUaStackCore
 		bool getSubject(Identity& subject);
 		bool getIssuer(Identity& issuer);
 		bool getInfo(CertificateInfo& info);
-		bool getExtension(CertificateExtension& certificateExtension);
+		bool getExtension(X509Extension& x509Extension);
+		bool getUserExtension(UserExtension::SPtr& userExtension);
 
 		OpcUaByteString thumbPrint(void);
 		bool thumbPrint(char* buf, uint32_t* bufLen);
@@ -104,6 +120,11 @@ namespace OpcUaStackCore
 		bool toDERBuf(MemoryBuffer& derBuf);
 		bool fromDERBuf(char* buf, uint32_t bufLen);
 		bool fromDERBuf(MemoryBuffer& derBuf);
+
+		bool toPEMBuf(MemoryBuffer& pemBuf);
+		bool toPEMBuf(BIOCtx& bioCtx);
+		bool fromPEMBuf(MemoryBuffer& pemBuf);
+		bool fromPEMBuf(BIOCtx& bioCtx, bool logging = true);
 
 		bool isIssuerFrom(Certificate&  certificate);
 

@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2023 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -9,28 +9,29 @@
    erfolgt die Bereitstellung der im Rahmen der Lizenz verbreiteten Software OHNE
    GEWÄHR ODER VORBEHALTE – ganz gleich, ob ausdrücklich oder stillschweigend.
 
-   CertificateExtensionrmationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
+   X509Extensionrmationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_CertificateExtension_h__
-#define __OpcUaStackCore_CertificateExtension_h__
+#ifndef __OpcUaStackCore_X509Extension_h__
+#define __OpcUaStackCore_X509Extension_h__
 
 #include <openssl/x509.h>
 #include <openssl/x509v3.h>
 #include "OpcUaStackCore/Certificate/OpenSSLError.h"
+#include "OpcUaStackCore/Certificate/UserExtension.h"
 
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT CertificateExtension
+	class DLLEXPORT X509Extension
 	: public OpenSSLError
 	{
 	  public:
-		CertificateExtension(bool useCACert = false);
-		~CertificateExtension(void);
+		X509Extension(bool useCACert = false);
+		~X509Extension(void);
 
 		void clear(void);
 		void basicConstraints(const std::string& basicConstraints);
@@ -48,14 +49,41 @@ namespace OpcUaStackCore
 		void subjectAltName(const std::string& subjectAltName);
 		std::string& subjectAltName(void);
 
-		bool encodeX509(X509 *cert, X509V3_CTX& ctx);
-		bool decodeX509(X509 *cert);
+		// Encode/Decode certificate
+		bool encode(X509 *cert, X509V3_CTX& ctx);
+		bool decode(X509 *cert);
+
+		// Encode/Decode CSR request
+		bool encode(X509_REQ *req, STACK_OF(X509_EXTENSION)* exts);
+		bool decode(X509_REQ *req);
 
 		void logContent(const std::string& message);
 
 	  private:
-		bool encodeX509Extension(X509 *cert, X509V3_CTX& ctx, const std::string& key, const std::string& value);
-		bool decodeX509Extension(X509 *cert, int32_t key, std::string& value, bool mandatory = true);
+		bool encode(
+			X509 *cert,
+			X509V3_CTX& ctx,
+			const std::string& key,
+			const std::string& value
+		);
+		bool decode(
+			X509 *cert,
+			int32_t key,
+			std::string& value,
+			bool mandatory = true
+		);
+
+		bool encode(
+			STACK_OF(X509_EXTENSION)* exts,
+			const std::string& key,
+			const std::string& value
+		);
+		bool decode(
+			STACK_OF(X509_EXTENSION)* exts,
+			int32_t key,
+			std::string& value,
+			bool mandatory = true
+		);
 
 		bool useCACert_;
 		std::string basicConstraints_;
@@ -65,6 +93,7 @@ namespace OpcUaStackCore
 		std::string keyUsage_;
 		std::string extendedKeyUsage_;
 		std::string subjectAltName_;
+
 	};
 
 }

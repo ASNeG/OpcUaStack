@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2023 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -279,6 +279,8 @@ namespace OpcUaStackServer
 		// call methods
 		callResponse->results()->resize(callRequest->methodsToCall()->size());
 		for (uint32_t idx = 0; idx < callRequest->methodsToCall()->size(); idx++) {
+
+			// Create response element
 			CallMethodResult::SPtr callMethodResult = boost::make_shared<CallMethodResult>();
 			callResponse->results()->set(idx, callMethodResult);
 
@@ -316,6 +318,17 @@ namespace OpcUaStackServer
 				continue;
 			}
 
+			// autorization
+			statusCode = forwardAuthorizationMethod(
+				serviceTransaction->userContext(),
+				*callMethod->objectId(),
+				*callMethod->methodId()
+			);
+			if (statusCode != Success) {
+				callMethodResult->statusCode(statusCode);
+				continue;
+			}
+
 			// forward read async request
 			bool rc = forwardCallAsync(
 				forwardJob,
@@ -349,17 +362,6 @@ namespace OpcUaStackServer
 					.parameter("Idx", idx)
 					.parameter("ObjectNode", *callMethod->objectId())
 					.parameter("MethodNode", *callMethod->methodId());
-				continue;
-			}
-
-			// autorization
-			statusCode = forwardAuthorizationMethod(
-				serviceTransaction->userContext(),
-				*callMethod->objectId(),
-				*callMethod->methodId()
-			);
-			if (statusCode != Success) {
-				callMethodResult->statusCode(statusCode);
 				continue;
 			}
 
