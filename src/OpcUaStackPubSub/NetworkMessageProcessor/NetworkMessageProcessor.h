@@ -15,60 +15,55 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackPubSub_NetworkMessageWriterGroup_h__
-#define __OpcUaStackPubSub_NetworkMessageWriterGroup_h__
+#ifndef __OpcUaStackPubSub_NetworkMessageProcessor_h__
+#define __OpcUaStackPubSub_NetworkMessageProcessor_h__
 
 #include <boost/asio.hpp>
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackServer/ServiceSet/ServerServiceBase.h"
-#include "OpcUaStackPubSub/DataSetWriter/DataSetWriterBase.h"
+#include "OpcUaStackPubSub/DataSetReader/DataSetReaderBase.h"
 #include "OpcUaStackPubSub/Events/NetworkSendEvent.h"
 #include "OpcUaStackPubSub/Events/NetworkRecvEvent.h"
 
 namespace OpcUaStackPubSub
 {
 
-	class DLLEXPORT NetworkMessageWriterGroup
+	class DLLEXPORT NetworkMessageProcessor
 	: public OpcUaStackCore::Object
 	, public OpcUaStackServer::ServerServiceBase
 	{
 	  public:
-		using SPtr = boost::shared_ptr<NetworkMessageWriterGroup>;
+		using SPtr = boost::shared_ptr<NetworkMessageProcessor>;
 
-		NetworkMessageWriterGroup(
-			const std::string& writerGroupName,
+		NetworkMessageProcessor(
+			const std::string& messageProcessorName,
 			const std::string& messageTransportName,
 			OpcUaStackCore::IOThread::SPtr& ioThread,
 			OpcUaStackCore::MessageBus::SPtr& messageBus
 		);
-		virtual ~NetworkMessageWriterGroup(void);
+		virtual ~NetworkMessageProcessor(void);
 
-		void writerGroupId(uint16_t writerGroupId);
-		bool registerDataSetWriterSync(uint16_t dataSetWriterId, DataSetWriterBase::SPtr& dataSetWriter);
-		bool deregisterDataSetWriterSync(uint16_t dataSetWriterId);
+		void readerGroupId(uint16_t readerGroupId);
+		bool registerDataSetReaderSync(uint16_t dataSetReaderId, DataSetReaderBase::SPtr& dataSetReader);
+		bool deregisterDataSetReaderSync(uint16_t dataSetReaderId);
 
 		bool startupSync(void);
 		bool shutdownSync(void);
 
 	  private:
-		uint16_t writerGroupId_ = 0;
+		uint16_t readerGroupId_ = 0;
 		std::string messageTransportName_ = "";
 		OpcUaStackCore::MessageBusMember::WPtr messageTransportBusMember_;
-		bool leavePublishLoop_ = false;
-
-		DataSetWriterBase::Map dataSetWriterMap_;
+		
+		DataSetReaderBase::Map dataSetReaderMap_;
 
 		bool startup();
 		bool shutdown();
-		bool registerDataSetWriter(uint16_t dataSetWriterId, DataSetWriterBase::SPtr& dataSetWriter);
-		bool deregisterDataSetWriter(uint16_t dataSetWriterId);
-		void publishLoop(void);
 		
+		bool registerDataSetReader(uint16_t dataSetReaderId, DataSetReaderBase::SPtr& dataSetReader);
+		bool deregisterDataSetReader(uint16_t dataSetReaderId);
 	};
-
-
-    
 
 }
 

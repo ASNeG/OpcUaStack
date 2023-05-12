@@ -17,6 +17,7 @@
 
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackPubSub/NetworkMessageWriterGroup/NetworkMessageWriterGroup.h"
+#include "OpcUaStackPubSub/NetworkMessage/NetworkMessage.h"
 
 using namespace OpcUaStackCore;
 
@@ -31,6 +32,9 @@ namespace OpcUaStackPubSub
 	)
 	: ServerServiceBase()
 	{
+		Log(Info, "Constructor")
+			.parameter("ServiceName", serviceName_);
+
 		messageTransportName_ = messageTransportName;
 
 		// set parameter in server service base
@@ -78,7 +82,6 @@ namespace OpcUaStackPubSub
 				.parameter("DataSetWriterId", dataSetWriterId);
 			return false;
 		}
-
 		// add data set writer to map
 		dataSetWriterMap_.insert(std::make_pair(dataSetWriterId, dataSetWriter));
 		return true;
@@ -139,12 +142,11 @@ namespace OpcUaStackPubSub
 
 		return deregisterDataSetWriterSync(dataSetWriterId);
 	}
-
+	
 	bool
-	NetworkMessageWriterGroup::startupSync(void)
+	NetworkMessageWriterGroup::startup(void)
 	{
-		// check if the call is made within the strand
-		// FIXME: todo
+		Log(Info, "Startup").parameter("ServiceName", serviceName_);           
 
 		// get reference to message transport bus member
 		if (!messageBus_->existMember(messageTransportName_)) {
@@ -152,26 +154,63 @@ namespace OpcUaStackPubSub
 				.parameter("MessageTransportName", messageTransportName_);
 			return false;
 		}
+
 		messageTransportBusMember_ = messageBus_->getMember(messageTransportName_);
 
 		// start publish loop
-		// FIXME: todo
-
-		// FIXME: todo
+		while(!leavePublishLoop_) {
+			publishLoop();
+			boost::this_thread::sleep(boost::posix_time::seconds(1));
+		}
 		return true;
 	}
 
 	bool
-	NetworkMessageWriterGroup::shutdownSync(void)
+	NetworkMessageWriterGroup::shutdown(void)
+	{
+		// stop publish loop
+		leavePublishLoop_ = true;
+		return true;
+	}
+
+	bool
+	NetworkMessageWriterGroup::startupSync(void)
 	{
 		// check if the call is made within the strand
-		// FIXME: todo
+		if (!strand_->running_in_this_thread()) {
+			std::promise<bool> promise;
+			std::future<bool> future = promise.get_future();
+			strand_->dispatch(
+				[this, &promise](void) mutable {
+					bool rc = startup();
+					promise.set_value(rc);
+			    }
+			);
+			future.wait();
+			return future.get();
+		}
 
-		// stop publish loop
-		// FIXME: todo
+		return startup();
+	}
 
-		// FIXME: todo
-		return true;
+	bool
+	NetworkMessageWriterGroup::shutdownSync(void)
+	{	
+		// check if the call is made within the strand
+		if (!strand_->running_in_this_thread()) {
+			std::promise<bool> promise;
+			std::future<bool> future = promise.get_future();
+			strand_->dispatch(
+				[this, &promise](void) mutable {
+					bool rc = shutdown();
+					promise.set_value(rc);
+			    }
+			);
+			future.wait();
+			return future.get();
+		}
+
+		return shutdown();
 	}
 
 	void
@@ -198,8 +237,26 @@ namespace OpcUaStackPubSub
 
 		// create network message
 		// FIXME: todo
+		auto networkMessage = boost::make_shared<NetworkMessage>();
+		auto networkMessageHeader = boost::make_shared<NetworkMessageHeader>();
+		
+		OpcUaByte uadpVersionAndFlags;
+		uadpVersionAndFlags = 0b0001;   //Flags value  --> only publisherId(bit 4) is enabled
+		uadpVersionAndFlags = uadpVersionAndFlags<<4 & 1; //version: default 1;
+		networkMessageHeader->uadpVersionAndFlags(uadpVersionAndFlags);
+
+		OpcUaInt32 publisherId  = 25; //temporary data
+        networkMessageHeader->publisherId(publisherId);
+
+		networkMessage->networkMessageHeader(networkMessageHeader);
+		uint32_t dataSetMessage = 2525;   //temporary data
+		networkMessage->addPayLoadItem(dataSetMessage);
 
 		// send network message to message transport module
+		auto event = boost::make_shared<NetworkSendEvent>();
+		std::ostream os(&event->streamBuf());
+		networkMessage->opcUaBinaryEncode(os);
+		messageBus_->messageSend(messageBusMember_, messageTransportBusMember_, event);
 	}
 
 }
