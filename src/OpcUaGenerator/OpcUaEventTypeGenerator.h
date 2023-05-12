@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2023 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,6 +18,8 @@
 #ifndef __OpcUaEventTypeGenerator_OpcUaEventTypeGenerator_h__
 #define __OpcUaEventTypeGenerator_OpcUaEventTypeGenerator_h__
 
+#include <vector>
+
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
 
@@ -33,10 +35,11 @@ namespace OpcUaEventTypeGenerator
 		uint32_t start(int argc, char** argv);
 
 	  private:
-		std::string fileName_;
+		std::vector<std::string> fileNames_;
 		std::string eventTypeName_;
 		std::string projectNamespace_;
 		std::string parentProjectNamespace_;
+		std::vector<std::string> namespaces_;
 		bool buildSubTypes_;
 		std::vector<std::string> ignoreEventTypeNameVec_;
 
