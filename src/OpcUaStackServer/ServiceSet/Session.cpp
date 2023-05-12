@@ -309,7 +309,7 @@ namespace OpcUaStackServer
 			.parameter("SecurityPolicyUri", userTokenPolicy->securityPolicyUri())
 			.parameter("EncyptionAlgorithmus", token->encryptionAlgorithm());
 
-		if (token->encryptionAlgorithm() == OpcUaString("")) {
+		if (userTokenPolicy->securityPolicyUri() == OpcUaString("http://opcfoundation.org/UA/SecurityPolicy#None")) {
 			// we use a plain password
 
 			// create application context
