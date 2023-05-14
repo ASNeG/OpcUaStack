@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2020 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2023 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -557,6 +557,10 @@ namespace OpcUaStackServer
 			typeNodeClass->getArrayDimensions(arrayDimensions);
 			variableNodeClass->setArrayDimensions(arrayDimensions);
 		}
+		else {
+			OpcUaUInt32Array arrayDimensions;
+			variableNodeClass->setArrayDimensions(arrayDimensions);
+		}
 
 		OpcUaNodeId dataType;
 		typeNodeClass->getDataType(dataType);
@@ -574,6 +578,9 @@ namespace OpcUaStackServer
 
 		OpcUaBoolean historizing = false;;
 		variableNodeClass->setHistorizing(historizing);
+
+		OpcUaDouble minimumSamplingInterval = 0;
+		variableNodeClass->setMinimumSamplingInterval(minimumSamplingInterval);
 
 		//
 		// added childs
@@ -665,6 +672,8 @@ namespace OpcUaStackServer
        	methodNodeClass->setWriteMask(0);
        	methodNodeClass->setUserWriteMask(0);
        	methodNodeClass->setIsAbstract(isAbstract);
+       	methodNodeClass->setExecutable(true);
+       	methodNodeClass->setUserExecutable(true);
 
     	//
     	// create subtype reference

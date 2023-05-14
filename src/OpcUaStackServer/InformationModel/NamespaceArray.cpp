@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2023 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -75,6 +75,9 @@ namespace OpcUaStackServer
 	bool 
 	NamespaceArray::replaceNamespaceNames(std::vector<std::string>& namespaceNameVec)
 	{
+		bool rc  = true;
+
+		// Create namesapce array variable
 		OpcUaDataValue dataValue;
 		std::vector<std::string>::iterator it;
 		for (it = namespaceNameVec.begin(); it != namespaceNameVec.end(); it++) {
@@ -86,7 +89,9 @@ namespace OpcUaStackServer
 		dataValue.sourceTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
 		dataValue.serverTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
 		
-		return informationModel_->setValue(OpcUaId_Server_NamespaceArray, AttributeId_Value, dataValue);
+		// Set node data
+		rc = rc &&  informationModel_->setValue(OpcUaId_Server_NamespaceArray, AttributeId_Value, dataValue);
+		return rc;
 	}
 
 	bool 
