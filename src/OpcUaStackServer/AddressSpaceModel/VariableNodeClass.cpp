@@ -110,7 +110,13 @@ namespace OpcUaStackServer
 		setHistorizing(historizing);
 
 		OpcUaUInt32Array arrayDimensions;
-		if (variableTypeNodeClass.getArrayDimensions(arrayDimensions)) setArrayDimensions(arrayDimensions);
+		if (variableTypeNodeClass.getArrayDimensions(arrayDimensions)) {
+			setArrayDimensions(arrayDimensions);
+		}
+		else {
+			OpcUaUInt32Array arrayDimensions;
+			setArrayDimensions(arrayDimensions);
+		}
 
 		OpcUaDouble minimumSamplingInterval = 0;
 		setMinimumSamplingInterval(minimumSamplingInterval);

@@ -588,6 +588,22 @@ namespace OpcUaStackServer
 				return false;
 			}
 		}
+		else if (valueRank) {
+			if (*valueRank < 1) {
+				variableNodeClassSPtr->arrayDimensions().data().setNull();
+				variableNodeClassSPtr->arrayDimensions().exist(true);
+			}
+			else {
+				OpcUaUInt32Array arrayDimensions;
+				arrayDimensions.resize(*valueRank);
+				for (uint32_t idx = 0; idx < *valueRank; idx++) arrayDimensions.push_back(0);
+				variableNodeClassSPtr->setArrayDimensions(arrayDimensions);
+			}
+		}
+		else {
+			variableNodeClassSPtr->arrayDimensions().data().setNull();
+			variableNodeClassSPtr->arrayDimensions().exist(true);
+		}
 
 		//
 		// attribute MinimumSamplingInterval (optional)
