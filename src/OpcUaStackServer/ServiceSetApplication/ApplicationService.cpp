@@ -718,6 +718,7 @@ namespace OpcUaStackServer
 
 		for (nodeIt = nodeIdVec.begin(); nodeIt != nodeIdVec.end(); nodeIt++) {
 			boost::mutex::scoped_lock g(eventHandlerMap.mutex());
+			eventHandlerBaseVec.clear();
 			eventHandlerMap.getEvent(*nodeIt, eventHandlerBaseVec);
 			for (it = eventHandlerBaseVec.begin(); it != eventHandlerBaseVec.end(); it++) {
 				EventHandlerBase::SPtr eventHandlerBase = *it;
@@ -725,7 +726,8 @@ namespace OpcUaStackServer
 				Log(Debug, "fire event")
 				    .parameter("NumberEvents", eventHandlerBaseVec.size())
 					.parameter("Node", fireEventRequest->nodeId())
-					.parameter("EventId", eventHandlerBase->eventId());
+					.parameter("EventId", eventHandlerBase->eventId())
+					.parameter("NodeVecElement", *nodeIt);
 
 				eventHandlerBase->fireEvent(fireEventRequest->nodeId(), fireEventRequest->eventBase());
 			}
