@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2023 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,6 +19,7 @@
 #define __OpcUaStackCore_EventTypeGenerator_h__
 
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
+#include "OpcUaStackServer/Generator/NodeInfoDataType.h"
 
 namespace OpcUaStackServer
 {
@@ -73,6 +74,7 @@ namespace OpcUaStackServer
 		void eventType(OpcUaStackCore::OpcUaNodeId& eventType);
 		void projectNamespace(const std::string& projectNamespace);
 		void parentProjectNamespace(const std::string& parentProjectNamespace);
+		bool setNamespaceEntry(const std::string& namespaceEntry);
 		std::string& sourceContent(void);
 		std::string& headerContent(void);
 
@@ -125,6 +127,8 @@ namespace OpcUaStackServer
 		std::string parentProjectNamespace_;
 		std::string projectDirectory_;
 		std::string parentProjectDirectory_;
+
+		NodeInfoDataType nodeInfo_;						//!< information about the data type node
 
 		VariableElement::Vec variableElementVec_;
 	};

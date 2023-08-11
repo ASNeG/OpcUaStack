@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2023 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -301,6 +301,7 @@ namespace OpcUaStackServer
 	EventTypeGenerator::eventType(OpcUaNodeId& eventType)
 	{
 		eventTypeNodeId_ = eventType;
+		nodeInfo_.init(eventType, informationModel_);
 	}
 
 	void
@@ -425,7 +426,7 @@ namespace OpcUaStackServer
 			if (prefix.size() > 0) {
 				fullName.append("_");
 			}
-			fullName.append(browseName.toString());
+			fullName.append(browseName.name().toStdString());
 
 			// create function name
 			std::string functionName = fullName;
@@ -541,10 +542,12 @@ namespace OpcUaStackServer
 		//
 		// added namespace
 		//
+#if 0
 		if (projectNamespace_ != parentProjectNamespace_) {
 			ss << "using namespace " << parentProjectNamespace_ << ";";
 			ss << std::endl;
 		}
+#endif
 		ss << std::endl;
 		ss << "namespace " << projectNamespace_ << std::endl;
 		ss << "{" << std::endl;
@@ -584,7 +587,7 @@ namespace OpcUaStackServer
 		//
 		ss << prefix << std::endl;
 		ss << prefix << "class DLLEXPORT " << eventTypeName_ << std::endl;
-		ss << prefix << ": public " << parentEventTypeName_ << std::endl;
+		ss << prefix << ": public " << parentProjectNamespace_ << "::" << parentEventTypeName_ << std::endl;
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "  public:" << std::endl;
 		ss << prefix << "    typedef boost::shared_ptr<" << eventTypeName_  << "> SPtr;" << std::endl;
@@ -622,12 +625,12 @@ namespace OpcUaStackServer
 			std::string functionName = variableElement->functionName();
 
 			ss << prefix << "bool " << functionName << "(OpcUaStackCore::OpcUaVariant::SPtr& variable);" << std::endl;
-			ss << prefix << "OpcUaVariant::SPtr " << functionName << "(void);" << std::endl;
+			ss << prefix << "OpcUaStackCore::OpcUaVariant::SPtr " << functionName << "(void);" << std::endl;
 			ss << prefix << std::endl;
 		}
 
 		ss << prefix << "bool set" << eventTypeName_ << "(OpcUaStackCore::OpcUaVariant::SPtr& variable);" << std::endl;
-		ss << prefix << "OpcUaVariant::SPtr get" << eventTypeName_ << "(void);" << std::endl;
+		ss << prefix << "OpcUaStackCore::OpcUaVariant::SPtr get" << eventTypeName_ << "(void);" << std::endl;
 		ss << prefix << std::endl;
 
 		ss << prefix << std::endl;
@@ -637,7 +640,7 @@ namespace OpcUaStackServer
 		ss << prefix << "virtual OpcUaStackCore::OpcUaVariant::SPtr get(" << std::endl;
 		ss << prefix << "    OpcUaStackCore::OpcUaNodeId& eventType," << std::endl;
 		ss << prefix << "    std::list<OpcUaStackCore::OpcUaQualifiedName::SPtr>& browseNameList," << std::endl;
-		ss << prefix << "    EventResult::Code& resultCode" << std::endl;
+		ss << prefix << "    OpcUaStackCore::EventResult::Code& resultCode" << std::endl;
 		ss << prefix << ");" << std::endl;
 		ss << prefix << "//- EventBase interface" << std::endl;
 		ss << prefix << std::endl;
@@ -656,10 +659,16 @@ namespace OpcUaStackServer
 		//
 		ss << prefix << std::endl;
 		ss << prefix << "  private:" << std::endl;
-		ss << prefix << "    EventVariables eventVariables_;" << std::endl;
+		ss << prefix << "    OpcUaStackCore::EventVariables eventVariables_;" << std::endl;
 
 		headerContent_ += ss.str();
 		return true;
+	}
+
+	bool
+	EventTypeGenerator::setNamespaceEntry(const std::string& namespaceEntry)
+	{
+		return nodeInfo_.setNamespaceEntry(namespaceEntry);
 	}
 
 	// ------------------------------------------------------------------------
@@ -765,7 +774,6 @@ namespace OpcUaStackServer
 			VariableElement::SPtr variableElement = *it;
 			std::string fullName = variableElement->fullName();
 			std::string dataTypeName = variableElement->dataTypeName();
-
 			ss << prefix << "    eventVariables_.registerEventVariable(\"" << fullName << "\", OpcUaBuildInType_OpcUa" << dataTypeName << ");" << std::endl;
 		}
 
@@ -775,7 +783,7 @@ namespace OpcUaStackServer
 		ss << prefix << "    eventVariables_.eventType(" << "OpcUaNodeId((OpcUaUInt32)" << eventTypeNumber_ << "));" << std::endl;
 		ss << prefix << "    eventVariables_.namespaceIndex(0);" << std::endl;
 		ss << prefix << "    eventVariables_.browseName(OpcUaQualifiedName(\"" << eventTypeName_ <<  "\"));" << std::endl;
-		ss << prefix << "    eventVariables_.namespaceUri(\"" << namespaceUri_ <<  "\");" << std::endl;
+		ss << prefix << "    eventVariables_.namespaceUri(\"" << nodeInfo_.dataTypeNamespaceName() <<  "\");" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();

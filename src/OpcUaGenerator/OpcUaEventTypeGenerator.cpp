@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2023 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -45,7 +45,6 @@ namespace OpcUaEventTypeGenerator
 	OpcUaEventTypeGenerator::OpcUaEventTypeGenerator(void)
 	: eventTypeNodeId_(0)
 	, informationModel_()
-	, fileName_("")
 	, eventTypeName_("")
 	, projectNamespace_("")
 	, parentProjectNamespace_("")
@@ -74,13 +73,18 @@ namespace OpcUaEventTypeGenerator
 			)
 		    (
 		    	"nodeset",
-				boost::program_options::value<std::string>(),
+				boost::program_options::value<std::vector<std::string> >(),
 				"set nodeset file name (mandatory)"
 			)
 			(
 				"eventtype",
 				boost::program_options::value<std::string>(),
 				"set event type name (mandatory)"
+			)
+			(
+				"namespaces",
+				boost::program_options::value< std::vector<std::string> >(),
+			    "set project namespaces"
 			)
 			(
 				"projectNamespace",
@@ -123,14 +127,19 @@ namespace OpcUaEventTypeGenerator
 		    return 1;
 		}
 
+		if (vm.count("namespaces") != 0) {
+			namespaces_ = vm["namespaces"].as< std::vector<std::string> >();
+		}
+
 		if (vm.count("eventtype") == 0) {
 		    std::cout << desc << std::endl;
 		    return 1;
 		}
 
-		// vm["input-file"].as< vector<string> >()
+		if (vm.count("nodeset") != 0) {
+			fileNames_ = vm["nodeset"].as< std::vector<std::string> >();
+		}
 
-		fileName_ = vm["nodeset"].as<std::string>();
 		eventTypeName_ = vm["eventtype"].as<std::string>();
 		projectNamespace_ = vm["projectNamespace"].as<std::string>();
 		parentProjectNamespace_ = vm["parentProjectNamespace"].as<std::string>();
@@ -160,25 +169,29 @@ namespace OpcUaEventTypeGenerator
 	int32_t
 	OpcUaEventTypeGenerator::loadInformationModel(void)
 	{
-		// read opc ua nodeset
-		ConfigXml configXml;
-	    if (!configXml.parse(fileName_)) {
-	    	std::cout << configXml.errorMessage() << std::endl;
-	    	return -1;
-	    }
-
-	    // parse node set file
-	    NodeSetXmlParser nodeSetXmlParser;
-	    if (!nodeSetXmlParser.decode(configXml.ptree())) {
-	    	std::cout << "node set parser error" << std::endl;
-	    	return -2;
-	    }
-
-	    // init information model
 		informationModel_ = boost::make_shared<InformationModel>();
-		if (!InformationModelNodeSet::initial(informationModel_, nodeSetXmlParser)) {
-			std::cout << "init information model error" << std::endl;
-			return -3;
+
+		for (auto fileName : fileNames_) {
+
+			// read opc ua nodeset
+			ConfigXml configXml;
+			if (!configXml.parse(fileName)) {
+				std::cout << configXml.errorMessage() << std::endl;
+				return -1;
+			}
+
+			// parse node set file
+			NodeSetXmlParser nodeSetXmlParser;
+			if (!nodeSetXmlParser.decode(configXml.ptree())) {
+				std::cout << "node set parser error" << std::endl;
+				return -2;
+			}
+
+			// init information model
+			if (!InformationModelNodeSet::initial(informationModel_, nodeSetXmlParser)) {
+				std::cout << "init information model error" << std::endl;
+				return -3;
+			}
 		}
 		informationModel_->checkForwardReferences();
 
@@ -284,10 +297,16 @@ namespace OpcUaEventTypeGenerator
 
 		// generate event type source code
 		EventTypeGenerator eventTypeGenerator;
-		eventTypeGenerator.projectNamespace(projectNamespace_);
-		eventTypeGenerator.parentProjectNamespace(parentProjectNamespace_);
 		eventTypeGenerator.informationModel(informationModel_);
 		eventTypeGenerator.eventType(eventTypeNodeId_);
+		for (it = namespaces_.begin(); it != namespaces_.end(); it++) {
+			Log(Debug, "set namespace")
+				.parameter("ns", *it);
+			eventTypeGenerator.setNamespaceEntry(*it);
+		}
+		eventTypeGenerator.projectNamespace(projectNamespace_);
+		eventTypeGenerator.parentProjectNamespace(parentProjectNamespace_);
+
 		if (!eventTypeGenerator.generate()) {
 			std::cout << "source code generator error - " << eventTypeName_ << std::endl;
 			return -4;
