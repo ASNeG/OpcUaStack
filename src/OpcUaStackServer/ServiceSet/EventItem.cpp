@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2021 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2023 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -16,6 +16,8 @@
  */
 
 #include <iostream>
+#include <sstream>
+
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/StandardDataTypes/EventFilter.h"
 #include "OpcUaStackCore/StandardEventType/BaseEventType.h"
@@ -69,6 +71,7 @@ namespace OpcUaStackServer
 	{
 		OpcUaStatusCode statusCode;
 
+		// check parameter
 		if (monitoredItemCreateRequest.get() == nullptr) {
 			return BadInvalidArgument;
 		}
@@ -170,6 +173,10 @@ namespace OpcUaStackServer
 		NodeSetNamespace nodeSetNamespace;
 		eventBase->namespaceArray(&nodeSetNamespace.globalNamespaceVec());
 
+		//
+		// handle base event type
+		//
+
 		// generate event id if necessary
 		if (baseEventType->eventId().get() == nullptr) {
 			boost::posix_time::ptime time = boost::posix_time::microsec_clock::local_time();
@@ -224,6 +231,11 @@ namespace OpcUaStackServer
 			variant->setValue((OpcUaUInt16)100);
 			baseEventType->severity(variant);
 		}
+
+		// log event information
+		std::stringstream ss;
+		ss  << *baseEventType.get();
+		Log(Debug, "fire event").parameter("Event", ss.str());
 
 		// process select clause
 		bool resultCode;
