@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2021 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2023 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -225,6 +225,32 @@ namespace OpcUaStackCore
 
 		resultCode = EventResult::Success;
 		return variant;
+	}
+
+	void
+	EventVariables::out(std::ostream& os) const
+	{
+		os << "EventType=" << eventType_;
+		os << ",NamespaceUri=" << namespaceUri_;
+		os << ",BrowseName=" << browseName_;
+		os << ",NamespaceIndex=" << namespaceIndex_;
+		os << ",EventVariables=[";
+		for (auto it = eventVariableMap_.begin(); it != eventVariableMap_.end(); it++) {
+			auto name = it->first;
+			auto eventVariable = it->second;
+			if (it != eventVariableMap_.begin()) os  << ",";
+			os << "(" << name << ",";
+			if (eventVariable.variable_) {
+				os << *(eventVariable.variable_.get());
+			}
+			else {
+				os << "---";
+			}
+			os << ",";
+			os << eventVariable.buildInType_;
+			os << ")";
+		}
+		os << "]";
 	}
 
 }

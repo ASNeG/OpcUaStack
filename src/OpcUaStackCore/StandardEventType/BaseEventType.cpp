@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2023 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -169,6 +169,14 @@ namespace OpcUaStackCore
 		OpcUaVariant::SPtr value;
 		eventVariables_.getValue("Time", value);
 		return value;
+	}
+
+	void
+	BaseEventType::out(std::ostream& os) const
+	{
+		os << "[";
+		os << eventVariables_;
+		os << "]";
 	}
 
 	// ------------------------------------------------------------------------

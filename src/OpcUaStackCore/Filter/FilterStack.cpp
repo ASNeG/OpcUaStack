@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2021 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2023 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -98,16 +98,23 @@ namespace OpcUaStackCore
     }
 
     bool
-	FilterStack::buildOperatorNode(ContentFilter& contentFilter, ContentFilterResult& contentFilterResult,  int idx, FilterNode::SPtr& node)
+	FilterStack::buildOperatorNode(
+		ContentFilter& contentFilter,
+		ContentFilterResult& contentFilterResult,
+		int idx,
+		FilterNode::SPtr& node
+	)
     {
 
     	OpcUaStatusCode operatorStatus = OpcUaStatusCode::Success;
 
     	bool hasOperandError = false;
 
+    	// get content filter element
         ContentFilterElement::SPtr el;
         contentFilter.elements().get(idx, el);
 
+        // create result elements
     	auto operandStatuses = boost::make_shared<OpcUaStatusCodeArray>();
     	operandStatuses->resize(el->filterOperands().size());
 
@@ -179,7 +186,7 @@ namespace OpcUaStackCore
             	{
             	    SimpleAttributeOperand::SPtr simpleAttributeOperand = operand->parameter<SimpleAttributeOperand>();
             	    SimpleAttributeFilterNode::SPtr simpleAttributeNode(new SimpleAttributeFilterNode(
-            	            simpleAttributeOperand->typeId(),
+            	            simpleAttributeOperand->typeDefinitionId(),
             	            simpleAttributeOperand->browsePath(),
             	            simpleAttributeOperand->attributeId(),
             	            simpleAttributeOperand->indexRange()));

@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2021 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2023 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -53,6 +53,13 @@ namespace OpcUaStackCore
 		OpcUaVariant::SPtr sourceNode(void);
 		bool time(OpcUaVariant::SPtr& time);
 		OpcUaVariant::SPtr time(void);
+
+		void out(std::ostream& os) const;
+		friend std::ostream& operator<<(std::ostream& os, const BaseEventType& value)
+		{
+			value.out(os);
+			return os;
+		}
 
 		//- EventBase interface
 		virtual void mapNamespaceUri(void);

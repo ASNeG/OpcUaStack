@@ -228,7 +228,7 @@ BOOST_AUTO_TEST_CASE(FilterStack_simple_attribute_operand)
 
     SimpleAttributeOperand someAttribute;
 
-    someAttribute.typeId() = OpcUaNodeId(OpcUaId_BaseEventType_EventId);
+    someAttribute.typeDefinitionId() = OpcUaNodeId(OpcUaId_BaseEventType_EventId);
 
     OpcUaQualifiedName::SPtr tagname = boost::make_shared<OpcUaQualifiedName>("someAttibute");
     someAttribute.browsePath().set(0, tagname);
@@ -255,7 +255,7 @@ BOOST_AUTO_TEST_CASE(FilterStack_simple_attribute_operand)
     BOOST_REQUIRE(stack.process(filterResult));
     BOOST_REQUIRE(filterResult == true);
 
-    BOOST_REQUIRE_EQUAL(someAttribute.typeId(), mockAttrIf.calledtypeId_);
+    BOOST_REQUIRE_EQUAL(someAttribute.typeDefinitionId(), mockAttrIf.calledtypeId_);
 
     OpcUaQualifiedName::SPtr expectedPathElement, actualPathElement;
     someAttribute.browsePath().get(expectedPathElement);

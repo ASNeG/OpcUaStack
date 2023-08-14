@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2023 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -58,6 +58,13 @@ namespace OpcUaStackCore
 		bool getValue(const std::string& variableName, OpcUaVariant::SPtr& value);
 		OpcUaVariant::SPtr get(OpcUaQualifiedName::SPtr& browseName, EventResult::Code& resultCode);
 		OpcUaVariant::SPtr get(std::list<OpcUaQualifiedName::SPtr>& browseNameList, EventResult::Code& resultCode);
+
+		void out(std::ostream& os) const;
+		friend std::ostream& operator<<(std::ostream& os, const EventVariables& value)
+		{
+			value.out(os);
+			return os;
+		}
 
 	  private:
 		OpcUaNodeId eventType_;
