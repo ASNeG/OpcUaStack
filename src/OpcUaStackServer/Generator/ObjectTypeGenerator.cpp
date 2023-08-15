@@ -419,7 +419,7 @@ namespace OpcUaStackServer
 
 		for (auto& methodTypeField : nodeInfo_.methodTypeFieldMap()) {
 			auto& vt = methodTypeField.second;
-			ss << prefix << "    " << vt->variableName() << "->registerMethod(boost::bind(&" << nodeInfo_.className() << "::call_" << vt->name() << ", this, boost::placeholder::_1));" << std::endl;
+			ss << prefix << "    " << vt->variableName() << "->registerMethod(boost::bind(&" << nodeInfo_.className() << "::call_" << vt->name() << ", this, boost::placeholders::_1));" << std::endl;
 		}
 
 		ss << prefix << "}" << std::endl;
@@ -464,7 +464,7 @@ namespace OpcUaStackServer
 
 		for (auto& methodTypeField : nodeInfo_.methodTypeFieldMap()) {
 			auto& vt = methodTypeField.second;
-			ss << prefix << "    " << vt->variableName() << "->registerMethod(boost::bind(&" << nodeInfo_.className() << "::call_" << vt->name() << ", this, boost::placeholder::_1));" << std::endl;
+			ss << prefix << "    " << vt->variableName() << "->registerMethod(boost::bind(&" << nodeInfo_.className() << "::call_" << vt->name() << ", this, boost::placeholders::_1));" << std::endl;
 		}
 
 		ss << prefix << "}" << std::endl;
