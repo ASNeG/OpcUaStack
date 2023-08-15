@@ -168,7 +168,7 @@ namespace OpcUaStackServer
 				boost::property_tree::ptree::iterator it;
 				for (it = ptree.begin(); it!=ptree.end(); it++) {
 					std::string tagValue = xmlns.cutPrefix(it->first);
-					if (tagValue == "<xmlattr>") continue;
+					if (tagValue == "<xmlattr>" || tagValue.empty()) continue;
 					if (tagValue != element) {
 						OpcUaStackCore::Log(OpcUaStackCore::Error, "Invalid tag")
 							.parameter("ExpectedTag", element)
