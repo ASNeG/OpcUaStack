@@ -243,10 +243,19 @@ namespace OpcUaStackServer
 			auto baseNodeClassChildTemplate = childBaseNodeClassVec[idx];
 			OpcUaQualifiedName browseName = *childBaseNodeClassVec[idx]->getBrowseName();
 
-			// only nodes with modelling rules are allowed
+			// only nodes with modeling rules are allowed
 			OpcUaNodeId modellingRule;
 			if (!baseNodeClassChildTemplate->referenceItemMap().getHasModellingRule(modellingRule)) {
 				continue;
+			}
+
+			// Check if node is optional
+			if (modellingRule == OpcUaNodeId(OpcUaId_ModellingRule_OptionalPlaceholder)) {
+				// ignore optional list elements
+				std::string browseNameString =  browseName.name().toStdString();
+				if (!browseNameString.empty()) {
+					if (browseNameString[0] == '<' && browseNameString[browseNameString.size()-1] == '>') continue;
+				}
 			}
 
 			// handle childs of node
