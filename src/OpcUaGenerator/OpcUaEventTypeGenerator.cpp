@@ -61,56 +61,64 @@ namespace OpcUaEventTypeGenerator
 	uint32_t
 	OpcUaEventTypeGenerator::start(int argc, char** argv)
 	{
-		boost::program_options::options_description desc("Allowed options");
-		desc.add_options()
-		    (
-		    	"help",
-				"produce help message"
-		    )
-			(
-				"version",
-				"print version string"
-			)
-		    (
-		    	"nodeset",
-				boost::program_options::value<std::vector<std::string> >(),
-				"set nodeset file name (mandatory)"
-			)
-			(
-				"eventtype",
-				boost::program_options::value<std::string>(),
-				"set event type name (mandatory)"
-			)
-			(
-				"namespaces",
-				boost::program_options::value< std::vector<std::string> >(),
-			    "set project namespaces"
-			)
-			(
-				"projectNamespace",
-				boost::program_options::value<std::string>()->default_value("OpcUaStackCore"),
-			    "set project namespace"
-			)
-			(
-				"parentProjectNamespace",
-				boost::program_options::value<std::string>()->default_value("OpcUaStackCore"),
-			    "set parent project namespace"
-			)
-			(
-				"buildSubTypes",
-				boost::program_options::value<bool>()->default_value(false),
-			    "build all subtypes"
-			)
-			(
-				"ignoreEventTypeName",
-				boost::program_options::value< std::vector<std::string> >(),
-			    "ignore event type name"
-			)
-		;
-
 		boost::program_options::variables_map vm;
-		boost::program_options::store(boost::program_options::parse_command_line(argc, argv, desc), vm);
-		boost::program_options::notify(vm);
+		boost::program_options::options_description desc("Allowed options");
+
+		try {
+			desc.add_options()
+				(
+					"help",
+					"produce help message"
+					)
+				(
+					"version",
+					"print version string"
+					)
+				(
+					"nodeset",
+					boost::program_options::value<std::vector<std::string> >(),
+					"set nodeset file name (mandatory)"
+					)
+				(
+					"eventtype",
+					boost::program_options::value<std::string>(),
+					"set event type name (mandatory)"
+					)
+				(
+					"namespaces",
+					boost::program_options::value<std::vector<std::string> >(),
+					"set project namespaces"
+					)
+				(
+					"projectNamespace",
+					boost::program_options::value<std::string>()->default_value("OpcUaStackCore"),
+					"set project namespace"
+					)
+				(
+					"parentProjectNamespace",
+					boost::program_options::value<std::string>()->default_value("OpcUaStackCore"),
+					"set parent project namespace"
+					)
+				(
+					"buildSubTypes",
+					boost::program_options::value<bool>()->default_value(false),
+					"build all subtypes"
+					)
+				(
+					"ignoreEventTypeName",
+					boost::program_options::value< std::vector<std::string> >(),
+					"ignore event type name"
+					)
+				;
+
+			boost::program_options::store(boost::program_options::parse_command_line(argc, argv, desc), vm);
+			boost::program_options::notify(vm);
+		}
+		catch (const boost::program_options::error& ex)
+		{
+			std::cout << ex.what() << std::endl;
+			return 1;
+		}
 
 		if (vm.count("help")) {
 		    std::cout << desc << std::endl;
@@ -148,6 +156,7 @@ namespace OpcUaEventTypeGenerator
 			ignoreEventTypeNameVec_ = vm["ignoreEventTypeName"].as< std::vector<std::string> >();
 		}
 
+		std::cout << "XX" << std::endl;
 		if (buildSubTypes_) {
 			return buildAllSubTypes();
 		}
@@ -163,6 +172,7 @@ namespace OpcUaEventTypeGenerator
 			return rc;
 		}
 
+		std::cout << "XX" << std::endl;
 		return generateEventTypeSource();
 	}
 
