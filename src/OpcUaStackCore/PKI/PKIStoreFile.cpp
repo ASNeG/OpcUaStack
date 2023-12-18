@@ -16,6 +16,7 @@
  */
 
 #include <boost/filesystem.hpp>
+#include <boost/filesystem/fstream.hpp>
 #include <boost/uuid/detail/sha1.hpp>
 
 #include <sstream>
