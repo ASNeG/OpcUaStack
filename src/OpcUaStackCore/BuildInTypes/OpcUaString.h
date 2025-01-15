@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2025 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -48,6 +48,8 @@ namespace OpcUaStackCore
 		uint32_t size(void) const;
 		void reset(void);
 		bool exist(void) const;
+
+		char* ctr(void);
 
 		OpcUaString& operator=(const std::string& string); 
 		operator std::string (void) const;
